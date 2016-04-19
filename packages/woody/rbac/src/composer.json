@@ -1,0 +1,11 @@
+{
+    "name": "woody/rbac",
+    "description": "基于laravel 5的rbac",
+    "authors": [
+        {
+            "name": "吴辉",
+            "email": "wuhui920613@gmail.com"
+        }
+    ],
+    "require": {}
+}

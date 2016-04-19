@@ -1,0 +1,1 @@
+INSERT INTO `admin_user_roles` VALUES (1,1),(1,3),(7,1);
