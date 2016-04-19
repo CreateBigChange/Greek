@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
 
-class StoreInfosSeeder extends Seeder
+class StoreSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class StoreInfosSeeder extends Seeder
     public function run()
     {
         $fileSystem = new Filesystem();
-        
+
         $database = $fileSystem->get(base_path('database/seeds') . '/sql/' . 'store_categories.sql');
         DB::connection()->getPdo()->exec($database);
 
@@ -21,6 +21,9 @@ class StoreInfosSeeder extends Seeder
         DB::connection()->getPdo()->exec($database);
 
         $database = $fileSystem->get(base_path('database/seeds') . '/sql/' . 'store_config.sql');
+        DB::connection()->getPdo()->exec($database);
+
+        $database = $fileSystem->get(base_path('database/seeds') . '/sql/' . 'store_users.sql');
         DB::connection()->getPdo()->exec($database);
     }
 }
