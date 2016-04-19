@@ -32,7 +32,10 @@ class Message {
 
 
 
+
 				'MYSQL_CONN_FAILED'				=> array('code'=>'5001' , 'msg'=>'数据库连接失败'),
+				'NOT_DELETE'					=> array('code'=>'5002' , 'msg'=>'该栏目下还有商品'),
+				'RELOGIN'						=> array('code'=>'5003' , 'msg'=>'请重新登录'),
 
 			);
 

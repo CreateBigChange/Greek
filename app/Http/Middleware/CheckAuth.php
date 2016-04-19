@@ -25,7 +25,6 @@ class CheckAuth
             return redirect('alpha/login');
 		}
 		
-		$nowUrl = $request->requestUri;
 		$permissions = $userInfo->permissions;
 
 		$isHaveAuth = true;

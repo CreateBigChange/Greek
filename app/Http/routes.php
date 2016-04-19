@@ -78,12 +78,26 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Gamma' ], function () {
 
+	Route::group(['middleware' => ['checkLogin']] , function() {
+		//店铺
+		Route::post('/store/settling', 'StoresController@settling');
+		Route::post('/store/config', 'StoresController@config');
+
+		//栏目
+		Route::post('/store/nav', 'StoresController@nav');
+		Route::post('/store/nav/add', 'StoresController@addNav');
+		Route::post('/store/nav/update/{id}', 'StoresController@updateNav');
+		Route::post('/store/nav/del/{id}', 'StoresController@delNav');
+		Route::post('/store/nav/{id}', 'StoresController@getNavInfo');
+
+		//商品
+		Route::post('/store/goods/add', 'StoresController@addGoods');
+		Route::post('/store/goods', 'StoresController@getGoodsList');
+	});
+
 	//登陆
 	Route::post('/login' , 'StoreUsersController@login');
 	Route::post('/logout' , 'StoreUsersController@logout');
 
-	//店铺
-	Route::post('/store/settling' , 'StoresController@settling');
-	Route::post('/store/config/{id}' , 'StoresController@config');
 
 });

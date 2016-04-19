@@ -54,6 +54,8 @@ class CreateStores extends Migration
             $table->string('store_logo')->nullable()->comment('店铺logo');
             $table->float('start_price')->nullable()->unsigned()->comment('起送价');
             $table->float('deliver')->nullable()->unsigned()->comment('配送费');
+            $table->string('business_cycle')->nullable()->comment('营业周期');
+            $table->string('business_time')->nullable()->comment('营业时间');
             $table->boolean('recommend')->default(0)->comment('是否推荐首页;不为0为推荐首页');
             $table->tinyInteger('sort')->default(0)->comment('排序');
             $table->tinyInteger('is_close')->default(0)->comment('是否打烊;1打烊');

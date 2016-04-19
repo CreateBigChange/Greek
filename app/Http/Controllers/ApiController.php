@@ -24,9 +24,13 @@ class ApiController extends Controller
      *   }
      */
     protected $response = array();
+    protected $storeId = 0;
 
     public function __construct(){
 
+        global $userInfo;
+
+        $this->storeId = $userInfo->id;
         $this->response['code']		    = '0000';
         $this->response['msg']	        = '请求成功';
 
