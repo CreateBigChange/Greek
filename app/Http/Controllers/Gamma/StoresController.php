@@ -218,18 +218,52 @@ class StoresController extends ApiController
     public function getGoodsList(Request $request){
         $search = array();
 
+        if(!isset($_GET['page'])){
+            $page = 1;
+        }else{
+            $page = $_GET['page'];
+        }
+
         $search['is_open'] = $request->input('is_open');
         if($search['is_open'] == ''){
             $search['is_open'] = 1;
         }
         if($request->has('name')){
-            $search['name'] = $request->get('name');
+            $search['name'] = mysql_real_escape_string($request->get('name'));
         }
 
-        $goodsList = $this->_model->getGoodsList($this->storeId , $this->_length , $search);
+        $goodsNum   = $this->_model->getGoodsTotalNum($this->storeId , $search);
 
+        $response = array();
+        $response['pageData']   = $this->getPageData($page , $this->_length , $goodsNum);
+        $response['goodsList']  = $this->_model->getGoodsList($this->storeId , $search , $this->_length , $response['pageData']->offset);
+        
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $goodsList));
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/{id} 获取单个商品信息
+     * @apiName storeGoods
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取商品列表
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/1
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/1
+     *      {
+     *
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getGoodsInfo($id){
+
+        $info = $this->_model->getGoodsInfo($this->storeId , $id);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $info));
 
     }
 

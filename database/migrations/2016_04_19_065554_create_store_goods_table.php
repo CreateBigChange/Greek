@@ -26,7 +26,7 @@ class CreateStoreGoodsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->integer('store_id')->unsigned();
-            $table->integer('goods_id')->unsigned();
+            $table->integer('goods_id')->unsigned()->default(0);
             $table->integer('nav_id')->unsigned()->comment('栏目ID');
             $table->integer('c_id')->unsigned()->comment('分类ID');
             $table->integer('b_id')->unsigned()->comment('品牌ID');

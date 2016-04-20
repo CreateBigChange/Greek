@@ -49,16 +49,75 @@ class Stores extends Model
      * 获取商品列表
      * @param search   array
      */
-    public function getGoodsList($storeId , $length , $search){
-        $sql = DB::table($this->_store_goods_table)->where('store_id' , $storeId);
+    public function getGoodsList($storeId , $search = array() , $length = 20 , $offset = 0 ){
+
+        $sql = "SELECT 
+                    sg.id ,
+                    sg.store_id,
+                    sg.name,
+                    sg.img,
+                    sg.in_price,
+                    sg.out_price,
+                    sg.give_points,
+                    sg.spec,
+                    sg.desc,
+                    sg.stock,
+                    sg.is_open,
+                    sg.is_checked,
+                    sg.created_at,
+                    sg.updated_at,
+                    gc.name AS category_name ,
+                    gc.id AS category_id ,
+                    gb.id AS brand_id,
+                    gb.name AS brand_name,
+                    sn.id AS nav_id,
+                    sn.name AS nav_name
+                FROM $this->_store_goods_table AS sg ";
+
+        $sql .= " LEFT JOIN goods_categories as gc ON gc.id = sg.c_id";
+        $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
+        $sql .= " LEFT JOIN $this->_store_nav_table as sn ON sn.id = sg.nav_id";
+
+
+        $sql .= " WHERE sg.store_id = $storeId";
         if(isset($search['is_open'])){
-            $sql->where('is_open' , $search['is_open']);
+            $sql .= " AND sg.is_open = ".$search['is_open'];
         }
         if(isset($search['name'])){
-            $sql->where('name' , 'like' , '%'.$search['name'].'%');
+            $sql .= " AND sg.name LIKE '%" . $search['name'] . "%'";
         }
+        $sql .= " AND sg.is_del = 0";
 
-        return $sql->paginate($length);
+        $sql .= " ORDER BY created_at DESC";
+        $sql .= " LIMIT $offset , $length";
+
+
+        return DB::select($sql);
+
+    }
+
+    public function getGoodsTotalNum($storeId , $search = array()){
+        $sql = "SELECT 
+                    count(*) as num
+                FROM $this->_store_goods_table AS sg ";
+
+        $sql .= " LEFT JOIN goods_categories as gc ON gc.id = sg.c_id";
+        $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
+        $sql .= " LEFT JOIN $this->_store_nav_table as sn ON sn.id = sg.nav_id";
+
+
+        $sql .= " WHERE sg.store_id = $storeId";
+        if(isset($search['is_open'])){
+            $sql .= " AND sg.is_open = ".$search['is_open'];
+        }
+        if(isset($search['name'])){
+            $sql .= " AND sg.name LIKE '%" . $search['name'] . "%'";
+        }
+        $sql .= " AND sg.is_del = 0";
+
+        $num = DB::select($sql);
+
+        return $num[0]->num;
     }
 
     /**

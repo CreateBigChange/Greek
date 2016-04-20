@@ -23,7 +23,7 @@ class StoreUsersController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new StoreUsers;
+        $this->_model       = new StoreUsers;
         $this->_length		= 20;
     }
 

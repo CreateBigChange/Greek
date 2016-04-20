@@ -29,10 +29,7 @@ class ApiController extends Controller
     public function __construct(){
 
         global $userInfo;
-
-        $this->storeId = $userInfo->id;
-        $this->response['code']		    = '0000';
-        $this->response['msg']	        = '请求成功';
+        $this->storeId = isset($userInfo->id) ? $userInfo->id : 0;
 
     }
 
