@@ -46,8 +46,31 @@ class Stores extends Model
     }
 
     /**
+     * 修改商品
+     * @param storeId   number
+     * @param id   number
+     * @param data   array
+     */
+    public function updateGoods($storeId , $id , $data){
+        return DB::table($this->_store_goods_table)->where('id' , $id)->where('store_id' , $storeId)->update($data);
+    }
+
+    /**
+     * 批量修改商品状态
+     * @param storeId   number
+     * @param ids   array
+     * @param data   array
+     */
+    public function updateUtatus($storeId , $ids , $data){
+        return DB::table($this->_store_goods_table)->whereIn('id' , $ids)->where('store_id' , $storeId)->update($data);
+    }
+
+    /**
      * 获取商品列表
+     * @param storeId   number
      * @param search   array
+     * @param length   number
+     * @param offset   number
      */
     public function getGoodsList($storeId , $search = array() , $length = 20 , $offset = 0 ){
 
@@ -86,6 +109,9 @@ class Stores extends Model
         if(isset($search['name'])){
             $sql .= " AND sg.name LIKE '%" . $search['name'] . "%'";
         }
+        if(isset($search['id'])){
+            $sql .= " AND sg.id = ".$search['id'];
+        }
         $sql .= " AND sg.is_del = 0";
 
         $sql .= " ORDER BY created_at DESC";
@@ -96,6 +122,11 @@ class Stores extends Model
 
     }
 
+    /**
+     * 获取商品列表
+     * @param storeId   number
+     * @param search   array
+     */
     public function getGoodsTotalNum($storeId , $search = array()){
         $sql = "SELECT 
                     count(*) as num
@@ -174,4 +205,25 @@ class Stores extends Model
             return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
         }
     }
+
+    /**
+     *
+     * 获取商品分类
+     * @param pid     number
+     */
+    public function getGoodsCategories($pid){
+
+        return DB::table('goods_categories')->where('p_id' , $pid)->get();
+    }
+
+    /**
+     *
+     * 获取商品品牌
+     * @param cid     number
+     */
+    public function getGoodsBrand($cid){
+
+        return DB::table('goods_brand')->where('c_id' , $cid)->get();
+    }
+
 }

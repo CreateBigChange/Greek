@@ -93,6 +93,16 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//商品
 		Route::post('/store/goods/add', 'StoresController@addGoods');
 		Route::post('/store/goods', 'StoresController@getGoodsList');
+		Route::post('/store/goods/{id}', 'StoresController@getGoodsInfo');
+		Route::post('/store/goods/categories/{pid}', 'StoresController@getGoodsCategories');
+		Route::post('/store/goods/brand/{cid}', 'StoresController@getGoodsBrand');
+		Route::post('/store/goods/update/{id}', 'StoresController@updateGoods');
+		Route::post('/store/goods/opens', 'StoresController@opens');
+		Route::post('/store/goods/dels', 'StoresController@dels');
+
+		//订单
+		Route::post('/store/orders/{type}', 'OrdersController@getOrderList');
+		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
 	});
 
 	//登陆

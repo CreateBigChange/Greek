@@ -176,14 +176,14 @@ class StoresController extends ApiController
 
         $data = array();
         $data['store_id']       = $this->storeId;
-        $data['nav_id']         = 1;
-        $data['c_id']           = 1;
-        $data['b_id']           = 1;
-        $data['name']           = $request->get('name');
-        $data['img']            = $request->get('img');
-        $data['spec']           = $request->get('spec');
-        $data['out_price']      = $request->get('out_price');
-        $data['desc']           = $request->get('desc' , '');
+        $data['nav_id']         = trim($request->get('nav_id'));
+        $data['c_id']           = trim($request->get('c_id'));
+        $data['b_id']           = trim($request->get('b_id'));
+        $data['name']           = htmlspecialchars(trim($request->get('name')));
+        $data['img']            = trim($request->get('img'));
+        $data['spec']           = trim($request->get('spec'));
+        $data['out_price']      = trim($request->get('out_price'));
+        $data['desc']           = htmlspecialchars(trim($request->get('desc' , '')));
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
@@ -229,7 +229,7 @@ class StoresController extends ApiController
             $search['is_open'] = 1;
         }
         if($request->has('name')){
-            $search['name'] = mysql_real_escape_string($request->get('name'));
+            $search['name'] = htmlspecialchars($request->get('name'));
         }
 
         $goodsNum   = $this->_model->getGoodsTotalNum($this->storeId , $search);
@@ -237,17 +237,17 @@ class StoresController extends ApiController
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $goodsNum);
         $response['goodsList']  = $this->_model->getGoodsList($this->storeId , $search , $this->_length , $response['pageData']->offset);
-        
+
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
 
     }
 
     /**
      * @api {POST} /gamma/store/goods/{id} 获取单个商品信息
-     * @apiName storeGoods
+     * @apiName storeGoodsInfo
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
-     * @apiDescription 获取商品列表
+     * @apiDescription 获取单个商品信息
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/goods/1
      *
@@ -261,10 +261,219 @@ class StoresController extends ApiController
      */
     public function getGoodsInfo($id){
 
-        $info = $this->_model->getGoodsInfo($this->storeId , $id);
+        $info = $this->_model->getGoodsList($this->storeId , array('id' => $id) , $this->_length , 0);
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $info));
+        if(count($info) == 0){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('SUCCESS' , $info[0]));
+        }
 
+
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/update/{id} 修改商品
+     * @apiName storeGoodsUpdate
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 修改商品
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/update/1
+     *
+     * @apiParam {string} [img] 商品图片
+     * @apiParam {string} [name] 商品名称
+     * @apiParam {number} [c_id] 分类ID
+     * @apiParam {number} [b_id] 品牌ID
+     * @apiParam {number} [nav_id] 栏目ID
+     * @apiParam {string} [spec] 规格
+     * @apiParam {number} [out_price] 销售单价
+     * @apiParam {string} [desc] 商品描叙
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/update/1
+     *      {
+     *          'img'       : 'http://xxx.png',
+     *          'name'      : '测试商品一',
+     *          'c_id'      : 1,
+     *          'b_id'      : 1,
+     *          'nav_id'    : 1,
+     *          'spec'      : '瓶',
+     *          'out_price' : '30.00',
+     *          'desc'      : '这是测试商品的描叙',
+     *          'is_open'   : '是否上下架',
+     *          'is_del'    : '是否删除'
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function updateGoods($id , Request $request){
+
+        $data = array();
+        if( $request->has('nav_id') ) {
+            $data['nav_id'] = trim($request->get('nav_id'));
+        }
+        if( $request->has('c_id') ){
+            $data['c_id'] = trim($request->get('c_id'));
+        }
+        if( $request->has('b_id') ) {
+            $data['b_id'] = trim($request->get('b_id'));
+        }
+        if( $request->has('name') ) {
+            $data['name'] = htmlspecialchars(trim($request->get('name')));
+        }
+        if( $request->has('img') ) {
+            $data['img'] = trim($request->get('img'));
+        }
+        if( $request->has('spec') ) {
+            $data['spec'] = trim($request->get('spec'));
+        }
+        if( $request->has('out_price') ) {
+            $data['out_price'] = trim($request->get('out_price'));
+        }
+        if( $request->has('desc') ) {
+            $data['desc'] = htmlspecialchars(trim($request->get('desc', '')));
+        }
+        if( $request->has('is_open') ) {
+            $data['is_open'] = htmlspecialchars(trim($request->get('is_open')));
+        }
+        if( $request->has('is_del') ) {
+            $data['is_del'] = htmlspecialchars(trim($request->get('is_del')));
+        }
+
+        $data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateGoods($this->storeId,  $id , $data )){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/opens 商品批量上下架
+     * @apiName storeGoodsOpen
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 商品批量上下架
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/opens
+     *
+     * @apiParam {array} ids 商品IDS
+     * @apiParam {number} [is_open] 上架1或下架0的状态
+     *
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/opens
+     *      {
+     *             ids : [1,2,3,4,5],
+     *             is_open : 1
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function opens(Request $request){
+
+        $data = array();
+
+        $ids                    = $request->get('ids');
+
+        $data['is_open']        = $request->get('is_open');
+        $data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUtatus($this->storeId,  $ids , $data )){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/dels 商品批量删除
+     * @apiName storeGoodsDel
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 商品批量删除
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/dels
+     *
+     * @apiParam {array} ids 商品IDS
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/dels
+     *      {
+     *             ids : [1,2,3,4,5],
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function dels(Request $request){
+
+        $data = array();
+
+        $ids                    = $request->get('ids');
+
+        $data['is_del']        = 1;
+        $data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUtatus($this->storeId,  $ids , $data )){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/categories/{pid} 获取商品分类
+     * @apiName storeGoodsCategories
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取商品分类
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/categories/0
+     *
+     * @apiParam {string} [pid] 父级ID
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/categories/0
+     *      {
+     *          'pid' : 0,
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getGoodsCategories($pid){
+
+        $categoriesList = $this->_model->getGoodsCategories($pid);
+        return response()->json(Message::setResponseInfo('SUCCESS' , $categoriesList));
+    }
+
+    /**
+     * @api {POST} /gamma/store/goods/brand/{cid} 获取商品品牌
+     * @apiName storeGoodsBrand
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取商品品牌
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/brand/1
+     *
+     * @apiParam {string} [cid] 分类ID
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/goods/brand/1
+     *      {
+     *          'cid' : 1,
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getGoodsBrand($cid){
+
+        $brandList = $this->_model->getGoodsBrand($cid);
+        return response()->json(Message::setResponseInfo('SUCCESS' , $brandList));
     }
 
     /**

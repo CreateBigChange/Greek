@@ -52,7 +52,8 @@ class CreateGoodsTable extends Migration
             $table->foreign('b_id')->references('id')->on('goods_brand');
             $table->timestamps();
         });
-        
+
+
 
     }
 
