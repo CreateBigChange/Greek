@@ -29,7 +29,8 @@ class ApiController extends Controller
     public function __construct(){
 
         global $userInfo;
-        $this->storeId = isset($userInfo->id) ? $userInfo->id : 0;
+        $this->userId = isset($userInfo->id) ? $userInfo->id : 0;
+        $this->storeId = isset($userInfo->store_id) ? $userInfo->store_id : 0;
 
     }
 

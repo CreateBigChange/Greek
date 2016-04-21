@@ -102,7 +102,7 @@ class OrdersController extends ApiController
     public function changeStatus($id , Request $request){
 
         $status = $request->get('status');
-        if($this->_model->changeStatus($this->storeId , $id , $status)){
+        if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

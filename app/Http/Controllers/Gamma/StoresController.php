@@ -142,6 +142,8 @@ class StoresController extends ApiController
      * @apiParam {string} spec 规格
      * @apiParam {number} out_price 销售单价
      * @apiParam {string} [desc] 商品描叙
+     * @apiParam {string} [give_points] 赠送积分
+     * @apiParam {number} [stock] 库存
      *              '
      *
      * @apiParamExample {json} Request Example
@@ -154,7 +156,9 @@ class StoresController extends ApiController
      *          'nav_id'    : 1,
      *          'spec'      : '瓶',
      *          'out_price' : '30.00',
-     *          'desc'      : '这是测试商品的描叙'
+     *          'desc'      : '这是测试商品的描叙',
+     *          'give_points' : '0',
+     *          'stock' : '100'
      *      }
      * @apiUse CODE_200
      *
@@ -183,6 +187,8 @@ class StoresController extends ApiController
         $data['img']            = trim($request->get('img'));
         $data['spec']           = trim($request->get('spec'));
         $data['out_price']      = trim($request->get('out_price'));
+        $data['give_points']    = trim($request->get('give_points'));
+        $data['stock']          = trim($request->get('stock'));
         $data['desc']           = htmlspecialchars(trim($request->get('desc' , '')));
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
@@ -288,7 +294,9 @@ class StoresController extends ApiController
      * @apiParam {number} [nav_id] 栏目ID
      * @apiParam {string} [spec] 规格
      * @apiParam {number} [out_price] 销售单价
+     * @apiParam {number} [give_points] 赠送积分
      * @apiParam {string} [desc] 商品描叙
+     * @apiParam {number} [stock] 库存
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/goods/update/1
@@ -300,7 +308,9 @@ class StoresController extends ApiController
      *          'nav_id'    : 1,
      *          'spec'      : '瓶',
      *          'out_price' : '30.00',
+     *          'give_points' : '0',
      *          'desc'      : '这是测试商品的描叙',
+     *          'stock'      : '库存',
      *          'is_open'   : '是否上下架',
      *          'is_del'    : '是否删除'
      *      }
@@ -339,6 +349,9 @@ class StoresController extends ApiController
         }
         if( $request->has('is_del') ) {
             $data['is_del'] = htmlspecialchars(trim($request->get('is_del')));
+        }
+        if( $request->has('give_points') ) {
+            $data['give_points'] = htmlspecialchars(trim($request->get('give_points')));
         }
 
         $data['updated_at']     = date('Y-m-d H:i:s' , time());

@@ -116,7 +116,22 @@ class Orders extends Model
      * @param id        number
      * @param status    number
      */
-    public function changeStatus($storeId , $id , $status){
-        return DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status));
+    public function changeStatus($storeId , $userId , $id , $status){
+
+        if(DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status))){
+            $log = array(
+                'order_id'      => $id,
+                'user'          => $userId,
+                'identity'      => '商家管理员',
+                'platform'      => '手机端',
+                'log'           => '将订单'. $id . '的状态改为'.$status,
+                'created_at'    => date('Y-m-d H:i:s' , time())
+            );
+            DB::table($this->_order_logs_table)->insert($log);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }
