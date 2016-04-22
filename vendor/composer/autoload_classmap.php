@@ -36,6 +36,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Http\\Requests\\Request' => $baseDir . '/app/Http/Requests/Request.php',
     'App\\Jobs\\Job' => $baseDir . '/app/Jobs/Job.php',
+    'App\\Libs\\BLogger' => $baseDir . '/app/Libs/BLogger.class.php',
     'App\\Libs\\Message' => $baseDir . '/app/Libs/Message.class.php',
     'App\\Libs\\Uploader' => $baseDir . '/app/Libs/Uploader.class.php',
     'App\\Models\\Alpha\\AdminUserRoles' => $baseDir . '/app/Models/Alpha/AdminUserRoles.php',

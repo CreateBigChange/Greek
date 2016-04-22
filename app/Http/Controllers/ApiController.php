@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+use Request;
 use Session , Cookie , Config , Log;
+use App\Libs\BLogger;
 
 class ApiController extends Controller
 {
@@ -33,6 +34,16 @@ class ApiController extends Controller
         $this->userId = isset($userInfo->id) ? $userInfo->id : 0;
         $this->storeId = isset($userInfo->store_id) ? $userInfo->store_id : 0;
 
+        $this->writeInputLog();
+    }
+
+    public function writeInputLog(){
+        $log = array(
+            'url'       => Request::url(),
+            'params'    => Request::all(),
+            'cookie'    => Request::cookie()
+        );
+        BLogger::getLogger(BLogger::LOG_INPUT)->notice(json_encode($log));
     }
 
 }
