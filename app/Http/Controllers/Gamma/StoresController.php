@@ -37,7 +37,7 @@ class StoresController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/areas/0
      *
-     * @apiParam {pid} 地区pid 默认为0
+     * @apiParam {pid} pid 地区pid默认为0
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/areas/0
