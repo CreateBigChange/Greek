@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Session , Cookie , Config;
+use Illuminate\Http\Request;
+use Session , Cookie , Config , Log;
 
 class ApiController extends Controller
 {
@@ -25,6 +25,7 @@ class ApiController extends Controller
      */
     protected $response = array();
     protected $storeId = 0;
+    protected $userId = 0;
 
     public function __construct(){
 

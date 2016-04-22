@@ -28,7 +28,31 @@ class StoresController extends ApiController
         $this->_length		= 20;
     }
 
+    /**
+     * @api {POST} /gamma/store/areas/{pid} 地区
+     * @apiName areas
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 地区
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/areas/0
+     *
+     * @apiParam {pid} 地区pid 默认为0
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/areas/0
+     *      {
+     *
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function areas($pid) {
+        $areas = $this->_model->areas($pid);
 
+        return response()->json(Message::setResponseInfo('SUCCESS' , $areas));
+
+    }
 
     /**
      * @api {POST} /gamma/store/settling 申请入驻
@@ -60,6 +84,17 @@ class StoresController extends ApiController
      *
      */
     public function settling(Request $request) {
+
+        $validation = Validator::make($request->all(), [
+            'name'          => 'required|max:40',
+            'contact'       => 'required|max:11|match:/^1[34578]\d{9}$/',
+            'province'      => 'required',
+            'city'          => 'required',
+            'county'        => 'required',
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
         $data = array();
 
         $data['name']       = $request->get('name');

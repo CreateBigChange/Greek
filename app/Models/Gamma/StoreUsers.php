@@ -55,6 +55,7 @@ class StoreUsers extends Model
             ->where('account' , $account)
             ->where('password' , $password)
             ->first();
+        
 
         return $isLogin;
     }

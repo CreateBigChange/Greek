@@ -51,6 +51,7 @@ class StoreUsersController extends ApiController
      *
      */
     public function login(Request $request) {
+
         if( !$request->has('account') ) {
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
@@ -62,8 +63,10 @@ class StoreUsersController extends ApiController
         $password           = $request->get('password');
 
         $salt               = $this->_model->getShopUserSalt($account);
+        if($salt == null){
+            return response()->json(Message::setResponseInfo('NO_USER'));
+        }
         $encrypt_password   = $this->encrypt($password , $salt->salt);
-
         $userInfo           = $this->_model->checkLogin($account , $encrypt_password);
         if($userInfo){
             //获取登录用户的权限

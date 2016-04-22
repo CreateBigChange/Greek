@@ -82,6 +82,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//店铺
 		Route::post('/store/settling', 'StoresController@settling');
 		Route::post('/store/config', 'StoresController@config');
+		Route::post('/store/areas/{pid}', 'StoresController@areas');
 
 		//栏目
 		Route::post('/store/nav', 'StoresController@nav');

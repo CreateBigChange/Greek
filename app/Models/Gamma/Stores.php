@@ -20,6 +20,15 @@ class Stores extends Model
 
     /**
      *
+     * 地区
+     * @param pid  number
+     */
+    public function areas($pid){
+        return DB::table('areas')->where('parent' , $pid)->get();
+    }
+
+    /**
+     *
      * 申请入驻
      * @param data  array
      */
