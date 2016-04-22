@@ -75,6 +75,8 @@ class StoreUsersController extends ApiController
             Session::put($sessionKey , $userInfo);
 
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
+
+            $userInfo->token = $sessionKey;
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

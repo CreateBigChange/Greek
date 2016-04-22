@@ -185,7 +185,7 @@ class Stores extends Model
      * @param storeId   number
      */
     public function getNav($storeId){
-        return DB::table($this->_store_nav_table)->where('store_id' , $storeId)->get();
+        return DB::table($this->_store_nav_table)->where('store_id' , $storeId)->orderBy('sort','ASC')->orderBy('updated_at','desc')->get();
     }
 
     /**
@@ -230,9 +230,9 @@ class Stores extends Model
      * 获取商品品牌
      * @param cid     number
      */
-    public function getGoodsBrand($cid){
+    public function getGoodsBrand(){
 
-        return DB::table('goods_brand')->where('c_id' , $cid)->get();
+        return DB::table('goods_brand')->get();
     }
 
 }

@@ -500,27 +500,25 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/store/goods/brand/{cid} 获取商品品牌
+     * @api {POST} /gamma/store/goods/brand 获取商品品牌
      * @apiName storeGoodsBrand
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
      * @apiDescription 获取商品品牌
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/goods/brand/1
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/brand
      *
-     * @apiParam {string} [cid] 分类ID
      *
      * @apiParamExample {json} Request Example
-     *      POST /gamma/store/goods/brand/1
+     *      POST /gamma/store/goods/brand
      *      {
-     *          'cid' : 1,
      *      }
      * @apiUse CODE_200
      *
      */
-    public function getGoodsBrand($cid){
+    public function getGoodsBrand(){
 
-        $brandList = $this->_model->getGoodsBrand($cid);
+        $brandList = $this->_model->getGoodsBrand();
         return response()->json(Message::setResponseInfo('SUCCESS' , $brandList));
     }
 
@@ -534,7 +532,6 @@ class StoresController extends ApiController
      * @apiSampleRequest http://greek.test.com/gamma/store/nav/add
      *
      * @apiParam {string} name 栏目名称
-     *              '
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/nav/add
@@ -575,7 +572,8 @@ class StoresController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/nav/update/1
      *
-     * @apiParam {string} name 栏目名称
+     * @apiParam {string} [name] 栏目名称
+     * @apiParam {number} [sort] 排序
      *              '
      *
      * @apiParamExample {json} Request Example
@@ -587,18 +585,18 @@ class StoresController extends ApiController
      *
      */
     public function updateNav($navId , Request $request){
-        $validation = Validator::make($request->all(), [
-            'name'      => 'required',
-        ]);
-        if($validation->fails()){
-            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-        }
 
         $storeId = $this->storeId;
 
         $data = array();
 
-        $data['name']           = $request->get('name');
+        if($request->has('name')){
+            $data['name']           = $request->get('name');
+        }
+        if($request->has('sort')){
+            $data['sort']           = $request->get('sort');
+        }
+
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
         if($this->_model->updateNav($navId , $storeId , $data)){

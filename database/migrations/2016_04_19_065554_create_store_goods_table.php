@@ -17,6 +17,7 @@ class CreateStoreGoodsTable extends Migration
             $table->increments('id')->unsigned()->comment('栏目id');
             $table->integer('store_id')->unsigned();
             $table->string('name')->comment('栏目名称');
+            $table->integer('sort')->unsigned()->default(1);
             $table->boolean('is_del')->comment('是否已经删除;0未删除, 1已删除')->default(0);
             $table->unique('name','store_id');
             $table->timestamps();
