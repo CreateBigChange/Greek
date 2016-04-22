@@ -97,17 +97,7 @@ class Orders extends Model
         }
 
         return $orders;
-        /*
-        $sql = DB::table($this->_orders_table)
-            ->leftJoin('areas' , 'areas.id' , 'IN' , '')
-            ->orderBy('created_at' , 'desc')
-            ->skip($offset)->take($length)
-            ->where('store_id' , $storeId);
-        if(isset($search['status'])){
-            $sql->whereIn('status' , $search['status']);
-        }
-        $orders = $sql->get();
-        */
+
     }
 
     /**

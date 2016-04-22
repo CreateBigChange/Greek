@@ -8,8 +8,9 @@ use Illuminate\Log\Writer;
 class BLogger
 {
     // 所有的LOG都要求在这里注册
-    const LOG_ERROR = 'error';
-    const LOG_REQUEST = 'request';
+    const LOG_ERROR     = 'error';
+    const LOG_REQUEST   = 'request';
+    const LOG_SQL       = 'sql';
 
     private static $loggers = array();
 
