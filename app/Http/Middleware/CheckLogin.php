@@ -19,8 +19,8 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        //$sessionkey = cookie::get(config::get('session.store_app_login_cookie'));
-        $sessionkey = $request->get('token');
+        $sessionkey = cookie::get(config::get('session.store_app_login_cookie'));
+        //$sessionkey = $request->get('token');
         global $userInfo;
         $userInfo = session::get($sessionkey);
 
