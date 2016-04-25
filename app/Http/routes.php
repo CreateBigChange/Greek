@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/alpha/index');
 });
 
 /*
@@ -27,6 +27,9 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Alpha' ], function () {
+	Route::get('/' , function(){
+		return redirect('/alpha/index');
+	});
 
 	Route::group(['middleware' => ['checkAuth']] , function(){
 	
@@ -41,31 +44,42 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/admin/user/update' , 'AdminUsersController@updateAdminUser');
 
 		//角色操作
-		Route::get('/roles' , 'RoleController@getRoleList');
-		Route::get('/roles/user/ajax/{userId}' , 'RoleController@ajaxUserRole');
-		Route::get('/roles/ajax' , 'RoleController@ajaxRoleList');
-		Route::post('/role/add' , 'RoleController@addRole');
-		Route::get('/role/del/{id}' , 'RoleController@delRole');
-		Route::get('/role/info/{id}' , 'RoleController@getRoleInfo');
-		Route::post('/role/update' , 'RoleController@updateRole');
+		Route::get('/roles' , 'AdminRoleController@getRoleList');
+		Route::get('/roles/user/ajax/{userId}' , 'AdminRoleController@ajaxUserRole');
+		Route::get('/roles/ajax' , 'AdminRoleController@ajaxRoleList');
+		Route::post('/role/add' , 'AdminRoleController@addRole');
+		Route::get('/role/del/{id}' , 'AdminRoleController@delRole');
+		Route::get('/role/info/{id}' , 'AdminRoleController@getRoleInfo');
+		Route::post('/role/update' , 'AdminRoleController@updateRole');
 
 		//节点操作
-		Route::get('/permissions' , 'PermissionController@getPermissionsList');
-		Route::get('/permissions/ajax' , 'PermissionController@ajaxPermissionsList');
-		Route::post('/permission/add' , 'PermissionController@addPermission');
-		Route::get('/permission/del/{id}' , 'PermissionController@delPermission');
-		Route::get('/permission/info/{id}' , 'PermissionController@getPermissionInfo');
-		Route::post('/permission/update' , 'PermissionController@updatePermission');
-		Route::get('/permission/top' , 'PermissionController@getTopPermission');
+		Route::get('/permissions' , 'AdminPermissionController@getPermissionsList');
+		Route::get('/permissions/ajax' , 'AdminPermissionController@ajaxPermissionsList');
+		Route::post('/permission/add' , 'AdminPermissionController@addPermission');
+		Route::get('/permission/del/{id}' , 'AdminPermissionController@delPermission');
+		Route::get('/permission/info/{id}' , 'AdminPermissionController@getPermissionInfo');
+		Route::post('/permission/update' , 'AdminPermissionController@updatePermission');
+		Route::get('/permission/top' , 'AdminPermissionController@getTopPermission');
 
 		//角色权限操作
-		Route::get('/permission/role/{rid}' , 'PermissionRoleController@getPermissionIdsByRoleID');
-		Route::get('/permission/role/relation/{rid}' , 'PermissionRoleController@getPermissionRoleByID');
-		Route::post('/permission/role/add' , 'PermissionRoleController@addPermissionRole');
-		Route::post('/permission/role/delete' , 'PermissionRoleController@delPermissionRole');
+		Route::get('/permission/role/{rid}' , 'AdminPermissionRoleController@getPermissionIdsByRoleID');
+		Route::get('/permission/role/relation/{rid}' , 'AdminPermissionRoleController@getPermissionRoleByID');
+		Route::post('/permission/role/add' , 'AdminPermissionRoleController@addPermissionRole');
+		Route::post('/permission/role/delete' , 'AdminPermissionRoleController@delPermissionRole');
 
 		//店铺
 		Route::get('/stores/infos' , 'StoresController@getStoreInfoList');
+		Route::get('/stores/info/{id}' , 'StoresController@ajaxStoreInfo');
+		Route::post('/stores/add' , 'StoresController@addStore');
+		Route::post('/stores/update' , 'StoresController@updateStore');
+
+		Route::get('/stores/categories' , 'StoresController@ajaxStoreCategoriesList');
+
+
+		//地区
+		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');
+
+		Route::post( '/upload' , 'UploadController@uploadImg' );
 
 	});
     //登陆
@@ -94,7 +108,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//商品
 		Route::post('/store/goods/add', 'StoresController@addGoods');
 		Route::post('/store/goods', 'StoresController@getGoodsList');
-		Route::post('/store/goods/{id}', 'StoresController@getGoodsInfo');
+		Route::post('/store/goods/info/{id}', 'StoresController@getGoodsInfo');
 		Route::post('/store/goods/categories/{pid}', 'StoresController@getGoodsCategories');
 		Route::post('/store/goods/brand', 'StoresController@getGoodsBrand');
 		Route::post('/store/goods/update/{id}', 'StoresController@updateGoods');

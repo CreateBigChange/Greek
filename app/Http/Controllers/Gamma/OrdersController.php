@@ -101,6 +101,12 @@ class OrdersController extends ApiController
      */
     public function changeStatus($id , Request $request){
 
+        $validation = Validator::make($request->all(), [
+            'status'          => 'required',
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
         $status = $request->get('status');
         if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));

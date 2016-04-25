@@ -11,7 +11,7 @@ namespace App\Models\Alpha;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-class PermissionRole extends Model
+class AdminPermissionRole extends Model
 {
     protected $_table = 'admin_permission_roles';
 

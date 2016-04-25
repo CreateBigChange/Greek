@@ -1,242 +1,119 @@
-<!-- Modal -->
-<div class="modal fade" id="addChild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/add'>
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">添加子节点</h4>
-				</div>
-				<div class="modal-body">
-					<section class="panel" style="margin-bottom:0px">
-						<div class="panel-body">
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">上一级名称</label>
-								<div class="col-sm-10">
-									<input type="text" readonly class="form-control" name='fname' id='add_fname' />
-									<input type="hidden" class="form-control" name='fid' id='add_fid' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">名称</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">地址</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='name' placeholder=" / 连接;如/alpha/admin/user" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">排序</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='sort' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">菜单显示</label>
-								<div class="col-sm-1 text-center">
-									<div class="switch has-switch" style='overflow:auto'>
-										<input type="checkbox" data-toggle="switch" name='is_menu' />
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-
-				</div>
-				<div class="modal-footer"  style="margin-top:0px">
-					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-success" type="submit">添加</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!-- modal -->
-
-<!-- Modal -->
-<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/add'>
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">添加顶级节点</h4>
-				</div>
-				<div class="modal-body">
-					<section class="panel" style="margin-bottom:0px">
-						<div class="panel-body">
-							<!--顶级节点默认fid为0;is_menu为1 -->
-							<input type="hidden" class="form-control" name='fid' value='0' />
-							<input type="hidden" class="form-control" name='is_menu' value='on' />
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">名称</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">排序</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='sort' />
-								</div>
-							</div>
-						</div>
-					</section>
-
-				</div>
-				<div class="modal-footer"  style="margin-top:0px">
-					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-success" type="submit">添加</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!-- modal -->
-
-
-
-
+{{--修改--}}
 <!-- Modal -->
 <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/update'>
+			<form class="form-horizontal tasi-form" method="post" action='/alpha/stores/update'>
+				<input type='hidden' name='id' id='edit_id' value="" />
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">修改顶级节点</h4>
+					<h4 class="modal-title">修改店铺</h4>
 				</div>
 				<div class="modal-body">
 					<section class="panel" style="margin-bottom:0px">
 						<div class="panel-body">
-							<!--顶级节点默认fid为0;is_menu为1 -->
-							<input type="hidden" class="form-control" name='id' id='update_id' />
-							<input type="hidden" class="form-control" name='fid' value='0' />
-							<input type="hidden" class="form-control" name='is_menu' value='on' />
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">名称</label>
+								<label class="col-sm-2 col-sm-2 control-label">店铺名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' id='update_display_name' />
+									<input type="text" class="form-control" name='name' id="edit_name"/>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
+								<label class="col-sm-2 col-sm-2 control-label">店铺类型</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' id='update_description' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' id='update_icon' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">排序</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='sort' id='update_sort' />
-								</div>
-							</div>
-						</div>
-					</section>
-
-				</div>
-				<div class="modal-footer"  style="margin-top:0px">
-					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-success" type="submit">修改</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!-- modal -->
-
-
-<!-- Modal -->
-<div class="modal fade" id="updateChild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/update'>
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">修改子节点</h4>
-				</div>
-				<div class="modal-body">
-					<section class="panel" style="margin-bottom:0px">
-						<div class="panel-body">
-							<input type="hidden" class="form-control" name='id' id='update_child_id' />
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">上级名称</label>
-								<div class="col-sm-10">
-									<select class="form-control" id='update_f_name' name='fid'>
-										<option value='0'>顶级</option>
+									<select class="form-control m-bot15" name='c_id' id='edit_category'>
+										<option value="0">选择</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">名称</label>
+								<label class="col-sm-2 col-sm-2 control-label">身份证</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' id='update_child_display_name' />
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='id_card_img' id="edit_id_card_img"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='edit_id_card_img_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">营业执照</label>
+								<div class="col-sm-10">
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='business_license' id="edit_business_license"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='edit_business_license_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系人</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contacts' id="edit_contacts"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系电话</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contact_phone' id="edit_contact_phone"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系邮箱</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contact_email' id="edit_contact_email"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">区域</label>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='province' id='edit_province'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='city' id='edit_city'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='county' id='edit_county'>
+										<option value="0">选择</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">地址</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='name' id='update_child_name' />
+									<input type="text" class="form-control" name='address' id="edit_address"/>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
+								<label class="col-sm-2 col-sm-2 control-label">店铺描述</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' id='update_child_description' />
+									<input type="text" class="form-control" name='description' id="edit_description"/>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' id='update_child_icon' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">排序</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='sort' id='update_child_sort' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">菜单显示</label>
+								<label class="col-sm-2 col-sm-2 control-label">开启</label>
 								<div class="col-sm-1 text-center">
-									<div class="switch has-switch" style='overflow:auto'>
-										<input type="checkbox" data-toggle="switch" name='is_menu' id='update_child_menu' />
-									</div>
+									<input type="checkbox"  data-toggle="switch" name="is_open" id="edit_is_open"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">审核</label>
+								<div class="col-sm-1 text-center">
+									<input type="checkbox"  data-toggle="switch" name="is_checked" id="edit_is_open"/>
 								</div>
 							</div>
 						</div>
@@ -253,52 +130,380 @@
 </div>
 <!-- modal -->
 
+<script id='edit_categories' type='text/html'>
+	<% for(var i = 0; i<storeCategories.length ; i++){%>
+		<option value="<%= storeCategories[i].id %>" <% if(select == storeCategories[i].id){ %> selected <% } %> ><%= storeCategories[i].name %></option>
+	<%}%>
+</script>
+
+<script id='edit_areas' type='text/html'>
+	<% for(var i = 0; i<areas.length ; i++){%>
+		<option value="<%= areas[i].id %>" <% if(select == areas[i].id){ %> selected <% } %> ><%= areas[i].name %></option>
+	<%}%>
+</script>
+
 <script>
-$('.update').bind('click' , function(){
-	var pid = $(this).attr('p_id');
-	$.get('/alpha/permission/info/' + pid , function(data){
-		if(data){
-			$('#update_id').val(pid);
-			$('#update_display_name').val(data.display_name);
-			$('#update_description').val(data.description);
-			$('#update_icon').val(data.icon);
-			$('#update_sort').val(data.sort);
+	$('.update').bind('click' , function(){
+		var storeId = $(this).attr('p_id');
+		$.get('/alpha/stores/info/' + storeId , function(data){
+			if(data.code == '0000'){
+				var categoryId 	= data.data.c_id;
+				var province 	= data.data.province_id;
+				var city 		= data.data.city_id;
+				var county 		= data.data.county_id;
 
-		}
-	});
-});
+				$('#edit_id').val(data.data.id);
+				$('#edit_name').val(data.data.name);
+				$('#edit_business_license').val(data.data.business_license);
+				$('#edit_business_license_pre').attr('src' , data.data.business_license);
+				$('#edit_contact_email').val(data.data.contact_email);
+				$('#edit_contact_phone').val(data.data.contact_phone);
+				$('#edit_contacts').val(data.data.contacts);
+				$('#edit_description').val(data.data.description);
+				$('#edit_id_card_img').val(data.data.id_card_img);
+				$('#edit_id_card_img_pre').attr('src' , data.data.id_card_img);
+				$('#edit_address').val(data.data.address);
 
-
-$('.updateChild').bind('click' , function(){
-	var pid = $(this).attr('p_id');
-	$.get('/alpha/permission/info/' + pid , function(data){
-		if(data){
-			$.get('/alpha/permission/top' , function(top){
-				if(top){
-					var option = '';
-					for(var i=0 ; i<top.length ; i++){
-						if(top[i].id == data.fid){
-							option += "<option value="+ top[i].id +" selected>"+ top[i].display_name +"</option>";
-						}else{
-							option += "<option value="+ top[i].id +">"+ top[i].display_name +"</option>";
-						}
+				$.get('/alpha/stores/categories' , function(categories){
+					if(categories){
+						categories.select = categoryId;
+						var bt = baidu.template;
+						var html = bt('edit_categories' , categories);
+						$('#edit_category').append(html);
 					}
-					$('#update_f_name').append(option);
+				});
+
+				$.get('/alpha/areas/0' , function(provinceData){
+					if(provinceData){
+						provinceData.select = province;
+						var bt = baidu.template;
+						var html = bt('edit_areas' , provinceData);
+						$('#edit_province').append(html);
+
+						$.get('/alpha/areas/' + province , function(cityData){
+							if(cityData){
+								cityData.select = city;
+								var bt = baidu.template;
+								var html = bt('edit_areas' , cityData);
+								$('#edit_city').append(html);
+
+								$.get('/alpha/areas/' + city , function(countyData){
+									if(countyData){
+										countyData.select = county;
+										var bt = baidu.template;
+										var html = bt('edit_areas' , countyData);
+										$('#edit_county').append(html);
+									}
+								});
+							}
+						});
+					}
+				});
+
+                $('.switch').each(function(index , val){
+                	if(index == 0){
+                		if(data.data.is_open == 1){
+                			$(val).bootstrapSwitch('setState', true);
+                		}
+                	}
+                	if(index == 1){
+                		if(data.data.is_checked == 1){
+                			$(val).bootstrapSwitch('setState', true);
+                		}
+                	}
+                }); 
+			}
+		});
+		
+		var edit_business = new Dropzone("#edit_business_license", {
+			url: "/alpha/upload",
+			addRemoveLinks: true,
+			maxFiles: 1,
+			paramName:'img',
+			maxFilesize: 5120,
+			acceptedFiles: ".jpg , .png"
+		});
+
+		edit_business.on('success' , function(file , data){
+			if(data.code == '0000'){
+				$('#edit_business_license').val(data.data);
+				$('#edit_business_license_pre').attr('src' , data.data);
+			}
+		});
+
+		var edit_idCard = new Dropzone("#edit_id_card_img", {
+			url: "/alpha/upload",
+			addRemoveLinks: true,
+			maxFiles: 1,
+			paramName:'img',
+			maxFilesize: 5120,
+			acceptedFiles: ".jpg , .png"
+		});
+
+		edit_idCard.on('success' , function(file , data){
+			if(data.code == '0000'){
+				$('#edit_id_card_img').val(data.data);
+				$('#edit_id_card_img_pre').attr('src' , data.data);
+			}
+		});
+
+		$('#edit_province').bind('change' , function(){
+			$.get('/alpha/areas/'+$(this).val() , function(data){
+				if(data){
+					var bt = baidu.template;
+					var html = bt('areas' , data);
+					console.log(html);
+					$('#edit_city').html(html);
+					$('#edit_county').html('<option value="0">选择</option>');
 				}
 			});
-			$('#update_child_id').val(pid);
-			$('#update_child_name').val(data.name);
-			$('#update_child_display_name').val(data.display_name);
-			$('#update_child_description').val(data.description);
-			$('#update_child_icon').val(data.icon);
-			$('#update_child_sort').val(data.sort);
+		});
 
-			if(data.is_menu == 1){
-				$('#update_child_menu').attr('checked' , 'checked');
-				$('#update_child_menu').parent().removeClass('switch-off').addClass('switch-on');
-			}
+		$('#edit_city').bind('change' , function(){
+			$.get('/alpha/areas/'+ $(this).val() , function(data){
+				if(data){
+					var bt = baidu.template;
+					var html = bt('areas' , data);
+					$('#edit_county').html(html);
+				}
+			});
+		});
+		
+		
+	});
+</script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{--添加--}}
+<!-- Modal -->
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal tasi-form" method="post" action='/alpha/stores/add'>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">添加店铺</h4>
+				</div>
+				<div class="modal-body">
+					<section class="panel" style="margin-bottom:0px">
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='name' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺类型</label>
+								<div class="col-sm-10">
+									<select class="form-control m-bot15" name='c_id' id='category'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">身份证</label>
+								<div class="col-sm-10">
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='id_card_img' id="id_card_img"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='id_card_img_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">营业执照</label>
+								<div class="col-sm-10">
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='business_license' id="business_license"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='business_license_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系人</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contacts' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系电话</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contact_phone' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系邮箱</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contact_email' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">区域</label>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='province' id='province'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='city' id='city'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='county' id='county'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='address' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺描述</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='description' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">开启</label>
+								<div class="col-sm-1 text-center">
+									<input type="checkbox"  data-toggle="switch" name="is_open" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">审核</label>
+								<div class="col-sm-1 text-center">
+									<input type="checkbox"  data-toggle="switch" name="is_checked" />
+								</div>
+							</div>
+						</div>
+					</section>
+
+				</div>
+				<div class="modal-footer"  style="margin-top:0px">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-success" type="submit">添加</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- modal -->
+
+<script id='categories' type='text/html'>
+	<% for(var i = 0; i<storeCategories.length ; i++){%>
+		<option value="<%= storeCategories[i].id %>"><%= storeCategories[i].name %></option>
+	<%}%>
+</script>
+
+<script id='areas' type='text/html'>
+	<% for(var i = 0; i<areas.length ; i++){%>
+		<option value="<%= areas[i].id %>"><%= areas[i].name %></option>
+	<%}%>
+</script>
+
+<script>
+$('.add').bind('click' , function(){
+	$.get('/alpha/stores/categories' , function(data){
+		if(data){
+			var bt = baidu.template;
+			var html = bt('categories' , data);
+			$('#category').append(html);
+		}
+	});
+	$.get('/alpha/areas/0' , function(data){
+		if(data){
+			var bt = baidu.template;
+			var html = bt('areas' , data);
+			$('#province').append(html);
+		}
+	});
+
+	var business = new Dropzone("#business_license", {
+		url: "/alpha/upload",
+		addRemoveLinks: true,
+		maxFiles: 1,
+		paramName:'img',
+		maxFilesize: 5120,
+		acceptedFiles: ".jpg , .png"
+	});
+
+	business.on('success' , function(file , data){
+		if(data.code == '0000'){
+			$('#business_license').val(data.data);
+			$('#business_license_pre').attr('src' , data.data);
+		}
+	});
+
+	var idCard = new Dropzone("#id_card_img", {
+		url: "/alpha/upload",
+		addRemoveLinks: true,
+		maxFiles: 1,
+		paramName:'img',
+		maxFilesize: 5120,
+		acceptedFiles: ".jpg , .png"
+	});
+
+	idCard.on('success' , function(file , data){
+		if(data.code == '0000'){
+			$('#id_card_img').val(data.data);
+			$('#id_card_img_pre').attr('src' , data.data);
 		}
 	});
 });
+
+$('#province').bind('change' , function(){
+	$.get('/alpha/areas/'+$(this).val() , function(data){
+		if(data){
+			var bt = baidu.template;
+			var html = bt('areas' , data);
+			console.log(html);
+			$('#city').html(html);
+			$('#county').html('<option value="0">选择</option>');
+		}
+	});
+});
+
+$('#city').bind('change' , function(){
+	$.get('/alpha/areas/'+ $(this).val() , function(data){
+		if(data){
+			var bt = baidu.template;
+			var html = bt('areas' , data);
+			$('#county').html(html);
+		}
+	});
+});
+
 </script>
+
+
+

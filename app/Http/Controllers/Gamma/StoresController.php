@@ -284,16 +284,16 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/store/goods/{id} 获取单个商品信息
+     * @api {POST} /gamma/store/goods/info/{id} 获取单个商品信息
      * @apiName storeGoodsInfo
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
      * @apiDescription 获取单个商品信息
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/goods/1
+     * @apiSampleRequest http://greek.test.com/gamma/store/goods/info/1
      *
      * @apiParamExample {json} Request Example
-     *      POST /gamma/store/goods/1
+     *      POST /gamma/store/goods/info/1
      *      {
      *
      *      }
@@ -415,7 +415,7 @@ class StoresController extends ApiController
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/goods/opens
      *      {
-     *             ids : [1,2,3,4,5],
+     *             ids : "[1,2,3,4,5]",
      *             is_open : 1
      *      }
      * @apiUse CODE_200
@@ -424,8 +424,7 @@ class StoresController extends ApiController
     public function opens(Request $request){
 
         $data = array();
-
-        $ids                    = $request->get('ids');
+        $ids                    = json_decode($request->get('ids'));
 
         $data['is_open']        = $request->get('is_open');
         $data['updated_at']     = date('Y-m-d H:i:s' , time());

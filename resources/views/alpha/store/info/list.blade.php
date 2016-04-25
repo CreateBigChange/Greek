@@ -8,7 +8,7 @@
 			<div class="col-lg-12">
 				<section class="panel">
 					<header class="panel-heading">
-						店铺基本信息<a style='margin-left:20px;' class="btn btn-primary btn-xs" data-toggle="modal" href="#add"><i class="icon-plus"></i></a>
+						店铺基本信息<a style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></a>
 					</header>
 					<div class="panel-body">
 						<section id="unseen">
@@ -17,14 +17,16 @@
 									<tr>
 										<th>id</th>
 										<th>名称</th>
-										<th>店主</th>
-										<th>店主联系方式</th>
+										<th>类型</th>
 										<th>身份证</th>
 										<th>营业执照</th>
+										<th>联系人</th>
+										<th>联系电话</th>
+										<th>联系邮箱</th>
 										<th>地址</th>
 										<th>审核</th>
 										<th>状态</th>
-										<th>操作</th>
+										<th width="100px;">操作</th>
 									</tr>
 								</thead>
 								<tbody class="dragsort">
@@ -32,17 +34,19 @@
 										<tr>
 											<td>{{ $si->id }}</td>
 											<td>{{ $si->name }}</td>
-											<td>{{ $si->legal_person }}</td>
-											<td>{{ $si->legal_person_phone }}</td>
-											<td>{{ $si->id_card }}</td>
+											<td>{{ $si->category_name }}</td>
+											<td><img style="width:50px;height:50px;" src="{{ $si->id_card_img }}" alt="{{ $si->id_card_img }}" title="{{ $si->name }}" /></td>
 											<td><img style="width:50px;height:50px;" src="{{ $si->business_license }}" alt="{{ $si->business_license }}" title="{{ $si->name }}" /></td>
-											<td>{{ $si->address }}{{ $si->address_detail }}</td>
-											<td>{{ $si->is_checked }}</td>
-											<td>{{ $si->is_open }}</td>
+											<td>{{ $si->contacts }}</td>
+											<td>{{ $si->contact_phone }}</td>
+											<td>{{ $si->contact_email }}</td>
+											<td>{{ $si->province }}{{ $si->city }}{{ $si->county }}{{ $si->address }}</td>
+											<td>@if ($si->is_checked == 1) 已审核 @else 未审核 @endif</td>
+											<td>@if ($si->is_open == 1) 开启 @else 关闭 @endif</td>
 											<td>
 												<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>
 												<div p_id="{{ $si->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
-												<div url="/alpha/store/info/del/{{ $si->id }}" data-toggle="modal" href="#warning" class="btn btn-danger btn-xs warning"><i class="icon-trash "></i></div>
+												<a title="添加帐号" href="/alpha/stores/users" class="btn btn-primary btn-xs"><i class="icon-user"></i></a>
 											</td>
 										</tr>
 									@endforeach

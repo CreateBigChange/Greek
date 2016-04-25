@@ -11,9 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 
-use App\Models\Alpha\PermissionRole;
+use App\Models\Alpha\AdminPermissionRole;
 
-class PermissionRoleController extends AdminController
+class AdminPermissionRoleController extends AdminController
 {
 
     public function __construct(){
@@ -26,14 +26,14 @@ class PermissionRoleController extends AdminController
 	 * 通过角色ID获取权限ID列表
 	 */
 	public function getPermissionIdsByRoleID($rid){
-		return PermissionRole::where('role_id' , $rid)->get();
+		return AdminPermissionRole::where('role_id' , $rid)->get();
 	}
 
 	/**
 	 * 通过角色ID整个权限关系
 	 */
 	public function getPermissionRoleByID($rid){
-		$PermissionRoleModel = new PermissionRole;
+		$PermissionRoleModel = new AdminPermissionRole;
 
 		$this->response['permissions'] = $PermissionRoleModel->getPermissionRoleByID($rid);
 
@@ -50,7 +50,7 @@ class PermissionRoleController extends AdminController
 		if(!$request->has('role_id')){
 			return array('code' => '0001');
 		}
-		$PermissionRoleModel = new PermissionRole;
+		$PermissionRoleModel = new AdminPermissionRole;
 
 		$data = array();
 		$data['permission_id']	= $request->get("permission_id");
@@ -74,7 +74,7 @@ class PermissionRoleController extends AdminController
 			return array('code' => '0001');
 		}
 
-		if(PermissionRole::where('role_id' , $request->get('role_id'))->where('permission_id' , $request->get('permission_id'))->delete()){
+		if(AdminPermissionRole::where('role_id' , $request->get('role_id'))->where('permission_id' , $request->get('permission_id'))->delete()){
 			return array('code' => '0000');
 		}else{
 			return array('code' => '0001');

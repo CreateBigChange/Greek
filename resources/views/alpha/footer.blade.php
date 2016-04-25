@@ -82,21 +82,7 @@
 		$('select.styled').customSelect();
 	});
 
-	var dropz = new Dropzone("#uploadimg", {
-		url: "http://spirit.test.com/admin/upload",
-		addRemoveLinks: true,
-		maxFiles: 1,
-		paramName:'cover',
-		maxFilesize: 5120,
-		acceptedFiles: ".jpg , .png"
-	});
 
-	dropz.on('success' , function(file , data){
-		if(data.code == '0000'){
-			$('#uploadimg').val(data.data);
-			$('#uploadimgpre').attr('src' , data.data);
-		}
-	});
 
 
 </script>

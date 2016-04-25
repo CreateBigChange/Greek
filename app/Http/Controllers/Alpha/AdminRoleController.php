@@ -13,11 +13,11 @@ use App\Http\Controllers\AdminController;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\Roles;
+use App\Models\Alpha\AdminRoles;
 use App\Models\Alpha\AdminUserRoles;
-use App\Models\Alpha\Permissions;
+use App\Models\Alpha\AdminPermissions;
 
-class RoleController extends AdminController
+class AdminRoleController extends AdminController
 {
 
     public function __construct(){
@@ -33,10 +33,10 @@ class RoleController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$roleModel		= new Roles;
+		$roleModel		= new AdminRoles;
         $rolesList      = $roleModel->getRoleList();
 		
-		$permissionModel = new Permissions;
+		$permissionModel = new AdminPermissions;
 
 		$permissionList = $permissionModel->getPermissionsList();
 
@@ -52,7 +52,7 @@ class RoleController extends AdminController
      */
     public function ajaxUserRole($userId){
 
-        $rolesList      = Roles::all();
+        $rolesList      = AdminRoles::all();
 
 		$userRoles		= AdminUserRoles::where('admin_user_id' , $userId)->get();
 
@@ -76,7 +76,7 @@ class RoleController extends AdminController
      */
     public function ajaxRoleList(){
 
-        $rolesList      = Roles::all();
+        $rolesList      = AdminRoles::all();
 
 		$this->response['code'] = '0000';
         $this->response['roles'] = $rolesList;
@@ -98,7 +98,7 @@ class RoleController extends AdminController
             return view('errors.503');
         }
 
-        $role                 = new Roles;
+        $role                 = new AdminRoles;
         $role->name           = $request->get('name');
         $role->description    = $request->get('description');
 
@@ -112,7 +112,7 @@ class RoleController extends AdminController
      */
     public function delRole($id){
 
-        Roles::where('id' , $id)->delete();
+        AdminRoles::where('id' , $id)->delete();
         return redirect('alpha/roles');
 
     }
@@ -122,7 +122,7 @@ class RoleController extends AdminController
      */
     public function getRoleInfo($id){
 
-        $info = Roles::find($id);
+        $info = AdminRoles::find($id);
 
 		return response()->json($info);
 
@@ -148,7 +148,7 @@ class RoleController extends AdminController
             $update['description'] = $request->get('description');
         }
 
-        Roles::where('id' , $id)->update($update);
+        AdminRoles::where('id' , $id)->update($update);
         return redirect('alpha/roles');
     }
 
@@ -160,7 +160,7 @@ class RoleController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$permissionModel = new Permissions;
+		$permissionModel = new AdminPermissions;
 
 		$permissionList = $permissionModel->getPermissionsList();
 

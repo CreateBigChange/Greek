@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\Permissions;
+use App\Models\Alpha\AdminPermissions;
 use App\Models\Alpha\Logs;
 
 class AdminController extends Controller
@@ -33,7 +33,7 @@ class AdminController extends Controller
 	//获取菜单
 	private function _getMenu($userId){
 	
-		$permissionModel = new Permissions;
+		$permissionModel = new AdminPermissions;
 
 		$permissionList = $permissionModel->getAdminUserMenu($userId);
 

@@ -13,9 +13,9 @@ use App\Http\Controllers\AdminController;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\Permissions;
+use App\Models\Alpha\AdminPermissions;
 
-class PermissionController extends AdminController
+class AdminPermissionController extends AdminController
 {
 
     public function __construct(){
@@ -31,7 +31,7 @@ class PermissionController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$permissionModel = new Permissions;
+		$permissionModel = new AdminPermissions;
 
 		$permissionList = $permissionModel->getPermissionsList();
 
@@ -47,7 +47,7 @@ class PermissionController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$permissionModel = new Permissions;
+		$permissionModel = new AdminPermissions;
 
 		$permissionList = $permissionModel->getPermissionsList();
 
@@ -75,7 +75,7 @@ class PermissionController extends AdminController
             return view('errors.503');
         }
 
-        $permissions						= new Permissions;
+        $permissions						= new AdminPermissions;
         $permissions->display_name          = $request->get('display_name');
         $permissions->fid					= $request->get('fid');
         $permissions->description			= $request->get('description');
@@ -108,7 +108,7 @@ class PermissionController extends AdminController
      */
     public function delPermission($id){
 
-        Permissions::where('id' , $id)->delete();
+        AdminPermissions::where('id' , $id)->delete();
         return redirect('alpha/permissions');
 
     }
@@ -118,7 +118,7 @@ class PermissionController extends AdminController
      */
     public function getPermissionInfo($id){
 
-        $permissionModel	= new Permissions;
+        $permissionModel	= new AdminPermissions;
 
 		$info				= $permissionModel->getPermissionInfo($id);
 
@@ -166,7 +166,7 @@ class PermissionController extends AdminController
 			}
         }
 
-        Permissions::where('id' , $id)->update($update);
+        AdminPermissions::where('id' , $id)->update($update);
         return redirect('alpha/permissions');
     }
 
@@ -174,7 +174,7 @@ class PermissionController extends AdminController
 	 * 获取顶级节点
 	 */
 	public function getTopPermission(){
-		return Permissions::where('fid' , 0)->get();
+		return AdminPermissions::where('fid' , 0)->get();
 	}
 
 }

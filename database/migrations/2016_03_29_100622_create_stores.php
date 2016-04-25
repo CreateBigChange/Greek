@@ -29,15 +29,14 @@ class CreateStores extends Migration
             $table->string('name')->comment('店铺/企业名称');
             $table->string('description')->nullable();
             $table->string('business_license')->comment('营业执照图片地址');
-            $table->string('legal_person')->comment('法人或店主名字');
-			$table->string('legal_person_phone')->nullable()->comment('店主电话');
-            $table->string('id_card')->comment('店主身份证');
+            $table->string('id_card_img')->comment('店主身份证图片');
             $table->integer('province')->comment('省');
             $table->integer('city')->unsigned()->comment('市');
             $table->integer('county')->unsigned()->comment('区县');
             $table->string('address')->comment('详细地址');
 			$table->string('contacts')->comment('联系人');
 			$table->string('contact_phone')->comment('联系电话');
+            $table->string('contact_email')->nullable()->comment('邮箱');
 			$table->boolean('is_open')->default(0)->comment('是否开启');
 			$table->boolean('is_checked')->default(0)->comment('是否审核');
 			$table->boolean('is_del')->default(0)->comment('是否删除');
@@ -51,6 +50,7 @@ class CreateStores extends Migration
         Schema::create('store_configs', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->integer('store_id')->unsigned();
+            $table->integer('point')->comment('可用积分')->default(0);
             $table->string('store_logo')->nullable()->comment('店铺logo');
             $table->float('start_price')->nullable()->unsigned()->comment('起送价');
             $table->float('deliver')->nullable()->unsigned()->comment('配送费');
