@@ -29,6 +29,39 @@ class Stores extends Model
 
     /**
      *
+     * 所有地区
+     */
+    public function allAreas(){
+        $parent =  DB::table('areas')->where('deep'  , 1)->get();
+
+        $son = DB::table('areas')->where('deep' , 2)->get();
+
+        $grandson = DB::table('areas')->where('deep' , 3)->get();
+
+        foreach ($son as $s) {
+            $s->son = array();
+            foreach ($grandson as $g) {
+                if($s->id == $g->parent){
+                    $s->son[] = $g;
+                }
+            }
+        }
+
+
+        foreach ($parent as $p) {
+            $p->son = array();
+            foreach ($son as $s){
+                if ($p->id == $s->parent) {
+                    $p->son[] = $s;
+                }
+            }
+        }
+
+        return $parent;
+    }
+
+    /**
+     *
      * 申请入驻
      * @param data  array
      */

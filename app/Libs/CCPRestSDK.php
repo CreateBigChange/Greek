@@ -1,5 +1,5 @@
-
 <?php
+
 namespace App\Libs;
 /**
  *  Copyright (c) 2014 The CCP project authors. All Rights Reserved.

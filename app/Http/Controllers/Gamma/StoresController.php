@@ -35,22 +35,30 @@ class StoresController extends ApiController
      * @apiVersion 1.0.0
      * @apiDescription 地区
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/areas/0
+     * @apiSampleRequest http://greek.test.com/gamma/store/areas
      *
-     * @apiParam {pid} pid 地区pid默认为0
+     * @apiParam {pid} [pid] 地区pid默认为0;不传为获取所有地区
      *
      * @apiParamExample {json} Request Example
-     *      POST /gamma/store/areas/0
+     *      POST /gamma/store/areas
      *      {
-     *
+     *          pid : 0
      *      }
      * @apiUse CODE_200
      *
      */
-    public function areas($pid) {
-        $areas = $this->_model->areas($pid);
+    public function areas(Request $request) {
+
+        if($request->has('pid')){
+            $pid = $request->get('pid');
+            $areas = $this->_model->areas($pid);
+
+        }else{
+            $areas = $this->_model->allAreas();
+        }
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $areas));
+
 
     }
 

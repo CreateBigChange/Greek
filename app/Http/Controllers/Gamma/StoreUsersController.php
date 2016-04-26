@@ -15,6 +15,7 @@ use Session , Cookie , Config;
 
 use App\Models\Gamma\StoreUsers;
 use App\Libs\Message;
+use App\Libs\CCPRestSDK;
 
 class StoreUsersController extends ApiController
 {
@@ -115,5 +116,65 @@ class StoreUsersController extends ApiController
 
     }
 
+    /**
+     * @api {POST} /gamma/reset/password 修改密码
+     * @apiName resetPassword
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/reset/password
+     *
+     * @apiParam {sting} phone 手机号
+     * @apiParam {string} password 密码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/reset/password
+     * {
+     *
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function resetPassword(){
+
+        $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
+
+        session::forget($sessionKey);
+
+        return response()->json(Message::setResponseInfo('SUCCESS'));
+
+    }
+
+    /**
+     * @api {POST} /gamma/sms 短信
+     * @apiName sms
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/sms
+     *
+     * @apiParam {sting} phone 手机号
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/sms
+     * {
+     *
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function sendSms(Request $request){
+
+        $phone  =  $request->get('phone');
+
+        $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
+
+        session::forget($sessionKey);
+
+        return response()->json(Message::setResponseInfo('SUCCESS'));
+
+    }
 
 }
