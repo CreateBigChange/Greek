@@ -74,12 +74,20 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/stores/update' , 'StoresController@updateStore');
 
 		Route::get('/stores/categories' , 'StoresController@ajaxStoreCategoriesList');
+		Route::get('/stores/settlings' , 'StoresController@getSettlings');
+		Route::get('/stores/settlings/del/{id}' , 'StoresController@delSettlings');
+
+		//商品
+		Route::get('/goods' , 'GoodsController@getGoodsList');
+		Route::get('/goods/category/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
+		Route::get('/goods/brand/{cid}' , 'GoodsController@ajaxGoodsBrandByCid');
 
 
 		//地区
 		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');
 
 		Route::post( '/upload' , 'UploadController@uploadImg' );
+		Route::post( '/upload/qiniu' , 'UploadController@uploadQiniu' );
 
 	});
     //登陆
@@ -94,9 +102,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::group(['middleware' => ['checkLogin']] , function() {
 		//店铺
-		Route::post('/store/settling', 'StoresController@settling');
 		Route::post('/store/config', 'StoresController@config');
-		Route::post('/store/areas', 'StoresController@areas');
 
 		//栏目
 		Route::post('/store/nav', 'StoresController@nav');
@@ -119,6 +125,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/orders/{type}', 'OrdersController@getOrderList');
 		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
 	});
+
+	Route::post('/store/areas', 'StoresController@areas');
+	Route::post('/store/settling', 'StoresController@settling');
 
 	//登陆
 	Route::post('/login' , 'StoreUsersController@login');

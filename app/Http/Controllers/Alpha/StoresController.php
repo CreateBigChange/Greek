@@ -183,5 +183,23 @@ class StoresController extends AdminController
 		return $this->response;
 	}
 
+	/**
+	 * 获取申请入驻的列表
+	 */
+	public function getSettlings(){
+		$storeModel = new StoreInfos;
+		$this->response['settlings'] = $storeModel->getSettlings();
+		return view('alpha.store.info.settling' , $this->response);
+	}
 
+	/**
+	 * 完成入驻
+	 */
+	public function delSettlings($id){
+		$storeModel = new StoreInfos;
+		if($storeModel->delSettlings($id)){
+			return redirect('/alpha/stores/settlings');
+		}
+
+	}
 }

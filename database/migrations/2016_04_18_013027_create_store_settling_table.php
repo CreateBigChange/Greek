@@ -21,6 +21,7 @@ class CreateStoreSettlingTable extends Migration
             $table->string('address')->comment('详细地址');
             $table->string('name')->comment('姓名');
             $table->string('contact')->comment('联系电话');
+            $table->integer('status')->unsigned()->default(0)->comment('状态;0未操作 1确认 2已完成 3不通过');
             $table->timestamps();
         });
     }

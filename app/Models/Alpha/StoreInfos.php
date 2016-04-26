@@ -10,6 +10,7 @@ class StoreInfos extends Model
 	protected $_store_infos_table       	= 'store_infos';
 	protected $_store_configs_table       	= 'store_configs';
 	protected $_store_categories_table      = 'store_categories';
+	protected $_store_settlings				= 'store_settlings';
 
 	/**
 	 * @return mixed
@@ -126,6 +127,40 @@ class StoreInfos extends Model
 	 */
 	public function getAreas($pid){
 		return DB::table('areas')->where('parent' , $pid)->get();
+	}
+
+	/**
+	 * 申请入驻列表
+	 */
+	public function getSettlings(){
+		return DB::table($this->_store_settlings)
+			->select(
+				'store_settlings.id',
+				'store_settlings.name',
+				'store_settlings.contact',
+				'store_settlings.address',
+				'store_settlings.status',
+				'store_settlings.created_at',
+				'p.id AS province_id',
+				'p.name AS province',
+				'ci.id AS city_id',
+				'ci.name AS city',
+				'co.id AS county_id',
+				'co.name AS county'
+			)
+			->leftJoin('areas as p' , 'p.id' , '=' , 'store_settlings.province')
+			->leftJoin('areas as ci' , 'ci.id' , '=' , 'store_settlings.city')
+			->leftJoin('areas as co' , 'co.id' , '=' , 'store_settlings.county')
+			->orderBy('status' , 'ASC')
+			->orderBy('created_at' , 'DESC')
+			->get();
+	}
+
+	/**
+	 * 完成入驻
+	 */
+	public function delSettlings($id){
+		return DB::table($this->_store_settlings)->where('id' , $id)->delete();
 	}
 
 }
