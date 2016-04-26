@@ -29,7 +29,7 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/store/areas/{pid} 地区
+     * @api {POST} /gamma/store/areas 地区
      * @apiName areas
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
