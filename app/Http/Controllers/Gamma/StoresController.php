@@ -95,11 +95,13 @@ class StoresController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'name'          => 'required|max:40',
-            'contact'       => 'required|max:11|match:/^1[34578]\d{9}$/',
+            'contact'       => 'required|max:11',
             'province'      => 'required',
             'city'          => 'required',
             'county'        => 'required',
         ]);
+
+        //|match:/^1[34578]\d{9}$/
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }

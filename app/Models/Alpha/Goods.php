@@ -45,6 +45,14 @@ class Goods extends Model
 
     /**
      *
+     * 添加商品
+     */
+    public function addGoods($data){
+        return DB::table($this->_goods_table)->insert($data);
+    }
+
+    /**
+     *
      * 获取商品分类
      */
     public function getGoodsCategoryByPid($pid){

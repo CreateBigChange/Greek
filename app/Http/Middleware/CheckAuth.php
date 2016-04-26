@@ -45,9 +45,9 @@ class CheckAuth
 
 		}
 
-		if(!$isHaveAuth){
-			return response('access denied' , 403);	
-		}
+//		if(!$isHaveAuth){
+//			return response('access denied' , 403);
+//		}
 
         return $next($request);
     }

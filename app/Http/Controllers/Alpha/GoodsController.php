@@ -33,6 +33,41 @@ class GoodsController extends AdminController
     }
 
     /**
+     * 添加商品
+     */
+    public function addGoods(Request $request){
+        $data = array();
+        $data['name']       = $request->get('name');
+        $data['img']        = $request->get('img');
+        $data['out_price']  = $request->get('out_price');
+        $data['spec']       = $request->get('spec');
+        $data['desc']       = $request->get('desc');
+        $data['c_id']       = $request->get('c_id');
+        $data['b_id']       = $request->get('b_id');
+
+        if($request->has('is_open') && $request->get('is_open') == 'on'){
+            $data['is_open'] = 1;
+        }else{
+            $data['is_open'] = 0;
+        }
+
+        if($request->has('is_checked') && $request->get('is_checked') == 'on'){
+            $data['is_checked'] = 1;
+        }else{
+            $data['is_checked'] = 0;
+        }
+
+        $data['created_at'] = date('Y-m-d H:i:s' , time());
+        $data['updated_at'] = date('Y-m-d H:i:s' , time());
+
+        $goodsModel = new Goods;
+
+        $goodsModel->addGoods($data);
+
+        return redirect('/alpha/goods');
+    }
+
+    /**
      * ajax获取商品分类
      */
     public function ajaxGoodsCategoryByPid($pid){

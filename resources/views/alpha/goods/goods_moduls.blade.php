@@ -307,14 +307,24 @@
 									<input type="text" class="form-control" name='name' />
 								</div>
 							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">分类</label>
-								<div class="col-sm-10">
-									<select class="form-control m-bot15" name='c_id' id='category'>
-										<option value="0">选择</option>
-									</select>
-								</div>
-							</div>
+                            <div class="form-group">
+                                <label class="col-sm-2 col-sm-2 control-label">分类</label>
+                                <div class="col-lg-3">
+                                    <select class="form-control m-bot15" name='c_one_id' id='c_one'>
+                                        <option value="0">选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-control m-bot15" name='c_two_id' id='c_two'>
+                                        <option value="0">选择</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-control m-bot15" name='c_id' id='category'>
+                                        <option value="0">选择</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">品牌</label>
                                 <div class="col-sm-10">
@@ -383,36 +393,29 @@
 <!-- modal -->
 
 <script id='categories' type='text/html'>
-	<% for(var i = 0; i<storeCategories.length ; i++){%>
-		<option value="<%= storeCategories[i].id %>"><%= storeCategories[i].name %></option>
+	<% for(var i = 0; i<category.length ; i++){%>
+		<option value="<%= category[i].id %>"><%= category[i].name %></option>
 	<%}%>
 </script>
 
-<script id='areas' type='text/html'>
-	<% for(var i = 0; i<areas.length ; i++){%>
-		<option value="<%= areas[i].id %>"><%= areas[i].name %></option>
+<script id='brandTep' type='text/html'>
+	<% for(var i = 0; i<brand.length ; i++){%>
+		<option value="<%= brand[i].id %>"><%= brand[i].name %></option>
 	<%}%>
 </script>
 
 <script>
 $('.add').bind('click' , function(){
-	$.get('/alpha/stores/categories' , function(data){
-		if(data){
+	$.get('/alpha/goods/category/0' , function(data){
+		if(data.code == '0000'){
 			var bt = baidu.template;
-			var html = bt('categories' , data);
-			$('#category').append(html);
-		}
-	});
-	$.get('/alpha/areas/0' , function(data){
-		if(data){
-			var bt = baidu.template;
-			var html = bt('areas' , data);
-			$('#province').append(html);
+			var html = '<option value="0">选择</option>' + bt('categories' , data.data);
+			$('#c_one').html(html);
 		}
 	});
 
-	var business = new Dropzone("#business_license", {
-		url: "/alpha/upload",
+	var img = new Dropzone("#img", {
+		url: "/alpha/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',
@@ -420,48 +423,42 @@ $('.add').bind('click' , function(){
 		acceptedFiles: ".jpg , .png"
 	});
 
-	business.on('success' , function(file , data){
+	img.on('success' , function(file , data){
 		if(data.code == '0000'){
-			$('#business_license').val(data.data);
-			$('#business_license_pre').attr('src' , data.data);
+			$('#img').val(data.data);
+			$('#img_pre').attr('src' , data.data.host + '/' + data.data.key);
 		}
 	});
 
-	var idCard = new Dropzone("#id_card_img", {
-		url: "/alpha/upload",
-		addRemoveLinks: true,
-		maxFiles: 1,
-		paramName:'img',
-		maxFilesize: 5120,
-		acceptedFiles: ".jpg , .png"
-	});
-
-	idCard.on('success' , function(file , data){
-		if(data.code == '0000'){
-			$('#id_card_img').val(data.data);
-			$('#id_card_img_pre').attr('src' , data.data);
-		}
-	});
 });
 
-$('#province').bind('change' , function(){
-	$.get('/alpha/areas/'+$(this).val() , function(data){
-		if(data){
+$('#c_one').bind('change' , function(){
+	$.get('/alpha/goods/category/'+$(this).val() , function(data){
+		if(data.code == '0000'){
 			var bt = baidu.template;
-			var html = bt('areas' , data);
-			console.log(html);
-			$('#city').html(html);
+			var html = '<option value="0">选择</option>' + bt('categories' , data.data);
+			$('#c_two').html(html);
 			$('#county').html('<option value="0">选择</option>');
 		}
 	});
 });
 
-$('#city').bind('change' , function(){
-	$.get('/alpha/areas/'+ $(this).val() , function(data){
-		if(data){
+$('#c_two').bind('change' , function(){
+	$.get('/alpha/goods/category/'+ $(this).val() , function(data){
+		if(data.code == '0000'){
 			var bt = baidu.template;
-			var html = bt('areas' , data);
-			$('#county').html(html);
+			var html = '<option value="0">选择</option>' + bt('categories' , data.data);
+			$('#category').html(html);
+		}
+	});
+});
+
+$('#category').bind('change' , function(){
+	$.get('/alpha/goods/brand/'+ $(this).val() , function(data){
+		if(data.code == '0000'){
+			var bt = baidu.template;
+			var html = '<option value="0">选择</option>' + bt('brandTep' , data.data);
+			$('#brand').html(html);
 		}
 	});
 });

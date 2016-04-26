@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Stores extends Model
 {
     protected $_store_users_table       = 'store_users';
-    protected $_store_settings_table    = 'store_settings';
+    protected $_store_settings_table    = 'store_settlings';
     protected $_store_configs_table     = 'store_configs';
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
