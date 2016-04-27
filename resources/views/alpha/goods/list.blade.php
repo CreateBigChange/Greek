@@ -8,8 +8,11 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        商品列表<a style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></a>
+                        商品列表
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
                     </header>
+
                     <div class="panel-body">
                         <section id="unseen">
                             <table class="table table-bordered table-striped table-condensed">
@@ -33,7 +36,7 @@
                                     <tr>
                                         <td>{{ $g->id }}</td>
                                         <td>{{ $g->name }}</td>
-                                        <td>{{ $g->cname }}</td>
+                                        <td>{{ $g->cccname }}->{{ $g->ccname }}->{{ $g->cname }}</td>
                                         <td>{{ $g->bname }}</td>
                                         <td><img style="width:50px;height:50px;" src="{{ $g->img }}" alt="{{ $g->img }}" title="{{ $g->name }}" /></td>
                                         <td>{{ $g->out_price }}</td>
@@ -51,6 +54,9 @@
                                 </tbody>
                             </table>
                         </section>
+                    </div>
+                    <div class="text-center">
+                        {!! $pageHtml !!}
                     </div>
                 </section>
             </div>

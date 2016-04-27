@@ -17,6 +17,7 @@ class CreateOrderTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('order_num')->comment('订单号');
             $table->float('total')->unsigned()->comment('总价');
+            $table->float('deliver')->unsigned()->default(0)->comment('配送费');
             $table->integer('points')->unsigned()->default(0)->comment('总积分');
             $table->integer('status')->unsigned()->comment('订单状态;0删除;1未付款;2已付款;3配送中;4已送达;5已取消;6退款中;7已退款')->default(0);
             $table->integer('store_id')->unsigned();

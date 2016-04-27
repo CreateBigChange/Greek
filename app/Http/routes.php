@@ -79,9 +79,13 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		//商品
 		Route::get('/goods' , 'GoodsController@getGoodsList');
-		Route::get('/goods/category/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
+		Route::post('/goods' , 'GoodsController@getGoodsList');
 		Route::post('/goods/add' , 'GoodsController@addGoods');
-		Route::get('/goods//{cid}' , 'GoodsController@ajaxGoodsBrandByCid');
+		Route::post('/goods/update' , 'GoodsController@editGoods');
+		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
+		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
+		Route::get('/goods/category/level/{pid}' , 'GoodsController@ajaxGoodsCategoryByLevel');
+		Route::get('/goods/brand/{cid}' , 'GoodsController@ajaxGoodsBrandByCid');
 
 
 		//地区

@@ -43,6 +43,7 @@ class Orders extends Model
                     o.order_num,
                     o.total,
                     o.points,
+                    o.deliver,
                     o.status,
                     o.store_id,
                     o.user,

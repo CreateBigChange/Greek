@@ -17,6 +17,7 @@ class CreateGoodsTable extends Migration
             $table->increments('id')->unsigned()->comment('分类id');
             $table->integer('p_id')->unsigned()->comment('父级id')->default(0);
             $table->string('name')->comment('分类名称');
+            $table->integer('level')->unsigned()->comment('层级')->default(1);
             $table->boolean('is_del')->comment('是否已经删除;0未删除, 1已删除')->default(0);
             $table->unique('name');
             $table->timestamps();
