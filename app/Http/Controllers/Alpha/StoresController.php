@@ -150,7 +150,21 @@ class StoresController extends AdminController
 
 		$storeModel = new StoreInfos;
 
-		if($storeModel->addStore($data)){
+		$storeId = $storeModel->addStore($data);
+		if($storeId){
+			$user = array();
+			$user['real_name'] 	= $data['contacts'];
+			$user['account']	= $data['contact_phone'];
+			$user['tel']		= $data['contact_phone'];
+			$user['store_id']	= $storeId;
+			$user['salt']		= $this->getSalt(8);
+			$password			= $this->getSalt(8);
+			$user['password']	= $this->encrypt( $password , $user['salt']);
+			$user['created_at']	= date('Y-m-d H:i:s' , time());
+			$user['updated_at']	= date('Y-m-d H:i:s' , time());
+
+			$storeModel->addStoreUser($user);
+
 			return redirect('/alpha/stores/infos');
 		}
 	}

@@ -177,21 +177,21 @@
 					if(provinceData){
 						provinceData.select = province;
 						var bt = baidu.template;
-						var html = bt('edit_areas' , provinceData);
-						$('#edit_province').append(html);
+						var html = '<option value="0">选择</option>' + bt('edit_areas' , provinceData);
+						$('#edit_province').html(html);
 
 						$.get('/alpha/areas/' + province , function(cityData){
 							if(cityData){
 								cityData.select = city;
 								var bt = baidu.template;
-								var html = bt('edit_areas' , cityData);
-								$('#edit_city').append(html);
+								var html = '<option value="0">选择</option>' + bt('edit_areas' , cityData);
+								$('#edit_city').html(html);
 
 								$.get('/alpha/areas/' + city , function(countyData){
 									if(countyData){
 										countyData.select = county;
 										var bt = baidu.template;
-										var html = bt('edit_areas' , countyData);
+										var html = '<option value="0">选择</option>' + bt('edit_areas' , countyData);
 										$('#edit_county').append(html);
 									}
 								});
@@ -251,8 +251,7 @@
 			$.get('/alpha/areas/'+$(this).val() , function(data){
 				if(data){
 					var bt = baidu.template;
-					var html = bt('areas' , data);
-					console.log(html);
+					var html = '<option value="0">选择</option>' + bt('areas' , data);
 					$('#edit_city').html(html);
 					$('#edit_county').html('<option value="0">选择</option>');
 				}
@@ -263,7 +262,7 @@
 			$.get('/alpha/areas/'+ $(this).val() , function(data){
 				if(data){
 					var bt = baidu.template;
-					var html = bt('areas' , data);
+					var html = '<option value="0">选择</option>' + bt('areas' , data);
 					$('#edit_county').html(html);
 				}
 			});
@@ -443,8 +442,8 @@ $('.add').bind('click' , function(){
 	$.get('/alpha/areas/0' , function(data){
 		if(data){
 			var bt = baidu.template;
-			var html = bt('areas' , data);
-			$('#province').append(html);
+			var html = '<option value="0">选择</option>' + bt('areas' , data);
+			$('#province').html(html);
 		}
 	});
 
@@ -485,8 +484,7 @@ $('#province').bind('change' , function(){
 	$.get('/alpha/areas/'+$(this).val() , function(data){
 		if(data){
 			var bt = baidu.template;
-			var html = bt('areas' , data);
-			console.log(html);
+			var html = '<option value="0">选择</option>' + bt('areas' , data);
 			$('#city').html(html);
 			$('#county').html('<option value="0">选择</option>');
 		}
@@ -497,7 +495,7 @@ $('#city').bind('change' , function(){
 	$.get('/alpha/areas/'+ $(this).val() , function(data){
 		if(data){
 			var bt = baidu.template;
-			var html = bt('areas' , data);
+			var html = '<option value="0">选择</option>' + bt('areas' , data);
 			$('#county').html(html);
 		}
 	});

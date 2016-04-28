@@ -68,16 +68,16 @@ class StoreUsersController extends ApiController
             return response()->json(Message::setResponseInfo('NO_USER'));
         }
         $encrypt_password   = $this->encrypt($password , $salt->salt);
-        $userInfo           = $this->_model->checkLogin($account , $encrypt_password);
+        $userInfo           = $this->_model->getStoreUserInfo($account , $encrypt_password);
         if($userInfo){
             //获取登录用户的权限
 
             $sessionKey = $this->getSalt(16);
             Session::put($sessionKey , $userInfo);
 
-            $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
+            //$cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
 
-            //$userInfo->token = $sessionKey;
+            $userInfo->token = $sessionKey;
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

@@ -10,7 +10,8 @@ class StoreInfos extends Model
 	protected $_store_infos_table       	= 'store_infos';
 	protected $_store_configs_table       	= 'store_configs';
 	protected $_store_categories_table      = 'store_categories';
-	protected $_store_settlings				= 'store_settlings';
+	protected $_store_settlings_table		= 'store_settlings';
+	protected $_store_users_table			= 'store_users';
 
 	/**
 	 * @return mixed
@@ -100,7 +101,11 @@ class StoreInfos extends Model
 				'store_id' => $storeId
 			);
 			DB::table($this->_store_configs_table)->insert($config);
+
+			
 		}
+
+		return $storeId;
 	}
 
 	/**
@@ -133,7 +138,7 @@ class StoreInfos extends Model
 	 * 申请入驻列表
 	 */
 	public function getSettlings(){
-		return DB::table($this->_store_settlings)
+		return DB::table($this->_store_settlings_table)
 			->select(
 				'store_settlings.id',
 				'store_settlings.name',
@@ -160,7 +165,14 @@ class StoreInfos extends Model
 	 * 完成入驻
 	 */
 	public function delSettlings($id){
-		return DB::table($this->_store_settlings)->where('id' , $id)->delete();
+		return DB::table($this->_store_settlings_table)->where('id' , $id)->delete();
 	}
 
+	/**
+	 *
+	 * 创建店铺用户
+	 */
+	public function addStoreUser($data){
+		return DB::table($this->_store_users_table)->insert($data);
+	}
 }

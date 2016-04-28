@@ -47,17 +47,49 @@ class StoreUsers extends Model
      * @param $password
      * @return mixed
      */
-    public function checkLogin( $account , $password ){
+    public function getStoreUserInfo( $account , $password ){
+        $sql = "SELECT
+                      su.id,
+                      su.store_id,
+                      su.account,
+                      su.real_name,
+                      su.tel,
+                      si.name as store_name,
+                      si.province,
+                      si.city,
+                      si.county,
+                      si.address,
+                      si.contacts,
+                      si.contact_phone,
+                      si.is_open,
+                      si.is_checked,
+                      sca.name as category_name,
+                      sc.point,
+                      sc.store_logo,
+                      sc.start_price,
+                      sc.deliver,
+                      sc.business_cycle,
+                      sc.business_time,
+                      sc.is_close,
+                      sc.bell
+                FROM $this->_table AS su";
+        $sql .= " LEFT JOIN store_infos as si ON su.store_id = si.id";
+        $sql .= " LEFT JOIN store_configs as sc ON su.store_id = sc.store_id";
+        $sql .= " LEFT JOIN store_categories as sca ON si.c_id = sca.id";
 
+        $sql .= " WHERE account='" . $account . "' AND password='". $password . "' AND su.is_del=0";
+        /*
         $isLogin = DB::table($this->_table)
             ->select('id' , 'store_id' , 'account' , 'real_name' , 'tel' )
             ->where('is_del' , 0)
             ->where('account' , $account)
             ->where('password' , $password)
             ->first();
-        
+        */
 
-        return $isLogin;
+        $userInfo = DB::select($sql);
+
+        return $userInfo;
     }
 
     /**
