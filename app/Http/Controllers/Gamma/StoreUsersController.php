@@ -15,7 +15,7 @@ use Session , Cookie , Config;
 
 use App\Models\Gamma\StoreUsers;
 use App\Libs\Message;
-use App\Libs\CCPRestSDK;
+use App\Libs\Smsrest\Sms;
 
 class StoreUsersController extends ApiController
 {
@@ -125,24 +125,51 @@ class StoreUsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/reset/password
      *
-     * @apiParam {sting} phone 手机号
+     * @apiParam {sting} account 帐号
      * @apiParam {string} password 密码
+     * @apiParam {string} code 验证码
      *
      * @apiParamExample {json} Request Example
      * POST /gamma/reset/password
      * {
-     *
+     *      'account' : 18401586654,
+     *      'password'  : '123456',
+     *      'code'  : '218746'
      * }
      * @apiUse CODE_200
      *
      */
-    public function resetPassword(){
+    public function resetPassword(Request $request){
 
-        $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
+        $account    = $request->get('account');
+        $code       = $request->get('code');
+        $password   = $request->get('password');
 
-        session::forget($sessionKey);
+        $checkCode  = session::get("jsx_sms_$account");
 
-        return response()->json(Message::setResponseInfo('SUCCESS'));
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }
+
+        $user               = $this->_model->getUserInfoByAccount($account);
+        if($user == null){
+            return response()->json(Message::setResponseInfo('NO_USER'));
+        }
+
+        $data = array();
+        $data['salt']               = $this->getSalt(8);
+        $data['password']           = $this->encrypt($password , $data['salt']);
+        $data['updated_at']         = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->reset($user->id , $data)){
+            session::forget("jsx_sms_$account");
+
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+
 
     }
 
@@ -155,26 +182,43 @@ class StoreUsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/sms
      *
-     * @apiParam {sting} phone 手机号
+     * @apiParam {sting} account 帐号
      *
      * @apiParamExample {json} Request Example
      * POST /gamma/sms
      * {
-     *
+     *      account   : 18401586654
      * }
      * @apiUse CODE_200
      *
      */
     public function sendSms(Request $request){
 
-        $phone  =  $request->get('phone');
+        $account  =  $request->get('account');
+//        if(! preg_match("/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/" , $phone)){
+//            return response()->json(Message::setResponseInfo('NO_PHONE'));
+//        }
 
-        $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
+        $user               = $this->_model->getUserInfoByAccount($account);
+        if($user == null){
+            return response()->json(Message::setResponseInfo('NO_USER'));
+        }
 
-        session::forget($sessionKey);
+        $phone = $user->tel;
 
-        return response()->json(Message::setResponseInfo('SUCCESS'));
+        $sms = new Sms;
+
+        $code = $this->getSalt(6 , 1);
+
+        if($sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'))){
+            Session::put("jsx_sms_$account" , $code);
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
 
     }
+
+
 
 }

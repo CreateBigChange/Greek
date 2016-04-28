@@ -129,14 +129,19 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//订单
 		Route::post('/store/orders/{type}', 'OrdersController@getOrderList');
 		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
+
 	});
 
 	Route::post('/store/areas', 'StoresController@areas');
 	Route::post('/store/settling', 'StoresController@settling');
 
+
+
 	//登陆
 	Route::post('/login' , 'StoreUsersController@login');
 	Route::post('/logout' , 'StoreUsersController@logout');
+	Route::post('/reset/password', 'StoreUsersController@resetPassword');
 
+	Route::post('/sendsms', 'StoreUsersController@sendSms');
 
 });

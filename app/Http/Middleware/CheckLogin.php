@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 
 class CheckLogin
 {
-    /**
+    /**∑
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request

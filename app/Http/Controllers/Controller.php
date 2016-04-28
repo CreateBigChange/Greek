@@ -6,6 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Config;
 
 class Controller extends BaseController
 {
@@ -17,9 +18,13 @@ class Controller extends BaseController
      * @param int $len
      * @return string
      */
-    public function getSalt($len = 8){
+    public function getSalt($len = 8 , $num = 0){
         $salt	= '';
-        $str	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        if($num == 0) {
+            $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        }else{
+            $str = "0123456789";
+        }
         $max	= strlen($str)-1;
 
         for($i=0 ; $i<$len ; $i++ ){
@@ -57,4 +62,6 @@ class Controller extends BaseController
 
         return $pagedata;
     }
+
+
 }

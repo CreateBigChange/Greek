@@ -11,6 +11,7 @@ class BLogger
     const LOG_ERROR     = 'error';
     const LOG_REQUEST   = 'request';
     const LOG_SQL       = 'sql';
+    const LOG_SMS       = 'sms';
 
     private static $loggers = array();
 

@@ -60,4 +60,28 @@ class StoreUsers extends Model
         return $isLogin;
     }
 
+    /**
+     * 更新密码
+     */
+    public function reset($id  , $data){
+        return DB::table($this->_table)->where('id' , $id)->update($data);
+    }
+
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 根据帐号获取用户信息
+     */
+    public function getUserInfoByAccount( $account ){
+
+        $isLogin = DB::table($this->_table)
+            ->select('id' , 'store_id' , 'account' , 'real_name' , 'tel' )
+            ->where('account' , $account)
+            ->first();
+
+
+        return $isLogin;
+    }
+
 }
