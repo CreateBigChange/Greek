@@ -22,7 +22,7 @@ class GoodsController extends AdminController
     public function __construct(){
         parent::__construct();
         $this->response['title']		= '商品库管理';
-        $this->length = 1;
+        $this->length = 10;
     }
 
     /**
