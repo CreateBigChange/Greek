@@ -19,11 +19,8 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        if($request->has('token')){
-            $sessionkey = $request->get('token');
-        }else{
-            $sessionkey = cookie::get(config::get('session.store_app_login_cookie'));
-        }
+
+        $sessionkey = cookie::get(config::get('session.store_app_login_cookie'));
 
 
         global $userInfo;
