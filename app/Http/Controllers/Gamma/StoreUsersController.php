@@ -132,7 +132,7 @@ class StoreUsersController extends ApiController
      * @apiParamExample {json} Request Example
      * POST /gamma/reset/password
      * {
-     *      'account' : 18401586654,
+     *      'account' : wuhui,
      *      'password'  : '123456',
      *      'code'  : '218746'
      * }
@@ -187,7 +187,7 @@ class StoreUsersController extends ApiController
      * @apiParamExample {json} Request Example
      * POST /gamma/sms
      * {
-     *      account   : 18401586654
+     *      account   : wuhui
      * }
      * @apiUse CODE_200
      *
