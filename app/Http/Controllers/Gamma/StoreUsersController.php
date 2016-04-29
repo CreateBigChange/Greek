@@ -146,7 +146,7 @@ class StoreUsersController extends ApiController
         $password   = $request->get('password');
 
         $checkCode  = session::get("jsx_sms_$account");
-
+        
         if($code != $checkCode){
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }

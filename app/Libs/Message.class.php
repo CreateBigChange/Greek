@@ -2,6 +2,8 @@
 
 namespace App\Libs;
 
+use App\Libs\BLogger;
+
 class Message {
 	/*
 	 * 定义通用报错列表
@@ -42,10 +44,19 @@ class Message {
 			if(isset($error[strtoupper($errorkey)])){
 				$response = $error[strtoupper($errorkey)];
 				$response['data'] = $data;
+
+				BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($response));
 				return $response;
 			}else{
-				return array('code' => $code , 'msg' => $msg , 'data' => $data);
+				$response = array('code' => $code , 'msg' => $msg , 'data' => $data);
+				BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($response));
+				return $response;
 			}
+
+	}
+
+	protected function writeOutPutLog($response){
+		$response['time'] = date('Y-m-d H:i:s' , time());
 
 	}
 	
