@@ -146,7 +146,7 @@ class StoreUsersController extends ApiController
         $password   = $request->get('password');
 
         $checkCode  = session::get("jsx_sms_$account");
-        
+
         if($code != $checkCode){
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
@@ -210,7 +210,10 @@ class StoreUsersController extends ApiController
 
         $code = $this->getSalt(6 , 1);
 
-        if($sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'))){
+        //$isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
+
+        $isSend = true;
+        if($isSend){
             Session::put("jsx_sms_$account" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
