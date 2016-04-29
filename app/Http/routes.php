@@ -108,6 +108,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::group(['middleware' => ['checkLogin']] , function() {
 		//店铺
 		Route::post('/store/config', 'StoresController@config');
+		Route::post('/store/info/{id}', 'StoresController@getStoreInfo');
 
 		//栏目
 		Route::post('/store/nav', 'StoresController@nav');

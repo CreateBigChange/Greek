@@ -29,6 +29,34 @@ class StoresController extends ApiController
     }
 
     /**
+     * @api {POST} /gamma/store/info/{id} 获取店铺信息
+     * @apiName storeInfo
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取店铺信息
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/info/1
+     *
+     * @apiParam {id} [id] 店铺ID
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/areas
+     *      {
+     *
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getStoreInfo($id){
+
+        $info =  $this->_model->getStoreInfo($id);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $info));
+
+
+    }
+
+    /**
      * @api {POST} /gamma/store/areas 地区
      * @apiName areas
      * @apiGroup GAMMA

@@ -15,6 +15,7 @@ class Stores extends Model
     protected $_store_users_table       = 'store_users';
     protected $_store_settings_table    = 'store_settlings';
     protected $_store_configs_table     = 'store_configs';
+    protected $_store_infos_table       = 'store_infos';
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
 
@@ -58,6 +59,47 @@ class Stores extends Model
         }
 
         return $parent;
+    }
+
+    /**
+     *
+     * 获取店铺信息
+     */
+    public function getStoreInfo($id){
+        $sql  = "select 
+                      si.id,
+                      si.name as store_name,
+                      si.province,
+                      si.city,
+                      si.county,
+                      si.address,
+                      si.contacts,
+                      si.contact_phone,
+                      si.is_open,
+                      si.is_checked,
+                      sca.name as category_name,
+                      sc.point,
+                      sc.store_logo,
+                      sc.start_price,
+                      sc.deliver,
+                      sc.business_cycle,
+                      sc.business_time,
+                      sc.is_close,
+                      sc.bell
+                  FROM $this->_store_infos_table as si";
+
+        $sql .= " LEFT JOIN store_configs as sc ON si.id = sc.store_id";
+        $sql .= " LEFT JOIN store_categories as sca ON si.c_id = sca.id";
+
+        $sql .= " WHERE si.id = $id AND si.is_del = 0";
+
+        $info = DB::select($sql);
+
+        if(isset($info[0])){
+            return $info[0];
+        }else{
+            return $info;
+        }
     }
 
     /**
