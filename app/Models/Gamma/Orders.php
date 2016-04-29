@@ -90,9 +90,11 @@ class Orders extends Model
 
         foreach ($orders as $o){
             $o->goods = array();
+            $o->goodsNum = 0;
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
+                    $o->goodsNum += $g->num;
                 }
             }
         }
