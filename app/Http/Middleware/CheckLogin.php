@@ -22,7 +22,6 @@ class CheckLogin
 
         $sessionkey = cookie::get(config::get('session.store_app_login_cookie'));
 
-
         global $userInfo;
         $userInfo = session::get($sessionkey);
 
