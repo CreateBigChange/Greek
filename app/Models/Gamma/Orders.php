@@ -111,7 +111,10 @@ class Orders extends Model
      */
     public function changeStatus($storeId , $userId , $id , $status){
 
-        if(DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status))){
+        $isChange = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status));
+
+        if($isChange){
+
             $log = array(
                 'order_id'      => $id,
                 'user'          => $userId,

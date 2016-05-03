@@ -108,6 +108,7 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
         $status = $request->get('status');
+        
         if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{

@@ -153,13 +153,13 @@ class StoresController extends ApiController
 
 
     /**
-     * @api {POST} /gamma/store/config/{id} 配置店铺
+     * @api {POST} /gamma/store/config 配置店铺
      * @apiName storeConfig
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
      * @apiDescription 配置店铺
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/config/1
+     * @apiSampleRequest http://greek.test.com/gamma/store/config
      *
      * @apiParam {json} config 配置;可选值有<br/>
      *              店铺logo   store_logo<br/>
