@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use DB;
+use Log;
+use App\Libs\BLogger;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,8 +16,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
+        'App\Events\DBEvent' => [
+            'App\Listeners\DBListener',
         ],
     ];
 
@@ -26,8 +29,14 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(DispatcherContract $events)
     {
-        parent::boot($events);
 
-        //
+        parent::boot($events);
+        DB::listen(function($sql) {
+            $sql->sql = preg_replace('/\s{2,}/' , ' ' ,$sql->sql);
+            BLogger::setSqlLogger(BLogger::LOG_SQL)->info(json_encode($sql));
+        });
+
+
+
     }
 }

@@ -36,34 +36,65 @@ class GoodsController extends AdminController
 
         $search = array();
 
-        if($request->has('name') && !empty($request->get('name'))){
-            $search['name'] = $request->get('name');
+        $param = '';
+
+        if(isset($_GET['name']) && !empty($_GET['name'])){
+            $search['name'] = trim($_GET['name']);
+            $param .= 'name=' . $search['name'] . '&';
         }
-        if($request->has('c_one_id') && !empty($request->get('c_one_id'))){
-            $search['c_one_id'] = $request->get('c_one_id');
+        if(isset($_GET['c_one_id']) && !empty($_GET['c_one_id'])){
+            $search['c_one_id'] = trim($_GET['c_one_id']);
+            $param .= 'c_one_id=' . $search['c_one_id'] . '&';
         }
-        if($request->has('c_two_id') && !empty($request->get('c_two_id'))){
-            $search['c_two_id'] = $request->get('c_two_id');
+        if(isset($_GET['c_two_id']) && !empty($_GET['c_two_id'])){
+            $search['c_two_id'] = trim($_GET['c_two_id']);
+            $param .= 'c_two_id=' . $search['c_two_id'] . '&';
         }
-        if($request->has('c_id') && !empty($request->get('c_id'))){
-            $search['c_id'] = $request->get('c_id');
+        if(isset($_GET['c_id']) && !empty($_GET['c_id'])){
+            $search['c_id'] = trim($_GET['c_id']);
+            $param .= 'c_id=' . $search['c_id'] . '&';
         }
-        if($request->has('b_id') && $request->get('b_id') != 0 ){
-            $search['b_id'] = $request->get('b_id');
+        if(isset($_GET['b_id']) && !empty($_GET['b_id'])){
+            $search['b_id'] = trim($_GET['b_id']);
+            $param .= 'b_id=' . $search['b_id'] . '&';
         }
-        if($request->has('is_open') && $request->get('is_open') != '-1'){
-            $search['is_open'] = $request->get('is_open');
+        if(isset($_GET['is_open']) && $_GET['is_open'] != -1 ){
+            $search['is_open'] = trim($_GET['is_open']);
+            $param .= 'is_open=' . $search['is_open'] . '&';
         }
-        if($request->has('is_checked') && $request->get('is_checked') != '-1'){
-            $search['is_checked'] = $request->get('is_checked');
+        if(isset($_GET['is_checked']) && $_GET['is_checked'] != -1 ){
+            $search['is_checked'] = trim($_GET['is_checked']);
+            $param .= 'is_checked=' . $search['is_checked'] . '&';
         }
+
+//        if($request->has('name') && !empty($request->get('name'))){
+//            $search['name'] = $request->get('name');
+//        }
+//        if($request->has('c_one_id') && !empty($request->get('c_one_id'))){
+//            $search['c_one_id'] = $request->get('c_one_id');
+//        }
+//        if($request->has('c_two_id') && !empty($request->get('c_two_id'))){
+//            $search['c_two_id'] = $request->get('c_two_id');
+//        }
+//        if($request->has('c_id') && !empty($request->get('c_id'))){
+//            $search['c_id'] = $request->get('c_id');
+//        }
+//        if($request->has('b_id') && $request->get('b_id') != 0 ){
+//            $search['b_id'] = $request->get('b_id');
+//        }
+//        if($request->has('is_open') && $request->get('is_open') != '-1'){
+//            $search['is_open'] = $request->get('is_open');
+//        }
+//        if($request->has('is_checked') && $request->get('is_checked') != '-1'){
+//            $search['is_checked'] = $request->get('is_checked');
+//        }
         
         $totalNum = $goodsModel->getGoodsTotalNum($search);
 
         $pageData = $this->getPageData($page  , $this->length, $totalNum);
 
         $this->response['page']         = $pageData->page;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?');
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' . $param);
         $this->response['goods']        = $goodsModel->getGoodsList( $this->length , $pageData->offset , $search);
         return view('alpha.goods.list' , $this->response);
     }

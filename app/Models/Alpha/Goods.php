@@ -129,7 +129,7 @@ class Goods extends Model
      * 获取商品信息
      */
     public function getGoodsInfo($id){
-        return $this->getGoodsList(array('ids'=>array($id)));
+        return $this->getGoodsList(1, 0,array('ids'=>array($id)));
     }
 
     /**

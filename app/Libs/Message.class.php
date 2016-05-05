@@ -44,14 +44,12 @@ class Message {
 			if(isset($error[strtoupper($errorkey)])){
 				$response = $error[strtoupper($errorkey)];
 				$response['data'] = $data;
-
-				BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($response));
-				return $response;
 			}else{
 				$response = array('code' => $code , 'msg' => $msg , 'data' => $data);
-				BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($response));
-				return $response;
 			}
+
+			BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($response));
+			return $response;
 
 	}
 

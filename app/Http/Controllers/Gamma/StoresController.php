@@ -240,7 +240,7 @@ class StoresController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'nav_id'    => 'required',
-            'c_id'      => 'required',
+            //'c_id'      => 'required',
             'b_id'      => 'required',
             'name'      => 'required',
             'img'       => 'required',
@@ -254,7 +254,7 @@ class StoresController extends ApiController
         $data = array();
         $data['store_id']       = $this->storeId;
         $data['nav_id']         = trim($request->get('nav_id'));
-        $data['c_id']           = trim($request->get('c_id'));
+        $data['c_id']           = trim($request->get('c_id' , 0));
         $data['b_id']           = trim($request->get('b_id'));
         $data['name']           = htmlspecialchars(trim($request->get('name')));
         $data['img']            = trim($request->get('img'));

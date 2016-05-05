@@ -43,7 +43,7 @@ class ApiController extends Controller
             'params'    => Request::all(),
             'cookie'    => Request::cookie()
         );
-        BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($log));
+        BLogger::getInOutLogger(BLogger::LOG_REQUEST)->info(json_encode($log));
     }
 
 }

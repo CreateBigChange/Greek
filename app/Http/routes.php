@@ -79,7 +79,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		//商品
 		Route::get('/goods' , 'GoodsController@getGoodsList');
-		Route::post('/goods' , 'GoodsController@getGoodsList');
+//		Route::post('/goods' , 'GoodsController@getGoodsList');
 		Route::post('/goods/add' , 'GoodsController@addGoods');
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
@@ -135,6 +135,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::post('/store/areas', 'StoresController@areas');
 	Route::post('/store/settling', 'StoresController@settling');
+	Route::get('/push', 'ToolController@push');
 
 
 
