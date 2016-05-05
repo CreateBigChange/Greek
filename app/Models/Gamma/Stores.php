@@ -190,6 +190,9 @@ class Stores extends Model
         if(isset($search['is_open'])){
             $sql .= " AND sg.is_open = ".$search['is_open'];
         }
+        if(isset($search['nav_id'])){
+            $sql .= " AND sg.nav_id = ".$search['nav_id'];
+        }
         if(isset($search['name'])){
             $sql .= " AND sg.name LIKE '%" . $search['name'] . "%'";
         }
@@ -199,6 +202,14 @@ class Stores extends Model
         $sql .= " AND sg.is_del = 0";
 
         $sql .= " ORDER BY created_at DESC";
+        if(isset($search['sort_stock']) && $search['sort_stock'] == 'desc'){
+            $sql .= " , stock DESC ";
+        }elseif(isset($search['sort_stock']) && $search['sort_stock'] == 'asc'){
+            $sql .= " , stock ASC ";
+        }else{
+
+        }
+
         $sql .= " LIMIT $offset , $length";
 
 

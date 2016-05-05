@@ -284,12 +284,16 @@ class StoresController extends ApiController
      *
      * @apiParam {string} [is_open] 上架1/下架/0
      * @apiParam {string} [name] 商品名称搜索
+     * @apiParam {string} [nav_id] 栏目搜索
+     * @apiParam {string} [sort_stock] 库存排序(desc/asc)
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/goods?page=1
      *      {
      *          'is_open' : 1,
      *          'name'  : '测试',
+     *          'nav_id'  : '1',
+     *          'sort_stock' : 'desc'
      *      }
      * @apiUse CODE_200
      *
@@ -309,6 +313,13 @@ class StoresController extends ApiController
         }
         if($request->has('name')){
             $search['name'] = htmlspecialchars($request->get('name'));
+        }
+        if($request->has('nav_id')){
+            $search['nav_id'] = trim($request->get('nav_id'));
+        }
+        $search['sort_stock'] = 'desc';
+        if($request->has('sort_stock')){
+            $search['sort_stock'] = trim($request->get('sort_stock'));
         }
 
         $goodsNum   = $this->_model->getGoodsTotalNum($this->storeId , $search);
