@@ -128,7 +128,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/goods/dels', 'StoresController@dels');
 
 		//订单
-		Route::post('/store/orders/{type}', 'OrdersController@getOrderList');
+		Route::post('/store/orders', 'OrdersController@getOrderList');
 		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
 
 	});

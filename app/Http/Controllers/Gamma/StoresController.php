@@ -314,11 +314,11 @@ class StoresController extends ApiController
         if($request->has('name')){
             $search['name'] = htmlspecialchars($request->get('name'));
         }
-        if($request->has('nav_id')){
+        if($request->has('nav_id') && !$request->get('nav_id') == 0 ){
             $search['nav_id'] = trim($request->get('nav_id'));
         }
-        $search['sort_stock'] = 'desc';
-        if($request->has('sort_stock')){
+        
+        if($request->has('sort_stock') && !empty($request->get('sort_stock'))){
             $search['sort_stock'] = trim($request->get('sort_stock'));
         }
 
@@ -373,7 +373,6 @@ class StoresController extends ApiController
      *
      * @apiParam {string} [img] 商品图片
      * @apiParam {string} [name] 商品名称
-     * @apiParam {number} [c_id] 分类ID
      * @apiParam {number} [b_id] 品牌ID
      * @apiParam {number} [nav_id] 栏目ID
      * @apiParam {string} [spec] 规格
@@ -387,7 +386,6 @@ class StoresController extends ApiController
      *      {
      *          'img'       : 'http://xxx.png',
      *          'name'      : '测试商品一',
-     *          'c_id'      : 1,
      *          'b_id'      : 1,
      *          'nav_id'    : 1,
      *          'spec'      : '瓶',
@@ -407,9 +405,9 @@ class StoresController extends ApiController
         if( $request->has('nav_id') ) {
             $data['nav_id'] = trim($request->get('nav_id'));
         }
-        if( $request->has('c_id') ){
-            $data['c_id'] = trim($request->get('c_id'));
-        }
+//        if( $request->has('c_id') ){
+//            $data['c_id'] = trim($request->get('c_id'));
+//        }
         if( $request->has('b_id') ) {
             $data['b_id'] = trim($request->get('b_id'));
         }

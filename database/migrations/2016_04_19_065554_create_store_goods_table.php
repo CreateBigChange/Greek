@@ -43,7 +43,7 @@ class CreateStoreGoodsTable extends Migration
             $table->boolean('is_checked')->default(0)->comment('是否审核');
             $table->boolean('is_del')->default(0)->comment('是否删除');
             $table->foreign('store_id')->references('id')->on('store_infos');
-            $table->foreign('c_id')->references('id')->on('goods_categories');
+            //$table->foreign('c_id')->references('id')->on('goods_categories');
             $table->foreign('b_id')->references('id')->on('goods_brand');
             $table->foreign('nav_id')->references('id')->on('store_nav');
             $table->timestamps();

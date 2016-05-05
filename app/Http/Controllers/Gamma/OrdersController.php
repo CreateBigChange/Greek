@@ -29,32 +29,38 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/store/orders/{type}[?page=1] 获取订单列表
+     * @api {POST} /gamma/store/orders[?page=1] 获取订单列表
      * @apiName orders
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
      * @apiDescription 获取订单列表
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/orders/1?page=1
+     * @apiSampleRequest http://greek.test.com/gamma/store/orders?page=1
      *
-     * @apiParam {number} type 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
+     * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
      * @apiParam {string} search 搜索条件
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/orders/1?page=1
      *      {
      *          search : 18401586654
+     *          status : 1
      *      }
      * @apiUse CODE_200
      *
      */
-    public function getOrderList($type , Request $request){
+    public function getOrderList(Request $request){
         $search = array();
 
         if(!isset($_GET['page'])){
             $page = 1;
         }else{
             $page = $_GET['page'];
+        }
+
+        $type = 0;
+        if($request->has('status')){
+            $type = $request->get('status');
         }
 
         if ($type == 1){

@@ -207,7 +207,7 @@ class Stores extends Model
         }elseif(isset($search['sort_stock']) && $search['sort_stock'] == 'asc'){
             $sql .= " , stock ASC ";
         }else{
-
+            $sql .= "";
         }
 
         $sql .= " LIMIT $offset , $length";
