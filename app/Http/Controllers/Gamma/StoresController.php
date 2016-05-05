@@ -317,7 +317,7 @@ class StoresController extends ApiController
         if($request->has('nav_id') && !$request->get('nav_id') == 0 ){
             $search['nav_id'] = trim($request->get('nav_id'));
         }
-        
+
         if($request->has('sort_stock') && !empty($request->get('sort_stock'))){
             $search['sort_stock'] = trim($request->get('sort_stock'));
         }
@@ -455,7 +455,7 @@ class StoresController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/goods/opens
      *
-     * @apiParam {array} ids 商品IDS
+     * @apiParam {json} ids 商品IDS
      * @apiParam {number} [is_open] 上架1或下架0的状态
      *
      *

@@ -137,6 +137,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::post('/store/settling', 'StoresController@settling');
 	Route::get('/push', 'ToolController@push');
 
+	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
+
 
 
 	//登陆
