@@ -7,23 +7,23 @@
 			@foreach ($menu as $m)
 				@if (empty($m->child))
 				<li>
-					<a href="{{ $m->name }}" class="@if ($m->active) active @endif">
-						<i class="icon-dashboard"></i>
-						<span>{{ $m->display_name }}</span>
+					<a href="{{ $m->url }}" class="@if ($m->active) active @endif">
+						<i class="{{ $m->icon }}"></i>
+						<span>{{ $m->name }}</span>
 					</a>
 				</li>
 				@else
 				<li class="sub-menu">
 					<a href="javascript:;" class="@if ($m->active) active @endif">
 						<i class="{{ $m->icon }}"></i>
-						<span>{{ $m->display_name }}</span>
+						<span>{{ $m->name }}</span>
 						@if ($m->active)
 						<span class="dcjq-icon"></span>
 						@endif
 					</a>
 					<ul class="sub">
 						@foreach ($m->child as $mc)
-						<li class="@if ($mc->active) active @endif"><a  href="{{ $mc->name }}">{{ $mc->display_name}}</a></li>
+						<li class="@if ($mc->active) active @endif"><a  href="{{ $mc->url }}">{{ $mc->name}}</a></li>
 						@endforeach
 					</ul>
 				</li>

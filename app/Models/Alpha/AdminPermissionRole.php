@@ -26,14 +26,27 @@ class AdminPermissionRole extends Model
 	 * 通过角色ID整个权限关系
 	 */
 	public function getPermissionRoleByID($rid){
-		$parent = DB::table('admin_permissions')->where('fid' , 0)->get();	
-		$child	= DB::table('admin_permissions')->where('fid' , '<>' , 0)->get();	
+		$parent = DB::table('admin_permissions')->where('level' , 0)->orderBy('sort' , 'asc')->get();
+		$child	= DB::table('admin_permissions')->where('level' , 1)->get();
+		$cchild	= DB::table('admin_permissions')->where('level' , 2)->get();
 		$rp		= DB::table($this->_table)->where('role_id' , $rid)->get();
 
 		$permissionRoleIds = array();
 
 		foreach($rp as $r){
 			$permissionRoleIds[] = $r->permission_id;
+		}
+
+		foreach($child as $c){
+			$c->child = array();
+			foreach ($cchild as $cc){
+				if(in_array($cc->id , $permissionRoleIds)){
+					$cc->is_role = 1;
+				}
+				if($cc->fid == $c->id){
+					$c->child[] = $cc;
+				}
+			}
 		}
 
 		foreach($parent as $p){
@@ -47,7 +60,7 @@ class AdminPermissionRole extends Model
 				if(in_array($c->id , $permissionRoleIds)){
 					$c->is_role = 1;
 				}
-				$c->url = '/' . implode('/' , explode('.' , $c->name));
+				//$c->url = '/' . implode('/' , explode('.' , $c->name));
 				if($c->fid == $p->id){
 					$p->child[] = $c;
 				}

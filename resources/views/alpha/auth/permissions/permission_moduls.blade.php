@@ -15,30 +15,25 @@
 								<div class="col-sm-10">
 									<input type="text" readonly class="form-control" name='fname' id='add_fname' />
 									<input type="hidden" class="form-control" name='fid' id='add_fid' />
+									<input type="hidden" class="form-control level" name='level' value='1' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' />
+									<input type="text" class="form-control" name='name' />
 								</div>
 							</div>
+							{{--<div class="form-group">--}}
+								{{--<label class="col-sm-2 col-sm-2 control-label">图标</label>--}}
+								{{--<div class="col-sm-10">--}}
+									{{--<input type="text" class="form-control" name='icon' />--}}
+								{{--</div>--}}
+							{{--</div>--}}
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<label class="col-sm-2 col-sm-2 control-label">链接</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='name' placeholder=" / 连接;如/alpha/admin/user" />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' />
+									<input type="text" class="form-control" name='url' />
 								</div>
 							</div>
 							<div class="form-group">
@@ -50,9 +45,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">菜单显示</label>
 								<div class="col-sm-1 text-center">
-									<div class="switch has-switch" style='overflow:auto'>
-										<input type="checkbox" data-toggle="switch" name='is_menu' />
-									</div>
+									<input type="checkbox" data-toggle="switch" name='is_menu' />
 								</div>
 							</div>
 						</div>
@@ -83,23 +76,24 @@
 						<div class="panel-body">
 							<!--顶级节点默认fid为0;is_menu为1 -->
 							<input type="hidden" class="form-control" name='fid' value='0' />
+							<input type="hidden" class="form-control" name='level' value='0' />
 							<input type="hidden" class="form-control" name='is_menu' value='on' />
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' />
+									<input type="text" class="form-control" name='name' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">图标</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name='icon' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">链接</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='url' />
 								</div>
 							</div>
 							<div class="form-group">
@@ -144,19 +138,19 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' id='update_display_name' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' id='update_description' />
+									<input type="text" class="form-control" name='name' id='update_name' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">图标</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name='icon' id='update_icon' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">链接</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='url' id='update_child_icon' />
 								</div>
 							</div>
 							<div class="form-group">
@@ -204,25 +198,13 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='display_name' id='update_child_display_name' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">地址</label>
-								<div class="col-sm-10">
 									<input type="text" class="form-control" name='name' id='update_child_name' />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">描述</label>
+								<label class="col-sm-2 col-sm-2 control-label">链接</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='description' id='update_child_description' />
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">图标</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='icon' id='update_child_icon' />
+									<input type="text" class="form-control" name='url' id='update_child_url' />
 								</div>
 							</div>
 							<div class="form-group">
@@ -234,9 +216,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">菜单显示</label>
 								<div class="col-sm-1 text-center">
-									<div class="switch has-switch" style='overflow:auto'>
-										<input type="checkbox" data-toggle="switch" name='is_menu' id='update_child_menu' />
-									</div>
+									<input type="checkbox" data-toggle="switch" name='is_menu' id='update_child_menu' />
 								</div>
 							</div>
 						</div>
@@ -259,11 +239,10 @@ $('.update').bind('click' , function(){
 	$.get('/alpha/permission/info/' + pid , function(data){
 		if(data){
 			$('#update_id').val(pid);
-			$('#update_display_name').val(data.display_name);
-			$('#update_description').val(data.description);
+			$('#update_name').val(data.name);
+			//$('#update_description').val(data.description);
 			$('#update_icon').val(data.icon);
 			$('#update_sort').val(data.sort);
-
 		}
 	});
 });
@@ -271,16 +250,17 @@ $('.update').bind('click' , function(){
 
 $('.updateChild').bind('click' , function(){
 	var pid = $(this).attr('p_id');
+	var level = $(this).attr('level');
 	$.get('/alpha/permission/info/' + pid , function(data){
 		if(data){
-			$.get('/alpha/permission/top' , function(top){
+			$.get('/alpha/permission/level/' + level , function(top){
 				if(top){
 					var option = '';
 					for(var i=0 ; i<top.length ; i++){
 						if(top[i].id == data.fid){
-							option += "<option value="+ top[i].id +" selected>"+ top[i].display_name +"</option>";
+							option += "<option value="+ top[i].id +" selected>"+ top[i].name +"</option>";
 						}else{
-							option += "<option value="+ top[i].id +">"+ top[i].display_name +"</option>";
+							option += "<option value="+ top[i].id +">"+ top[i].name +"</option>";
 						}
 					}
 					$('#update_f_name').append(option);
@@ -288,9 +268,9 @@ $('.updateChild').bind('click' , function(){
 			});
 			$('#update_child_id').val(pid);
 			$('#update_child_name').val(data.name);
-			$('#update_child_display_name').val(data.display_name);
-			$('#update_child_description').val(data.description);
-			$('#update_child_icon').val(data.icon);
+			//$('#update_child_display_name').val(data.display_name);
+			//$('#update_child_description').val(data.description);
+			$('#update_child_url').val(data.url);
 			$('#update_child_sort').val(data.sort);
 
 			if(data.is_menu == 1){
@@ -301,4 +281,8 @@ $('.updateChild').bind('click' , function(){
 		}
 	});
 });
+
+	$('.addChild').bind('click' , function(){
+		$('.level').val($(this).attr('level'));
+	});
 </script>

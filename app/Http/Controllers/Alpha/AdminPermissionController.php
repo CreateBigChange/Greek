@@ -65,20 +65,21 @@ class AdminPermissionController extends AdminController
         $this->response['title']		= '添加节点';
         $this->response['menuactive']	= 'qxgl';
 
-        if(!$request->has('display_name')){
-            return view('errors.503');
-        }
-        if(!$request->has('description')){
-            return view('errors.503');
-        }
+
         if(!$request->has('fid')){
             return view('errors.503');
         }
 
         $permissions						= new AdminPermissions;
-        $permissions->display_name          = $request->get('display_name');
+        //$permissions->display_name          = $request->get('display_name');
         $permissions->fid					= $request->get('fid');
-        $permissions->description			= $request->get('description');
+
+        //$permissions->description			= $request->get('description');
+
+        $permissions->level = $request->get('level');
+        if($request->has('url')) {
+            $permissions->url = $request->get('url');
+        }
 
         if($request->has('name')){
 			$permissions->name					= $request->get('name');
@@ -142,11 +143,14 @@ class AdminPermissionController extends AdminController
         if($request->has('name')){
             $update['name'] = $request->get('name');
         }
-        if($request->has('description')){
-            $update['description'] = $request->get('description');
-        }
-        if($request->has('display_name')){
-            $update['display_name'] = $request->get('display_name');
+//        if($request->has('description')){
+//            $update['description'] = $request->get('description');
+//        }
+//        if($request->has('display_name')){
+//            $update['display_name'] = $request->get('display_name');
+//        }
+        if($request->has('url')){
+            $update['url'] = $request->get('url');
         }
         if($request->has('sort')){
             $update['sort'] = $request->get('sort');
@@ -171,10 +175,10 @@ class AdminPermissionController extends AdminController
     }
 
 	/**
-	 * 获取顶级节点
+	 * 获取层级节点
 	 */
-	public function getTopPermission(){
-		return AdminPermissions::where('fid' , 0)->get();
+	public function getLevelPermission($level){
+		return AdminPermissions::where('level' , $level)->get();
 	}
 
 }

@@ -39,12 +39,12 @@ class AdminController extends Controller
 
 		foreach($permissionList as $pl){
 			$pl->active = 0;
-			if($pl->name == $_SERVER['REQUEST_URI']){
+			if($pl->url == $_SERVER['REQUEST_URI']){
 				$pl->active = 1;
 			}
 			foreach($pl->child as $plc){
 				$plc->active	= 0;
-				if($plc->name == $_SERVER['REQUEST_URI']){
+				if($plc->url == $_SERVER['REQUEST_URI']){
 					$plc->active	= 1;
 					$pl->active		= 1;
 				}

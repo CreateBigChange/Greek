@@ -17,9 +17,11 @@ use App\Libs\Message;
 class StoresController extends AdminController
 {
 
+	private $length;
     public function __construct(){
         parent::__construct();
         $this->response['title']		= '店铺管理';
+		$this->length = 10;
     }
 
 	/**
@@ -28,7 +30,62 @@ class StoresController extends AdminController
 	public function getStoreInfoList(){
 		
 		$storeModel = new StoreInfos;
-		$storeInfos = $storeModel->getStoreInfoList();
+
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+		$search = array();
+
+		$param = '';
+
+		if(isset($_GET['name']) && !empty($_GET['name'])){
+			$search['name'] = trim($_GET['name']);
+			$param .= 'name=' . $search['name'] . '&';
+		}
+		if(isset($_GET['contacts']) && !empty($_GET['contacts'])){
+			$search['contacts'] = trim($_GET['contacts']);
+			$param .= 'contacts=' . $search['contacts'] . '&';
+		}
+		if(isset($_GET['contact_phone']) && !empty($_GET['contact_phone'])){
+			$search['contact_phone'] = trim($_GET['contact_phone']);
+			$param .= 'contact_phone=' . $search['contact_phone'] . '&';
+		}
+		if(isset($_GET['c_id']) && $_GET['c_id'] != 0){
+			$search['c_id'] = trim($_GET['c_id']);
+			$param .= 'c_id=' . $search['c_id'] . '&';
+		}
+		if(isset($_GET['province']) && $_GET['province'] != 0){
+			$search['province'] = trim($_GET['province']);
+			$param .= 'province=' . $search['province'] . '&';
+		}
+		if(isset($_GET['city']) && $_GET['city'] != 0){
+			$search['city'] = trim($_GET['city']);
+			$param .= 'city=' . $search['city'] . '&';
+		}
+		if(isset($_GET['county']) && $_GET['county'] != 0){
+			$search['county'] = trim($_GET['county']);
+			$param .= 'county=' . $search['county'] . '&';
+		}
+		if(isset($_GET['address']) && !empty($_GET['address'])){
+			$search['address'] = trim($_GET['address']);
+			$param .= 'address=' . $search['address'] . '&';
+		}
+		if(isset($_GET['is_open']) && $_GET['is_open'] != -1){
+			$search['is_open'] = trim($_GET['is_open']);
+			$param .= 'is_open=' . $search['is_open'] . '&';
+		}
+		if(isset($_GET['is_checked']) && $_GET['is_checked'] != -1){
+			$search['is_checked'] = trim($_GET['is_checked']);
+			$param .= 'is_checked=' . $search['is_checked'] . '&';
+		}
+
+		$totalNum = $storeModel->getStoreInfoTotalNum($search);
+
+		$pageData = $this->getPageData($page  , $this->length, $totalNum);
+
+		$this->response['page']         = $pageData->page;
+		$this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/stores/infos?' . $param);
+
+		$storeInfos = $storeModel->getStoreInfoList($this->length , $pageData->offset , $search);
 
 		$this->response['storeInfos'] = $storeInfos;
 

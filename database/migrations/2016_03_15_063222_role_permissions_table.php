@@ -29,10 +29,18 @@ class RolePermissionsTable extends Migration
             $table->integer('fid')->unsigned()->default(0)->comment('菜单父ID');
             $table->string('icon')->nullable()->comment('图标class');
             $table->string('name');
-            $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
             $table->tinyInteger('is_menu')->default(0)->comment('是否作为菜单显示,[1|0]');
             $table->tinyInteger('sort')->default(0)->comment('排序');
+            $table->timestamps();
+        });
+
+        // Create table for storing permissions
+        Schema::create('admin_permission_urls', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->integer('permission_id');
+            $table->string('url');
+            $table->tinyInteger('is_del')->default(0)->comment('是否禁用,[1|0]');
             $table->timestamps();
         });
 

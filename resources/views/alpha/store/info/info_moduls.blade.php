@@ -1,7 +1,113 @@
+{{--搜索--}}
+		<!-- Modal -->
+<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 80%;">
+		<div class="modal-content">
+			<form class="form-horizontal tasi-form" method="get" action='/alpha/stores/infos'>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">搜索店铺</h4>
+				</div>
+				<div class="modal-body">
+					<section class="panel" style="margin-bottom:0px">
+						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺名称</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='name' id="search_name"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系人</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contacts' id="search_contacts"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">联系电话</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='contact_phone' id="search_contact_phone"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">分类</label>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='c_id' id='search_creategory'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">地区</label>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='province' id='search_province'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='city' id='search_city'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control m-bot15" name='county' id='search_county'>
+										<option value="0">选择</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='address' id="search_address"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">开启</label>
+								<div class="col-sm-10">
+									<select class="form-control m-bot15" name='is_open' id='search_brand'>
+										<option value="-1">全部</option>
+										<option value="1">开启</option>
+										<option value="0">关闭</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">审核</label>
+								<div class="col-sm-10">
+									<select class="form-control m-bot15" name='is_checked' id='search_brand'>
+										<option value="-1">全部</option>
+										<option value="1">已审核</option>
+										<option value="0">未审核</option>
+										<option value="2">未通过</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</section>
+
+				</div>
+				<div class="modal-footer"  style="margin-top:0px">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-success" type="submit">搜索</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- modal -->
+
+<script>
+	$('.searchDiaLog').bind('click' , function() {
+
+	});
+</script>
+
+
+
 {{--修改--}}
 <!-- Modal -->
 <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog" style="width: 80%;">
 		<div class="modal-content">
 			<form class="form-horizontal tasi-form" method="post" action='/alpha/stores/update'>
 				<input type='hidden' name='id' id='edit_id' value="" />
@@ -290,7 +396,7 @@
 {{--添加--}}
 <!-- Modal -->
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog" style="width: 80%;">
 		<div class="modal-content">
 			<form class="form-horizontal tasi-form" method="post" action='/alpha/stores/add'>
 				<div class="modal-header">

@@ -22,7 +22,7 @@ class AdminUsers extends Model
 		$data = array();
 		foreach($permissions as $p){
 			if(!empty($p->name)){
-				$data[] = $p->name;
+				$data = array_merge($data , explode(',' , $p->url));
 			}
 		}
 

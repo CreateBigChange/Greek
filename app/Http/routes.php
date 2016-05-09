@@ -32,7 +32,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 	});
 
 	Route::group(['middleware' => ['checkAuth']] , function(){
-	
+
 		//首页
 		Route::get('/index' , 'IndexController@index');
 
@@ -59,7 +59,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/permission/del/{id}' , 'AdminPermissionController@delPermission');
 		Route::get('/permission/info/{id}' , 'AdminPermissionController@getPermissionInfo');
 		Route::post('/permission/update' , 'AdminPermissionController@updatePermission');
-		Route::get('/permission/top' , 'AdminPermissionController@getTopPermission');
+		Route::get('/permission/level/{level}' , 'AdminPermissionController@getLevelPermission');
 
 		//角色权限操作
 		Route::get('/permission/role/{rid}' , 'AdminPermissionRoleController@getPermissionIdsByRoleID');
@@ -95,7 +95,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post( '/upload/qiniu' , 'UploadController@uploadQiniu' );
 
 	});
-    //登陆
+
+
+
+	//登陆
     Route::get('/login' , 'AdminUsersController@showLoginView');
     Route::post('/login' , 'AdminUsersController@login');
     Route::get('/logout' , 'AdminUsersController@logout');

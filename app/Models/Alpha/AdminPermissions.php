@@ -23,20 +23,25 @@ class AdminPermissions extends Model
 			->join('admin_permission_roles as pr' , 'pr.role_id' , '=' , 'ur.role_id')
 			->join('admin_permissions as p' , 'p.id' , '=' , 'pr.permission_id')
 			->orderBy('p.sort' , 'asc')
-			->where('is_menu' , '1')
-			->where('admin_user_id' , $userId)
+			->where('p.is_menu' , '1')
+			->where('ur.admin_user_id' , $userId)
 			->get();
 
 		$parent = array();
 		$child = array();
+
+		$permissionIds = array();
+
 		foreach($permissions as $p){
+			$permissionIds[] = $p->permission_id;
 			if($p->fid == 0){
 				$parent[] = $p;
 			}else{
 				$child[] = $p;
 			}
-				
 		}
+
+		//$urls = DB::table('admin_permission_urls')->whereIn('permission_id' , $permissionIds)->get();
 
 		foreach($parent as $p){
 			$p->child = array();
@@ -54,8 +59,18 @@ class AdminPermissions extends Model
 	 * 获取节点列表
 	 */
 	public function getPermissionsList() {
-		$parent = DB::table($this->_table)->where('fid' , 0)->get();	
-		$child	= DB::table($this->_table)->where('fid' , '<>' , 0)->get();	
+		$parent = DB::table($this->_table)->where('level' , 0)->orderBy('sort' , 'asc')->get();
+		$child	= DB::table($this->_table)->where('level' , 1)->get();
+		$cchild	= DB::table($this->_table)->where('level' , 2)->get();
+
+		foreach($child as $c){
+			$c->child = array();
+			foreach ($cchild as $cc){
+				if($cc->fid == $c->id){
+					$c->child[] = $cc;
+				}
+			}
+		}
 
 		foreach($parent as $p){
 			$p->child = array();

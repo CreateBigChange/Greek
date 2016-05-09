@@ -69,25 +69,25 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">登录帐号</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='account' />
+									<input type="text" class="form-control" required name='account' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">登录密码</label>
 								<div class="col-sm-10">
-									<input type="password" class="form-control" name='password' />
+									<input type="password" class="form-control" required name='password' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">真实名</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='real_name' />
+									<input type="text" class="form-control" required name='real_name' />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">邮箱</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='email' />
+									<input type="text" class="form-control" required name='email' />
 								</div>
 							</div>
 							<div class="form-group">

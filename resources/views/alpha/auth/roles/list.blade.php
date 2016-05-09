@@ -34,7 +34,7 @@
 				</section>
 			</div>
 			
-			<div class="col-lg-6" id="permissions">
+			<div class="col-lg-6" id="permissions" style="overflow: hidden;">
 			</div>
 		</div>
 
@@ -57,8 +57,6 @@
 						<tr>
 							<th></th>
 							<th>名称</th>
-							<th>地址</th>
-							<th>描述</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -69,9 +67,7 @@
 										<input style="position:absolute;left:9999px;" <% if(permissions[i].is_role){%>checked<%}%> name="sample-checkbox-01" id="checkbox-01" value="<%= permissions[i].id %>" type="checkbox">
 									</div>	  
 								</td>
-								<td><i class="<%= permissions[i].icon %>"></i> <%= permissions[i].display_name %></td>
 								<td><% if(permissions[i].name != null){%><%= permissions[i].name %><% }%></td>
-								<td><%= permissions[i].description %></td>
 							</tr>
 							<% for (var j=0 ; j<permissions[i].child.length ; j++ ){ %>
 								<tr>
@@ -80,10 +76,18 @@
 											<input style="position:absolute;left:9999px;" <% if(permissions[i].child[j].is_role){%> checked <%}%> name="sample-checkbox-01" id="checkbox-01" value="<%= permissions[i].child[j].id %>" type="checkbox">
 										</div>	  
 									</td>
-									<td style='padding-left:30px;'>|----- <%= permissions[i].child[j].display_name %></td>
-									<td><%= permissions[i].child[j].name %></td>
-									<td><%= permissions[i].child[j].description %></td>
+									<td style='padding-left:30px;'>|----- <%= permissions[i].child[j].name %></td>
 								</tr>
+								<% for (var m=0 ; m<permissions[i].child[j].child.length ; m++ ){ %>
+									<tr>
+										<td>
+											<div class="<% if(permissions[i].child[j].child[m].is_role){%> check_on <%}else{%> check_off <%}%> select_permission" for="checkbox-01" style="height:22px;width:22px;">
+												<input style="position:absolute;left:9999px;" <% if(permissions[i].child[j].child[m].is_role){%> checked <%}%> name="sample-checkbox-01" id="checkbox-01" value="<%= permissions[i].child[j].child[m].id %>" type="checkbox">
+											</div>
+										</td>
+										<td style='padding-left:60px;'>|----- <%= permissions[i].child[j].child[m].name %></td>
+									</tr>
+								<% } %>
 							<% } %>
 						<% } %>
 					</tbody>

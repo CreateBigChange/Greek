@@ -17,7 +17,7 @@ class StoreInfos extends Model
 	 * @return mixed
 	 * 获取店铺列表
 	 */
-	public function getStoreInfoList($search = array()){
+	public function getStoreInfoList($length=20 , $offset=0 , $search = array()){
 		$sql = "SELECT
  					si.id,
  					si.c_id,
@@ -49,11 +49,46 @@ class StoreInfos extends Model
 		$sql .= " LEFT JOIN areas as aco ON aco.id = si.county";
 		$sql .= " LEFT JOIN $this->_store_categories_table as category ON category.id = si.c_id";
 
+		$sql .= " WHERE si.is_del = 0";
+
 		if( isset($search['ids']) && !empty($search['ids']) ){
-			$sql .= " WHERE si.id IN (". implode(',' , $search['ids']) .")";
+			$sql .= " AND si.id IN (". implode(',' , $search['ids']) .")";
+		}
+
+		if(isset($search['name']) && !empty($search['name'])){
+			$sql .= " AND si.name LIKE '%" . $search['name'] . "%'";
+		}
+		if(isset($search['contacts']) && !empty($search['contacts'])){
+			$sql .= " AND si.contacts LIKE '%" . $search['contacts'] . "%'";
+		}
+		if(isset($search['contact_phone']) && !empty($search['contact_phone'])){
+			$sql .= " AND si.contact_phone LIKE '%" . $search['contact_phone'] . "%'";
+		}
+		if(isset($search['c_id']) && !empty($search['c_id'])){
+			$sql .= " AND si.c_id = " . $search['c_id'] ;
+		}
+		if(isset($search['province']) && !empty($search['province'])){
+			$sql .= " AND si.province = " . $search['province'] ;
+		}
+		if(isset($search['city']) && !empty($search['city'])){
+			$sql .= " AND si.city = " . $search['city'] ;
+		}
+		if(isset($search['county']) && !empty($search['county'])){
+			$sql .= " AND si.county = " . $search['county'] ;
+		}
+		if(isset($search['address']) && !empty($search['address'])){
+			$sql .= " AND si.address LIKE '%" . $search['address'] . "%'";
+		}
+		if(isset($search['is_open']) && !empty($search['is_open'])){
+			$sql .= " AND si.is_open = " . $search['is_open'] ;
+		}
+		if(isset($search['is_checked']) && !empty($search['is_checked'])){
+			$sql .= " AND si.is_checked = " . $search['is_checked'] ;
 		}
 
 		$sql .= " ORDER BY created_at DESC";
+
+		$sql .= " LIMIT $offset , $length ";
 
 		$storeList = DB::select($sql);
 

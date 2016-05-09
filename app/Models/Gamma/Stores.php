@@ -201,13 +201,12 @@ class Stores extends Model
         }
         $sql .= " AND sg.is_del = 0";
 
-        $sql .= " ORDER BY created_at DESC";
         if(isset($search['sort_stock']) && $search['sort_stock'] == 'desc'){
-            $sql .= " , stock DESC ";
+            $sql .= " ORDER BY stock DESC ";
         }elseif(isset($search['sort_stock']) && $search['sort_stock'] == 'asc'){
-            $sql .= " , stock ASC ";
+            $sql .= " ORDER BY stock ASC ";
         }else{
-            $sql .= "";
+            $sql .= " ORDER BY created_at DESC";
         }
 
         $sql .= " LIMIT $offset , $length";

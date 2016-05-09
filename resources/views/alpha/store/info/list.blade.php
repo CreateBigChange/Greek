@@ -8,7 +8,9 @@
 			<div class="col-lg-12">
 				<section class="panel">
 					<header class="panel-heading">
-						店铺基本信息<a style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></a>
+						店铺基本信息
+						<div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></div>
+						<div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
 					</header>
 					<div class="panel-body">
 						<section id="unseen">
@@ -53,6 +55,9 @@
 								</tbody>
 							</table>
 						</section>
+					</div>
+					<div class="text-center">
+						{!! $pageHtml !!}
 					</div>
 				</section>
 			</div>
