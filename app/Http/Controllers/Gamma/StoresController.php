@@ -678,6 +678,35 @@ class StoresController extends ApiController
     }
 
     /**
+     * @api {POST} /gamma/store/nav/goods/del/{nav} 删除栏目商品
+     * @apiName storeNavGoods
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 删除栏目商品
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/nav/goods/del
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/nav/goods/del
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function delNavGoods($navId ){
+
+        $storeId = $this->storeId;
+
+        if($this->_model->delNavGoods($navId , $storeId)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAIED'));
+        }
+
+
+    }
+
+    /**
      * @api {POST} /gamma/store/nav/del/{id} 删除栏目
      * @apiName storeNavDel
      * @apiGroup GAMMA

@@ -129,6 +129,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/nav/update/{id}', 'StoresController@updateNav');
 		Route::post('/store/nav/del/{id}', 'StoresController@delNav');
 		Route::post('/store/nav/{id}', 'StoresController@getNavInfo');
+		Route::post('/store/nav/goods/del/{id}', 'StoresController@delNavGoods');
 
 		//商品
 		Route::post('/store/goods/add', 'StoresController@addGoods');

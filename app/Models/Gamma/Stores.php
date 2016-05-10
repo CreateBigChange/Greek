@@ -302,6 +302,18 @@ class Stores extends Model
 
     /**
      *
+     * 删除栏目下的商品
+     * @param navId     number
+     * @param storeId   number
+     */
+    public function delNavGoods($navId , $storeId){
+        //统计此栏目下是否有售商品
+        return DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_del' => 1));
+
+    }
+
+    /**
+     *
      * 获取商品分类
      * @param pid     number
      */
