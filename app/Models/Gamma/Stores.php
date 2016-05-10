@@ -261,7 +261,60 @@ class Stores extends Model
      * @param data      array
      */
     public function updateNav($navId , $storeId , $data){
+        if(isset($data['sort'])) {
+            $sort = DB::table($this->_store_nav_table)->where('id', $navId)->where('store_id', $storeId)->first();
+
+            //up
+            if($sort->sort > $data['sort']){
+                $nav = DB::table($this->_store_nav_table)
+                    ->where('store_id', $storeId)
+                    ->where('sort' , '<' , $sort->sort)
+                    ->where('sort' , '>=' , $data['sort'])
+                    ->orderBy('sort' , 'asc')
+                    ->get();
+
+                foreach ($nav as $n){
+                    if($n->sort > $data['sort'] && $n->sort < $sort->sort ){
+                        DB::table($this->_store_nav_table)->where('id' , $n->id)->where('store_id' , $storeId)->update(['sort'=>$n->sort + 1]);
+                    }else if($n->sort == $data['sort'] ){
+                        DB::table($this->_store_nav_table)->where('id' , $n->id)->where('store_id' , $storeId)->update(['sort'=>$n->sort + 1]);
+                        DB::table($this->_store_nav_table)->where('id' , $navId)->where('store_id' , $storeId)->update(['sort'=>$data['sort']]);
+                    }
+                }
+
+            }else{
+                $nav = DB::table($this->_store_nav_table)
+                    ->where('store_id', $storeId)
+                    ->where('sort' , '>' , $sort->sort)
+                    ->where('sort' , '<=' , $data['sort'])
+                    ->orderBy('sort' , 'asc')
+                    ->get();
+                foreach ($nav as $n){
+                    if($n->sort < $data['sort']){
+                        DB::table($this->_store_nav_table)->where('id' , $n->id)->where('store_id' , $storeId)->update(['sort'=>$n->sort - 1]);
+                    }else if($n->sort == $data['sort']  ){
+                        DB::table($this->_store_nav_table)->where('id' , $n->id)->where('store_id' , $storeId)->update(['sort'=>$n->sort - 1]);
+                        DB::table($this->_store_nav_table)->where('id' , $navId)->where('store_id' , $storeId)->update(['sort'=>$data['sort']]);
+                    }
+                }
+
+            }
+        }
         return DB::table($this->_store_nav_table)->where('id' , $navId)->where('store_id' , $storeId)->update($data);
+    }
+
+    /**
+     *
+     * 更新栏目
+     * @param navId     number
+     * @param storeId   number
+     * @param data      array
+     */
+    public function updateSortNav($navIds , $storeId , $data){
+        for ($i=0 ; $i<count($navIds) ; $i++){
+            return DB::table($this->_store_nav_table)->where('id' , $navIds[$i])->where('store_id' , $storeId)->update(array('sort'=>$data[$i]));
+        }
+
     }
 
     /**

@@ -71,8 +71,10 @@ class UploadController extends ApiController
                 // 要上传文件的本地路径
                 $path = $request->file('img')->getPathname();
 
+
                 // 构建鉴权对象
                 $auth = new Auth(Config::get('qiniu.Access_Key'), Config::get('qiniu.Secret_Key'));
+
 
                 // 生成上传 Token
                 $token = $auth->uploadToken(Config::get('qiniu.bucket'));
@@ -85,6 +87,7 @@ class UploadController extends ApiController
 
                 // 调用 UploadManager 的 putFile 方法进行文件的上传
                 list($ret, $err) = $uploadMgr->putFile($token, $key, $path);
+
                 if ($err !== null) {
                     return response()->json( Message::setResponseInfo( 'FAILED' ) );
                 } else {
