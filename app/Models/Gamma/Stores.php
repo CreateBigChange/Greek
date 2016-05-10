@@ -293,7 +293,7 @@ class Stores extends Model
 
         //统计此栏目下是否有售商品
         $goodsNum = DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
-        if($goodsNum == 0){
+        if($goodsNum != 0){
             return -1;
         }else{
             return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
