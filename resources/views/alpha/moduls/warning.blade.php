@@ -25,3 +25,4 @@ $('.warning').bind('click' , function(){
 	$('#form-warning').attr('action' , $(this).attr('url'));
 });
 </script>
+

@@ -174,6 +174,38 @@ class Goods extends Model
 
     /**
      *
+     * 获取单个商品分类
+     */
+    public function getGoodsCategoryById($id){
+        return DB::table($this->_goods_categories_table)->where('id' , $id)->first();
+    }
+
+    /**
+     *
+     * 更新商品分类
+     */
+    public function updateGoodsCategory($id , $data){
+        return DB::table($this->_goods_categories_table)->where('id' , $id)->update($data);
+    }
+
+    /**
+     *
+     * 获取单个商品分类
+     */
+    public function getGoodsBrandById($id){
+        return DB::table($this->_goods_brand_table)->where('id' , $id)->first();
+    }
+
+    /**
+     *
+     * 更新商品品牌
+     */
+    public function updateGoodsBrand($id , $data){
+        return DB::table($this->_goods_brand_table)->where('id' , $id)->update($data);
+    }
+
+    /**
+     *
      * 获取商品分类
      */
     public function getGoodsCategoryByLevel($level){

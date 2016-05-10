@@ -210,4 +210,47 @@ class StoreInfos extends Model
 	public function addStoreUser($data){
 		return DB::table($this->_store_users_table)->insert($data);
 	}
+
+	/**
+	 * 获取店铺用户
+	 */
+	public function getStoreUserList($storeId = 0){
+		$sql = DB::table($this->_store_users_table)
+			->select(
+				'store_users.id',
+				'store_users.account',
+				'store_users.real_name',
+				'store_users.tel',
+				'store_users.created_at',
+				'si.name as sname',
+				'si.id as sid'
+			)
+			->leftJoin("$this->_store_infos_table as si", 'si.id' , '=' , 'store_users.store_id');
+		if($storeId != 0){
+			$sql->where('store_id' , $storeId);
+		}
+
+		return $sql->get();
+	}
+
+	/**
+	 * 添加店铺分类
+	 */
+	public function addStoreCategory($data){
+		return DB::table($this->_store_categories_table)->insert($data);
+	}
+
+	/**
+	 * 修改店铺分类
+	 */
+	public function updateStoreCategory($id , $data){
+		return DB::table($this->_store_categories_table)->where('id' , $id)->update($data);
+	}
+
+	/**
+	 * 获取单个店铺分类
+	 */
+	public function getStoreCategoryById($id){
+		return DB::table($this->_store_categories_table)->where('id' , $id)->first();
+	}
 }

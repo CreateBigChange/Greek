@@ -270,7 +270,7 @@ class Stores extends Model
      * @param storeId   number
      */
     public function getNav($storeId){
-        return DB::table($this->_store_nav_table)->where('store_id' , $storeId)->orderBy('sort','ASC')->orderBy('updated_at','desc')->get();
+        return DB::table($this->_store_nav_table)->where('store_id' , $storeId)->where('is_del' , 0)->orderBy('sort','ASC')->orderBy('updated_at','desc')->get();
     }
 
     /**

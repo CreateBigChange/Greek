@@ -74,19 +74,29 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/stores/update' , 'StoresController@updateStore');
 
 		Route::get('/stores/categories' , 'StoresController@ajaxStoreCategoriesList');
+		Route::get('/stores/categories/list' , 'StoresController@getStoreCategoriesList');
+		Route::post('/stores/category/add' , 'StoresController@addStoreCategory');
+		Route::post('/stores/category/update' , 'StoresController@updateStoreCategory');
+		Route::get('/stores/category/info/{id}' , 'StoresController@getStoreCategoryById');
 		Route::get('/stores/settlings' , 'StoresController@getSettlings');
 		Route::get('/stores/settlings/del/{id}' , 'StoresController@delSettlings');
 
+		//店员
+		Route::get('/store/user' , 'StoresController@getStoreUserList');
+
 		//商品
 		Route::get('/goods' , 'GoodsController@getGoodsList');
-//		Route::post('/goods' , 'GoodsController@getGoodsList');
 		Route::post('/goods/add' , 'GoodsController@addGoods');
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
 		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
+		Route::post('/goods/category/update' , 'GoodsController@updateGoodsCategory');
+		Route::get('/goods/category/info/{id}' , 'GoodsController@getGoodsCategoryById');
 		Route::get('/goods/category/level/{pid}' , 'GoodsController@ajaxGoodsCategoryByLevel');
 		Route::get('/goods/brand/{cid}' , 'GoodsController@ajaxGoodsBrandByCid');
-
+		Route::post('/goods/brand/update' , 'GoodsController@updateGoodsBrand');
+		Route::get('/goods/brand/info/{id}' , 'GoodsController@getGoodsBrandById');
+		Route::get('/goods/category/list' , 'GoodsController@getGoodsCategory');
 
 		//地区
 		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');

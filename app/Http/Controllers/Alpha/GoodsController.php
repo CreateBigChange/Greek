@@ -66,28 +66,6 @@ class GoodsController extends AdminController
             $search['is_checked'] = trim($_GET['is_checked']);
             $param .= 'is_checked=' . $search['is_checked'] . '&';
         }
-
-//        if($request->has('name') && !empty($request->get('name'))){
-//            $search['name'] = $request->get('name');
-//        }
-//        if($request->has('c_one_id') && !empty($request->get('c_one_id'))){
-//            $search['c_one_id'] = $request->get('c_one_id');
-//        }
-//        if($request->has('c_two_id') && !empty($request->get('c_two_id'))){
-//            $search['c_two_id'] = $request->get('c_two_id');
-//        }
-//        if($request->has('c_id') && !empty($request->get('c_id'))){
-//            $search['c_id'] = $request->get('c_id');
-//        }
-//        if($request->has('b_id') && $request->get('b_id') != 0 ){
-//            $search['b_id'] = $request->get('b_id');
-//        }
-//        if($request->has('is_open') && $request->get('is_open') != '-1'){
-//            $search['is_open'] = $request->get('is_open');
-//        }
-//        if($request->has('is_checked') && $request->get('is_checked') != '-1'){
-//            $search['is_checked'] = $request->get('is_checked');
-//        }
         
         $totalNum = $goodsModel->getGoodsTotalNum($search);
 
@@ -193,6 +171,87 @@ class GoodsController extends AdminController
         $goodsModel = new Goods;
         $this->response['category'] = $goodsModel->getGoodsCategoryByPid($pid);
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->response));
+    }
+
+    /**
+     * 获取商品分类
+     */
+    public function getGoodsCategory(){
+        $goodsModel = new Goods;
+        $this->response['category'] = $goodsModel->getGoodsCategoryByPid(0);
+        return view('alpha.goods.category_list' , $this->response);
+    }
+
+    /**
+     * 获取单个商品分类
+     */
+    public function getGoodsCategoryById($id){
+        $goodsModel = new Goods;
+        $this->response['category'] = $goodsModel->getGoodsCategoryById($id);
+        return $this->response;
+    }
+
+    /**
+     * 更新商品分类
+     */
+    public function updateGoodsCategory(Request $request){
+        $goodsModel = new Goods;
+
+        if(!$request->has('id')){
+            return view('errors.503');
+        }
+        if(!$request->has('name')){
+            return view('errors.503');
+        }
+
+        $id = $request->get('id');
+
+        $data = array();
+
+        $data['name']       = $request->get('name');
+        $data['updated_at'] = $request->get('updated_at');
+
+        if($goodsModel->updateGoodsCategory($id , $data)) {
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * 获取单个商品品牌
+     */
+    public function getGoodsBrandById($id){
+        $goodsModel = new Goods;
+        $this->response['brand'] = $goodsModel->getGoodsBrandById($id);
+        return $this->response;
+    }
+
+    /**
+     * 更新商品品牌
+     */
+    public function updateGoodsBrand(Request $request){
+        $goodsModel = new Goods;
+
+        if(!$request->has('id')){
+            return view('errors.503');
+        }
+        if(!$request->has('name')){
+            return view('errors.503');
+        }
+
+        $id = $request->get('id');
+
+        $data = array();
+
+        $data['name']       = $request->get('name');
+        $data['updated_at'] = $request->get('updated_at');
+
+        if($goodsModel->updateGoodsBrand($id , $data)) {
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
     }
 
     /**

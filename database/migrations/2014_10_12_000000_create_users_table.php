@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
         Schema::create('user_third_party', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -45,6 +46,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
         Schema::create('delivery_address', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');

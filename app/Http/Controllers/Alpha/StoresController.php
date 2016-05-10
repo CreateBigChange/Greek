@@ -271,6 +271,94 @@ class StoresController extends AdminController
 		if($storeModel->delSettlings($id)){
 			return redirect('/alpha/stores/settlings');
 		}
+	}
+
+	/**
+	 * 获取店铺用户
+	 */
+	public function getStoreUserList(Request $request){
+		$storeModel = new StoreInfos;
+
+		$storeId = 0;
+		if(isset($_GET['store_id'])){
+			$storeId = $_GET['store_id'];
+		}
+
+		$this->response['userList'] = $storeModel->getStoreUserList($storeId);
+
+		return view('alpha.store.user.list' , $this->response);
+	}
+
+	/**
+	 * 获取店铺类型
+	 */
+	public function getStoreCategoriesList(){
+
+		$storeModel = new StoreInfos;
+
+		$storeCategories = $storeModel->getStoreCategoriesList();
+
+		$this->response['storeCategories'] = $storeCategories;
+
+		return view('alpha.store.category.list' , $this->response);
+	}
+
+	/**
+	 * 添加店铺类型
+	 */
+	public function addStoreCategory(Request $request){
+
+		$storeModel = new StoreInfos;
+
+		$data = array();
+
+		if(!$request->has('name')){
+			return view('errors.503');
+		}
+
+		$data['name'] = $request->get('name');
+
+		if($storeModel->addStoreCategory($data)){
+			return redirect('/alpha/stores/categories/list');
+		}
 
 	}
+
+	/**
+	 * 修改店铺类型
+	 */
+	public function updateStoreCategory(Request $request){
+
+		$storeModel = new StoreInfos;
+
+		$data = array();
+
+		if(!$request->has('id')) {
+			return view('errors.503');
+		}
+
+		$id = $request->get('id');
+		if($request->has('name')) {
+			$data['name'] = $request->get('name');
+		}
+
+		if($storeModel->updateStoreCategory($id , $data)){
+			return redirect('/alpha/stores/categories/list');
+		}
+
+	}
+
+	/**
+	 * 获取单个店铺类型
+	 */
+	public function getStoreCategoryById($id){
+
+		$storeModel = new StoreInfos;
+
+		$this->response['category'] = $storeModel->getStoreCategoryById($id);
+
+		return $this->response;
+
+	}
+
 }

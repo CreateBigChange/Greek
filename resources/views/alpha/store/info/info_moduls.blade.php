@@ -32,7 +32,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">分类</label>
 								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='c_id' id='search_creategory'>
+									<select class="form-control m-bot15" name='c_id' id='search_category'>
 										<option value="0">选择</option>
 									</select>
 								</div>
@@ -96,9 +96,57 @@
 </div>
 <!-- modal -->
 
+<script id='search_categories' type='text/html'>
+	<% for(var i = 0; i<storeCategories.length ; i++){%>
+		<option value="<%= storeCategories[i].id %>"><%= storeCategories[i].name %></option>
+	<%}%>
+</script>
+
+
+<script id='search_areas' type='text/html'>
+	<% for(var i = 0; i<areas.length ; i++){%>
+		<option value="<%= areas[i].id %>"><%= areas[i].name %></option>
+	<%}%>
+</script>
+
 <script>
 	$('.searchDiaLog').bind('click' , function() {
+		$.get('/alpha/areas/0' , function(data) {
+			if(data){
+				var bt = baidu.template;
+				var html = '<option value="0">选择</option>' + bt('search_areas' , data);
+				$('#search_province').html(html);
+			}
+		});
 
+		$.get('/alpha/stores/categories' , function(data) {
+			if(data){
+				var bt = baidu.template;
+				var html = bt('search_categories' , data);
+				$('#search_category').append(html);
+			}
+		})
+	});
+
+	$('#search_province').bind('change' , function(){
+		$.get('/alpha/areas/'+$(this).val() , function(data){
+			if(data){
+				var bt = baidu.template;
+				var html = '<option value="0">选择</option>' + bt('areas' , data);
+				$('#search_city').html(html);
+				$('#search_county').html('<option value="0">选择</option>');
+			}
+		});
+	});
+
+	$('#search_city').bind('change' , function(){
+		$.get('/alpha/areas/'+ $(this).val() , function(data){
+			if(data){
+				var bt = baidu.template;
+				var html = '<option value="0">选择</option>' + bt('areas' , data);
+				$('#search_county').html(html);
+			}
+		});
 	});
 </script>
 
