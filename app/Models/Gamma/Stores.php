@@ -184,8 +184,7 @@ class Stores extends Model
         $sql .= " LEFT JOIN goods_categories as gc ON gc.id = sg.c_id";
         $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
         $sql .= " LEFT JOIN $this->_store_nav_table as sn ON sn.id = sg.nav_id";
-
-
+        
         $sql .= " WHERE sg.store_id = $storeId";
         if(isset($search['is_open'])){
             $sql .= " AND sg.is_open = ".$search['is_open'];

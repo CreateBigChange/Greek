@@ -1,30 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
 
 Route::get('/', function () {
     return redirect('/alpha/index');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
 
 Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Alpha' ], function () {
 	Route::get('/' , function(){
@@ -89,6 +69,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/goods/add' , 'GoodsController@addGoods');
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
+
+		//品类
 		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
 		Route::post('/goods/category/update' , 'GoodsController@updateGoodsCategory');
 		Route::get('/goods/category/info/{id}' , 'GoodsController@getGoodsCategoryById');
@@ -97,6 +79,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/goods/brand/update' , 'GoodsController@updateGoodsBrand');
 		Route::get('/goods/brand/info/{id}' , 'GoodsController@getGoodsBrandById');
 		Route::get('/goods/category/list' , 'GoodsController@getGoodsCategory');
+		Route::post('/goods/category/add' , 'GoodsController@addCategory');
+		Route::post('/goods/brand/add' , 'GoodsController@addBrand');
+		Route::get('/goods/category/del/{id}' , 'GoodsController@delCategory');
+		Route::get('/goods/brand/del/{id}' , 'GoodsController@delBrand');
 
 		//地区
 		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');
@@ -106,14 +92,25 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 	});
 
-
-
 	//登陆
     Route::get('/login' , 'AdminUsersController@showLoginView');
     Route::post('/login' , 'AdminUsersController@login');
     Route::get('/logout' , 'AdminUsersController@logout');
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Gamma' ], function () {
@@ -162,4 +159,39 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
 
+});
+
+
+
+Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Sigma' ], function () {
+
+	Route::group(['middleware' => ['UserClientCheckLogin']] , function() {
+
+		Route::post('/order/init' , 'OrdersController@initOrder');
+		Route::post('/order/list' , 'OrdersController@getOrderList');
+		Route::post('/order/status/log/{orderId}' , 'OrdersController@getOrderStatusLog');
+		Route::post('/order/complaint' , 'OrdersController@complaint');
+		Route::post('/order/evaluate' , 'OrdersController@evaluate');
+		Route::post('/order/refund/reason/{orderId}' , 'OrdersController@refundReason');
+		Route::post('/order/info/{orderId}' , 'OrdersController@getOrderInfo');
+		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
+
+		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
+
+	});
+
+	Route::post('/store/list' , 'StoresController@getStoreList');
+	Route::post('/store/info/{storeId}' , 'StoresController@getStoreInfo');
+	Route::post('/store/goods/list/{storeId}' , 'StoresController@getStoreGoodsList');
+	Route::post('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
+	Route::post('/store/nav/{storeId}', 'StoresController@nav');
+	Route::post('/store/category', 'StoresController@storeCategory');
+
+	Route::post('/banner/list', 'ActivityController@getBannerList');
+
+	Route::post('/logout' , 'UsersController@logout');
+	Route::post('/login' , 'UsersController@login');
+	Route::post('/reset/password', 'UsersController@resetPassword');
+
+	Route::post('/sendsms', 'UsersController@sendSms');
 });

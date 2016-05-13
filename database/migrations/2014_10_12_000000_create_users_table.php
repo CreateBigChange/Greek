@@ -15,17 +15,17 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
 			$table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('account')->comment('帐号');
+            $table->string('account')->comment('帐号')->unique();
             $table->string('nick_name')->nullable()->comment('昵称');
             $table->string('true_name')->nullable()->comment('真实名称');
             $table->string('avatar')->nullable()->comment('头像');
             $table->string('mobile')->comment('手机号');
-            $table->timestamps('login_time');
             $table->string('login_ip');
             $table->string('login_old_ip')->nullable();
             $table->string('email')->nullable();
             $table->string('password');
             $table->tinyInteger('is_del')->default(0);
+            $table->string('salt', 60)->comment('密码加密随机字符串');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -36,7 +36,6 @@ class CreateUsersTable extends Migration
             $table->string('open_id')->unique();
             $table->string('nick_name')->nullable()->comment('昵称');
             $table->string('avatar')->nullable();
-            $table->timestamps('login_time');
             $table->string('login_ip');
             $table->string('login_old_ip')->nullable();
             $table->string('type')->default('weixin');

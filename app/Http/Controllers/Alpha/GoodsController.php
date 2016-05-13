@@ -284,4 +284,95 @@ class GoodsController extends AdminController
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->response));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     * 添加分类
+     */
+    public function addCategory(Request $request){
+        if(!$request->has('name')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        if(!$request->has('pid')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+
+        $data['name']           = $request->get('name');
+        $data['p_id']           = $request->get('pid');
+        $data['level']          = $request->get('level');
+        $data['created_at']     = date('Y-m-d H:i:s' , time());
+        $data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+        $goodsModel = new Goods;
+
+        $id = $goodsModel->addCategory($data);
+
+        if($id){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $id));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * 添加品牌
+     */
+    public function addBrand(Request $request){
+        if(!$request->has('name')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        if(!$request->has('cid')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+
+        $data['name']           = $request->get('name');
+        $data['c_id']           = $request->get('cid');
+        $data['created_at']     = date('Y-m-d H:i:s' , time());
+        $data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+        $goodsModel = new Goods;
+
+        $id = $goodsModel->addBrand($data);
+
+        if($id){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $id));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * 删除分类
+     */
+    public function delCategory($id){
+        $goodsModel = new Goods;
+        if($goodsModel->delCategory($id)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * 删除品牌
+     */
+    public function delBrand($id){
+        $goodsModel = new Goods;
+        if($goodsModel->delBrand($id)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
 }

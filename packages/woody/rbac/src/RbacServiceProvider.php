@@ -1,6 +1,6 @@
 <?php
 
-namespace Woody/Rbac;
+namespace Woody\Rbac;
 
 use Illuminate\Support\ServiceProvider;
 

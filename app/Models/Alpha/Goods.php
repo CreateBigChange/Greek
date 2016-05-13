@@ -140,7 +140,7 @@ class Goods extends Model
      */
     public function getGoodsAllCategory($id){
         global $category;
-        $category = DB::table($this->_goods_categories_table)->where('id' , $id)->frist();
+        $category = DB::table($this->_goods_categories_table)->where('id' , $id)->where('is_del' , 0)->frist();
         if($category->p_id == 0){
             return $category;
         }else{
@@ -169,7 +169,7 @@ class Goods extends Model
      * 获取商品分类
      */
     public function getGoodsCategoryByPid($pid){
-        return DB::table($this->_goods_categories_table)->where('p_id' , $pid)->get();
+        return DB::table($this->_goods_categories_table)->where('p_id' , $pid)->where('is_del' , 0)->get();
     }
 
     /**
@@ -177,7 +177,7 @@ class Goods extends Model
      * 获取单个商品分类
      */
     public function getGoodsCategoryById($id){
-        return DB::table($this->_goods_categories_table)->where('id' , $id)->first();
+        return DB::table($this->_goods_categories_table)->where('id' , $id)->where('is_del' , 0)->first();
     }
 
     /**
@@ -193,7 +193,7 @@ class Goods extends Model
      * 获取单个商品分类
      */
     public function getGoodsBrandById($id){
-        return DB::table($this->_goods_brand_table)->where('id' , $id)->first();
+        return DB::table($this->_goods_brand_table)->where('id' , $id)->where('is_del' , 0)->first();
     }
 
     /**
@@ -209,7 +209,7 @@ class Goods extends Model
      * 获取商品分类
      */
     public function getGoodsCategoryByLevel($level){
-        return DB::table($this->_goods_categories_table)->where('level' , $level)->get();
+        return DB::table($this->_goods_categories_table)->where('level' , $level)->where('is_del' , 0)->get();
     }
 
     /**
@@ -217,6 +217,38 @@ class Goods extends Model
      * 获取商品品牌
      */
     public function getGoodsBrandByCid($cid){
-        return DB::table($this->_goods_brand_table)->where('c_id' , $cid)->get();
+        return DB::table($this->_goods_brand_table)->where('c_id' , $cid)->where('is_del' , 0)->get();
+    }
+
+    /**
+     *
+     * 添加商品品牌
+     */
+    public function addBrand($data){
+        return DB::table($this->_goods_brand_table)->insertGetId($data);
+    }
+
+    /**
+     *
+     * 添加商品品牌
+     */
+    public function addCategory($data){
+        return DB::table($this->_goods_categories_table)->insertGetId($data);
+    }
+
+    /**
+     *
+     * 删除商品品牌
+     */
+    public function delBrand($id){
+        return DB::table($this->_goods_brand_table)->where('id' , $id)->update(['is_del' => 1]);
+    }
+
+    /**
+     *
+     * 删除商品分类
+     */
+    public function delCategory($id){
+        return DB::table($this->_goods_categories_table)->where('id' , $id)->update(['is_del' => 1]);
     }
 }

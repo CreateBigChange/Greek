@@ -154,4 +154,7 @@ return [
     'store_app_login_cookie' => 'jisux_store_app',
     'store_app_lifetime' => 525600,
 
+    'sigma_login_cookie' => 'jisux_app',
+    'sigma_lifetime' => 525600,
+
 ];

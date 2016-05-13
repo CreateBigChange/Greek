@@ -39,6 +39,8 @@ class Message {
 				'NOT_DELETE'					=> array('code'=>'5002' , 'msg'=>'该栏目下还有商品'),
 				'RELOGIN'						=> array('code'=>'5003' , 'msg'=>'请重新登录'),
 
+				'POINT_NOT_AMPLE'				=> array('code'=>'5004' , 'msg'=>'积分不足'),
+
 			);
 
 			if(isset($error[strtoupper($errorkey)])){
