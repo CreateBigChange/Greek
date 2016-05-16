@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
 use Session , Cookie , Config;
+use Validator , Input;
 
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
@@ -55,10 +56,11 @@ class UsersController extends ApiController
      */
     public function login(Request $request) {
 
-        if( !$request->has('account') ) {
-            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-        }
-        if( !$request->has('password') ) {
+        $validation = Validator::make($request->all(), [
+            'account'                => 'required',
+            'password'                  => 'required'
+        ]);
+        if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
 
@@ -152,6 +154,15 @@ class UsersController extends ApiController
      */
     public function resetPassword(Request $request){
 
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required',
+            'code'                  => 'required',
+            'password'              => 'password'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
         $mobile    = $request->get('mobile');
         $code       = $request->get('code');
         $password   = $request->get('password');
@@ -205,6 +216,13 @@ class UsersController extends ApiController
 
     public function sendSms(Request $request){
 
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
         $mobile  =  $request->get('mobile');
         if(! preg_match("/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/" , $mobile)){
             return response()->json(Message::setResponseInfo('NO_PHONE'));
@@ -226,6 +244,364 @@ class UsersController extends ApiController
 
     }
 
+    /**
+     * @api {POST} /sigma/user/address[?page=1] 用户收货地址
+     * @apiName userAddress
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/address
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/address
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function getConsigneeAddressByUserId(){
 
+        if(!isset($_GET['page'])){
+            $page = 1;
+        }else{
+            $page = $_GET['page'];
+        }
+
+        $addNum   = $this->_model->getCAByUidTotalNum($this->userId);
+
+        $response = array();
+        $response['pageData']   = $this->getPageData($page , $this->_length , $addNum);
+        $response['address']   = $this->_model->getConsigneeAddressByUserId($this->userId , $this->_length , $response['pageData']->offset);
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
+    }
+
+    /**
+     * @api {POST} /sigma/user/address/add 用户添加收货地址
+     * @apiName userAddressAdd
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/address/add
+     *
+     * @apiParam {sting} mobile 手机号
+     * @apiParam {sting} consignee 联系人
+     * @apiParam {int} province 省
+     * @apiParam {int} city 市
+     * @apiParam {int} county 区
+     * @apiParam {sting} address 详细地址
+     * @apiParam {sting} longitude 经度
+     * @apiParam {sting} latitude 纬度
+     *
+     *
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/address/add
+     * {
+     *      mobile : 18401586654,
+     *      consignee   : 吴辉,
+     *      province   :   1,
+     *      city        : 2,
+     *      county      : 36,
+     *      address     : 绿地中央广场,
+     *      longitude   : 120.373,
+     *      latitude    : 282.134
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function addConsigneeAddress(Request $request){
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required',
+            'consignee'             => 'required',
+            'province'              => 'required',
+            'city'                  => 'required',
+            'county'                => 'required',
+            'address'               => 'required',
+            'longitude'             => 'required',
+            'latitude'              => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        
+        $data = array();
+        
+        $data['user_id']    = $this->userId;
+        $data['province']   = $request->get('province');
+        $data['city']       = $request->get('city');
+        $data['county']     = $request->get('county');
+        $data['address']    = $request->get('address');
+        $data['consignee']  = $request->get('consignee');
+        $data['mobile']     = $request->get('mobile');
+        $data['longitude']  = $request->get('longitude');
+        $data['latitude']   = $request->get('latitude');
+        $data['created_at'] = date('Y-m-d H:i:s' , time());
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+        $addressid = $this->_model->addConsigneeAddress($data);
+
+        if($addressid){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $addressid));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/user/address/update/{addressId} 修改收货地址
+     * @apiName userAddressUpdate
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/address/update/3
+     *
+     * @apiParam {sting} [mobile] 手机号
+     * @apiParam {sting} [consignee] 联系人
+     * @apiParam {int} [province] 省
+     * @apiParam {int} [city] 市
+     * @apiParam {int} [county] 区
+     * @apiParam {sting} [address] 详细地址
+     * @apiParam {sting} [longitude] 经度
+     * @apiParam {sting} [latitude] 纬度
+     *
+     *
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/address/update/3
+     * {
+     *      mobile : 18401586654,
+     *      consignee   : 吴辉,
+     *      province   :   1,
+     *      city        : 2,
+     *      county      : 36,
+     *      address     : 绿地中央广场,
+     *      longitude   : 120.373,
+     *      latitude    : 282.134
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function updateConsigneeAddress($addressId , Request $request){
+
+
+        $data = array();
+
+        if($request->has('province')) {
+            $data['province'] = $request->get('province');
+        }
+        if($request->has('city')) {
+            $data['city'] = $request->get('city');
+        }
+        if($request->has('county')) {
+            $data['county'] = $request->get('county');
+        }
+        if($request->has('address')) {
+            $data['address'] = $request->get('address');
+        }
+        if($request->has('consignee')) {
+            $data['consignee'] = $request->get('consignee');
+        }
+        if($request->has('mobile')) {
+            $data['mobile'] = $request->get('mobile');
+        }
+        if($request->has('longitude')) {
+            $data['longitude'] = $request->get('longitude');
+        }
+        if($request->has('latitude')) {
+            $data['latitude'] = $request->get('latitude');
+        }
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+
+        if($this->_model->updateConsigneeAddress($this->userId , $addressId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS' ));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/user/address/del/{addressId} 删除收货地址
+     * @apiName userAddressUpdate
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/address/del/3
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/address/del/3
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function delConsigneeAddress($addressId){
+
+
+        $data = array();
+
+        $data['is_del'] = 1;
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+
+        if($this->_model->updateConsigneeAddress($this->userId , $addressId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS' ));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/user/update/password 修改密码
+     * @apiName userUpdatePassword
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/update/password
+     *
+     * @apiParam {sting} password 密码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/update/password
+     * {
+     *      password:123456
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function updatePassword(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'password'                => 'required'
+
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+
+        $password = $request->get('password');
+
+        $data['salt']               = $this->getSalt(8);
+        $data['password']           = $this->encrypt($password , $data['salt']);
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/user/set/pay/password 设置支付密码
+     * @apiName userSetPayPassword
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/set/pay/password
+     *
+     * @apiParam {sting} pay_password 密码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/set/pay/password
+     * {
+     *      pay_password:654321
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function setPayPassword(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'pay_password'                => 'required'
+
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+
+        $payPassword = $request->get('pay_password');
+
+        $data['pay_salt']               = $this->getSalt(8);
+        $data['pay_password']           = $this->encrypt($payPassword , $data['pay_salt']);
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+
+    /**
+     * @api {POST} /sigma/bind/mobile 重修绑定手机号
+     * @apiName resetMobile
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/bind/mobile
+     *
+     * @apiParam {sting} 18401586654 手机号
+     * @apiParam {string} code 验证码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/bind/password
+     * {
+     *      'mobile' : 18401586654,
+     *      'code'  : '218746'
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function bindMobile(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required',
+            'code'                  => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $mobile    = $request->get('mobile');
+        $code       = $request->get('code');
+
+        $checkCode  = session::get("jsx_sms_$mobile");
+
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }
+
+//        $user               = $this->_model->getUserInfoByMobile($mobile);
+//
+//        if($user == null){
+//            return response()->json(Message::setResponseInfo('NO_USER'));
+//        }
+
+        $data = array();
+        $data['mobile']             = $mobile;
+        $data['updated_at']         = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            session::forget("jsx_sms_$mobile");
+
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
 
 }

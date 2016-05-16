@@ -386,7 +386,7 @@ class OrdersController extends ApiController
      * @apiName ordersEvaluate
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
-     * @apiDescription 投诉
+     * @apiDescription 评价
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/store/order/evaluate
      *

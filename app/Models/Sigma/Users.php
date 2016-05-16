@@ -106,8 +106,33 @@ class Users extends Model
      * @return mixed
      * 获取用户收货地址
      */
-    public function getConsigneeAddressByUserId($userId){
-        return DB::table($this->_consignee_address_table)->where('user_id' , $userId)->where('is_del' , 0)->get();
+    public function getConsigneeAddressByUserId($userId , $length = 20 , $offset = 0){
+        return DB::table($this->_consignee_address_table)
+            ->where('user_id' , $userId)
+            ->where('is_del' , 0)
+            ->skip($offset)->take($length)
+            ->get();
+    }
+
+    /**
+     * @param $userId
+     * @return mixed
+     * 获取用户收货地址的总数
+     */
+    public function getCAByUidTotalNum($userId){
+        return DB::table($this->_consignee_address_table)
+            ->where('user_id' , $userId)
+            ->where('is_del' , 0)
+            ->count();
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     * 添加收货地址
+     */
+    public function addConsigneeAddress($data){
+        return DB::table($this->_consignee_address_table)->insertGetId($data);
     }
 
     /**
@@ -117,6 +142,17 @@ class Users extends Model
      */
     public function getConsigneeAddressById($id){
         return DB::table($this->_consignee_address_table)->where('id' , $id)->where('is_del' , 0)->first();
+    }
+
+    /**
+     * @param $userId
+     * @param $id
+     * @param $data
+     * @return mixed
+     * 修改收货地址
+     */
+    public function updateConsigneeAddress($userId , $id , $data){
+        return DB::table($this->_consignee_address_table)->where('id' , $id)->where('user_id' , $userId)->update($data);
     }
 
     /**
@@ -136,6 +172,12 @@ class Users extends Model
         }
     }
 
+    /**
+     * @param $userId
+     * @param $point
+     * @return mixed
+     * 更新用户积分
+     */
     public function updatePoint($userId , $point){
         return DB::table($this->_table)->where('id' , $userId)->update(['points'=>$point]);
     }

@@ -178,6 +178,16 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
+		Route::post('/user/address' , 'UsersController@getConsigneeAddressByUserId');
+		Route::post('/user/address/add' , 'UsersController@addConsigneeAddress');
+		Route::post('/user/address/update/{addressId}' , 'UsersController@updateConsigneeAddress');
+		Route::post('/user/address/del/{addressId}' , 'UsersController@delConsigneeAddress');
+
+
+		Route::post('/user/update/password' , 'UsersController@updatePassword');
+		Route::post('/user/update/set/pay/password' , 'UsersController@setPayPassword');
+		Route::post('/user/bind/mobile', 'UsersController@bindMobile');
+
 	});
 
 	Route::post('/store/list' , 'StoresController@getStoreList');
