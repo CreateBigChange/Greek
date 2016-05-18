@@ -6,6 +6,7 @@ use Session , Cookie , Config;
 
 use App\Models\Alpha\AdminPermissions;
 use App\Models\Alpha\Logs;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -24,7 +25,7 @@ class AdminController extends Controller
 		
 			$this->userInfo = $userInfo;
 
-			$this->_getMenu($this->userInfo->id);
+			$this->_getMenu( $this->userInfo->id);
 		}
 
 
@@ -35,16 +36,18 @@ class AdminController extends Controller
 	
 		$permissionModel = new AdminPermissions;
 
+		$request = new Request();
+
 		$permissionList = $permissionModel->getAdminUserMenu($userId);
 
 		foreach($permissionList as $pl){
 			$pl->active = 0;
-			if($pl->url == $_SERVER['REDIRECT_URL']){
+			if($pl->url == $_SERVER['REQUEST_URI']){
 				$pl->active = 1;
 			}
 			foreach($pl->child as $plc){
 				$plc->active	= 0;
-				if($plc->url == $_SERVER['REDIRECT_URL']){
+				if($plc->url == $_SERVER['REQUEST_URI']){
 					$plc->active	= 1;
 					$pl->active		= 1;
 				}
