@@ -26,6 +26,7 @@
 										<th>联系电话</th>
 										<th>联系邮箱</th>
 										<th>地址</th>
+										<th>地图标记</th>
 										<th>审核</th>
 										<th>状态</th>
 										<th width="100px;">操作</th>
@@ -43,11 +44,12 @@
 											<td>{{ $si->contact_phone }}</td>
 											<td>{{ $si->contact_email }}</td>
 											<td>{{ $si->province }}{{ $si->city }}{{ $si->county }}{{ $si->address }}</td>
+											<td>@if ($si->is_sign == 1) 已标记 @else 未标记 @endif</td>
 											<td>@if ($si->is_checked == 1) 已审核 @else 未审核 @endif</td>
 											<td>@if ($si->is_open == 1) 开启 @else 关闭 @endif</td>
 											<td>
-												<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>
-												<div p_id="{{ $si->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+												{{--<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
+												<div p_id="{{ $si->id }}" location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
 												<a title="店员" href="/alpha/store/user?store_id={{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-user"></i></a>
 											</td>
 										</tr>

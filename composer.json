@@ -7,7 +7,9 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "qiniu/php-sdk": "^7.0"
+        "qiniu/php-sdk": "^7.0",
+        "socialiteproviders/weixin": "^2.1",
+        "socialiteproviders/qq": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

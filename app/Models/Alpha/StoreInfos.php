@@ -26,27 +26,26 @@ class StoreInfos extends Model
  					si.description,
  					si.business_license,
  					si.id_card_img,
-                    ap.id as province_id,
-                    ap.name as province,
-                    aci.id as city_id,
-                    aci.name as city,
-                    aco.id as county_id,
-                    aco.name as county,
                     si.address,
+                    si.province,
+                    si.city,
+                    si.county,
                     si.contacts,
+                    si.location,
                     si.contact_phone,
                     si.contact_email,
                     si.is_open,
                     si.is_checked,
                     si.is_del,
                     si.created_at,
-                    si.updated_at
+                    si.updated_at,
+                    si.is_sign
                     
  					FROM $this->_store_infos_table AS si ";
 
-		$sql .= " LEFT JOIN areas as ap ON ap.id = si.province";
-		$sql .= " LEFT JOIN areas as aci ON aci.id = si.city";
-		$sql .= " LEFT JOIN areas as aco ON aco.id = si.county";
+//		$sql .= " LEFT JOIN areas as ap ON ap.id = si.province";
+//		$sql .= " LEFT JOIN areas as aci ON aci.id = si.city";
+//		$sql .= " LEFT JOIN areas as aco ON aco.id = si.county";
 		$sql .= " LEFT JOIN $this->_store_categories_table as category ON category.id = si.c_id";
 
 		$sql .= " WHERE si.is_del = 0";
@@ -116,7 +115,7 @@ class StoreInfos extends Model
 	 * 获取店铺信息
 	 */
 	public function getStoreInfo($id){
-		$info = $this->getStoreInfoList(array('ids'=>array($id)));
+		$info = $this->getStoreInfoList(1  , 0 , array('ids'=>array($id)));
 
 		if(isset($info[0])){
 			return $info[0];

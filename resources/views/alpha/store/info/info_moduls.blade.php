@@ -1,3 +1,17 @@
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=b51eb8d33320947de6ca9302530c99d1"></script>
+
+<script type="text/javascript">
+
+</script>
+
+<style>
+
+	.amap-sug-result {
+		z-index: 1041;
+	}
+
+</style>
+
 {{--搜索--}}
 		<!-- Modal -->
 <div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -229,27 +243,20 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">区域</label>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='province' id='edit_province'>
-										<option value="0">选择</option>
-									</select>
-								</div>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='city' id='edit_city'>
-										<option value="0">选择</option>
-									</select>
-								</div>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='county' id='edit_county'>
-										<option value="0">选择</option>
-									</select>
+								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='address' autocomplete="off" id="edit_address"/>
+									<input type="hidden" class="form-control" name='province' autocomplete="off" id="edit_province"/>
+									<input type="hidden" class="form-control" name='city' autocomplete="off" id="edit_city"/>
+									<input type="hidden" class="form-control" name='county' autocomplete="off" id="edit_county"/>
+									<input type="hidden" class="form-control" name='location' autocomplete="off" id="edit_location"/>
+<!--									<div class="form-control" id="edit_ditu_message"></div>-->
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<label class="col-sm-2 col-sm-2 control-label">地图</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='address' id="edit_address"/>
+									<div class="form-control" style="width:100%;height:500px;" name='address' id="edit_ditu"></div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -299,6 +306,8 @@
 <script>
 	$('.update').bind('click' , function(){
 		var storeId = $(this).attr('p_id');
+		var location = $(this).attr('location').split(',');
+
 		$.get('/alpha/stores/info/' + storeId , function(data){
 			if(data.code == '0000'){
 				var categoryId 	= data.data.c_id;
@@ -421,9 +430,80 @@
 				}
 			});
 		});
-		
-		
+
+
+	var windowsArr = [];
+    var marker = [];
+	var map = new AMap.Map('edit_ditu',{
+		resizeEnable: true,
+		zoom: 13,
+		center: location
 	});
+	AMap.plugin('AMap.Geocoder',function(){
+		var geocoder = new AMap.Geocoder({
+			city: "全国"//城市，默认：“全国”
+		});
+		var marker = new AMap.Marker({
+			map:map,
+			bubble:true
+		})
+		var addressInput 	= document.getElementById('edit_address');
+		var province 		= document.getElementById('edit_province');
+		var city 			= document.getElementById('edit_city');
+		var county 			= document.getElementById('edit_county');
+		var location 		= document.getElementById('edit_location');
+		var message 		= document.getElementById('edit_ditu_message');
+		map.on('click',function(e){
+			marker.setPosition(e.lnglat);
+			location.value = e.lnglat.toString();
+			geocoder.getAddress(e.lnglat,function(status,result){
+			console.log(result);
+				if(status=='complete'){
+					addressInput.value 	= result.regeocode.formattedAddress;
+					province.value 		= result.regeocode.addressComponent.province;
+					city.value 			= result.regeocode.addressComponent.city;
+					county.value 		= result.regeocode.addressComponent.district;
+<!--					message.innerHTML = ''-->
+				}else{
+<!--					message.innerHTML = '无法获取地址'-->
+				}
+			})
+		})
+
+		addressInput.onchange = function(e){
+			var address = addressInput.value;
+			geocoder.getLocation(address,function(status,result){
+				console.log(result);
+				if(status=='complete'&&result.geocodes.length){
+					marker.setPosition(result.geocodes[0].location);
+					map.setCenter(marker.getPosition())
+<!--					message.innerHTML = ''-->
+				}else{
+<!--					message.innerHTML = '无法获取位置'-->
+				}
+			})
+		}
+
+	});
+
+
+	AMap.plugin(['AMap.Autocomplete','AMap.PlaceSearch'],function(){
+      var autoOptions = {
+        city: "全国", //城市，默认全国
+        input: "edit_address"//使用联想输入的input的id
+      };
+      autocomplete= new AMap.Autocomplete(autoOptions);
+      var placeSearch = new AMap.PlaceSearch({
+            city:'全国',
+            map:map
+      })
+      AMap.event.addListener(autocomplete, "select", function(e){
+         //TODO 针对选中的poi实现自己的功能
+         placeSearch.search(e.poi.name)
+      });
+    });
+		
+});
 </script>
 
 
@@ -517,27 +597,20 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">区域</label>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='province' id='province'>
-										<option value="0">选择</option>
-									</select>
-								</div>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='city' id='city'>
-										<option value="0">选择</option>
-									</select>
-								</div>
-								<div class="col-lg-3">
-									<select class="form-control m-bot15" name='county' id='county'>
-										<option value="0">选择</option>
-									</select>
+								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='address' autocomplete="off" id="address"/>
+									<input type="hidden" class="form-control" name='province' autocomplete="off" id="province"/>
+									<input type="hidden" class="form-control" name='city' autocomplete="off" id="city"/>
+									<input type="hidden" class="form-control" name='county' autocomplete="off" id="county"/>
+									<input type="hidden" class="form-control" name='location' autocomplete="off" id="location"/>
+<!--									<div class="form-control" id="ditu_message"></div>-->
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">地址</label>
+								<label class="col-sm-2 col-sm-2 control-label">地图</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='address' />
+									<div class="form-control" style="width:100%;height:500px;" name='address' id="ditu"></div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -593,16 +666,9 @@ $('.add').bind('click' , function(){
 			$('#category').append(html);
 		}
 	});
-	$.get('/alpha/areas/0' , function(data){
-		if(data){
-			var bt = baidu.template;
-			var html = '<option value="0">选择</option>' + bt('areas' , data);
-			$('#province').html(html);
-		}
-	});
 
 	var business = new Dropzone("#business_license", {
-		url: "/alpha/upload",
+		url: "/alpha/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',
@@ -612,13 +678,14 @@ $('.add').bind('click' , function(){
 
 	business.on('success' , function(file , data){
 		if(data.code == '0000'){
-			$('#business_license').val(data.data);
-			$('#business_license_pre').attr('src' , data.data);
+			var url = data.data.host + '/' + data.data.key;
+			$('#business_license').val(url);
+			$('#business_license_pre').attr('src' , url);
 		}
 	});
 
 	var idCard = new Dropzone("#id_card_img", {
-		url: "/alpha/upload",
+		url: "/alpha/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',
@@ -628,31 +695,85 @@ $('.add').bind('click' , function(){
 
 	idCard.on('success' , function(file , data){
 		if(data.code == '0000'){
-			$('#id_card_img').val(data.data);
-			$('#id_card_img_pre').attr('src' , data.data);
+			var url = data.data.host + '/' + data.data.key;
+			$('#id_card_img').val(url);
+			$('#id_card_img_pre').attr('src' , url);
 		}
 	});
-});
 
-$('#province').bind('change' , function(){
-	$.get('/alpha/areas/'+$(this).val() , function(data){
-		if(data){
-			var bt = baidu.template;
-			var html = '<option value="0">选择</option>' + bt('areas' , data);
-			$('#city').html(html);
-			$('#county').html('<option value="0">选择</option>');
-		}
-	});
-});
 
-$('#city').bind('change' , function(){
-	$.get('/alpha/areas/'+ $(this).val() , function(data){
-		if(data){
-			var bt = baidu.template;
-			var html = '<option value="0">选择</option>' + bt('areas' , data);
-			$('#county').html(html);
-		}
+	var windowsArr = [];
+    var marker = [];
+	var map = new AMap.Map('ditu',{
+		resizeEnable: true,
+		zoom: 13,
+		center: [116.39,39.9]
 	});
+	AMap.plugin('AMap.Geocoder',function(){
+		var geocoder = new AMap.Geocoder({
+			city: "全国"//城市，默认：“全国”
+		});
+		var marker = new AMap.Marker({
+			map:map,
+			bubble:true
+		})
+		var addressInput 	= document.getElementById('address');
+		var province 		= document.getElementById('province');
+		var city 			= document.getElementById('city');
+		var county 			= document.getElementById('county');
+		var location 		= document.getElementById('location');
+		var message 		= document.getElementById('ditu_message');
+		map.on('click',function(e){
+			marker.setPosition(e.lnglat);
+			location.value = e.lnglat.toString();
+			geocoder.getAddress(e.lnglat,function(status,result){
+			console.log(result);
+				if(status=='complete'){
+					addressInput.value 	= result.regeocode.formattedAddress;
+					province.value 		= result.regeocode.addressComponent.province;
+					city.value 			= result.regeocode.addressComponent.city;
+					county.value 		= result.regeocode.addressComponent.district;
+<!--					message.innerHTML = ''-->
+				}else{
+<!--					message.innerHTML = '无法获取地址'-->
+				}
+			})
+		})
+
+		addressInput.onchange = function(e){
+			var address = addressInput.value;
+			geocoder.getLocation(address,function(status,result){
+				console.log(result);
+				if(status=='complete'&&result.geocodes.length){
+					marker.setPosition(result.geocodes[0].location);
+					map.setCenter(marker.getPosition())
+<!--					message.innerHTML = ''-->
+				}else{
+<!--					message.innerHTML = '无法获取位置'-->
+				}
+			})
+		}
+
+	});
+
+
+	AMap.plugin(['AMap.Autocomplete','AMap.PlaceSearch'],function(){
+      var autoOptions = {
+        city: "全国", //城市，默认全国
+        input: "address"//使用联想输入的input的id
+      };
+      autocomplete= new AMap.Autocomplete(autoOptions);
+      var placeSearch = new AMap.PlaceSearch({
+            city:'全国',
+            map:map
+      })
+      AMap.event.addListener(autocomplete, "select", function(e){
+         //TODO 针对选中的poi实现自己的功能
+         placeSearch.search(e.poi.name)
+      });
+    });
+
+
 });
 
 </script>

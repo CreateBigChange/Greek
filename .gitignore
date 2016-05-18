@@ -3,7 +3,10 @@
 Homestead.yaml
 Homestead.json
 .env
-/storage
+/storage/framework/views
+/storage/framework/cache
+/storage/framework/sessions
+/storage/logs
 composer.lock
 *.swp
 *.swo

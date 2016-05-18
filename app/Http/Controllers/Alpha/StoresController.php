@@ -11,8 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 
+use Config;
+
 use App\Models\Alpha\StoreInfos;
 use App\Libs\Message;
+use App\Libs\Curl;
 
 class StoresController extends AdminController
 {
@@ -144,6 +147,9 @@ class StoresController extends AdminController
 		if($request->has('contacts')) {
 			$data['contacts'] = $request->get('contacts');
 		}
+		if($request->has('location')) {
+			$data['location'] = $request->get('location');
+		}
 		if($request->has('contact_phone')) {
 			$data['contact_phone'] = $request->get('contact_phone');
 		}
@@ -177,6 +183,23 @@ class StoresController extends AdminController
 	 * 添加店铺
 	 */
 	public function addStore(Request $request){
+
+		if(!$request->has('c_id')){
+			return false;
+		}
+		if(!$request->has('name')){
+			return false;
+		}
+		if(!$request->has('address')){
+			return false;
+		}
+		if(!$request->has('contacts')){
+			return false;
+		}
+		if(!$request->has('contact_phone')){
+			return false;
+		}
+
 		$data					= array();
 		$data['c_id'] 				= $request->get('c_id');
 		$data['name']				= $request->get('name');
@@ -188,6 +211,7 @@ class StoresController extends AdminController
 		$data['county']				= $request->get('county');
 		$data['address']			= $request->get('address');
 		$data['contacts']			= $request->get('contacts');
+		$data['location']			= $request->get('location');
 		$data['contact_phone']		= $request->get('contact_phone');
 		$data['contact_email']		= $request->get('contact_email');
 		if($request->has('is_open')){
@@ -205,10 +229,51 @@ class StoresController extends AdminController
 		$data['created_at']			= date('Y-m-d H:i:s' , time());
 		$data['updated_at']			= date('Y-m-d H:i:s' , time());
 
+		$curl = new Curl();
+
 		$storeModel = new StoreInfos;
 
 		$storeId = $storeModel->addStore($data);
+
 		if($storeId){
+
+//			/*
+//			 *
+//			 * 在高德地图上标注店铺
+//			 */
+//			$param = array(
+//				"key" 		=> Config::get('amap.key'),
+//				"tableid"	=> Config::get('amap.tableid'),
+//				"loctype"	=> "1",
+//			);
+//
+//			$amapAddress = array(
+//				"_name"		=> $data['name'],
+//				"_location" => $data['location'],
+//				"coordtype"	=> 2,
+//				"province"	=> $data['province'],
+//				"city"		=> $data['city'],
+//				"county"	=> $data['county'],
+//				"_address"	=> $data['address'],
+//				"store_id"	=> $storeId
+//			);
+//
+//			$param['data'] = json_encode($amapAddress);
+//
+//			$url = Config::get('amap.url');
+//
+//			$amap = json_decode($curl->post($url , $param));
+//
+//			if(empty($amap) && $amap->status == '1'){
+//				$sign['is_sign'] = 1;
+//				$sign['amap_id'] = $amap->_id;
+//				$storeModel->updateStore($storeId , $sign);
+//			}
+
+			/*
+			 *
+			 * 生成默认用户
+			 */
 			$user = array();
 			$user['real_name'] 	= $data['contacts'];
 			$user['account']	= $data['contact_phone'];
