@@ -1,1 +1,1 @@
-define({  "name": "急所需商家管理APP接口",  "version": "1.0.0",  "description": "",  "title": "急所需商家管理app",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2016-05-16T08:09:50.456Z",    "url": "http://apidocjs.com",    "version": "0.15.1"  }});
+define({  "name": "急所需商家管理APP接口",  "version": "1.0.0",  "description": "",  "title": "急所需商家管理app",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2016-05-20T06:41:06.977Z",    "url": "http://apidocjs.com",    "version": "0.15.1"  }});

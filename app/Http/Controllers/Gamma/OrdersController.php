@@ -64,13 +64,13 @@ class OrdersController extends ApiController
         }
 
         if ($type == 1){
-            $search['status'] = array('2');
+            $search['status'] = array($status['paid']['status']);
         }elseif ($type == 2){
-            $search['status'] = array('3');
+            $search['status'] = array($status['on_the_way']['status']);
         }elseif ($type == 3){
-            $search['status'] = array('4');
+            $search['status'] = array($status['completd']['status']);
         }elseif ($type == 4){
-            $search['status'] = array('5' , '6' , '7');
+            $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
         }
 
         if($request->has('search')){

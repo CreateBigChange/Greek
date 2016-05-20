@@ -69,6 +69,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/goods/add' , 'GoodsController@addGoods');
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
+		Route::get('/goods/del/{id}' , 'GoodsController@delGoods');
 
 		//品类
 		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
@@ -89,6 +90,13 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		Route::post( '/upload' , 'UploadController@uploadImg' );
 		Route::post( '/upload/qiniu' , 'UploadController@uploadQiniu' );
+
+		//订单
+		Route::get('/order/list' , 'OrdersController@getOrderList');
+		Route::get('/order/delivery' , 'OrdersController@getOrderDelivery');
+		Route::get('/order/notdelivery' , 'OrdersController@getOrderNotDelivery');
+		Route::get('/order/accident' , 'OrdersController@getOrderAccident');
+		Route::post('/order/change/status/{id}', 'OrdersController@changeStatus');
 
 	});
 
@@ -191,6 +199,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	});
 
 	Route::post('/store/list' , 'StoresController@getStoreList');
+	Route::post('/store/list/byids' , 'StoresController@getStoreListByIds');
 	Route::post('/store/info/{storeId}' , 'StoresController@getStoreInfo');
 	Route::post('/store/goods/list/{storeId}' , 'StoresController@getStoreGoodsList');
 	Route::post('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');

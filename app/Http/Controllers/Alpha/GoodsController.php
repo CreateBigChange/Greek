@@ -165,6 +165,24 @@ class GoodsController extends AdminController
     }
 
     /**
+     * 删除商品
+     */
+    public function delGoods($id){
+
+        $data = array();
+
+        $data['is_del'] = 1;
+
+        $data['updated_at'] = date('Y-m-d H:i:s' , time());
+
+        $goodsModel = new Goods;
+
+        $goodsModel->editGoods($id , $data);
+
+        return redirect('/alpha/goods');
+    }
+
+    /**
      * ajax获取商品分类
      */
     public function ajaxGoodsCategoryByPid($pid){

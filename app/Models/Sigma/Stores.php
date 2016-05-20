@@ -24,7 +24,7 @@ class Stores extends Model
      *
      * 获取店铺信息
      */
-    public function getStoreList(){
+    public function getStoreList($search){
         $sql  = "select 
                       si.id,
                       si.name as store_name,
@@ -50,6 +50,10 @@ class Stores extends Model
         $sql .= " LEFT JOIN store_categories as sca ON si.c_id = sca.id";
 
         $sql .= " WHERE si.is_del = 0 AND si.is_open = 1";
+
+        if(isset($search['ids'])){
+            $sql .= " AND si.id IN (" . $search['ids'] .")";
+        }
 
         $info = DB::select($sql);
 

@@ -47,7 +47,7 @@
                                         <td>
                                             {{--<div p_id="{{ $g->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
                                             <div p_id="{{ $g->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
-                                            <a title="添加帐号" href="/alpha/stores/users" class="btn btn-danger btn-xs"><i class="icon-trash"></i></a>
+                                            <div title="删除商品" url="/alpha/goods/del/{{ $g->id }}" href="#warning" data-toggle="modal" class="btn btn-danger btn-xs warning" ><i class="icon-trash"></i></div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -69,5 +69,6 @@
 <!--main content end-->
 
 @include('alpha.goods.goods_moduls')
+@include('alpha.moduls.warning')
 
 @include('alpha.footer')

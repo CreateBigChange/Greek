@@ -78,6 +78,37 @@ class StoresController extends ApiController
     }
 
     /**
+     * @api {POST} /sigma/store/list/byids 根据店铺ids获取店铺列表
+     * @apiName storeList
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/store/list
+     *
+     * @apiParam {string} ids 商品id
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/store/list/byids
+     *      {
+     *          ids : "1,2,3,4,5,6,7"
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getStoreListByIds(Request $request){
+
+        if(!$request->has('ids')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        $ids = $request->get('ids');
+
+        $storeList = $this->_model->getStoreList($ids);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $storeList));
+    }
+
+    /**
      * @api {POST} /sigma/store/goods/list/{storeId} 获取店铺商品列表
      * @apiName storeGoodsList
      * @apiGroup SIGMA

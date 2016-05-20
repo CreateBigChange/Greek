@@ -34,7 +34,7 @@
                                             <td id="c_{{ $c->id }}">{{ $c->name }}</td>
                                             <td>
                                                 <div cid="{{ $c->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
-                                                <div title="添加帐号" src="/alpha/goods/category/del/{{$c->id}}" href="#warning" data-toggle="modal" class="btn btn-danger btn-xs warning"><i class="icon-trash"></i></div>
+                                                <div title="删除分类" src="/alpha/goods/category/del/{{$c->id}}" href="#warning" data-toggle="modal" class="btn btn-danger btn-xs warning"><i class="icon-trash"></i></div>
                                                 <div cid="{{ $c->id }}" class="btn btn-primary btn-xs openChild" ><i class="icon-eye-open"></i></div>
                                             </td>
                                         </tr>
