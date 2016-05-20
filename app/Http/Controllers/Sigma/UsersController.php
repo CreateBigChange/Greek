@@ -138,7 +138,7 @@ class UsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/reset/password
      *
-     * @apiParam {sting} 18401586654 手机号
+     * @apiParam {sting} mobile 手机号
      * @apiParam {string} password 密码
      * @apiParam {string} code 验证码
      *
@@ -157,7 +157,7 @@ class UsersController extends ApiController
         $validation = Validator::make($request->all(), [
             'mobile'                => 'required',
             'code'                  => 'required',
-            'password'              => 'password'
+            'password'              => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -195,18 +195,18 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/sms 短信
+     * @api {POST} /sigma/sendsms 短信
      * @apiName sms
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/sms
+     * @apiSampleRequest http://greek.test.com/sigma/sendsms
      *
      * @apiParam {sting} mobile 帐号
      *
      * @apiParamExample {json} Request Example
-     * POST /sigma/sms
+     * POST /sigma/sendsms
      * {
      *      mobile   : 18401586654
      * }

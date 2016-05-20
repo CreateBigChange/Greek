@@ -57,19 +57,19 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/list[?page=1] 获取订单列表
+     * @api {POST} /sigma/order/list[?page=1] 获取订单列表
      * @apiName orders
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 获取订单列表
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/list?page=1
+     * @apiSampleRequest http://greek.test.com/sigma/order/list?page=1
      *
      * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
      * @apiParam {string} search 搜索条件
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/list?page=1
+     *      POST /sigma/order/list?page=1
      *      {
      *          status : 1
      *      }
