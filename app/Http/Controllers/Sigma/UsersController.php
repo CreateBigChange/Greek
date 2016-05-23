@@ -179,6 +179,7 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('NO_USER'));
         }
 
+
         $data = array();
         $data['salt']               = $this->getSalt(8);
         $data['password']           = $this->encrypt($password , $data['salt']);

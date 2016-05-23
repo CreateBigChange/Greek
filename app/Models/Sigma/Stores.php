@@ -24,7 +24,7 @@ class Stores extends Model
      *
      * 获取店铺信息
      */
-    public function getStoreList($search){
+    public function getStoreList($search = array()){
         $sql  = "select 
                       si.id,
                       si.name as store_name,
