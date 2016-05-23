@@ -36,7 +36,9 @@ class Users extends Model
                 'mobile' ,
                 'avatar' ,
                 'email' ,
-                'created_at'
+                'created_at',
+                'points',
+                'money'
             )
             ->where('is_del' , 0)
             ->where('account' , $account)
