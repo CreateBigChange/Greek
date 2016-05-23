@@ -566,12 +566,14 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} 18401586654 手机号
      * @apiParam {string} code 验证码
+     * @apiParam {string} token token
      *
      * @apiParamExample {json} Request Example
-     * POST /sigma/bind/password
+     * POST /sigma/bind/mobile
      * {
-     *      'mobile' : 18401586654,
-     *      'code'  : '218746'
+     *      'mobile'            : 18401586654,
+     *      'code'              : '218746',
+     *      'checkMobileCode'   : 'ssdas7343'
      * }
      * @apiUse CODE_200
      *
@@ -580,14 +582,22 @@ class UsersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'mobile'                => 'required',
-            'code'                  => 'required'
+            'code'                  => 'required',
+            'checkMobileCode'       => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
 
-        $mobile    = $request->get('mobile');
-        $code       = $request->get('code');
+        $mobile                 = $request->get('mobile');
+        $code                   = $request->get('code');
+        $checkMobileCode        = $request->get('checkMobileCode');
+
+        $session_checkMobileCode = session::get('jsx_sms_code_check_token_'.$checkMobileCode);
+
+        if($session_checkMobileCode != $checkMobileCode){
+            return response()->json(Message::setResponseInfo('NO_KEY' , '' , '1001' , '没有校验旧手机'));
+        }
 
         $checkCode  = session::get("jsx_sms_$mobile");
 
@@ -611,6 +621,52 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+    /**
+     * @api {POST} /sigma/check/mobile/code 验证手机验证码
+     * @apiName checkMobileCode
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/check/mobile/code
+     *
+     * @apiParam {sting} 18401586654 手机号
+     * @apiParam {string} code 验证码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/check/mobile/code
+     * {
+     *      'mobile' : 18401586654,
+     *      'code'  : '218746'
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function checkMobileCode(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required',
+            'code'                  => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $mobile    = $request->get('mobile');
+        $code       = $request->get('code');
+
+        $checkCode  = session::get("jsx_sms_$mobile");
+
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }else{
+            $token      = $this->getSalt(8 , 0);
+            Session::flash('jsx_sms_code_check_token_'.$token , $token);
+            return response()->json(Message::setResponseInfo('SUCCESS' , $token));
         }
 
     }

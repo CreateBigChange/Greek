@@ -206,3 +206,19 @@ request body = <TemplateSMS>
                   </TemplateSMS>
 request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a48b551544cd73f015455b72f3409ba/SMS/TemplateSMS?sig=78F93F18BB8424E83BBA2A1C1B348AE1
 response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?><Response><statusCode>000000</statusCode><TemplateSMS><dateCreated>20160520175141</dateCreated><smsMessageSid>63a503d62bf04f078ed03f8c59fe0329</smsMessageSid></TemplateSMS></Response>
+request body = <TemplateSMS>
+                    <to>18401586654</to> 
+                    <appId>8a48b551544cd73f0154567111850b28</appId>
+                    <templateId>82802</templateId>
+                    <datas><data>634952</data><data>1</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a48b551544cd73f015455b72f3409ba/SMS/TemplateSMS?sig=209A53AE30B21EB487FEAA9B1D9C34BF
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?><Response><statusCode>000000</statusCode><TemplateSMS><dateCreated>20160523140521</dateCreated><smsMessageSid>f694c6201e7144f9a59dfdf6acdc1d43</smsMessageSid></TemplateSMS></Response>
+request body = <TemplateSMS>
+                    <to>17773144067</to> 
+                    <appId>8a48b551544cd73f0154567111850b28</appId>
+                    <templateId>82802</templateId>
+                    <datas><data>060531</data><data>1</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a48b551544cd73f015455b72f3409ba/SMS/TemplateSMS?sig=A978F9493282F09EB817F358C5BA11E9
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?><Response><statusCode>000000</statusCode><TemplateSMS><dateCreated>20160523140735</dateCreated><smsMessageSid>faea5b6678364897b0d3e88611f59a10</smsMessageSid></TemplateSMS></Response>

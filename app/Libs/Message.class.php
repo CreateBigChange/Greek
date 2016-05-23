@@ -31,6 +31,7 @@ class Message {
 				'REGISTERED'					=> array('code'=>'4008' , 'msg'=>'账户没有注册'),
 				'NO_PHONE'						=> array('code'=>'4009' , 'msg'=>'手机号格式不对'),
 				'NO_EMAIL'						=> array('code'=>'4010' , 'msg'=>'邮箱格式不对'),
+				'TOKEN_FAILURE'					=> array('code'=>'4011' , 'msg'=>'令牌无效或过期'),
 
 
 

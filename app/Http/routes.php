@@ -195,6 +195,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/user/update/password' , 'UsersController@updatePassword');
 		Route::post('/user/update/set/pay/password' , 'UsersController@setPayPassword');
 		Route::post('/user/bind/mobile', 'UsersController@bindMobile');
+		Route::post('/check/mobile/code' , 'UsersController@checkMobileCode');
 
 	});
 
@@ -211,6 +212,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/logout' , 'UsersController@logout');
 	Route::post('/login' , 'UsersController@login');
 	Route::post('/reset/password', 'UsersController@resetPassword');
+
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 });
