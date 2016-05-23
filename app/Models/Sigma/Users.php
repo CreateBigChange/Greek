@@ -9,6 +9,7 @@ class Users extends Model
 {
     protected $_table = 'users';
     protected $_consignee_address_table = 'consignee_address';
+    protected $_user_third_party_table  = 'user_third_party';
 
     /**
      * @param $tel
@@ -69,6 +70,37 @@ class Users extends Model
     public function updateUser($id  , $data){
         return DB::table($this->_table)->where('id' , $id)->update($data);
     }
+
+    /**
+     * @param $openid
+     * @return mixed
+     * 根据openID获取用户信息
+     */
+    public function getUserInfoByOpenID($openid){
+        return DB::table($this->_table)->where('openid' , $openid)->first();
+    }
+
+    public function addUser($data){
+        return DB::table($this->_table)->insertGetId($data);
+    }
+
+    /**
+     * 添加第三方登录的用户信息
+     */
+//    public function addUserThirdParty($data){
+//
+//        $tUser = DB::table($this->_user_third_party_table)->where('open_id' , $data['open_id'])->first();
+//        //如果是第一次登录
+//        if(!$tUser) {
+//            $userData = array(
+//                'nick_name'     => $data['nick_name'],
+//                'avatar'        => $data['avatar'],
+//                'created_at'    => date('Y-m-d H:i:s' , time()),
+//                'updated_at'    => date('Y-m-d H:i:s' , time()),
+//            );
+//            return DB::table($this->_user_third_party_table)->insert($data);
+//        }
+//    }
 
     /**
      * @param $account

@@ -703,10 +703,14 @@ class UsersController extends ApiController
         $userInfo = json_decode($userInfo);
 
         $sqlDta = array(
-            'open_id'		=> $userInfo->openid,
+            'openid'		=> $userInfo->openid,
             'nick_name'		=> $userInfo->nickname,
             'avatar'		=> $userInfo->headimgurl,
-            'type'			=> 'weixin'
+            'login_type'	=> 'weixin',
+            'unionid'       => $userInfo->unionid,
+            'created_at'    => date('Y-m-d H:i:s' , time()),
+            'updated_at'    => date('Y-m-d H:i:s' , time()),
+            'login_ip'      => $this->getRealIp(),
         );
 
         if($userInfo->sex == 1){
@@ -715,7 +719,11 @@ class UsersController extends ApiController
             $userInfo->sex = "女";
         }
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+        if($this->_model->addUser($sqlDta)){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
     }
 
 }

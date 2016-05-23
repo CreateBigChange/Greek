@@ -190,16 +190,16 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/store/nav/storeId 获取栏目
+     * @api {POST} /sigma/store/nav/storeId 获取栏目
      * @apiName storeNav
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 获取栏目
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/nav/1
+     * @apiSampleRequest http://greek.test.com/sigma/store/nav/1
      *
      * @apiParamExample {json} Request Example
-     *      POST /gamma/store/nav/1
+     *      POST /sigma/store/nav/1
      *      {
      *      }
      * @apiUse CODE_200
