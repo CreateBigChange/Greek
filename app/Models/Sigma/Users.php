@@ -46,6 +46,17 @@ class Users extends Model
     }
 
     /**
+     * @param $id
+     * @return mixed
+     * 获取用户密码
+     */
+    public function getUserPassword($id ){
+        return DB::table($this->_table)
+            ->select('password' , 'salt')
+            ->where('id' , $id)->first();
+    }
+
+    /**
      * @param int $id
      * @param array $data
      * @return mixed

@@ -465,12 +465,14 @@ class UsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/user/update/password
      *
-     * @apiParam {sting} password 密码
+     * @apiParam {sting} old_password 旧密码
+     * @apiParam {sting} new_password 新密码
      *
      * @apiParamExample {json} Request Example
      * POST /sigma/user/update/password
      * {
-     *      password:123456
+     *      old_password:123456,
+     *      new_password:111111
      * }
      * @apiUse CODE_200
      *
@@ -478,7 +480,8 @@ class UsersController extends ApiController
     public function updatePassword(Request $request){
 
         $validation = Validator::make($request->all(), [
-            'password'                => 'required'
+            'old_password'                => 'required',
+            'new_password'                => 'required'
 
         ]);
         if($validation->fails()){
@@ -487,16 +490,23 @@ class UsersController extends ApiController
 
         $data = array();
 
-        $password = $request->get('password');
+        $newpassword = $request->get('new_password');
+        $oldpassword = $request->get('old_password');
 
-        $data['salt']               = $this->getSalt(8);
-        $data['password']           = $this->encrypt($password , $data['salt']);
-        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+        $password = $this->_model->getUserPassword($this->userId);
+        if($password->password  == $this->encrypt($oldpassword, $password->salt)) {
 
-        if($this->_model->updateUser($this->userId , $data)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
+            $data['salt'] = $this->getSalt(8);
+            $data['password'] = $this->encrypt($newpassword, $data['salt']);
+            $data['updated_at'] = date('Y-m-d H:i:s', time());
+
+            if ($this->_model->updateUser($this->userId, $data)) {
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            } else {
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('PASSWORD_ERROR'));
         }
     }
 
