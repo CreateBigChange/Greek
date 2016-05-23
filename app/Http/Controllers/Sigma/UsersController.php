@@ -615,4 +615,51 @@ class UsersController extends ApiController
 
     }
 
+    /**
+     * @api {POST} /sigma/weixin/callback 微信回调
+     * @apiName weixinCallback
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/weixin/callback
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/weixin/callback
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function weixinCallback(){
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxcf33b66899744aab&secret=b72623568c915d47aab9227fa178c544&code=".$_GET['code']."&grant_type=authorization_code";
+
+        $data = $this->curlGet($url);
+        $data	= json_decode($data);
+
+        $token		= $data->access_token;
+        $openid		= $data->openid;
+
+
+        $getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=".$token."&openid=".$openid;
+
+        $userInfo = $this->curlGet($getUserInfoUrl);
+        $userInfo = json_decode($userInfo);
+
+        $sqlDta = array(
+            'open_id'		=> $userInfo->openid,
+            'nick_name'		=> $userInfo->nickname,
+            'avatar'		=> $userInfo->headimgurl,
+            'type'			=> 'weixin'
+        );
+
+        if($userInfo->sex == 1){
+            $userInfo->sex = "男";
+        }else{
+            $userInfo->sex = "女";
+        }
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+    }
+
 }
