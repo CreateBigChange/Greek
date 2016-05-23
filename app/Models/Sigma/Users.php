@@ -39,7 +39,8 @@ class Users extends Model
                 'email' ,
                 'created_at',
                 'points',
-                'money'
+                'money',
+                'sex'
             )
             ->where('is_del' , 0)
             ->where('account' , $account)
@@ -77,7 +78,23 @@ class Users extends Model
      * 根据openID获取用户信息
      */
     public function getUserInfoByOpenID($openid){
-        return DB::table($this->_table)->where('openid' , $openid)->first();
+        return DB::table($this->_table)
+            ->select(
+                'id' ,
+                'account' ,
+                'nick_name' ,
+                'true_name' ,
+                'mobile' ,
+                'avatar' ,
+                'email' ,
+                'created_at',
+                'points',
+                'money',
+                'sex'
+            )
+            ->where('is_del' , 0)
+            ->where('openid' , $openid)
+            ->first();
     }
 
     public function addUser($data){
@@ -117,7 +134,10 @@ class Users extends Model
                 'mobile' ,
                 'avatar' ,
                 'email' ,
-                'created_at'
+                'created_at',
+                'points',
+                'money',
+                'sex'
             )
             ->where('is_del' , 0)
             ->where('account' , $account)
@@ -139,7 +159,10 @@ class Users extends Model
                 'mobile' ,
                 'avatar' ,
                 'email' ,
-                'created_at'
+                'created_at',
+                'points',
+                'money',
+                'sex'
             )
             ->where('is_del' , 0)
             ->where('mobile' , $mobile)

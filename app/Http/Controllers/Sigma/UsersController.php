@@ -699,31 +699,40 @@ class UsersController extends ApiController
 
         $getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=".$token."&openid=".$openid;
 
-        $userInfo = $this->curlGet($getUserInfoUrl);
-        $userInfo = json_decode($userInfo);
+        $weixinUserInfo = $this->curlGet($getUserInfoUrl);
+        $weixinUserInfo = json_decode($weixinUserInfo);
 
         $sqlDta = array(
-            'openid'		=> $userInfo->openid,
-            'nick_name'		=> $userInfo->nickname,
-            'avatar'		=> $userInfo->headimgurl,
+            'openid'		=> $weixinUserInfo->openid,
+            'nick_name'		=> $weixinUserInfo->nickname,
+            'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
-            'unionid'       => $userInfo->unionid,
+            'unionid'       => $weixinUserInfo->unionid,
             'created_at'    => date('Y-m-d H:i:s' , time()),
             'updated_at'    => date('Y-m-d H:i:s' , time()),
             'login_ip'      => $this->getRealIp(),
         );
 
-        if($userInfo->sex == 1){
-            $userInfo->sex = "男";
+        if($weixinUserInfo->sex == 1){
+            $sqlDta['sex'] = "男";
         }else{
-            $userInfo->sex = "女";
+            $sqlDta['sex'] = "女";
         }
 
-        if($this->_model->addUser($sqlDta)){
-            return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+        $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['openid']);
+
+        if(!$userInfo){
+            if($this->_model->addUser($sqlDta)){
+                $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['openid']);
+                return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+            }else{
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
         }
+
     }
 
 }
