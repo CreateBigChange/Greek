@@ -58,7 +58,7 @@ class UsersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'account'                => 'required',
-            'password'                  => 'required'
+            'password'               => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -92,6 +92,90 @@ class UsersController extends ApiController
 
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
 
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/register 注册
+     * @apiName register
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/register
+     *
+     * @apiParam {sting} account 帐号(手机号)
+     * @apiParam {string} password 密码
+     * @apiParam {string} repassword 密码
+     * @apiParam {string} code 验证码
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/register
+     *      {
+     *          "account" : 'wuhui',
+     *          "password" : '123456',
+     *          "repassword" : '123456',
+     *          "code"      :   1232
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function register(Request $request){
+        $validation = Validator::make($request->all(), [
+            'account'                => 'required',
+            'password'               => 'required',
+            'repassword'             => 'required',
+            'code'                   => 'required',
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $password       = $request->get('password');
+        $repassword     = $request->get('repassword');
+        $account        = $request->get('account');
+        $code           = $request->get('code');
+
+        $checkCode  = session::get("jsx_sms_$account");
+
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }
+
+        if($password != $repassword){
+            return response()->json(Message::setResponseInfo('PASSWORD_IS_NOT_CONSISTENT'));
+        }
+
+        $salt = $this->getSalt(8);
+
+        $password = $this->encrypt($password , $salt);
+
+        $data = array(
+            'account'       => $account,
+            'password'      => $password,
+            'salt'          => $salt,
+            'mobile'        => $account,
+            'nick_name'     => $account,
+            'created_at'    => date('Y-m-d H:i:s' , time()),
+            'updated_at'    => date('Y-m-d H:i:s' , time())
+        );
+
+        $userId  = $this->_model->addUser($data);
+
+        if($userId){
+
+            $userInfo = $this->_model->getUserInfoByAP($account , $password);
+
+            $sessionKey = $this->getSalt(16);
+
+            Session::put($sessionKey , $userInfo);
+
+            $cookie = Cookie::make(Config::get('session.sigma_login_cookie') , $sessionKey , Config::get('session.sigma_lifetime'));
+
+            $userInfo->token = $sessionKey;
+            return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }

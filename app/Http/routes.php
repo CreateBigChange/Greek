@@ -213,6 +213,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::post('/logout' , 'UsersController@logout');
 	Route::post('/login' , 'UsersController@login');
+	Route::post('/register' , 'UsersController@register');
 	Route::post('/reset/password', 'UsersController@resetPassword');
 
 
