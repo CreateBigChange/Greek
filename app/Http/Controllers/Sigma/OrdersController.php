@@ -150,18 +150,18 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/orders/add 下单
-     * @apiName ordersAdd
+     * @api {POST} /sigma/order/init 下单
+     * @apiName orderint
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 下单
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/orders/add
+     * @apiSampleRequest http://greek.test.com/sigma/order/init
      *
      * @apiParam {json} data 状态
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/orders/add
+     *      POST /sigma/order/init
      *      {
      *          store:1,
      *          goods:[{"goods_id":"1","num":"1"},{"goods_id":"3","num":"2"},{"goods_id":"4","num":"3"}]
