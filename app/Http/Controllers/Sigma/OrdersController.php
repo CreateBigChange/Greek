@@ -349,7 +349,6 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/complaint
      *
-     * @apiParam {int} store_id 店铺ID
      * @apiParam {int} order_id 订单ID
      * @apiParam {string} content 投诉内容
      *
@@ -357,7 +356,6 @@ class OrdersController extends ApiController
      *      POST /sigma/order/complaint
      *      {
      *          'order_id' : 1,
-     *          'store_id' : 1,
      *          'content'  : "配送太慢了"
      *      }
      * @apiUse CODE_200
@@ -367,7 +365,6 @@ class OrdersController extends ApiController
         $validation = Validator::make($request->all(), [
             'order_id'              => 'required',
             'content'               => 'required',
-            'store_id'              => 'required',
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -375,7 +372,6 @@ class OrdersController extends ApiController
 
         $data = array();
         $data['user_id']     = $this->userId;
-        $data['store_id']    = $request->get('store_id');
         $data['order_id']    = $request->get('order_id');
         $data['content']     = $request->get('content');
         $data['created_at']  = date('Y-m-d H:i:s' , time());
