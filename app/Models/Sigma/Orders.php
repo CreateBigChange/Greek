@@ -70,6 +70,7 @@ class Orders extends Model
                     o.created_at,
                     u.points,
                     u.money,
+                    o.is_evaluate
                     
                     si.name as sname,
                     si.contact_phone as smobile,
