@@ -177,7 +177,8 @@ class Orders extends Model
 
         $storeModel = new Stores;
 
-        $goodsList = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
+        $goodsList  = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
+        $storeInfo  = $storeModel->getStoreInfo($storeId);
 
         //计算订单总价
         $total = 0;
@@ -186,6 +187,7 @@ class Orders extends Model
             $total += (int) $g->out_price * $nums[$g->id];
             $inPoints += (int) $g->give_points * $nums[$g->id];
         }
+        $total += $storeInfo->deliver;
 
         $userModel = new Users;
         /*
@@ -201,6 +203,7 @@ class Orders extends Model
             'total'                 => $total,
             'store_id'              => $storeId,
             'user'                  => $userId,
+            'deliver'               => $storeInfo->deliver,
             'status'                => Config::get('orderstatus.no_pay')['status'],
             'in_points'             => $inPoints,
             'consignee'             => $address[0]->consignee,
