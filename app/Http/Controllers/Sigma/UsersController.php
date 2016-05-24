@@ -286,11 +286,12 @@ class UsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/user/address/add
      *
-     * @apiParam {sting} mobile 手机号
-     * @apiParam {sting} consignee 联系人
-     * @apiParam {int} province 省
-     * @apiParam {int} city 市
-     * @apiParam {int} county 区
+     * @apiParam {string} mobile 手机号
+     * @apiParam {string} consignee 联系人
+     * @apiParam {string} province 省
+     * @apiParam {string} city 市
+     * @apiParam {string} county 区
+     * @apiParam {string} [street] 街道
      * @apiParam {sting} address 详细地址
      * @apiParam {sting} longitude 经度
      * @apiParam {sting} latitude 纬度
@@ -371,6 +372,7 @@ class UsersController extends ApiController
      * @apiParam {sting} [address] 详细地址
      * @apiParam {sting} [longitude] 经度
      * @apiParam {sting} [latitude] 纬度
+     * @apiParam {string} [street] 街道
      *
      *
      *
