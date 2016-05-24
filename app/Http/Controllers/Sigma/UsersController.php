@@ -435,7 +435,7 @@ class UsersController extends ApiController
 
     /**
      * @api {POST} /sigma/user/address/del/{addressId} 删除收货地址
-     * @apiName userAddressUpdate
+     * @apiName userAddressDel
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
