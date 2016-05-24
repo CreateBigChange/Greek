@@ -29,7 +29,7 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/info/{orderId} 获取订单详情
+     * @api {POST} /sigma/order/info/{orderId} 获取订单详情
      * @apiName orderInfo
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
@@ -114,13 +114,13 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/orders/change/status/{id} 修改订单状态
+     * @api {POST} /sigma/orders/change/status/{id} 修改订单状态
      * @apiName ordersChangeStatus
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 修改订单状态
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/orders/change/status/1
+     * @apiSampleRequest http://greek.test.com/sigma/orders/change/status/1
      *
      * @apiParam {number} status 状态
      *
@@ -150,18 +150,18 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/orders/add 下单
+     * @api {POST} /sigma/orders/add 下单
      * @apiName ordersAdd
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 下单
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/orders/add
+     * @apiSampleRequest http://greek.test.com/sigma/orders/add
      *
      * @apiParam {json} data 状态
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/orders/add
+     *      POST /sigma/orders/add
      *      {
      *          store:1,
      *          goods:[{"goods_id":"1","num":"1"},{"goods_id":"3","num":"2"},{"goods_id":"4","num":"3"}]
@@ -192,19 +192,19 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/orders/confirm/{orderId} 确认订单
+     * @api {POST} /sigma/orders/confirm/{orderId} 确认订单
      * @apiName ordersConfirm
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 确认订单
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/orders/confirm/1
+     * @apiSampleRequest http://greek.test.com/sigma/orders/confirm/1
      *
      * @apiParam {int} pay_type 支付方式
      * @apiParam {int} put_points 使用积分
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/orders/confirm/1
+     *      POST /sigma/orders/confirm/1
      *      {
      *          pay_type : 1,
      *          out_points : 328,
@@ -233,18 +233,18 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/update/address/{orderId} 修改订单地址
+     * @api {POST} /sigma/order/update/address/{orderId} 修改订单地址
      * @apiName ordersUpdateAddress
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 修改订单地址
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/update/address/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/update/address/1
      *
      * @apiParam {int} address_id 地址ID
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/update/address/1
+     *      POST /sigma/order/update/address/1
      *      {
      *          address_id : 2,
      *
@@ -273,18 +273,18 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/refund/reason/{orderId} 退款原因
+     * @api {POST} /sigma/order/refund/reason/{orderId} 退款原因
      * @apiName ordersRefundReason
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 退款原因
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/refund/reason/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/refund/reason/1
      *
      * @apiParam {string} content 原因
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/refund/reason/1
+     *      POST /sigma/order/refund/reason/1
      *      {
      *          content : "太慢了,懒得等",
      *
@@ -313,16 +313,16 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/status/log/{orderId} 获取订单状态改变的日志
+     * @api {POST} /sigma/order/status/log/{orderId} 获取订单状态改变的日志
      * @apiName ordersStatusLog
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 获取订单状态改变的日志
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/status/log/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/status/log/1
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/status/log/1
+     *      POST /sigma/order/status/log/1
      *      {
      *      }
      * @apiUse CODE_200
@@ -334,20 +334,20 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/complaint 投诉
+     * @api {POST} /sigma/order/complaint 投诉
      * @apiName ordersComplaint
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 投诉
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/complaint
+     * @apiSampleRequest http://greek.test.com/sigma/order/complaint
      *
      * @apiParam {int} store_id 店铺ID
      * @apiParam {int} order_id 订单ID
      * @apiParam {string} content 投诉内容
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/complaint
+     *      POST /sigma/order/complaint
      *      {
      *          'order_id' : 1,
      *          'store_id' : 1,
@@ -382,13 +382,13 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/order/evaluate 评价
+     * @api {POST} /sigma/order/evaluate 评价
      * @apiName ordersEvaluate
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 评价
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/evaluate
+     * @apiSampleRequest http://greek.test.com/sigma/order/evaluate
      *
      * @apiParam {int} order_id 订单ID
      * @apiParam {string} content 评价内容
@@ -397,7 +397,7 @@ class OrdersController extends ApiController
      * @apiParam {FLOAT} quality 商品质量
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/evaluate
+     *      POST /sigma/order/evaluate
      *      {
      *          'order_id'  : 1,
      *          'content'   : "太好了",
