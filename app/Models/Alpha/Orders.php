@@ -59,13 +59,20 @@ class Orders extends Model
                     o.consignee_address,
                     o.remark,
                     o.refund_reason,
-                    o.created_at
+                    o.created_at,
+                    o.pay_type_name,
+                    
+                    u.nick_name,
+                    u.true_name,
+                    u.mobile,
+                    u.avatar
                     
                 FROM $this->_orders_table AS o";
 
         $sql .= " LEFT JOIN areas as ap ON ap.id = o.consignee_province";
         $sql .= " LEFT JOIN areas as aci ON aci.id = o.consignee_city";
         $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
+        $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
         $sql .= " WHERE 1=1";
 

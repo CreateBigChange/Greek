@@ -302,9 +302,10 @@ class UsersController extends ApiController
      * {
      *      mobile : 18401586654,
      *      consignee   : 吴辉,
-     *      province   :   1,
-     *      city        : 2,
-     *      county      : 36,
+     *      province   :   湖南省,
+     *      city        : 长沙市,
+     *      county      : 岳麓区,
+     *      street      : 银杉路,
      *      address     : 绿地中央广场,
      *      longitude   : 120.373,
      *      latitude    : 282.134
@@ -333,6 +334,9 @@ class UsersController extends ApiController
         $data['province']   = $request->get('province');
         $data['city']       = $request->get('city');
         $data['county']     = $request->get('county');
+        if($request->has('street')) {
+            $data['street'] = $request->get('street');
+        }
         $data['address']    = $request->get('address');
         $data['consignee']  = $request->get('consignee');
         $data['mobile']     = $request->get('mobile');
@@ -398,6 +402,9 @@ class UsersController extends ApiController
         }
         if($request->has('county')) {
             $data['county'] = $request->get('county');
+        }
+        if($request->has('street')) {
+            $data['street'] = $request->get('street');
         }
         if($request->has('address')) {
             $data['address'] = $request->get('address');

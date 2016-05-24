@@ -29,7 +29,7 @@
                                                 position: absolute;
                                                 font-size: 50px;
                                                 top:50px;
-                                                left:30px;
+                                                right:30px;
                                                 color: #f00;
                                                 filter:alpha(opacity=10); /*IE滤镜，透明度50%*/
                                                 -moz-opacity:0.1; /*Firefox私有，透明度50%*/
@@ -53,44 +53,84 @@
                                                     完成
                                                 @endif
                                             </div>
-                                            <div class="user-heading alt green-bg" style="background: #aec785;padding-bottom: 10px;padding-left:30%;">
-                                                <a href="#">
-                                                    <img alt="" src="{{ URL::asset('/') }}img/profile-avatar.jpg">
-                                                </a>
-                                                <div>
-                                                    <p>收货人: {{ $o->consignee }} &nbsp&nbsp&nbsp&nbsp {{ $o->consignee_tel }}</p>
-                                                    <p>收货地址: {{ $o->consignee_address }}</p>
-                                                    <p>下单时间: {{ $o->created_at }}</p>
-                                                    <p>配送费: {{ $o->deliver }}</p>
-                                                    @if ($o->status == '13' || $o->status == '14')
-                                                        <p>退款原因: {{ $o->refund_reason }}</p>
-                                                    @endif
+                                            <div class="user-heading alt green-bg showDetail"  orderId="{{ $o->id }}" style="padding: 20px;">
+                                                <div class="row">
+                                                    <div class="bio-row text-center">
+                                                        <h1><span>收货人 :</span>{{ $o->consignee }}</h1>
+                                                    </div>
+                                                    <div class="bio-row text-center">
+                                                        <h1><span>收货电话 : </span>{{ $o->consignee_tel }}</h1>
+                                                    </div>
+                                                </div>
+                                                <div class="row text-center" style="margin-bottom: 20px;">
+
+                                                        <h1>{{ $o->consignee_address }}</h1>
+
+                                                </div>
+                                                <div class="row text-center">
+
+                                                    <div class="bio-row">
+                                                        <p><span>昵称 :</span>{{ $o->nick_name }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>真实名称 : </span>{{ $o->true_name }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>电话 : </span>{{ $o->mobile }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>支付类型 : </span>{{ $o->pay_type_name }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>配送费 : </span>{{ $o->deliver }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>收入积分 : </span>{{ $o->in_points }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>送出积分 : </span>{{ $o->out_points }}</p>
+                                                    </div>
+                                                    <div class="bio-row">
+                                                        <p><span>订单总价 : </span>{{ $o->total }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="weather-category twt-category" style="margin-top: 0;margin-bottom: 0;background: #aec785">
-                                                <ul>
-                                                    <li style="border: none;color:#fff">
-                                                        <h5><i class=" icon-jpy"></i>{{ $o->total }}</h5>
-                                                        用户付款
-                                                    </li>
-                                                    <li style="border: none;color:#fff">
-                                                        <h5>{{ $o->in_points }}</h5>
-                                                        收入积分
-                                                    </li>
-                                                    <li style="border: none;color:#fff">
-                                                        <h5>{{ $o->out_points }}</h5>
-                                                        赠送积分
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            {{--<div class="panel-body bio-graph-info detail" id="detail_{{ $o->id }}" style="display: none">--}}
+                                                {{--<div class="row">--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>昵称 :</span>{{ $o->nick_name }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>真实名称 : </span>{{ $o->true_name }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>联系电话 : </span>{{ $o->mobile }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>支付类型 : </span>{{ $o->pay_type_name }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>配送费 : </span>{{ $o->deliver }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>收入积分 : </span>{{ $o->in_points }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>送出积分 : </span>{{ $o->out_points }}</p>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="bio-row">--}}
+                                                        {{--<p><span>订单总价 : </span>{{ $o->total }}</p>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
                                             <table id="goods_{{ $o->id }}" class="table table-bordered table-striped table-condensed" style="display: @if ($o->status == 2 || $o->status == 3  || $o->status == 13)  table @else none @endif;" >
                                                 <thead>
                                                     <tr>
                                                         <th>名称</th>
                                                         <th>品牌</th>
                                                         <th>规格</th>
-                                                        <th>单价</th>
                                                         <th>数量</th>
+                                                        <th>单价</th>
                                                         <th>积分</th>
                                                     </tr>
                                                 </thead>
@@ -100,8 +140,8 @@
                                                         <td>{{ $og->name }}</td>
                                                         <td>{{ $og->b_name }}</td>
                                                         <td>{{ $og->spec }}</td>
-                                                        <td>{{ $og->out_price }}</td>
                                                         <td>{{ $og->num }}</td>
+                                                        <td>{{ $og->out_price }}</td>
                                                         <td>{{ $og->give_points }}</td>
                                                     </tr>
                                                 @endforeach
@@ -115,7 +155,6 @@
                                             <botton style="display: @if ($o->status == '13') block @else none @endif ;width: 100%;line-height: 50px;background: #aec785" type="button" status="14" id="show_{{ $o->id }}_13" class="btn btn-success changeStatus" orderId="{{ $o->id }}">确认退款</botton>
 
                                             <div style="display: @if ($o->status == '1' || $o->status == '14'  || $o->status == '12' || $o->status == '11' ) block @else none @endif;font-size: 35px;background: #aec785;color: #fff;" orderId="{{ $o->id }}" id="showOrderGoods_{{ $o->id }}" class="text-center showOrderGoods"  >
-                                                <div style="font-size: 10px;float: left;line-height: 50px;margin-left: 20px;">总共:{{ $o->goodsNum }}件商品</div>
                                                 <i class="icon-double-angle-down down" id="i_{{ $o->id }}"></i>
                                             </div>
                                         </section>
@@ -180,6 +219,12 @@
                 }
             }
         })
+    });
+
+    $('.showDetail').bind('dblclick' , function(){
+        var orderId = $(this).attr('orderId');
+        $('.detail').hide(500);
+        $('#detail_'+orderId).toggle(500);
     });
 </script>
 

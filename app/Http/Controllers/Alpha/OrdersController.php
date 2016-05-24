@@ -25,7 +25,7 @@ class OrdersController extends AdminController
     public function __construct(){
         parent::__construct();
         $this->_model = new Orders;
-        $this->response['title']		= '商品库管理';
+        $this->response['title']		= '订单管理';
         $this->length = 10;
     }
 

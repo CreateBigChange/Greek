@@ -98,6 +98,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/order/accident' , 'OrdersController@getOrderAccident');
 		Route::post('/order/change/status/{id}', 'OrdersController@changeStatus');
 
+		//用户
+		Route::get('/user/list' , 'UserController@getUserList');
 	});
 
 	//登陆
