@@ -68,6 +68,8 @@ class Orders extends Model
                     o.remark,
                     o.refund_reason,
                     o.created_at,
+                    u.points,
+                    u.money,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -80,6 +82,7 @@ class Orders extends Model
         $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
         $sql .= " LEFT JOIN store_infos as si ON si.id = o.store_id";
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
+        $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
         $sql .= " WHERE user = $userId";
 
