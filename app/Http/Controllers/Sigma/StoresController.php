@@ -79,12 +79,12 @@ class StoresController extends ApiController
 
     /**
      * @api {POST} /sigma/store/list/byids 根据店铺ids获取店铺列表
-     * @apiName storeList
+     * @apiName storeListByIds
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/list
+     * @apiSampleRequest http://greek.test.com/sigma/store/list/byids
      *
      * @apiParam {string} ids 商品id
      *
