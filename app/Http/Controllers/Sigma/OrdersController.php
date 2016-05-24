@@ -216,16 +216,22 @@ class OrdersController extends ApiController
     public function confirmOrder($orderId , Request $request){
 
         $validation = Validator::make($request->all(), [
-            'pay_type'             => 'required',
-            'out_points'           => 'required'
+            'pay_type'             => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
+
+
         $userId     = $this->userId;
 
+        if(!$request->has('out_points')){
+            $outPoints = 0;
+        }else{
+            $outPoints  = $request->get('out_points');
+        }
         $payType    = $request->get('pay_type');
-        $outPoints  = $request->get('out_points');
+
 
         $data = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
