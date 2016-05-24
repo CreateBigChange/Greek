@@ -187,7 +187,6 @@ class Orders extends Model
             $total += (int) $g->out_price * $nums[$g->id];
             $inPoints += (int) $g->give_points * $nums[$g->id];
         }
-        $total += $storeInfo->deliver;
 
         $userModel = new Users;
         /*
