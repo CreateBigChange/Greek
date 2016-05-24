@@ -193,7 +193,7 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/orders/confirm/{orderId} 确认订单
+     * @api {POST} /sigma/order/confirm/{orderId} 确认订单
      * @apiName ordersConfirm
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
