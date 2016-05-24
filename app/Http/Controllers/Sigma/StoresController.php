@@ -103,7 +103,7 @@ class StoresController extends ApiController
         }
         $ids = $request->get('ids');
 
-        $storeList = $this->_model->getStoreList($ids);
+        $storeList = $this->_model->getStoreList(array('ids'=>$ids));
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $storeList));
     }
