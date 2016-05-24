@@ -158,7 +158,8 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/init
      *
-     * @apiParam {json} data 状态
+     * @apiParam {int} store 店铺ID
+     * @apiParam {json} goods 商品信息
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/init
