@@ -395,7 +395,12 @@ class Orders extends Model
      * 评价
      */
     public function evaluate($data){
-        return DB::table($this->_order_evaluates)->insert($data);
+        if(DB::table($this->_order_evaluates)->insert($data)){
+            DB::table($this->_orders_table)->where('id' , $data['order_id'])->update(array('is_evaluate' => 1));
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

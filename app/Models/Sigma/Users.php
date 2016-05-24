@@ -28,7 +28,7 @@ class Users extends Model
      */
 
     public function getUserInfoByAP( $account , $password ){
-        return DB::table($this->_table)
+        $userInfo =  DB::table($this->_table)
             ->select(
                 'id' ,
                 'account' ,
@@ -40,12 +40,25 @@ class Users extends Model
                 'created_at',
                 'points',
                 'money',
-                'sex'
+                'sex',
+                'pay_password'
             )
             ->where('is_del' , 0)
             ->where('account' , $account)
             ->where('password', $password)
             ->first();
+
+        if($userInfo) {
+            $userInfo->is_set_pay_password = 0;
+            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
+                $userInfo->is_set_pay_password = 0;
+            }else{
+                $userInfo->is_set_pay_password = 1;
+            }
+            return $userInfo;
+        }else{
+            return false;
+        }
 
     }
 
