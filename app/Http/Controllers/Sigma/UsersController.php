@@ -693,13 +693,13 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/bind/mobile 重修绑定手机号
-     * @apiName resetMobile
+     * @api {POST} /sigma/update/mobile 更新的绑定手机号
+     * @apiName updateMobile
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/bind/mobile
+     * @apiSampleRequest http://greek.test.com/sigma/update/mobile
      *
      * @apiParam {sting} 18401586654 手机号
      * @apiParam {string} code 验证码
@@ -715,7 +715,7 @@ class UsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function bindMobile(Request $request){
+    public function updateMobile(Request $request){
 
         $validation = Validator::make($request->all(), [
             'mobile'                => 'required',
@@ -735,6 +735,66 @@ class UsersController extends ApiController
         if($session_checkMobileCode != $checkMobileCode){
             return response()->json(Message::setResponseInfo('NO_KEY' , '' , '1001' , '没有校验旧手机'));
         }
+
+        $checkCode  = session::get("jsx_sms_$mobile");
+
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }
+
+//        $user               = $this->_model->getUserInfoByMobile($mobile);
+//
+//        if($user == null){
+//            return response()->json(Message::setResponseInfo('NO_USER'));
+//        }
+
+        $data = array();
+        $data['mobile']             = $mobile;
+        $data['updated_at']         = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            session::forget("jsx_sms_$mobile");
+
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+    /**
+     * @api {POST} /sigma/bind/mobile 绑定手机号
+     * @apiName bindMobile
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/bind/mobile
+     *
+     * @apiParam {sting} 18401586654 手机号
+     * @apiParam {string} code 验证码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/bind/mobile
+     * {
+     *      'mobile'            : 18401586654,
+     *      'code'              : '218746'
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function bindMobile(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'mobile'                => 'required',
+            'code'                  => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $mobile                 = $request->get('mobile');
+        $code                   = $request->get('code');
 
         $checkCode  = session::get("jsx_sms_$mobile");
 
