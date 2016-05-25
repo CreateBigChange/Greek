@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
-use Session , Cookie , Config;
+use Session , Cookie , Config , Redis;
 use Validator , Input;
 
 use App\Libs\Message;
@@ -126,7 +126,7 @@ class UsersController extends ApiController
         $validation = Validator::make($request->all(), [
             'account'                => 'required',
             'password'               => 'required',
-            'repassword'             => 'required',
+//            'repassword'             => 'required',
             'code'                   => 'required',
         ]);
         if($validation->fails()){
@@ -134,7 +134,7 @@ class UsersController extends ApiController
         }
 
         $password       = $request->get('password');
-        $repassword     = $request->get('repassword');
+//        $repassword     = $request->get('repassword');
         $account        = $request->get('account');
         $code           = $request->get('code');
 
@@ -144,9 +144,9 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
 
-        if($password != $repassword){
-            return response()->json(Message::setResponseInfo('PASSWORD_IS_NOT_CONSISTENT'));
-        }
+//        if($password != $repassword){
+//            return response()->json(Message::setResponseInfo('PASSWORD_IS_NOT_CONSISTENT'));
+//        }
 
         $salt = $this->getSalt(8);
 
@@ -649,6 +649,52 @@ class UsersController extends ApiController
 
 
     /**
+     * @api {POST} /sigma/user/update 修改用户信息
+     * @apiName userUpdate
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/update
+     *
+     * @apiParam {sting} [avatar] 头像链接
+     * @apiParam {sting} [nick_name] 昵称
+     * @apiParam {sting} [true_name] 昵称
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/update
+     * {
+     *      avatar:http://xxx.png,
+     *      nick_name:不当大哥好多年,
+     *      true_name:大哥
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function updateUser(Request $request){
+
+
+        $data = array();
+
+        if($request->has('avatar')){
+            $data['avatar'] = $request->get('avatar');
+        }
+        if($request->has('nick_name')){
+            $data['nick_name'] = $request->get('nick_name');
+        }
+        if($request->has('true_name')){
+            $data['true_name'] = $request->get('true_name');
+        }
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
      * @api {POST} /sigma/bind/mobile 重修绑定手机号
      * @apiName resetMobile
      * @apiGroup SIGMA
@@ -796,11 +842,11 @@ class UsersController extends ApiController
         $weixinUserInfo = json_decode($weixinUserInfo);
 
         $sqlDta = array(
-            'openid'		=> $weixinUserInfo->openid,
+            'wx_openid'		=> $weixinUserInfo->openid,
             'nick_name'		=> $weixinUserInfo->nickname,
             'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
-            'unionid'       => $weixinUserInfo->unionid,
+            'wx_unionid'    => $weixinUserInfo->unionid,
             'created_at'    => date('Y-m-d H:i:s' , time()),
             'updated_at'    => date('Y-m-d H:i:s' , time()),
             'login_ip'      => $this->getRealIp(),
