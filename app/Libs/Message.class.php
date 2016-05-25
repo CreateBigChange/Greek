@@ -32,6 +32,8 @@ class Message {
 				'NO_PHONE'						=> array('code'=>'4009' , 'msg'=>'手机号格式不对'),
 				'NO_EMAIL'						=> array('code'=>'4010' , 'msg'=>'邮箱格式不对'),
 				'TOKEN_FAILURE'					=> array('code'=>'4011' , 'msg'=>'令牌无效或过期'),
+				'MOBILE_BIND'					=> array('code'=>'4012' , 'msg'=>'手机号已绑定其他帐号'),
+				'HAVE_MOBILE'					=> array('code'=>'4013' , 'msg'=>'需要验证旧手机号'),
 
 
 

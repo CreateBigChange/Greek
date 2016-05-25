@@ -157,6 +157,31 @@ class Users extends Model
     /**
      * @param $account
      * @return mixed
+     * 根据ID获取用户信息
+     */
+    public function getUserInfoById($id){
+        return DB::table($this->_table)
+            ->select(
+                'id' ,
+                'account' ,
+                'nick_name' ,
+                'true_name' ,
+                'mobile' ,
+                'avatar' ,
+                'email' ,
+                'created_at',
+                'points',
+                'money',
+                'sex'
+            )
+            ->where('is_del' , 0)
+            ->where('id' , $id)
+            ->first();
+    }
+
+    /**
+     * @param $account
+     * @return mixed
      * 根据帐号获取用户信息
      */
     public function getUserInfoByAccount($account){
