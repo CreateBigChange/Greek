@@ -217,6 +217,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/register' , 'UsersController@register');
 	Route::post('/reset/password', 'UsersController@resetPassword');
 
+	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
+
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
