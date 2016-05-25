@@ -44,7 +44,7 @@ class UploadController extends ApiController
     /**
      * @api {POST} /gigma/upload/qiniu 上传图片到七牛
      * @apiName uploadQiniu
-     * @apiGroup GAMMA
+     * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
