@@ -703,7 +703,7 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} 18401586654 手机号
      * @apiParam {string} code 验证码
-     * @apiParam {string} token token
+     * @apiParam {string} checkMobileCode 是否验证旧手机
      *
      * @apiParamExample {json} Request Example
      * POST /sigma/bind/mobile
