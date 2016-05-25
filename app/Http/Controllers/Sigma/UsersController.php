@@ -108,7 +108,6 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} account 帐号(手机号)
      * @apiParam {string} password 密码
-     * @apiParam {string} repassword 密码
      * @apiParam {string} code 验证码
      *
      * @apiParamExample {json} Request Example
@@ -116,7 +115,6 @@ class UsersController extends ApiController
      *      {
      *          "account" : 'wuhui',
      *          "password" : '123456',
-     *          "repassword" : '123456',
      *          "code"      :   1232
      *      }
      * @apiUse CODE_200
