@@ -42,18 +42,18 @@ class UploadController extends ApiController
     }
 
     /**
-     * @api {POST} /gigma/upload/qiniu 上传图片到七牛
+     * @api {POST} /sigma/upload/qiniu 上传图片到七牛
      * @apiName uploadQiniu
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gigma/upload/qiniu
+     * @apiSampleRequest http://greek.test.com/sigma/upload/qiniu
      *
      * @apiParam {file} img 图片文件
      *
      * @apiParamExample {json} Request Example
-     *      POST /gigma/login
+     *      POST /sigma/login
      *      {
      *          "img" : file,
      *      }
