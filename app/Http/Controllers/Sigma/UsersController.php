@@ -898,7 +898,7 @@ class UsersController extends ApiController
         if(!isset($_GET['code'])){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxcf33b66899744aab&secret=b72623568c915d47aab9227fa178c544&code=".$_GET['code']."&grant_type=authorization_code";
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx84bf49661a4e1f76&secret=a9b4e69d0ea401fb603fc1d5aa549c36&code=".$_GET['code']."&grant_type=authorization_code";
 
         $data = $this->curlGet($url);
         $data	= json_decode($data);
