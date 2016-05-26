@@ -895,6 +895,9 @@ class UsersController extends ApiController
      *
      */
     public function weixinCallback(){
+        if(isset($_GET['code'])){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxcf33b66899744aab&secret=b72623568c915d47aab9227fa178c544&code=".$_GET['code']."&grant_type=authorization_code";
 
         $data = $this->curlGet($url);
