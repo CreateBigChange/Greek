@@ -909,8 +909,8 @@ class UsersController extends ApiController
 
         var_dump($data);die;
 
-        $token		= $data->access_token;
-        $openid		= $data->openid;
+        $token		= $data['access_token'];
+        $openid		= $data['openid'];
 
 
         $getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=".$token."&openid=".$openid;
