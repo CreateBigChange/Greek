@@ -199,6 +199,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/user/set/pay/password' , 'UsersController@setPayPassword');
 		Route::post('/user/bind/mobile', 'UsersController@bindMobile');
 		Route::post('/check/mobile/code' , 'UsersController@checkMobileCode');
+		Route::post('/update/mobile' , 'UsersController@updateMobile');
 
 	});
 

@@ -706,7 +706,7 @@ class UsersController extends ApiController
      * @apiParam {string} checkMobileCode 是否验证旧手机
      *
      * @apiParamExample {json} Request Example
-     * POST /sigma/bind/mobile
+     * POST /sigma/update/mobile
      * {
      *      'mobile'            : 18401586654,
      *      'code'              : '218746',
@@ -741,6 +741,8 @@ class UsersController extends ApiController
         if($code != $checkCode){
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
+
+        session::forget('jsx_sms_code_check_token_'.$checkMobileCode);
 
         //判断是否有其他用户绑定了此手机号
         //使用此接口理论上是没有用户绑定此手机号的
@@ -869,7 +871,7 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }else{
             $token      = $this->getSalt(8 , 0);
-            Session::flash('jsx_sms_code_check_token_'.$token , $token);
+            Session::put('jsx_sms_code_check_token_'.$token , $token);
             return response()->json(Message::setResponseInfo('SUCCESS' , $token));
         }
 
