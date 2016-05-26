@@ -255,10 +255,11 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
 
+        //验证手机号是不是绑定的手机号
         $user               = $this->_model->getUserInfoByMobile($mobile);
 
         if($user == null){
-            return response()->json(Message::setResponseInfo('NO_USER'));
+            return response()->json(Message::setResponseInfo('MOBILE_NOT_BIND'));
         }
 
 

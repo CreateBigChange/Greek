@@ -34,6 +34,7 @@ class Message {
 				'TOKEN_FAILURE'					=> array('code'=>'4011' , 'msg'=>'令牌无效或过期'),
 				'MOBILE_BIND'					=> array('code'=>'4012' , 'msg'=>'手机号已绑定其他帐号'),
 				'HAVE_MOBILE'					=> array('code'=>'4013' , 'msg'=>'需要验证旧手机号'),
+				'MOBILE_NOT_BIND'				=> array('code'=>'4014' , 'msg'=>'该手机号不是绑定的手机号'),
 
 
 
