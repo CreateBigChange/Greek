@@ -35,10 +35,10 @@ class OrdersController extends ApiController
      * @apiVersion 1.0.0
      * @apiDescription 获取订单详情
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/order/info
+     * @apiSampleRequest http://greek.test.com/sigma/order/info/1
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/order/info/1
+     *      POST /sigma/order/info/1
      *      {
      *      }
      * @apiUse CODE_200
@@ -114,18 +114,18 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/orders/change/status/{id} 修改订单状态
+     * @api {POST} /sigma/order/change/status/{id} 修改订单状态
      * @apiName ordersChangeStatus
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 修改订单状态
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/orders/change/status/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/change/status/1
      *
      * @apiParam {number} status 状态
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/store/orders/change/status/1
+     *      POST /sigma/order/change/status/1
      *      {
      *          status : 3
      *      }
@@ -140,7 +140,12 @@ class OrdersController extends ApiController
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
+
         $status = $request->get('status');
+
+        if($status != Config::get('orderstatus.completd') || $status != Config::get('orderstatus.cancel') || $status != Config::get('orderstatus.arrive')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
 
         if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -235,7 +240,7 @@ class OrdersController extends ApiController
 
         $data = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
-        return response()->json($data);
+        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
 
     }
 
@@ -271,27 +276,34 @@ class OrdersController extends ApiController
 
         $addressId    = $request->get('address_id');
 
-        if($this->_model->updateOrderAddress( $userId , $orderId , $addressId )){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
+        $order = $this->_model->getOrderStatus($orderId);
+
+        if($order->status == Config::get('orderstatus.no_pay')) {
+
+            if ($this->_model->updateOrderAddress($userId, $orderId, $addressId)) {
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            } else {
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('NOT_UPDATE_ADDRESS'));
         }
 
     }
 
     /**
-     * @api {POST} /sigma/order/refund/reason/{orderId} 退款原因
+     * @api {POST} /sigma/order/refund/{orderId} 退款原因
      * @apiName ordersRefundReason
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 退款原因
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/order/refund/reason/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/refund/1
      *
      * @apiParam {string} content 原因
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/order/refund/reason/1
+     *      POST /sigma/order/refund/1
      *      {
      *          content : "太慢了,懒得等",
      *
@@ -341,29 +353,27 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/order/complaint 投诉
+     * @api {POST} /sigma/order/complaint/{orderID} 投诉
      * @apiName ordersComplaint
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 投诉
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/order/complaint
+     * @apiSampleRequest http://greek.test.com/sigma/order/complaint/1
      *
      * @apiParam {int} order_id 订单ID
      * @apiParam {string} content 投诉内容
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/order/complaint
+     *      POST /sigma/order/complaint/1
      *      {
-     *          'order_id' : 1,
      *          'content'  : "配送太慢了"
      *      }
      * @apiUse CODE_200
      *
      */
-    public function complaint(Request $request){
+    public function complaint($orderId , Request $request){
         $validation = Validator::make($request->all(), [
-            'order_id'              => 'required',
             'content'               => 'required',
         ]);
         if($validation->fails()){
@@ -372,7 +382,7 @@ class OrdersController extends ApiController
 
         $data = array();
         $data['user_id']     = $this->userId;
-        $data['order_id']    = $request->get('order_id');
+        $data['order_id']    = $orderId;
         $data['content']     = $request->get('content');
         $data['created_at']  = date('Y-m-d H:i:s' , time());
 
@@ -385,24 +395,22 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/order/evaluate 评价
+     * @api {POST} /sigma/order/evaluate/1 评价
      * @apiName ordersEvaluate
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 评价
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/order/evaluate
+     * @apiSampleRequest http://greek.test.com/sigma/order/evaluate/1
      *
-     * @apiParam {int} order_id 订单ID
      * @apiParam {string} content 评价内容
      * @apiParam {FLOAT} speed 配送速度
      * @apiParam {FLOAT} attitude 服务态度
      * @apiParam {FLOAT} quality 商品质量
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/order/evaluate
+     *      POST /sigma/order/evaluate/1
      *      {
-     *          'order_id'  : 1,
      *          'content'   : "太好了",
      *          'speed'     : 4,
      *          'attitude'  : 5,
@@ -411,9 +419,8 @@ class OrdersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function evaluate(Request $request){
+    public function evaluate($orderId , Request $request){
         $validation = Validator::make($request->all(), [
-            'order_id'              => 'required',
             'speed'                 => 'required',
             'attitude'              => 'required',
             'quality'              => 'required',
@@ -427,7 +434,7 @@ class OrdersController extends ApiController
         $data['speed']          = $request->get('speed');
         $data['attitude']       = $request->get('attitude');
         $data['quality']        = $request->get('quality');
-        $data['order_id']       = $request->get('order_id');
+        $data['order_id']       = $orderId;
         $data['content']        = $request->get('content');
         $data['created_at']     = date('Y-m-d H:i:s' , time());
 

@@ -39,6 +39,15 @@ class Orders extends Model
     }
 
     /**
+     * 获取订单状态
+     * @param orderId   number
+     */
+    public function getOrderStatus($orderId){
+        return DB::table($this->_orders_table)->select('status')->where('id' , $orderId)->frist();
+
+    }
+
+    /**
      * 获取订单列表
      * @param storeId   number
      * @param search    array

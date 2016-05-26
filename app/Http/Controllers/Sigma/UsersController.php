@@ -464,9 +464,10 @@ class UsersController extends ApiController
      * {
      *      mobile : 18401586654,
      *      consignee   : 吴辉,
-     *      province   :   1,
-     *      city        : 2,
-     *      county      : 36,
+     *      province   :   湖南省,
+     *      city        : 长沙市,
+     *      county      : 岳麓区,
+     *      street      : 银杉路
      *      address     : 绿地中央广场,
      *      longitude   : 120.373,
      *      latitude    : 282.134
@@ -694,7 +695,7 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/update/mobile 更新的绑定手机号
+     * @api {POST} /sigma/update/mobile 更新绑定的手机号
      * @apiName updateMobile
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
@@ -704,7 +705,7 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} 18401586654 手机号
      * @apiParam {string} code 验证码
-     * @apiParam {string} checkMobileCode 是否验证旧手机
+     * @apiParam {string} checkMobileCode 40
      *
      * @apiParamExample {json} Request Example
      * POST /sigma/update/mobile
@@ -879,16 +880,17 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/weixin/callback 微信回调
+     * @api {POST} /sigma/weixin/login/callback?code='sadsae2342dadaxxs'&type='app' 微信登录回调
      * @apiName weixinCallback
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/weixin/callback
+     * @apiSampleRequest http://greek.test.com/sigma/weixin/login/callback?code='sadsae2342dadaxxs'&type='app'
+     *
      *
      * @apiParamExample {json} Request Example
-     * POST /sigma/weixin/callback
+     * POST /sigma/weixin/login/callback
      * {
      * }
      * @apiUse CODE_200

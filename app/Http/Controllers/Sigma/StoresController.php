@@ -190,7 +190,7 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/nav/storeId 获取栏目
+     * @api {POST} /sigma/store/nav/{storeId} 获取栏目
      * @apiName storeNav
      * @apiGroup SIGMA
      * @apiVersion 1.0.0

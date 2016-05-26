@@ -180,11 +180,12 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/init' , 'OrdersController@initOrder');
 		Route::post('/order/list' , 'OrdersController@getOrderList');
 		Route::post('/order/status/log/{orderId}' , 'OrdersController@getOrderStatusLog');
-		Route::post('/order/complaint' , 'OrdersController@complaint');
-		Route::post('/order/evaluate' , 'OrdersController@evaluate');
-		Route::post('/order/refund/reason/{orderId}' , 'OrdersController@refundReason');
+		Route::post('/order/complaint/{orderId}' , 'OrdersController@complaint');
+		Route::post('/order/evaluate/{orderId}' , 'OrdersController@evaluate');
+		Route::post('/order/refund/{orderId}' , 'OrdersController@refundReason');
 		Route::post('/order/info/{orderId}' , 'OrdersController@getOrderInfo');
 		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
+		Route::post('/order/change/status/{id}' , 'OrdersController@changeStatus');
 
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
@@ -217,7 +218,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/login' , 'UsersController@login');
 	Route::post('/register' , 'UsersController@register');
 	Route::post('/reset/password', 'UsersController@resetPassword');
-	Route::post('/weixin/callback', 'UsersController@weixinCallback');
+	Route::post('/weixin/login/callback', 'UsersController@weixinCallback');
 
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
 

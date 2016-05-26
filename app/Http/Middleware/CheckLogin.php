@@ -29,6 +29,8 @@ class CheckLogin
             return response()->json(Message::setResponseInfo('RELOGIN'));
         }
 
+
+
         return $next($request);
     }
 }
