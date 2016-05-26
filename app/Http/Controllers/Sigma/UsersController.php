@@ -933,18 +933,42 @@ class UsersController extends ApiController
             $sqlDta['sex'] = "女";
         }
 
-        $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['openid']);
+        //判断该微信是否之前有过登录,有登录直接返回用户信息
+        $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
 
         if(!$userInfo){
             if($this->_model->addUser($sqlDta)){
-                $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['openid']);
-                return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+                $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
+                //获取登录用户的权限
+
+                if($userInfo) {
+                    $sessionKey = $this->getSalt(16);
+
+                    Session::put($sessionKey, $userInfo);
+
+                    $cookie = Cookie::make(Config::get('session.sigma_login_cookie'), $sessionKey, Config::get('session.sigma_lifetime'));
+
+                    $userInfo->token = $sessionKey;
+
+                    return response()->json(Message::setResponseInfo('SUCCESS', $userInfo))->withCookie($cookie);
+                }else{
+                    return response()->json(Message::setResponseInfo('FAILED'));
+                }
+
             }else{
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
 
         }else{
-            return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+            $sessionKey = $this->getSalt(16);
+
+            Session::put($sessionKey, $userInfo);
+
+            $cookie = Cookie::make(Config::get('session.sigma_login_cookie'), $sessionKey, Config::get('session.sigma_lifetime'));
+
+            $userInfo->token = $sessionKey;
+
+            return response()->json(Message::setResponseInfo('SUCCESS', $userInfo))->withCookie($cookie);
         }
 
     }
