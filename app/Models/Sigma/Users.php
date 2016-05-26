@@ -128,7 +128,7 @@ class Users extends Model
                 'sex'
             )
             ->where('is_del' , 0)
-            ->where('openid' , $openid)
+            ->where('wx_openid' , $openid)
             ->first();
     }
 
