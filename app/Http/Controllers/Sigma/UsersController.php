@@ -907,6 +907,8 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
         }
 
+        var_dump($data);die;
+
         $token		= $data->access_token;
         $openid		= $data->openid;
 
