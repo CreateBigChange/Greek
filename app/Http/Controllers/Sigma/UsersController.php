@@ -898,7 +898,16 @@ class UsersController extends ApiController
         if(!isset($_GET['code'])){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx84bf49661a4e1f76&secret=a9b4e69d0ea401fb603fc1d5aa549c36&code=".$_GET['code']."&grant_type=authorization_code";
+
+        if(isset($_GET['type']) && $_GET['type'] == 'app') {
+            $appid = Config::get('weixin.app_appid');
+            $secret = Config::get('weixin.app_secret');
+        }else{
+            $appid = Config::get('weixin.web_appid');
+            $secret = Config::get('weixin.web_secret');
+        }
+        
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
 
         $data = $this->curlGet($url);
         $data	= json_decode($data);
