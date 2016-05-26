@@ -903,15 +903,14 @@ class UsersController extends ApiController
         $data = $this->curlGet($url);
         $data	= json_decode($data);
 
-        var_dump($data);die;
         if(!isset($data->access_token)){
             return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
         }
 
 
 
-        $token		= $data['access_token'];
-        $openid		= $data['openid'];
+        $token		= $data->access_token;
+        $openid		= $data->openid;
 
 
         $getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=".$token."&openid=".$openid;
