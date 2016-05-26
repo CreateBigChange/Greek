@@ -903,13 +903,9 @@ class UsersController extends ApiController
         $data = $this->curlGet($url);
         $data	= json_decode($data);
 
-        var_dump(isset($data->errcode));die;
-
-        if(!isset($data->access_token)){
+        if(isset($data->errcode)){
             return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
         }
-
-
 
         $token		= $data->access_token;
         $openid		= $data->openid;
