@@ -320,7 +320,8 @@ class Users extends Model
         return DB::table('sms_error_log')->insert(
             array(
                 'mobile'        => $mobile,
-                'error_code'    => $errorCode
+                'error_code'    => $errorCode,
+                'created_at'    => date('Y-m-d H:i:s' , time())
             )
         );
     }

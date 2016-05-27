@@ -320,7 +320,7 @@ class UsersController extends ApiController
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
         //$isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
 
-        var_dump($this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId'))));die;
+        $this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
 
         return response()->json(Message::setResponseInfo('SUCCESS'));
 //        if($isSend){
