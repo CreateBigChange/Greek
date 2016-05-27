@@ -43,7 +43,7 @@ class Orders extends Model
      * @param orderId   number
      */
     public function getOrderStatus($orderId){
-        return DB::table($this->_orders_table)->select('status')->where('id' , $orderId)->frist();
+        return DB::table($this->_orders_table)->select('status')->where('id' , $orderId)->first();
 
     }
 

@@ -10,7 +10,10 @@
         "qiniu/php-sdk": "^7.0",
         "socialiteproviders/weixin": "^2.1",
         "socialiteproviders/qq": "^2.0",
-        "predis/predis": "~1.0"
+        "predis/predis": "~1.0",
+        "aws/aws-sdk-php": "~3.0",
+        "pda/pheanstalk": "~3.0",
+        "iron-io/iron_mq": "~4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

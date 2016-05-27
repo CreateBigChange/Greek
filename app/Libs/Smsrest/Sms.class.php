@@ -41,20 +41,19 @@ class Sms {
 
         if($result == NULL ) {
             BLogger::getLogger(BLogger::LOG_SMS)->notice(json_encode($log));
-            return false;
         }
         if($result->statusCode!=0) {
             $log['result'] = $result;
             BLogger::getLogger(BLogger::LOG_SMS)->notice(json_encode($log));
             //TODO 添加错误处理逻辑
-            return false;
         }else{
             // 获取返回信息
             $smsmessage = $result->TemplateSMS;
             $log['result'] = $smsmessage;
             BLogger::getLogger(BLogger::LOG_SMS)->notice(json_encode($log));
             //TODO 添加成功处理逻辑
-            return true;
         }
+
+        return $result;
     }
 }

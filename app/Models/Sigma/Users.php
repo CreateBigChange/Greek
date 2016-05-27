@@ -310,4 +310,19 @@ class Users extends Model
         return DB::table($this->_table)->where('id' , $userId)->update(['points'=>$point]);
     }
 
+    /**
+     * @param $userId
+     * @param $point
+     * @return mixed
+     *
+     */
+    public function addSmsErrorLog($mobile , $errorCode){
+        return DB::table('sms_error_log')->insert(
+            array(
+                'mobile'        => $mobile,
+                'error_code'    => $errorCode
+            )
+        );
+    }
+
 }
