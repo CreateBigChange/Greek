@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Libs\Smsrest\Sms;
 use App\Models\Sigma\Users;
+use Session;
 
 class SendSms extends Job implements ShouldQueue
 {
@@ -44,6 +45,7 @@ class SendSms extends Job implements ShouldQueue
             $userModel->addSmsErrorLog($this->mobile , $isSend->statusMsg);
             return false;
         }
+        Session::put("jsx_sms_$this->mobile" , $this->code);
         return true;
     }
 
