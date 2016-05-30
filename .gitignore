@@ -11,3 +11,4 @@ composer.lock
 *.swp
 *.swo
 log.txt
+Makefile
