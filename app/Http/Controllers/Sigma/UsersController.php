@@ -313,22 +313,22 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('NO_PHONE'));
         }
 
-//        $sms = new Sms;
+        $sms = new Sms;
 
         $code = $this->getSalt(6 , 1);
 
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
-        //$isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
+        $isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
 
-        $this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
+        //$this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
 
-        return response()->json(Message::setResponseInfo('SUCCESS'));
-//        if($isSend){
-//            Session::put("jsx_sms_$mobile" , $code);
-//            return response()->json(Message::setResponseInfo('SUCCESS'));
-//        }else{
-//            return response()->json(Message::setResponseInfo('FAILED'));
-//        }
+        //return response()->json(Message::setResponseInfo('SUCCESS'));
+        if($isSend){
+            Session::put("jsx_sms_$mobile" , $code);
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
 
     }
 
