@@ -38,6 +38,8 @@ class Message {
 				'WX_TOKEN_FAILED'				=> array('code'=>'4015' , 'msg'=>'获取微信token失败'),
 				'NOT_UPDATE_ADDRESS'			=> array('code'=>'4016' , 'msg'=>'订单状态显示您现在不能修改订单地址'),
 				'OLD_PASSWORD_ERROR'			=> array('code'=>'4017' , 'msg'=>'旧密码错误'),
+				'NO__HAVE_PAY_PASSWORD'			=> array('code'=>'4018' , 'msg'=>'没有设置支付密码'),
+				'PAY_PASSWORD_ERROR'			=> array('code'=>'4018' , 'msg'=>'支付密码错误'),
 
 
 

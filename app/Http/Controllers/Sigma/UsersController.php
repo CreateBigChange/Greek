@@ -752,9 +752,9 @@ class UsersController extends ApiController
         $oldPayPassword  = $request->get('old_pay_password');
 
         $userModel = new Users;
-        $userInfo  =  $userModel->getUserPassword($this->userId);
+        $userInfo  =  $userModel->getUserPayPassword($this->userId);
 
-        if($oldPayPassword != $this->encrypt($userInfo->password , $userInfo->salt)){
+        if($oldPayPassword != $this->encrypt($userInfo->pay_password , $userInfo->pay_salt)){
             return response()->json(Message::setResponseInfo('OLD_PASSWORD_ERROR'));
         }
 

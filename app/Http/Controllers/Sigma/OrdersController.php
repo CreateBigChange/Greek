@@ -12,6 +12,8 @@ use Illuminate\Http\Response;
 use Validator , Input;
 use Session , Cookie , Config;
 
+use App\Models\Sigma\Users;
+
 use App\Http\Controllers\ApiController;
 
 use App\Models\Sigma\Orders;
@@ -208,12 +210,14 @@ class OrdersController extends ApiController
      *
      * @apiParam {int} pay_type 支付方式
      * @apiParam {int} out_points 使用积分
+     * @apiParam {string} pay_password 支付密码
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/orders/confirm/1
      *      {
      *          pay_type : 1,
      *          out_points : 328,
+     *          pay_password : 123456,
      *      }
      * @apiUse CODE_200
      *
@@ -241,6 +245,16 @@ class OrdersController extends ApiController
 
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytape.money')){
+            $userModel = new Users;
+            $payPassword = $request->get('pay_password');
+            $userInfo  =  $userModel->getUserPayPassword($this->userId);
+
+            if(empty($userInfo->pay_password)){
+                return response()->json(Message::setResponseInfo('NO__HAVE_PAY_PASSWORD'));
+            }
+            if($userInfo->pay_password != $this->encrypt($payPassword , $userInfo->pay_salt)){
+                return response()->json(Message::setResponseInfo('PAY_PASSWORD_ERROR'));
+            }
             return $this->_model->pay( $userId , $orderId , $payNum , $payType);
         }else{
             return response()->json(Message::setResponseInfo('SUCCESS' , $payNum));

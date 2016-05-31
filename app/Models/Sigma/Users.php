@@ -96,6 +96,17 @@ class Users extends Model
     }
 
     /**
+     * @param $id
+     * @return mixed
+     * 获取用户支付密码
+     */
+    public function getUserPayPassword($id ){
+        return DB::table($this->_table)
+            ->select('pay_password' , 'pay_salt')
+            ->where('id' , $id)->first();
+    }
+
+    /**
      * @param int $id
      * @param array $data
      * @return mixed
