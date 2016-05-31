@@ -715,7 +715,7 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/user/update/pay/password 设置支付密码
+     * @api {POST} /sigma/user/update/pay/password 更新支付密码
      * @apiName userUpdatePayPassword
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
