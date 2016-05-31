@@ -236,9 +236,10 @@ class OrdersController extends ApiController
         }
         $payType    = $request->get('pay_type');
 
-
+        //更新订单状态
         $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
+        //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytape.money')){
             return $this->_model->pay( $userId , $orderId , $payNum , $payType);
         }else{
