@@ -324,7 +324,6 @@ class UsersController extends ApiController
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
-
     }
 
     /**
@@ -603,6 +602,57 @@ class UsersController extends ApiController
     }
 
     /**
+     * @api {POST} /sigma/sendsms/by/bindmobile 给绑定的手机发验证码
+     * @apiName bindmobile
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/sendsms/by/bindmobile
+     *
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/sendsmsby/bindmobile
+     * {
+     *
+     * }
+     * @apiUse CODE_200
+     *
+     */
+
+    public function bindMobilSms(Request $request){
+
+        $userModel = new Users;
+        $userInfo  =  $userModel->getUserInfoById($this->userId);
+
+        if(!$userInfo->mobile){
+            return response()->json(Message::setResponseInfo('NO_PHONE'));
+        }
+
+        $mobile = $userInfo->mobile;
+//        if(! preg_match("/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/" , $mobile)){
+//            return response()->json(Message::setResponseInfo('NO_PHONE'));
+//        }
+
+        $sms = new Sms;
+
+        $code = $this->getSalt(6 , 1);
+
+        BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
+        $isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
+
+        //$this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
+
+        //return response()->json(Message::setResponseInfo('SUCCESS'));
+        if($isSend){
+            Session::put("jsx_sms_$mobile" , $code);
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
      * @api {POST} /sigma/user/set/pay/password 设置支付密码
      * @apiName userSetPayPassword
      * @apiGroup SIGMA
@@ -616,7 +666,8 @@ class UsersController extends ApiController
      * @apiParamExample {json} Request Example
      * POST /sigma/user/set/pay/password
      * {
-     *      pay_password:654321
+     *      pay_password:654321,
+     *      code:654321,
      * }
      * @apiUse CODE_200
      *
@@ -634,6 +685,78 @@ class UsersController extends ApiController
         $data = array();
 
         $payPassword = $request->get('pay_password');
+
+        $code   = $request->get('code');
+
+        $userModel = new Users;
+        $userInfo  =  $userModel->getUserInfoById($this->userId);
+
+        if(!$userInfo->mobile){
+            return response()->json(Message::setResponseInfo('NO_PHONE'));
+        }
+
+        $mobile = $userInfo->mobile;
+
+        $checkCode  = session::get("jsx_sms_$mobile");
+
+        if($code != $checkCode){
+            return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
+        }
+
+        $data['pay_salt']               = $this->getSalt(8);
+        $data['pay_password']           = $this->encrypt($payPassword , $data['pay_salt']);
+        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+
+        if($this->_model->updateUser($this->userId , $data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    /**
+     * @api {POST} /sigma/user/update/pay/password 设置支付密码
+     * @apiName userUpdatePayPassword
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/update/pay/password
+     *
+     * @apiParam {sting} pay_password 密码
+     * @apiParam {sting} old_pay_password 密码
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/update/pay/password
+     * {
+     *      pay_password:654321,
+     *      old_pay_password:654321,
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function updatePayPassword(Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'pay_password'                => 'required',
+            'old_pay_password'             => 'required'
+
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+
+        $payPassword = $request->get('pay_password');
+        $oldPayPassword  = $request->get('old_pay_password');
+
+        $userModel = new Users;
+        $userInfo  =  $userModel->getUserPassword($this->userId);
+
+        if($oldPayPassword != $this->encrypt($this->password , $this->salt)){
+            return response()->json(Message::setResponseInfo('OLD_PASSWORD_ERROR'));
+        }
 
         $data['pay_salt']               = $this->getSalt(8);
         $data['pay_password']           = $this->encrypt($payPassword , $data['pay_salt']);

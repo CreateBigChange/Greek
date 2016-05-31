@@ -36,7 +36,8 @@ class Message {
 				'HAVE_MOBILE'					=> array('code'=>'4013' , 'msg'=>'需要验证旧手机号'),
 				'MOBILE_NOT_BIND'				=> array('code'=>'4014' , 'msg'=>'该手机号不是绑定的手机号'),
 				'WX_TOKEN_FAILED'				=> array('code'=>'4015' , 'msg'=>'获取微信token失败'),
-				'NOT_UPDATE_ADDRESS'			=> array('code'=>'4015' , 'msg'=>'订单状态显示您现在不能修改订单地址'),
+				'NOT_UPDATE_ADDRESS'			=> array('code'=>'4016' , 'msg'=>'订单状态显示您现在不能修改订单地址'),
+				'OLD_PASSWORD_ERROR'			=> array('code'=>'4017' , 'msg'=>'旧密码错误'),
 
 
 
