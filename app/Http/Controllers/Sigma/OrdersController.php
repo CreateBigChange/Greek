@@ -207,7 +207,7 @@ class OrdersController extends ApiController
      * @apiSampleRequest http://greek.test.com/sigma/orders/confirm/1
      *
      * @apiParam {int} pay_type 支付方式
-     * @apiParam {int} put_points 使用积分
+     * @apiParam {int} out_points 使用积分
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/orders/confirm/1
@@ -227,7 +227,6 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
 
-
         $userId     = $this->userId;
 
         if(!$request->has('out_points')){
@@ -238,11 +237,16 @@ class OrdersController extends ApiController
         $payType    = $request->get('pay_type');
 
 
-        $data = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
+        if($payType == Config::get('paytape.money')){
+            return $this->_model->pay( $userId , $orderId , $payNum , $payType);
+        }else{
+            return response()->json(Message::setResponseInfo('SUCCESS' , $payNum));
+        }
 
     }
+
 
     /**
      * @api {POST} /sigma/order/update/address/{orderId} 修改订单地址

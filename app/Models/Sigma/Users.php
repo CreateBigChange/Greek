@@ -303,11 +303,39 @@ class Users extends Model
     /**
      * @param $userId
      * @param $point
+     * @return bool
+     *
+     * 确认余额是否充足
+     */
+    public function isAmpleMoney($userId , $money){
+        $haveMoney = DB::table($this->_table)->select('points')->where('id' , $userId)->first();
+
+
+        if($money <= $haveMoney->money){
+            return $money - $haveMoney->money;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * @param $userId
+     * @param $point
      * @return mixed
      * 更新用户积分
      */
     public function updatePoint($userId , $point){
         return DB::table($this->_table)->where('id' , $userId)->update(['points'=>$point]);
+    }
+
+    /**
+     * @param $userId
+     * @param $point
+     * @return mixed
+     * 更新用户余额
+     */
+    public function updateMoney($userId , $money){
+        return DB::table($this->_table)->where('id' , $userId)->update(['money'=>$money]);
     }
 
     /**

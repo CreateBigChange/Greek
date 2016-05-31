@@ -46,6 +46,8 @@ class Message {
 				'RELOGIN'						=> array('code'=>'5003' , 'msg'=>'请重新登录'),
 
 				'POINT_NOT_AMPLE'				=> array('code'=>'5004' , 'msg'=>'积分不足'),
+				'MONEY_NOT_AMPLE'				=> array('code'=>'5005' , 'msg'=>'余额不足'),
+				'MONEY_NOT_EQUAL'				=> array('code'=>'5006' , 'msg'=>'支付的金额与需要支付的金额不等'),
 
 			);
 

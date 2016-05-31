@@ -13,6 +13,7 @@ use App\Libs\Message;
 
 use App\Models\Sigma\Stores;
 use App\Models\Sigma\Users;
+use Mockery\Exception;
 
 class Orders extends Model
 {
@@ -231,47 +232,56 @@ class Orders extends Model
         //开始事物
         DB::beginTransaction();
 
-        $orderId = DB::table($this->_orders_table)->insertGetId($order);
+        try {
 
-        if(!$orderId){
-            return false;
-        }
+            $orderId = DB::table($this->_orders_table)->insertGetId($order);
 
+            if (!$orderId) {
+                return false;
+            }
 
-        $this->createOrderLog($orderId , $userId , '普通用户' , '用户端APP' , '创建订单');
+            //生成订单详细信息的数据
+            $orderInfo = array();
+            $i = 0;
+            foreach ($goodsList as $g) {
+                $orderInfo[$i]['order_id'] = $orderId;
+                $orderInfo[$i]['goods_id'] = $g->id;
+                $orderInfo[$i]['c_id'] = $g->category_id;
+                $orderInfo[$i]['b_id'] = $g->brand_id;
+                $orderInfo[$i]['c_name'] = $g->category_name;
+                $orderInfo[$i]['b_name'] = $g->brand_name;
+                $orderInfo[$i]['name'] = $g->name;
+                $orderInfo[$i]['img'] = $g->img;
+                $orderInfo[$i]['out_price'] = $g->out_price;
+                $orderInfo[$i]['give_points'] = $g->give_points;
+                $orderInfo[$i]['spec'] = $g->spec;
+                $orderInfo[$i]['num'] = $nums[$g->id];
+                $orderInfo[$i]['created_at'] = date('Y-m-d H:i:s', time());
+                $orderInfo[$i]['updated_at'] = date('Y-m-d H:i:s', time());
 
-        //生成订单详细信息的数据
-        $orderInfo = array();
-        $i = 0;
-        foreach ($goodsList as $g){
-            $orderInfo[$i]['order_id']      = $orderId;
-            $orderInfo[$i]['goods_id']      = $g->id;
-            $orderInfo[$i]['c_id']          = $g->category_id;
-            $orderInfo[$i]['b_id']          = $g->brand_id;
-            $orderInfo[$i]['c_name']        = $g->category_name;
-            $orderInfo[$i]['b_name']        = $g->brand_name;
-            $orderInfo[$i]['name']          = $g->name;
-            $orderInfo[$i]['img']           = $g->img;
-            $orderInfo[$i]['out_price']     = $g->out_price;
-            $orderInfo[$i]['give_points']   = $g->give_points;
-            $orderInfo[$i]['spec']          = $g->spec;
-            $orderInfo[$i]['num']           = $nums[$g->id];
-            $orderInfo[$i]['created_at']    = date('Y-m-d H:i:s' , time());
-            $orderInfo[$i]['updated_at']    = date('Y-m-d H:i:s' , time());
+                $i++;
+            }
 
-            $i++;
-        }
-
-        if(DB::table($this->_order_infos_table)->insert($orderInfo)){
-            //提交事物
+            DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
+
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay'));
             return $orderId;
-        }else{
-            //失败事物回滚
+        }catch(Exception $e){
             DB::rollBack();
             return false;
-
         }
+//        //提交事物
+//        if() {
+//
+//        }else{
+//            //失败事物回滚
+//
+//            return false;
+//        }
+
+
+
 
     }
 
@@ -311,10 +321,82 @@ class Orders extends Model
         $payNum = $order->total + $order->deliver - ($outPoints / 100);
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
-            return Message::setResponseInfo('SUCCESS' , $payNum);
+            return $payNum;
         }else{
+            return false;
+        }
+    }
+
+
+    /**
+     * @param $userId
+     * @param $orderId
+     * @param $payMoney
+     * @param $payType
+     * @return array|bool|mixed
+     * 支付
+     */
+    public function pay($userId , $orderId , $payMoney , $payType){
+        $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
+
+        if(!$payType){
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
+            return false;
+        }
+
+        $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
+
+        $userModel = new Users;
+        $isAmplePoint =$userModel->isAmplePoint($userId , $order->outPoints);
+
+        if(!$isAmplePoint){
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
+            return Message::setResponseInfo('POINT_NOT_AMPLE');
+        }
+
+        $update = array(
+            'status'        => Config::get('orderstatus.paid'),
+            'updated_at'    => date('Y-m-d H:i:s' , time())
+        );
+
+        //计算需要支付的数量
+        $payNum = $order->total + $order->deliver - ($order->outPoints / 100);
+
+        if($payMoney != $payNum){
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+        }
+
+        $isAmpleMoney =$userModel->isAmpleMoney($userId , $payNum);
+        if(!$isAmpleMoney){
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
+            return Message::setResponseInfo('MONEY_NOT_AMPLE');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            //更新用户积分和余额
+            $userModel->updatePoint($userId, $order->outPoints);
+            $userModel->updateMoney($userId, $isAmpleMoney);
+
+            //更新订单状态
+            DB::table($this->_orders_table)->where('user', $userId)->where('id', $orderId)->update($update);
+            DB::commit();
+
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
+            return Message::setResponseInfo('SUCCESS');
+        }catch (Exception $e){
+            DB::rollBack();
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
             return Message::setResponseInfo('FAILED');
         }
+
+//        if(){
+//            return Message::setResponseInfo('SUCCESS' , $payNum);
+//        }else{
+//            return Message::setResponseInfo('FAILED');
+//        }
     }
 
     /**
@@ -355,7 +437,7 @@ class Orders extends Model
      * @return bool
      * 创建订单log
      */
-    public function createOrderLog($orderId , $userId , $identity , $platform , $log){
+    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status){
 
         $statusChangeLog = Config::get('orderstatus.no_pay');
         $statusChangeLog['updated_at']      = date('Y-m-d H:i:s' , time());
@@ -365,6 +447,7 @@ class Orders extends Model
         $statusChangeLog['platform']        = $platform;
         $statusChangeLog['log']             = $log;
         $statusChangeLog['order_id']        = $orderId;
+        $statusChangeLog['status']          = $status;
 
         if(DB::table($this->_order_logs_table)->insert($statusChangeLog)){
 

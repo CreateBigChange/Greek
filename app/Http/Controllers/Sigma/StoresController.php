@@ -78,13 +78,13 @@ class StoresController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/store/list/byids 根据店铺ids获取店铺列表
+     * @api {POST} /sigma/store/list/byids[?page=1] 根据店铺ids获取店铺列表
      * @apiName storeListByIds
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/store/list/byids
+     * @apiSampleRequest http://greek.test.com/sigma/store/list/byids?page=1
      *
      * @apiParam {string} ids 商品id
      *
@@ -98,14 +98,25 @@ class StoresController extends ApiController
      */
     public function getStoreListByIds(Request $request){
 
+        $page = 1;
+        if(isset($_GET['page'])){
+            $page = $_GET['page'];
+        }
+
         if(!$request->has('ids')){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
         $ids = $request->get('ids');
 
-        $storeList = $this->_model->getStoreList(array('ids'=>$ids));
+        $totalNum = count(explode(',', $ids));
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $storeList));
+        $response = array();
+
+        $response['pageData'] = $this->getPageData($page , $this->_length , $totalNum);
+
+        $response['storeList'] = $this->_model->getStoreList(array('ids'=>$ids) , $this->_length , $response['pageData']->offset);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
     /**

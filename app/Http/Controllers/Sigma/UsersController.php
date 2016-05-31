@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wuhui
- * Date: 16/3/15
- * Time: 下午5:10
- */
+
 namespace App\Http\Controllers\Sigma;
 
 use Illuminate\Http\Request;
@@ -415,9 +410,9 @@ class UsersController extends ApiController
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
-        
+
         $data = array();
-        
+
         $data['user_id']    = $this->userId;
         $data['province']   = $request->get('province');
         $data['city']       = $request->get('city');
@@ -453,9 +448,9 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} [mobile] 手机号
      * @apiParam {sting} [consignee] 联系人
-     * @apiParam {int} [province] 省
-     * @apiParam {int} [city] 市
-     * @apiParam {int} [county] 区
+     * @apiParam {string} [province] 省
+     * @apiParam {string} [city] 市
+     * @apiParam {string} [county] 区
      * @apiParam {sting} [address] 详细地址
      * @apiParam {sting} [longitude] 经度
      * @apiParam {sting} [latitude] 纬度
@@ -912,7 +907,7 @@ class UsersController extends ApiController
             $appid = Config::get('weixin.web_appid');
             $secret = Config::get('weixin.web_secret');
         }
-        
+
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
 
         $data = $this->curlGet($url);

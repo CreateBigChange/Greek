@@ -24,7 +24,7 @@ class Stores extends Model
      *
      * 获取店铺信息
      */
-    public function getStoreList($search = array()){
+    public function getStoreList($search = array() , $length=20 , $offset=0){
         $sql  = "select 
                       si.id,
                       si.name as store_name,
@@ -54,6 +54,8 @@ class Stores extends Model
         if(isset($search['ids'])){
             $sql .= " AND si.id IN (" . $search['ids'] .")";
         }
+
+        $sql .= " LIMIT $offset , $length ";
 
         $info = DB::select($sql);
 
