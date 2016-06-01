@@ -297,7 +297,7 @@ class Orders extends Model
      *
      * 确认订单
      */
-    public function confirmOrder($userId , $orderId , $payType , $outPoints){
+    public function confirmOrder($userId , $orderId , $payType , $inPoints){
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
@@ -305,14 +305,14 @@ class Orders extends Model
         }
 
         $userModel = new Users;
-        $isAmplePoint =$userModel->isAmplePoint($userId , $outPoints);
+        $isAmplePoint =$userModel->isAmplePoint($userId , $inPoints);
 
         if(!$isAmplePoint){
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
 
         $update = array(
-            'in_points'     => $outPoints,
+            'in_points'     => $inPoints,
             'pay_type_id'   => $payType->id,
             'pay_type_name' => $payType->name,
             'updated_at'    => date('Y-m-d H:i:s' , time())
@@ -325,7 +325,7 @@ class Orders extends Model
         }
 
         //计算需要支付的数量
-        $payNum = $order->total + $order->deliver - ($outPoints / 100);
+        $payNum = $order->total + $order->deliver - ($inPoints / 100);
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
             return Message::setResponseInfo('SUCCESS' , $payNum);
@@ -354,7 +354,7 @@ class Orders extends Model
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
         $userModel = new Users;
-        $isAmplePoint =$userModel->isAmplePoint($userId , $order->out_points);
+        $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
         if(!$isAmplePoint){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
@@ -367,7 +367,9 @@ class Orders extends Model
         );
 
         //计算需要支付的数量
-        $payNum = $order->total + $order->deliver - ($order->out_points / 100);
+        $payNum = $order->total + $order->deliver - ($order->in_points / 100);
+        var_dump($payMoney);
+        var_dump($payNum);die;
 
         if($payMoney != $payNum){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
