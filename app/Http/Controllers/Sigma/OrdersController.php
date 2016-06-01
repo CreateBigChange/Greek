@@ -206,14 +206,14 @@ class OrdersController extends ApiController
      * @apiVersion 1.0.0
      * @apiDescription 确认订单
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/orders/confirm/1
+     * @apiSampleRequest http://greek.test.com/sigma/order/confirm/1
      *
      * @apiParam {int} pay_type 支付方式
      * @apiParam {int} out_points 使用积分
      * @apiParam {string} pay_password 支付密码
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/orders/confirm/1
+     *      POST /sigma/order/confirm/1
      *      {
      *          pay_type : 1,
      *          out_points : 328,
@@ -244,7 +244,7 @@ class OrdersController extends ApiController
         $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
         //如果是余额支付,直接进入支付环节
-        if($payType == Config::get('paytape.money')){
+        if($payType == Config::get('paytype.money')){
             $userModel = new Users;
             $payPassword = $request->get('pay_password');
             $userInfo  =  $userModel->getUserPayPassword($this->userId);

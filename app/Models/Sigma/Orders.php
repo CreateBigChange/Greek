@@ -321,6 +321,10 @@ class Orders extends Model
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
+        if(!$order){
+            return false;
+        }
+
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($outPoints / 100);
 
@@ -345,7 +349,7 @@ class Orders extends Model
 
         if(!$payType){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
-            return false;
+            return Message::setResponseInfo('FAILED');
         }
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
