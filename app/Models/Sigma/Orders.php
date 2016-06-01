@@ -363,7 +363,7 @@ class Orders extends Model
         }
 
         $update = array(
-            'status'        => Config::get('orderstatus.paid'),
+            'status'        => Config::get('orderstatus.paid')['status'],
             'updated_at'    => date('Y-m-d H:i:s' , time())
         );
 
