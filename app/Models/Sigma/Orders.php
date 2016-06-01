@@ -265,7 +265,7 @@ class Orders extends Model
             DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
 
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay'));
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay')['status']);
             return $orderId;
         }catch(Exception $e){
             DB::rollBack();

@@ -900,12 +900,14 @@ class UsersController extends ApiController
      *
      * @apiParam {sting} 18401586654 手机号
      * @apiParam {string} code 验证码
+     * @apiParam {string} password 密码
      *
      * @apiParamExample {json} Request Example
      * POST /sigma/bind/mobile
      * {
      *      'mobile'            : 18401586654,
-     *      'code'              : '218746'
+     *      'code'              : '218746',
+     *      'password'          : '123456'
      * }
      * @apiUse CODE_200
      *
@@ -914,7 +916,8 @@ class UsersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'mobile'                => 'required',
-            'code'                  => 'required'
+            'code'                  => 'required',
+            'password'              => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -922,6 +925,7 @@ class UsersController extends ApiController
 
         $mobile                 = $request->get('mobile');
         $code                   = $request->get('code');
+        $password               = $request->get('password');
 
         $checkCode  = session::get("jsx_sms_$mobile");
 
@@ -941,8 +945,12 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('HAVE_MOBILE'));
         }
 
+
         $data = array();
         $data['mobile']             = $mobile;
+        $data['account']            = $mobile;
+        $data['salt']               = $this->getSalt(8);
+        $data['password']           = $this->encrypt($password, $data['salt']);
         $data['updated_at']         = date('Y-m-d H:i:s' , time());
 
         if($this->_model->updateUser($this->userId , $data)){
