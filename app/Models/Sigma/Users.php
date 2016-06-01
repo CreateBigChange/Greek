@@ -124,7 +124,7 @@ class Users extends Model
      * 根据openID获取用户信息
      */
     public function getUserInfoByOpenID($openid){
-        return DB::table($this->_table)
+        $userInfo = DB::table($this->_table)
             ->select(
                 'id' ,
                 'account' ,
@@ -141,6 +141,36 @@ class Users extends Model
             ->where('is_del' , 0)
             ->where('wx_openid' , $openid)
             ->first();
+
+        if($userInfo) {
+            $userInfo->is_set_pay_password = 0;
+            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
+                $userInfo->is_set_pay_password = 0;
+            }else{
+                $userInfo->is_set_pay_password = 1;
+            }
+
+            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
+                $userInfo->is_bind_wx = 0;
+            }else{
+                $userInfo->is_bind_wx = 1;
+            }
+
+            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
+                $userInfo->is_bind_qq = 0;
+            }else{
+                $userInfo->is_bind_qq = 1;
+            }
+
+            unset($userInfo->pay_password);
+            unset($userInfo->wx_openid);
+            unset($userInfo->wx_unionid);
+            unset($userInfo->qq_openid);
+            unset($userInfo->qq_unionid);
+            return $userInfo;
+        }else{
+            return false;
+        }
     }
 
     public function addUser($data){

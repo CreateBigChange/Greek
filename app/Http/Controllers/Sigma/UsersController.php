@@ -1064,7 +1064,7 @@ class UsersController extends ApiController
             'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
             'wx_unionid'    => $weixinUserInfo->unionid,
-            'created_at'    => date('Y-m-d H:i:s' , time()),
+            'created_at'    => date( 'Y-m-d H:i:s' , time()),
             'updated_at'    => date('Y-m-d H:i:s' , time()),
             'login_ip'      => $this->getRealIp(),
         );
