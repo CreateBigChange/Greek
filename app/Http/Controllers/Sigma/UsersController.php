@@ -877,6 +877,7 @@ class UsersController extends ApiController
 
         $data = array();
         $data['mobile']             = $mobile;
+        $data['account']            = $mobile;
         $data['updated_at']         = date('Y-m-d H:i:s' , time());
 
         if($this->_model->updateUser($this->userId , $data)){
