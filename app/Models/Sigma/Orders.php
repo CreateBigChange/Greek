@@ -67,6 +67,7 @@ class Orders extends Model
                     o.store_id,
                     o.user,
                     o.consignee,
+                    o.consignee_id,
                     o.consignee_tel,
                     ap.id as province_id,
                     ap.name as province,
@@ -449,7 +450,7 @@ class Orders extends Model
      */
     public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0){
 
-        $statusChangeLog = Config::get('orderstatus.no_pay');
+        //$statusChangeLog = Config::get('orderstatus.no_pay');
         $statusChangeLog['updated_at']      = date('Y-m-d H:i:s' , time());
         $statusChangeLog['created_at']      = date('Y-m-d H:i:s' , time());
         $statusChangeLog['user']            = $userId;
