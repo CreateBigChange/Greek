@@ -206,7 +206,6 @@ class Orders extends Model
          */
         $address = $userModel->getConsigneeAddressByUserId($userId);
 
-
         //生成订单基本信息的数据
         $order = array(
             'order_num'             => time() . mt_rand(1000 , 9999),
@@ -216,18 +215,21 @@ class Orders extends Model
             'deliver'               => $storeInfo->deliver,
             'status'                => Config::get('orderstatus.no_pay')['status'],
             'in_points'             => $inPoints,
-            'consignee'             => $address[0]->consignee,
-            'consignee_id'          => $address[0]->id,
-            'consignee_tel'         => $address[0]->mobile,
-            'consignee_province'    => $address[0]->province,
-            'consignee_city'        => $address[0]->city,
-            'consignee_county'      => $address[0]->county,
-            'consignee_address'     => $address[0]->address,
 
             'updated_at'            => date('Y-m-d H:i:s' , time()),
             'created_at'            => date('Y-m-d H:i:s' , time())
 
         );
+
+        if(!empty($address)){
+            $order['consignee']             = $address[0]->consignee;
+            $order['consignee_id']          = $address[0]->id;
+            $order['consignee_tel']         = $address[0]->mobile;
+            $order['consignee_province']    = $address[0]->province;
+            $order['consignee_city']        = $address[0]->city;
+            $order['consignee_county']      = $address[0]->county;
+            $order['consignee_address']     = $address[0]->address;
+        }
 
         //开始事物
         DB::beginTransaction();
