@@ -200,11 +200,7 @@ class Orders extends Model
         }
 
         $userModel = new Users;
-        /*
-         * 地址要根据距离来算
-         *
-         */
-        $address = $userModel->getConsigneeAddressByUserId($userId);
+
 
         //生成订单基本信息的数据
         $order = array(
@@ -220,6 +216,12 @@ class Orders extends Model
             'created_at'            => date('Y-m-d H:i:s' , time())
 
         );
+
+        /*
+         * 地址要根据距离来算
+         *
+         */
+        $address = $userModel->getConsigneeAddressByUserId($userId);
 
         if(!empty($address)){
             $order['consignee']             = $address[0]->consignee;

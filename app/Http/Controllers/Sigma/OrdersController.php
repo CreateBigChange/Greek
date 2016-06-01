@@ -297,7 +297,7 @@ class OrdersController extends ApiController
 
         $order = $this->_model->getOrderStatus($orderId);
 
-        if($order->status == Config::get('orderstatus.no_pay')) {
+        if($order->status == Config::get('orderstatus.no_pay')['status']) {
 
             if ($this->_model->updateOrderAddress($userId, $orderId, $addressId)) {
                 return response()->json(Message::setResponseInfo('SUCCESS'));
