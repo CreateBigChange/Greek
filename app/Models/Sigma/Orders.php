@@ -355,7 +355,7 @@ class Orders extends Model
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
         $userModel = new Users;
-        $isAmplePoint =$userModel->isAmplePoint($userId , $order->outPoints);
+        $isAmplePoint =$userModel->isAmplePoint($userId , $order->out_points);
 
         if(!$isAmplePoint){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
@@ -368,7 +368,7 @@ class Orders extends Model
         );
 
         //计算需要支付的数量
-        $payNum = $order->total + $order->deliver - ($order->outPoints / 100);
+        $payNum = $order->total + $order->deliver - ($order->out_points / 100);
 
         if($payMoney != $payNum){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
@@ -385,7 +385,7 @@ class Orders extends Model
 
         try {
             //更新用户积分和余额
-            $userModel->updatePoint($userId, $order->outPoints);
+            $userModel->updatePoint($userId, $order->out_points);
             $userModel->updateMoney($userId, $isAmpleMoney);
 
             //更新订单状态
