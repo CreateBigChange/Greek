@@ -354,6 +354,10 @@ class Orders extends Model
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
+        if(!$order->consignee_id){
+            return Message::setResponseInfo('EMPTY_CONSIGNEE');
+        }
+
         $userModel = new Users;
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
@@ -479,9 +483,9 @@ class Orders extends Model
      *
      * 获取订单log
      */
-    public function getOrderLog($userId , $orderId ){
+    public function getOrderLog( $orderId ){
 
-        $logs = DB::table($this->_order_logs_table)->where('user' , $userId)->where('order_id' , $orderId)->orderBy('created_at' , 'asc')->get();
+        $logs = DB::table($this->_order_logs_table)->where('order_id' , $orderId)->orderBy('created_at' , 'asc')->get();
 
         return $logs;
 

@@ -372,7 +372,7 @@ class OrdersController extends ApiController
      */
     public function getOrderStatusLog($orderId){
         $userId     = $this->userId;
-        return response()->json(Message::setResponseInfo('SUCCESS' , $this->_model->getOrderLog( $userId , $orderId  ) ));
+        return response()->json(Message::setResponseInfo('SUCCESS' , $this->_model->getOrderLog( $orderId  ) ));
     }
 
     /**
