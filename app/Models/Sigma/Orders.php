@@ -383,6 +383,9 @@ class Orders extends Model
         DB::beginTransaction();
 
         try {
+
+            //加上本次订单赠送的积分
+            $isAmplePoint += $order->out_points;
             //更新用户积分和余额
             $userModel->updatePoint($userId, $isAmplePoint);
             $userModel->updateMoney($userId, $isAmpleMoney);
@@ -392,7 +395,7 @@ class Orders extends Model
             DB::commit();
 
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
-            return Message::setResponseInfo('SUCCESS');
+            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>$isAmpleMoney));
         }catch (Exception $e){
             DB::rollBack();
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
