@@ -354,7 +354,7 @@ class Users extends Model
      * 确认余额是否充足
      */
     public function isAmpleMoney($userId , $money){
-        $haveMoney = DB::table($this->_table)->select('points')->where('id' , $userId)->first();
+        $haveMoney = DB::table($this->_table)->select('money')->where('id' , $userId)->first();
 
 
         if($money <= $haveMoney->money){
