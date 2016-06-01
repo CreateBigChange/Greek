@@ -340,7 +340,7 @@ class Users extends Model
         $havePoint = DB::table($this->_table)->select('points')->where('id' , $userId)->first();
 
         if($point <= $havePoint->points){
-            return true;
+            return $havePoint->points - $point;
         }else{
             return false;
         }
@@ -358,7 +358,7 @@ class Users extends Model
 
 
         if($money <= $haveMoney->money){
-            return $money - $haveMoney->money;
+            return $haveMoney->money - $money;
         }else{
             return false;
         }

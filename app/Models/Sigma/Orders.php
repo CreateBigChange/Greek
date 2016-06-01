@@ -193,10 +193,10 @@ class Orders extends Model
 
         //计算订单总价
         $total = 0;
-        $inPoints = 0;
+        $outPoints = 0;
         foreach ($goodsList as $g){
             $total += (int) $g->out_price * $nums[$g->id];
-            $inPoints += (int) $g->give_points * $nums[$g->id];
+            $outPoints += (int) $g->give_points * $nums[$g->id];
         }
 
         $userModel = new Users;
@@ -210,8 +210,7 @@ class Orders extends Model
             'user'                  => $userId,
             'deliver'               => $storeInfo->deliver,
             'status'                => Config::get('orderstatus.no_pay')['status'],
-            'in_points'             => $inPoints,
-
+            'out_points'            => $outPoints,
             'updated_at'            => date('Y-m-d H:i:s' , time()),
             'created_at'            => date('Y-m-d H:i:s' , time())
 
@@ -313,7 +312,7 @@ class Orders extends Model
         }
 
         $update = array(
-            'out_points'    => $outPoints,
+            'in_points'     => $outPoints,
             'pay_type_id'   => $payType->id,
             'pay_type_name' => $payType->name,
             'updated_at'    => date('Y-m-d H:i:s' , time())
@@ -385,7 +384,7 @@ class Orders extends Model
 
         try {
             //更新用户积分和余额
-            $userModel->updatePoint($userId, $order->out_points);
+            $userModel->updatePoint($userId, $isAmplePoint);
             $userModel->updateMoney($userId, $isAmpleMoney);
 
             //更新订单状态
