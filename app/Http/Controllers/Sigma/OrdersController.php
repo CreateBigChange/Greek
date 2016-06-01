@@ -243,6 +243,10 @@ class OrdersController extends ApiController
         //更新订单状态
         $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
+        if($payNum->code != 0000){
+            return $payNum;
+        }
+
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytype.money')){
             $userModel = new Users;
@@ -255,9 +259,9 @@ class OrdersController extends ApiController
             if($userInfo->pay_password != $this->encrypt($payPassword , $userInfo->pay_salt)){
                 return response()->json(Message::setResponseInfo('PAY_PASSWORD_ERROR'));
             }
-            return $this->_model->pay( $userId , $orderId , $payNum , $payType);
+            return $this->_model->pay( $userId , $orderId , $payNum->data , $payType);
         }else{
-            return response()->json(Message::setResponseInfo('SUCCESS' , $payNum));
+            return $payNum;
         }
 
     }

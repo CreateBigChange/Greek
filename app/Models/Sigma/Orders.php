@@ -322,16 +322,16 @@ class Orders extends Model
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
         if(!$order){
-            return false;
+            return Message::setResponseInfo('FAILED');
         }
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($outPoints / 100);
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
-            return $payNum;
+            return Message::setResponseInfo('SUCCESS' , $payNum);
         }else{
-            return false;
+            return Message::setResponseInfo('FAILED');
         }
     }
 
