@@ -136,7 +136,12 @@ class Users extends Model
                 'created_at',
                 'points',
                 'money',
-                'sex'
+                'sex',
+                'pay_password',
+                'wx_openid',
+                'wx_unionid',
+                'qq_openid',
+                'qq_unionid'
             )
             ->where('is_del' , 0)
             ->where('wx_openid' , $openid)
