@@ -231,6 +231,7 @@ class Orders extends Model
             $order['consignee_city']        = $address[0]->city;
             $order['consignee_county']      = $address[0]->county;
             $order['consignee_address']     = $address[0]->address;
+            $order['consignee_street']      = $address[0]->street;
         }
 
         //开始事物
@@ -452,7 +453,7 @@ class Orders extends Model
      * @return bool
      * 创建订单log
      */
-    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0){
+    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0 ){
 
         //$statusChangeLog = Config::get('orderstatus.no_pay');
         $statusChangeLog['updated_at']      = date('Y-m-d H:i:s' , time());
@@ -521,11 +522,13 @@ class Orders extends Model
      * @return mixed
      * 退款原因
      */
-    public function refundReason($userId , $orderId , $content ){
+    public function refund($userId , $orderId , $content ){
+        $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
         return DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update(
             array(
                 'refund_reason' => $content,
-                'updated_at'    => date('Y-m-d H:i:s' , time())
+                'updated_at'    => date('Y-m-d H:i:s' , time()),
+                'status'        => Config::get('orderstatus.refunding')['status']
             )
         );
     }

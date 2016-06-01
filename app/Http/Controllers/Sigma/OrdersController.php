@@ -334,7 +334,7 @@ class OrdersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function refundReason($orderId , Request $request){
+    public function refund($orderId , Request $request){
 
         $validation = Validator::make($request->all(), [
             'content'             => 'required'
@@ -346,7 +346,7 @@ class OrdersController extends ApiController
 
         $content    = $request->get('content');
 
-        if($this->_model->refundReason( $userId , $orderId , $content )){
+        if($this->_model->refund( $userId , $orderId , $content )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -371,7 +371,6 @@ class OrdersController extends ApiController
      *
      */
     public function getOrderStatusLog($orderId){
-        $userId     = $this->userId;
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->_model->getOrderLog( $orderId  ) ));
     }
 

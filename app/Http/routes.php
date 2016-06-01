@@ -182,7 +182,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/status/log/{orderId}' , 'OrdersController@getOrderStatusLog');
 		Route::post('/order/complaint/{orderId}' , 'OrdersController@complaint');
 		Route::post('/order/evaluate/{orderId}' , 'OrdersController@evaluate');
-		Route::post('/order/refund/{orderId}' , 'OrdersController@refundReason');
+		Route::post('/order/refund/{orderId}' , 'OrdersController@refund');
 		Route::post('/order/info/{orderId}' , 'OrdersController@getOrderInfo');
 		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
 		Route::post('/order/change/status/{id}' , 'OrdersController@changeStatus');
