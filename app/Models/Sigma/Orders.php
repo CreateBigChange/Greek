@@ -445,7 +445,7 @@ class Orders extends Model
      * @return bool
      * 创建订单log
      */
-    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status){
+    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0){
 
         $statusChangeLog = Config::get('orderstatus.no_pay');
         $statusChangeLog['updated_at']      = date('Y-m-d H:i:s' , time());
@@ -455,7 +455,10 @@ class Orders extends Model
         $statusChangeLog['platform']        = $platform;
         $statusChangeLog['log']             = $log;
         $statusChangeLog['order_id']        = $orderId;
-        $statusChangeLog['status']          = $status;
+
+        if($status != 0) {
+            $statusChangeLog['status'] = $status;
+        }
 
         if(DB::table($this->_order_logs_table)->insert($statusChangeLog)){
 
