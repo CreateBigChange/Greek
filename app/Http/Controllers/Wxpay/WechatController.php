@@ -72,7 +72,7 @@ class WechatController extends ApiController
         ];
         $order = new Order($attributes);
 
-        var_dump(session('wechat.oauth'));
+        var_dump(session('wechat.oauth_user'));
         $result = $payment->prepare($order);
         var_dump($result);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
