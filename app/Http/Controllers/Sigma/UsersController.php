@@ -1035,6 +1035,9 @@ class UsersController extends ApiController
         if(isset($_GET['type']) && $_GET['type'] == 'app') {
             $appid = Config::get('weixin.app_appid');
             $secret = Config::get('weixin.app_secret');
+        }elseif(isset($_GET['type']) && $_GET['type'] == 'pub'){
+            $appid = Config::get('weixin.pub_appid');
+            $secret = Config::get('weixin.pub_secret');
         }else{
             $appid = Config::get('weixin.web_appid');
             $secret = Config::get('weixin.web_secret');
