@@ -11,6 +11,7 @@ use Session , Cookie , Config;
 use App\Libs\Message;
 
 use EasyWeChat\Foundation\Application;
+use EasyWeChat\Payment\Order;
 
 class WechatController extends ApiController
 {
