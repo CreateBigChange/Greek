@@ -2,6 +2,7 @@
 
 namespace Laravel\Socialite\Two;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use GuzzleHttp\ClientInterface;
@@ -13,9 +14,16 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * The HTTP request instance.
      *
-     * @var Request
+     * @var \Illuminate\Http\Request
      */
     protected $request;
+
+    /**
+     * The HTTP Client instance.
+     *
+     * @var \GuzzleHttp\Client
+     */
+    protected $httpClient;
 
     /**
      * The client ID.
@@ -76,7 +84,7 @@ abstract class AbstractProvider implements ProviderContract
     /**
      * Create a new provider instance.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $clientId
      * @param  string  $clientSecret
      * @param  string  $redirectUrl
@@ -191,11 +199,15 @@ abstract class AbstractProvider implements ProviderContract
             throw new InvalidStateException;
         }
 
+        $response = $this->getAccessTokenResponse($this->getCode());
+
         $user = $this->mapUserToObject($this->getUserByToken(
-            $token = $this->getAccessToken($this->getCode())
+            $token = array_get($response, 'access_token')
         ));
 
-        return $user->setToken($token);
+        return $user->setToken($token)
+                    ->setRefreshToken(array_get($response, 'refresh_token'))
+                    ->setExpiresIn(array_get($response, 'expires_in'));
     }
 
     /**
@@ -228,12 +240,12 @@ abstract class AbstractProvider implements ProviderContract
     }
 
     /**
-     * Get the access token for the given code.
+     * Get the access token response for the given code.
      *
      * @param  string  $code
-     * @return string
+     * @return array
      */
-    public function getAccessToken($code)
+    public function getAccessTokenResponse($code)
     {
         $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
 
@@ -242,7 +254,7 @@ abstract class AbstractProvider implements ProviderContract
             $postKey => $this->getTokenFields($code),
         ]);
 
-        return $this->parseAccessToken($response->getBody());
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -257,17 +269,6 @@ abstract class AbstractProvider implements ProviderContract
             'client_id' => $this->clientId, 'client_secret' => $this->clientSecret,
             'code' => $code, 'redirect_uri' => $this->redirectUrl,
         ];
-    }
-
-    /**
-     * Get the access token from the token response body.
-     *
-     * @param  string  $body
-     * @return string
-     */
-    protected function parseAccessToken($body)
-    {
-        return json_decode($body, true)['access_token'];
     }
 
     /**
@@ -304,19 +305,36 @@ abstract class AbstractProvider implements ProviderContract
     }
 
     /**
-     * Get a fresh instance of the Guzzle HTTP client.
+     * Get a instance of the Guzzle HTTP client.
      *
      * @return \GuzzleHttp\Client
      */
     protected function getHttpClient()
     {
-        return new \GuzzleHttp\Client;
+        if (is_null($this->httpClient)) {
+            $this->httpClient = new Client();
+        }
+
+        return $this->httpClient;
+    }
+
+    /**
+     * Set the Guzzle HTTP client instance.
+     *
+     * @param  \GuzzleHttp\Client  $client
+     * @return $this
+     */
+    public function setHttpClient(Client $client)
+    {
+        $this->httpClient = $client;
+
+        return $this;
     }
 
     /**
      * Set the request instance.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
     public function setRequest(Request $request)

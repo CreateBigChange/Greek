@@ -42,6 +42,13 @@ abstract class AbstractUser implements ArrayAccess, Contracts\User
     public $avatar;
 
     /**
+     * The user's raw attributes.
+     *
+     * @var array
+     */
+    public $user;
+
+    /**
      * Get the unique identifier for the user.
      *
      * @return string
@@ -133,7 +140,7 @@ abstract class AbstractUser implements ArrayAccess, Contracts\User
      * Determine if the given raw user attribute exists.
      *
      * @param  string  $offset
-     * @return  bool
+     * @return bool
      */
     public function offsetExists($offset)
     {

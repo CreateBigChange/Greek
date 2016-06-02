@@ -2,6 +2,9 @@
 
 namespace Laravel\Socialite\Two;
 
+use Illuminate\Support\Arr;
+use GuzzleHttp\ClientInterface;
+
 class FacebookProvider extends AbstractProvider implements ProviderInterface
 {
     /**
@@ -16,7 +19,7 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
      *
      * @var string
      */
-    protected $version = 'v2.5';
+    protected $version = 'v2.6';
 
     /**
      * The user fields being requested.
@@ -63,28 +66,21 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Get the access token for the given code.
-     *
-     * @param  string  $code
-     * @return string
-     */
-    public function getAccessToken($code)
-    {
-        $response = $this->getHttpClient()->get($this->getTokenUrl(), [
-            'query' => $this->getTokenFields($code),
-        ]);
-
-        return $this->parseAccessToken($response->getBody());
-    }
-
-    /**
      * {@inheritdoc}
      */
-    protected function parseAccessToken($body)
+    public function getAccessTokenResponse($code)
     {
-        parse_str($body);
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
 
-        return $access_token;
+        $response = $this->getHttpClient()->post($this->getTokenUrl(), [
+            $postKey => $this->getTokenFields($code),
+        ]);
+
+        $data = [];
+
+        parse_str($response->getBody(), $data);
+
+        return Arr::add($data, 'expires_in', Arr::pull($data, 'expires'));
     }
 
     /**

@@ -231,7 +231,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 });
 
-Route::group(['middleware' => ['api'] , 'namespace' => 'Wxpay' ], function () {
+Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
 	Route::get('/wechat/order', 'SetWXOrderController@setOrder');
 	Route::get('/wechat/notify', 'SetWXOrderController@notify');
 });

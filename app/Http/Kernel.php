@@ -54,5 +54,6 @@ class Kernel extends HttpKernel
 		'checkAuth' => \App\Http\Middleware\CheckAuth::class,
         'checkLogin' => \App\Http\Middleware\CheckLogin::class,
         'UserClientCheckLogin' => \App\Http\Middleware\UserClientCheckLogin::class,
+        'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
     ];
 }

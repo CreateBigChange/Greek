@@ -14,7 +14,7 @@
         "aws/aws-sdk-php": "~3.0",
         "pda/pheanstalk": "~3.0",
         "iron-io/iron_mq": "~4.0",
-        "overtrue/laravel-wechat": "2.1.*"
+        "overtrue/laravel-wechat": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

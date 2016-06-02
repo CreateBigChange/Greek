@@ -48,6 +48,8 @@ class SetWXOrderController extends ApiController
 
     public function setOrder(Request $request){
 
+        $user = session::get('wechat.oauth_user');
+        var_dump($user);die;
         /**
          * 定义订单
          */

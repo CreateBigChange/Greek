@@ -1,8 +1,6 @@
 # laravel-wechat
 
-> 注意：此版本为 2.x 版本，不兼容 1.x，已经移除外观，与 [overtrue/wechat 2.x](https://github.com/overtrue/wechat) 同步
-
-> 1.x 的配置文件里面的项目为驼峰，2.x 系列已经改为下划线，请参考: [src/config.php](https://github.com/overtrue/laravel-wechat/blob/master/src/config.php)
+> 注意：此版本为 3.x 版本，不兼容 2.x 与 1.x，与 [overtrue/wechat 3.x](https://github.com/overtrue/wechat) 同步
 
 微信 SDK for Laravel 5 / Lumen， 基于 [overtrue/wechat](https://github.com/overtrue/wechat)
 
@@ -15,7 +13,7 @@
 1. 安装包文件
 
   ```shell
-  composer require "overtrue/laravel-wechat:2.1.*"
+  composer require "overtrue/laravel-wechat:~3.0"
   ```
 
 ## 配置
@@ -39,7 +37,7 @@
 4. （可选）添加外观到 `config/app.php` 中的 `aliases` 部分:
 
   ```php
-  'Wechat' => 'Overtrue\LaravelWechat\Facade',
+  'Wechat' => Overtrue\LaravelWechat\Facade::class,
   ```
 
 ### Lumen 应用
@@ -50,15 +48,29 @@
   $app->register(Overtrue\LaravelWechat\ServiceProvider::class);
   ```
 
-2. 在 ENV 中配置以下选项：
+2. ENV 中支持以下配置：
 
 ```php
-WECHAT_USE_ALIAS=false
-WECHAT_APPID=xxx
-WECHAT_SECRET=xxx
-WECHAT_TOKEN=xxx
-WECHAT_ENCODING_KEY=xxx
+WECHAT_APPID
+WECHAT_SECRET
+WECHAT_TOKEN
+WECHAT_AES_KEY
+
+WECHAT_LOG_LEVEL
+WECHAT_LOG_FILE
+
+WECHAT_OAUTH_SCOPES
+WECHAT_OAUTH_CALLBACK
+
+WECHAT_PAYMENT_MERCHANT_ID
+WECHAT_PAYMENT_KEY
+WECHAT_PAYMENT_CERT_PATH
+WECHAT_PAYMENT_KEY_PATH
+WECHAT_PAYMENT_DEVICE_INFO
+WECHAT_PAYMENT_SUB_APP_ID
+WECHAT_PAYMENT_SUB_MERCHANT_ID
 ```
+
 3. 如果你习惯使用 `config/wechat.php` 来配置的话，请记得在 `bootstrap/app.php` 中19行以后添加：
 
 ```php
@@ -67,31 +79,18 @@ $app->configure('wechat');
 
 ## 使用
 
-> 注意：
+### Laravel <= 5.1
 
-> 1. Laravel 5 默认启用了 CSRF 中间件，因为微信的消息是 POST 过来，所以会触发 CSRF 检查导致无法正确响应消息，所以请去除默认的 CSRF 中间件，改成路由中间件。可以参考我的写法：[overtrue gist:Kernel.php](https://gist.github.com/overtrue/ff6cd3a4e869fbaf6c01#file-kernel-php-L31)
-> 5.1 里的 CSRF 已经带了可忽略部分url的功能，你可以参考：http://laravel.com/docs/master/routing#csrf-protection
+1. Laravel 5 起默认启用了 CSRF 中间件，因为微信的消息是 POST 过来，所以会触发 CSRF 检查导致无法正确响应消息，所以请去除默认的 CSRF 中间件，改成路由中间件。可以参考我的写法：[overtrue gist:Kernel.php](https://gist.github.com/overtrue/ff6cd3a4e869fbaf6c01#file-kernel-php-L31)
+2. 5.1 里的 CSRF 已经带了可忽略部分url的功能，你可以参考：http://laravel.com/docs/master/routing#csrf-protection
 
-所有的Wechat对象都已经放到了容器中，直接从容器中取就好。
+### Laravel 5.2
 
-别名对应关系如下：
+Laravel 5.2 默认启用了 web 中间件，意味着 CSRF 会默认打开，有两种方案：
 
-    'wechat.server'    => 'Overtrue\Wechat\Server',
-    'wechat.user'      => 'Overtrue\Wechat\User',
-    'wechat.group'     => 'Overtrue\Wechat\Group',
-    'wechat.auth'      => 'Overtrue\Wechat\Auth',
-    'wechat.menu'      => 'Overtrue\Wechat\Menu',
-    'wechat.menu.item' => 'Overtrue\Wechat\MenuItem',
-    'wechat.js'        => 'Overtrue\Wechat\Js',
-    'wechat.staff'     => 'Overtrue\Wechat\Staff',
-    'wechat.store'     => 'Overtrue\Wechat\Store',
-    'wechat.card'      => 'Overtrue\Wechat\Card',
-    'wechat.qrcode'    => 'Overtrue\Wechat\QRCode',
-    'wechat.url'       => 'Overtrue\Wechat\Url',
-    'wechat.media'     => 'Overtrue\Wechat\Media',
-    'wechat.image'     => 'Overtrue\Wechat\Image',
-    'wechat.notice'     => 'Overtrue\Wechat\Notice',
-    'wechat.media'     => 'Overtrue\Wechat\Media',
+1. 在 CSRF 中间件里排除微信相关的路由
+2. 关掉 CSRF 中间件（极不推荐）
+
 
 下面以接收普通消息为例写一个例子：
 
@@ -108,72 +107,109 @@ Route::any('/wechat', 'WechatController@serve');
 然后创建控制器 `WechatController`：
 
 ```php
-<?php namespace App\Http\Controllers;
+<?php
 
-use Overtrue\Wechat\Server;
+namespace App\Http\Controllers;
+
 use Log;
 
-class WechatController extends Controller {
+class WechatController extends Controller
+{
 
     /**
      * 处理微信的请求消息
      *
-     * @param Overtrue\Wechat\Server $server
-     *
      * @return string
      */
-    public function serve(Server $server)
+    public function serve()
     {
-        $server->on('message', function($message){
+        Log::info('request arrived.'); # 注意：Log 为 Laravel 组件，所以它记的日志去 Laravel 日志看，而不是 EasyWeChat 日志
+
+        $wechat = app('wechat');
+        $wechat->server->setMessageHandler(function($message){
             return "欢迎关注 overtrue！";
         });
 
-        return $server->serve(); // 或者 return $server;
+        Log::info('return response.');
+
+        return $wechat->server->serve();
     }
 }
 ```
 
-> 注意：不要忘记在头部 `use` 哦，或者你就得用 `\Overtrue\Wechat\Server` 全称咯。:smile:
+> 上面例子里的 Log 是 Laravel 组件，所以它的日志不会写到 EasyWeChat 里的，建议把 wechat 的日志配置到 Laravel 同一个日志文件，便于调试。
 
-### 我们有三种方式获取 SDK 的服务实例
+### 我们有以下方式获取 SDK 的服务实例
 
 ##### 使用容器的自动注入
 
 ```php
-<?php namespace App\Http\Controllers;
+<?php
 
-use Overtrue\Wechat\Auth;
+namespace App\Http\Controllers;
 
-class WechatController extends Controller {
+use EasyWeChat\Foundation\Application;
 
-    public function demo(Auth $auth)
+class WechatController extends Controller
+{
+
+    public function demo(Application $wechat)
     {
-        // $auth 则为容器中 Overtrue\Wechat\Auth 的实例
+        // $wechat 则为容器中 EasyWeChat\Foundation\Application 的实例
     }
 }
 ```
 
-##### 使用别名/类名从容器获取对应实例
+##### 使用外观
 
-上面已经列出了所有可用的别名对应关系，你可以使用别名或者类名获取对应的实例：
+在 `config/app.php` 中 `alias` 部分添加外观别名：
 
 ```php
-  $wechatServer = App::make('wechat.server'); // 服务端
-  $wechatUser = App::make('wechat.user'); // 用户服务
-  或者：
-  $wechatUser = App::make('Overtrue\Wechat\User'); // 用户服务
+'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
+```
+
+然后就可以在任何地方使用外观方式调用 SDK 对应的服务了：
+
+```php
+  $wechatServer = EasyWeChat::server(); // 服务端
+  $wechatUser = EasyWeChat::user(); // 用户服务
   // ... 其它同理
 ```
 
-#### 使用外观 `Wechat`
+
+## OAuth 中间件
+
+使用中间件的情况下 `app/config/wechat.php` 中的 `oauth.callback` 就随便填写吧(因为用不着了 :smile:)。
+
+1. 在 `app/Http/Kernel.php` 中添加路由中间件：
 
 ```php
-$wechatServer = Wechat::server();
-$wechatUser = Wechat::user();
-//... 其它同理
+protected $routeMiddleware = [
+    // ...
+    'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
+];
 ```
 
-更多使用请参考：https://github.com/overtrue/wechat/wiki/
+2. 在路由中添加中间件：
+
+以 5.2 为例：
+
+```php
+//...
+Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
+    Route::get('/user', function () {
+        $user = session('wechat.oauth_user'); // 拿到授权用户资料
+
+        dd($user);
+    });
+});
+```
+_如果你在用 5.1 上面没有 'web' 中间件_
+
+上面的路由定义了 `/user` 是需要微信授权的，那么在这条路由的**回调 或 控制器对应的方法里**， 你就可以从 `session('wechat.oauth_user')` 拿到已经授权的用户信息了。
+
+
+更多 SDK 的具体使用请参考：https://easywechat.org
 
 ## License
 
