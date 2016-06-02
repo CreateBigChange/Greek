@@ -19,6 +19,11 @@ use App\Http\Controllers\ApiController;
 use App\Models\Sigma\Orders;
 use App\Libs\Message;
 
+
+use EasyWeChat\Foundation\Application;
+use EasyWeChat\Payment\Order;
+
+
 class OrdersController extends ApiController
 {
     private $_model;
@@ -262,6 +267,110 @@ class OrdersController extends ApiController
             return $this->_model->pay( $userId , $orderId , $payNum['data'] , $payType);
         }else{
             return $payNum;
+        }
+
+    }
+
+    /**
+     * @api {POST} /sigma/order/confirm/wechat/{orderId} 确认订单-微信
+     * @apiName ordersConfirmWechat
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 确认订单-微信
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/order/confirm/wechat/1
+     *
+     * @apiParam {int} pay_type 支付方式
+     * @apiParam {int} out_points 使用积分
+     * @apiParam {string} trade_type 来源[JSAPI，NATIVE，APP]
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/order/confirm/wechat/1
+     *      {
+     *          out_points : 328,
+     *          trade_type : JSAPI,
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function wechatPay($orderId , Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'trade_type'             => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $userId     = $this->userId;
+
+        if(!$request->has('out_points')){
+            $outPoints = 0;
+        }else{
+            $outPoints  = $request->get('out_points');
+        }
+        $tradeType    = $request->get('trade_type');
+
+        //更新订单状态
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+
+        if($payNum['code'] != 0000){
+            return $payNum;
+        }
+
+        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+
+
+        if(count($info) == 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        $body       = $info[0]->sname;
+        $detail     = '';
+        foreach ($info[0]->goods as $g){
+            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+        }
+
+        $options = [
+            'app_id' => 'wx40bf86f9bf3f1c1e',
+            'secret' => 'be3cf5a36a3797484968d7976c9d5465',
+            'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
+            // ...
+
+            // payment
+            'payment' => [
+                'merchant_id'        => '1288143301',
+                'key'                => 'e10adc3949ba59abbe56e057f20f883e',
+                'cert_path'          => '/cert/apiclient_cert.pem', // XXX: 绝对路径！！！！
+                'key_path'           => '/cert/apiclient_key.pem',      // XXX: 绝对路径！！！！
+                'notify_url'         => 'http://preview.jisxu.com/wechat/notify',       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
+
+        $app = new Application($options);
+
+        $payment = $app->payment;
+
+        $attributes = [
+            'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
+            'body'             => $body,
+            'detail'           => $detail,
+            'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
+            //'openid'           => session('wechat.oauth_user')->id,
+            'total_fee'        => $payNum['data'],
+            'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+        ];
+
+        $order = new Order($attributes);
+
+        $result = $payment->prepare($order);
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            $prepayId = $result->prepay_id;
+            $json = $payment->configForPayment($prepayId);
+            $json = json_decode($json);
+            return response()->json(Message::setResponseInfo('SUCCESS' , $json));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED' , $result));
         }
 
     }

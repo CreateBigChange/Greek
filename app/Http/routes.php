@@ -189,6 +189,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
+		Route::group(['middleware' => ['wechat.oauth']] , function() {
+			Route::post('/wechat/order/{orderId}', 'OrdersController@wechatPay');
+		});
+
 		Route::post('/user/address' , 'UsersController@getConsigneeAddressByUserId');
 		Route::post('/user/address/add' , 'UsersController@addConsigneeAddress');
 		Route::post('/user/address/update/{addressId}' , 'UsersController@updateConsigneeAddress');
@@ -231,8 +235,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 });
 
-Route::group(['middleware' => ['web' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
+Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
 	Route::get('wechat/view' , 'WechatController@view');
 	Route::get('/wechat/pay', 'WechatController@pay');
 	Route::get('/wechat/notify', 'WechatController@notify');
+
 });
