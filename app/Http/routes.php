@@ -221,7 +221,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/login' , 'UsersController@login');
 	Route::post('/register' , 'UsersController@register');
 	Route::post('/reset/password', 'UsersController@resetPassword');
-	Route::post('/weixin/login/callback', 'UsersController@weixinCallback');
+	Route::get('/weixin/login', 'UsersController@weixinLogin');
 
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
 

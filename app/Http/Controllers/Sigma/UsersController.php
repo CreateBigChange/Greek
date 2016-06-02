@@ -1011,13 +1011,13 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/weixin/login/callback?code='sadsae2342dadaxxs'&type='app' 微信登录回调
+     * @api {POST} /sigma/weixin/login/callback?code='sadsae2342dadaxxs'&state='app' 微信登录回调
      * @apiName weixinCallback
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/weixin/login/callback?code='sadsae2342dadaxxs'&type='app'
+     * @apiSampleRequest http://greek.test.com/sigma/weixin/login/callback?code='sadsae2342dadaxxs'&state='app'
      *
      *
      * @apiParamExample {json} Request Example
@@ -1027,20 +1027,20 @@ class UsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function weixinCallback(){
+    public function weixinLogin(){
         if(!isset($_GET['code'])){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
 
-        if(isset($_GET['type']) && $_GET['type'] == 'app') {
+        if(isset($_GET['state']) && $_GET['state'] == 'app') {
             $appid = Config::get('weixin.app_appid');
             $secret = Config::get('weixin.app_secret');
-        }elseif(isset($_GET['type']) && $_GET['type'] == 'pub'){
+        }elseif(isset($_GET['state']) && $_GET['state'] == 'pub'){
             $appid = Config::get('weixin.pub_appid');
             $secret = Config::get('weixin.pub_secret');
         }else{
-            $appid = Config::get('weixin.pub_appid');
-            $secret = Config::get('weixin.pub_secret');
+            $appid = Config::get('weixin.web_appid');
+            $secret = Config::get('weixin.web_secret');
         }
 
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
