@@ -228,4 +228,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
+
+});
+
+Route::group(['middleware' => ['api'] , 'namespace' => 'Wxpay' ], function () {
+	Route::get('/wechat/order', 'SetWXOrderController@setOrder');
+	Route::get('/wechat/notify', 'SetWXOrderController@notify');
 });

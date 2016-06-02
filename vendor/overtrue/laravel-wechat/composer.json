@@ -1,0 +1,33 @@
+{
+    "name": "overtrue/laravel-wechat",
+    "description": "微信 SDK for Laravel",
+    "keywords": ["wechat", "weixin","laravel", "sdk"],
+    "require": {
+        "overtrue/wechat": "2.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\LaravelWechat\\": "src/"
+        }
+    },
+
+    "license": "MIT",
+
+    "scripts": {
+        "post-install-cmd": [
+            "php artisan vendor:publish  --provider=Overtrue\\LaravelWechat\\ServiceProvider"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    },
+    "minimum-stability" : "dev",
+    "authors": [
+        {
+            "name": "overtrue",
+            "email": "anzhengchao@gmail.com"
+        }
+    ]
+}
