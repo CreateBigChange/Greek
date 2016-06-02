@@ -1039,8 +1039,8 @@ class UsersController extends ApiController
             $appid = Config::get('weixin.pub_appid');
             $secret = Config::get('weixin.pub_secret');
         }else{
-            $appid = Config::get('weixin.web_appid');
-            $secret = Config::get('weixin.web_secret');
+            $appid = Config::get('weixin.pub_appid');
+            $secret = Config::get('weixin.pub_secret');
         }
 
         $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
