@@ -46,7 +46,6 @@ class WechatController extends ApiController
             // 前面的appid什么的也得保留哦
             'app_id' => 'wx40bf86f9bf3f1c1e',
             'secret' => 'be3cf5a36a3797484968d7976c9d5465',
-            'openid' => session('wechat.oauth_user')->id,
             'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
             // ...
 
@@ -60,7 +59,6 @@ class WechatController extends ApiController
             ],
         ];
 
-        var_dump(session('wechat.oauth_user')->id);
         $app = new Application($options);
 
         $payment = $app->payment;
@@ -70,14 +68,13 @@ class WechatController extends ApiController
             'body'             => 'iPad mini 16G 白色',
             'detail'           => 'iPad mini 16G 白色',
             'out_trade_no'     => '1217752501201407033233368018',
+            'openid'           => session('wechat.oauth_user')->id,
             'total_fee'        => 1,
             'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
         $order = new Order($attributes);
 
-        var_dump(session('wechat.oauth_user'));
         $result = $payment->prepare($order);
-        var_dump($result);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
@@ -94,6 +91,7 @@ class WechatController extends ApiController
             // 前面的appid什么的也得保留哦
             'app_id' => 'wx40bf86f9bf3f1c1e',
             'secret' => 'be3cf5a36a3797484968d7976c9d5465',
+            'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
             // ...
 
             // payment
