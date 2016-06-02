@@ -47,6 +47,7 @@ class WechatController extends ApiController
             'app_id' => 'wx40bf86f9bf3f1c1e',
             'secret' => 'be3cf5a36a3797484968d7976c9d5465',
             'openid' => session('wechat.oauth_user')->id,
+            'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
             // ...
 
             // payment
@@ -59,6 +60,7 @@ class WechatController extends ApiController
             ],
         ];
 
+        var_dump(session('wechat.oauth_user')->id);
         $app = new Application($options);
 
         $payment = $app->payment;
