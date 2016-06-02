@@ -23,6 +23,8 @@
 
                 var data = data.data;
 
+                console.log(data);
+
                 WeixinJSBridge.invoke(
                         'getBrandWCPayRequest', {
                             data
