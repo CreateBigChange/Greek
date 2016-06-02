@@ -46,6 +46,7 @@ class WechatController extends ApiController
             // 前面的appid什么的也得保留哦
             'app_id' => 'wx40bf86f9bf3f1c1e',
             'secret' => 'be3cf5a36a3797484968d7976c9d5465',
+            'openid' => session('wechat.oauth_user')->id,
             // ...
 
             // payment
