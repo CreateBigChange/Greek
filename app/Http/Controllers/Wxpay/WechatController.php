@@ -40,6 +40,10 @@ class WechatController extends ApiController
 
     }
 
+    public function view(){
+        return view('wechat');
+    }
+
     public function pay(){
 
         $options = [
@@ -75,13 +79,12 @@ class WechatController extends ApiController
         $order = new Order($attributes);
 
         $result = $payment->prepare($order);
-        var_dump($result);die;
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
-            return $json;
+            return response::json(Message::setResponseInfo('SUCCESS' , $json));
         }else{
-            return $result;
+            return response::json(Message::setResponseInfo('FAILED' , $result));
         }
 
     }
