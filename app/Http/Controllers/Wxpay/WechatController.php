@@ -17,25 +17,25 @@ class WechatController extends ApiController
 //    private $_model;
 //    private $_length;
 
-    private $business;
-    private $notify;
+//    private $business;
+//    private $notify;
 
     public function __construct(){
         parent::__construct();
 
-        $this->business = new Business(
-            'wx40bf86f9bf3f1c1e',
-            'be3cf5a36a3797484968d7976c9d5465',
-            '1288143301',
-            'e10adc3949ba59abbe56e057f20f883e'
-        );
-
-        $this->notify = new Notify(
-            'wx40bf86f9bf3f1c1e',
-            'be3cf5a36a3797484968d7976c9d5465',
-            '1288143301',
-            'e10adc3949ba59abbe56e057f20f883e'
-        );
+//        $this->business = new Business(
+//            'wx40bf86f9bf3f1c1e',
+//            'be3cf5a36a3797484968d7976c9d5465',
+//            '1288143301',
+//            'e10adc3949ba59abbe56e057f20f883e'
+//        );
+//
+//        $this->notify = new Notify(
+//            'wx40bf86f9bf3f1c1e',
+//            'be3cf5a36a3797484968d7976c9d5465',
+//            '1288143301',
+//            'e10adc3949ba59abbe56e057f20f883e'
+//        );
 
     }
 
