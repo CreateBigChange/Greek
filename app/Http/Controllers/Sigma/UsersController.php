@@ -1011,17 +1011,17 @@ class UsersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/weixin/login/callback?code='sadsae2342dadaxxs'&state='app' 微信登录回调
+     * @api {POST} /sigma/weixin/login?code='sadsae2342dadaxxs'&state='app' 微信登录回调
      * @apiName weixinCallback
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/weixin/login/callback?code='sadsae2342dadaxxs'&state='app'
+     * @apiSampleRequest http://greek.test.com/sigma/weixin/login?code='sadsae2342dadaxxs'&state='app'
      *
      *
      * @apiParamExample {json} Request Example
-     * POST /sigma/weixin/login/callback
+     * POST /sigma/weixin/login
      * {
      * }
      * @apiUse CODE_200
