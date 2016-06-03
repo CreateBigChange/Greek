@@ -383,11 +383,11 @@ class OrdersController extends ApiController
                 'total_fee'         => $attributes['total_fee'],
                 'fee_type'          => $attributes['fee_type'],
                 'spbill_create_ip'  => $order->spbill_create_ip,
-                'timeStamp'         => $json['timeStamp'],
-                'nonceStr'          => $json['nonceStr'],
-                'package'           => $json['package'],
-                'signType'          => $json['signType'],
-                'paySign'           => $json['paySign']
+                'timeStamp'         => $json->timeStamp,
+                'nonceStr'          => $json->nonceStr,
+                'package'           => $json->package,
+                'signType'          => $json->signType,
+                'paySign'           => $json->paySign
             );
             
             $wechatPayLogModel = new WechatPayLog();
