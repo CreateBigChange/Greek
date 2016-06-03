@@ -76,13 +76,11 @@ class WechatController extends ApiController
         $order = new Order($attributes);
 
         $result = $payment->prepare($order);
-        var_dump($result);die;
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
 
-            var_dump($result);die;
             return response()->json(Message::setResponseInfo('SUCCESS' , $json));
         }else{
             return response()->json(Message::setResponseInfo('FAILED' , $result));
