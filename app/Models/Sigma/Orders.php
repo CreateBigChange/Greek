@@ -309,7 +309,7 @@ class Orders extends Model
         $userModel = new Users;
         $isAmplePoint =$userModel->isAmplePoint($userId , $inPoints);
 
-        if(!$isAmplePoint){
+        if($isAmplePoint === false){
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
 
@@ -362,7 +362,7 @@ class Orders extends Model
         $userModel = new Users;
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
-        if(!$isAmplePoint){
+        if($isAmplePoint === false){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
@@ -381,7 +381,7 @@ class Orders extends Model
         }
 
         $isAmpleMoney =$userModel->isAmpleMoney($userId , $payNum);
-        if(!$isAmpleMoney){
+        if($isAmpleMoney === false){
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
             return Message::setResponseInfo('MONEY_NOT_AMPLE');
         }
