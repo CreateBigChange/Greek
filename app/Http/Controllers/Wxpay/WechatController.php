@@ -60,7 +60,6 @@ class WechatController extends ApiController
             ],
         ];
 
-        var_dump($options);die;
         $app = new Application($options);
 
         $payment = $app->payment;
