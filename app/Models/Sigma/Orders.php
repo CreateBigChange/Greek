@@ -196,7 +196,7 @@ class Orders extends Model
         $total = 0;
         $outPoints = 0;
         foreach ($goodsList as $g){
-            $total += (int) $g->out_price * $nums[$g->id];
+            $total += (float) $g->out_price * $nums[$g->id];
             $outPoints += (int) $g->give_points * $nums[$g->id];
         }
 
