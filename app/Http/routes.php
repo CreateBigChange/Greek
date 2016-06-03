@@ -190,7 +190,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
 		Route::group(['middleware' => ['wechat.oauth']] , function() {
-			Route::post('/wechat/order/{orderId}', 'OrdersController@wechatPay');
+			Route::any('/wechat/order/{orderId}', 'OrdersController@wechatPay');
 		});
 		Route::get('/wechat/notify', 'OrdersController@notify');
 
