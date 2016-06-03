@@ -311,6 +311,7 @@ class OrdersController extends ApiController
      */
     public function wechatPay($orderId , Request $request){
 
+        header('Access-Control-Allow-Origin：*');
         $validation = Validator::make($request->all(), [
             'trade_type'             => 'required'
         ]);
