@@ -192,7 +192,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		//Route::group(['middleware' => ['wechat.oauth']] , function() {
 			Route::any('/wechat/order/{orderId}', 'OrdersController@wechatPay');
 		//});
-		Route::any('/wechat/notify', 'OrdersController@notify');
 
 		Route::post('/user/address' , 'UsersController@getConsigneeAddressByUserId');
 		Route::post('/user/address/add' , 'UsersController@addConsigneeAddress');
@@ -233,6 +232,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
+
+	Route::any('/wechat/notify', 'OrdersController@notify');
 
 });
 
