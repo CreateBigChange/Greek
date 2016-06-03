@@ -13,4 +13,7 @@ class WechatPayLog extends Model
         return DB::table($this->_table)->insert($data);
     }
 
+    public function updateWechatLog($outTradeNo , $data){
+        return DB::table($this->_table)->where('out_trade_no' , $outTradeNo)->update($data);
+    }
 }

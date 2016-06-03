@@ -532,4 +532,50 @@ class Orders extends Model
             )
         );
     }
+
+    /**
+     * @param $orderId
+     * @param $outTradeNo
+     * @return mixed
+     * 更新微信订单ID
+     */
+    public function updateOrderOutTradeNo($orderId , $outTradeNo){
+        return DB::table($this->_orders_table)->where('id' , $orderId)->update(array('out_trade_no' => $outTradeNo));
+    }
+
+    /**
+     * @param $orderId
+     * @param $outTradeNo
+     * @return mixed
+     * 更新支付状态
+     */
+    public function updateOrderPayTime($orderId , $payTime){
+        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')))){
+            $log = array(
+                'order_id'      => $orderId,
+                'user'          => '',
+                'identity'      => '微信',
+                'platform'      => '手机端',
+                'log'           => '已支付',
+                'status'        => Config::get('orderstatus.paid'),
+                'created_at'    => date('Y-m-d H:i:s' , time())
+            );
+            if(DB::table($this->_order_logs_table)->insert($log)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * @param $outTradeNo
+     * @return mixed
+     * 根据微信订单ID获取订单信息
+     */
+    public function getOrderByOutTradeNo($outTradeNo){
+        return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
+    }
 }

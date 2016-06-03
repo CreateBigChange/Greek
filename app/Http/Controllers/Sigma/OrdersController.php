@@ -392,8 +392,9 @@ class OrdersController extends ApiController
             );
             
             $wechatPayLogModel = new WechatPayLog();
-            $wechatPayLogModel->addLog($payLog);
-            return response()->json(Message::setResponseInfo('SUCCESS' , $json));
+            if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
+                return response()->json(Message::setResponseInfo('SUCCESS' , $json));
+            }
         }else{
             return response()->json(Message::setResponseInfo('FAILED' , $result));
         }
@@ -407,13 +408,42 @@ class OrdersController extends ApiController
 
         $response = $app->payment->handleNotify(function($notify, $successful){
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(array(111,222)));
-
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
+
+            $outTradeNo = $notify->out_trade_no;
+            $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+            if(!$order){
+                return 'Order not exist.';
+            }
+
+            $data = array(
+                'appid'             => $notify->appid,
+                'bank_type'         => $notify->bank_type,
+                'cash_fee'          => $notify->cash_fee,
+                'mch_id'            => $notify->mch_id,
+                'result_code'       => $notify->result_code,
+                'return_code'       => $notify->return_code,
+                'sign'              => $notify->sign,
+                'time_end'          => $notify->time_end,
+                'transaction_id'    => $notify->transaction_id
+            );
+
+            //已经支付了
+            if($order->pay_time){
+                return true;
+            }
 
             if($successful){
 
+                //更新支付时间和订单状态
+                $isChange = $this->_model->updateOrderPayTime($order->id, $notify->time_end);
+
             }
+
+            //更新微信日志
+            $wechatPayLogModel = new WechatPayLog();
+            $isChangeLog = $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
+
             // 你的逻辑
             return true; // 或者错误消息
         });
