@@ -13,7 +13,7 @@ class BLogger
     const LOG_RESPONSE      = 'RESPONSE';
     const LOG_SQL           = 'SQL';
     const LOG_SMS           = 'SMS';
-    const LOG_WECHAT_PSY    = 'WECHAT_PAY';
+    const LOG_WECHAT_PAY    = 'WECHAT_PAY';
 
     private static $loggers = array();
 
