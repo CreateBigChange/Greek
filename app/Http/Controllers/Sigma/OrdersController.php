@@ -382,7 +382,7 @@ class OrdersController extends ApiController
                 'openid'            => $attributes['openid'],
                 'total_fee'         => $attributes['total_fee'],
                 'fee_type'          => $attributes['fee_type'],
-                'spbill_create_ip'  => $order['spbill_create_ip'],
+                'spbill_create_ip'  => $order->spbill_create_ip,
                 'timeStamp'         => $json['timeStamp'],
                 'nonceStr'          => $json['nonceStr'],
                 'package'           => $json['package'],
