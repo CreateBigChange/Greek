@@ -47,19 +47,16 @@ class WechatController extends ApiController
     public function pay(){
 
         $options = [
-            // 前面的appid什么的也得保留哦
-            'app_id' => 'wx40bf86f9bf3f1c1e',
-            'secret' => 'be3cf5a36a3797484968d7976c9d5465',
-            'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
-            // ...
+            'app_id' => Config::get('wechat.app_id'),
+            'secret' => Config::get('wechat.secret'),
+            'token'  => Config::get('wechat.token'),
 
-            // payment
             'payment' => [
-                'merchant_id'        => '1288143301',
-                'key'                => 'e10adc3949ba59abbe56e057f20f883e',
-                'cert_path'          => '/cert/apiclient_cert.pem', // XXX: 绝对路径！！！！
-                'key_path'           => '/cert/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                'notify_url'         => 'http://preview.jisxu.com/wechat/notify',       // 你也可以在下单时单独设置来想覆盖它
+                'merchant_id'        => Config::get('wechat.merchant_id'),
+                'key'                => Config::get('wechat.key'),
+                'cert_path'          => Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+                'notify_url'         => Config::get('wechat.notify_url'),       // 你也可以在下单时单独设置来想覆盖它
             ],
         ];
 
@@ -71,7 +68,7 @@ class WechatController extends ApiController
             'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
             'body'             => 'iPad mini 16G 白色',
             'detail'           => 'iPad mini 16G 白色',
-            'out_trade_no'     => '1217752501201407033233368018',
+            'out_trade_no'     => '1217752501201407033233368019',
             'openid'           => session('wechat.oauth_user')->id,
             'total_fee'        => 1,
             'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
@@ -83,6 +80,8 @@ class WechatController extends ApiController
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
+
+            var_dump($result);die;
             return response()->json(Message::setResponseInfo('SUCCESS' , $json));
         }else{
             return response()->json(Message::setResponseInfo('FAILED' , $result));

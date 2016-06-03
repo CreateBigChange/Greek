@@ -18,7 +18,7 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\Sigma\Orders;
 use App\Libs\Message;
-
+use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
@@ -29,10 +29,26 @@ class OrdersController extends ApiController
     private $_model;
     private $_length;
 
+    private $options;
+
     public function __construct(){
         parent::__construct();
         $this->_model = new Orders;
         $this->_length		= 20;
+
+        $this->options      = [
+            'app_id' => Config::get('wechat.app_id'),
+            'secret' => Config::get('wechat.secret'),
+            'token'  => Config::get('wechat.token'),
+
+            'payment' => [
+                'merchant_id'        => Config::get('wechat.merchant_id'),
+                'key'                => Config::get('wechat.key'),
+                'cert_path'          => Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+                'notify_url'         => Config::get('wechat.notify_url'),       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
     }
 
     /**
@@ -311,7 +327,7 @@ class OrdersController extends ApiController
         }
         $tradeType    = $request->get('trade_type');
 
-        //更新订单状态
+        //更新订单
         $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
 
         if($payNum['code'] != 0000){
@@ -320,34 +336,18 @@ class OrdersController extends ApiController
 
         $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
 
-
         if(count($info) == 0){
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
+        //微信下单
         $body       = $info[0]->sname;
         $detail     = '';
         foreach ($info[0]->goods as $g){
             $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
         }
 
-        $options = [
-            'app_id' => 'wx40bf86f9bf3f1c1e',
-            'secret' => 'be3cf5a36a3797484968d7976c9d5465',
-            'token'  => 'p5p3luQ13QZv5E3q5l1z3k1h3M3iZk5H',
-            // ...
-
-            // payment
-            'payment' => [
-                'merchant_id'        => '1288143301',
-                'key'                => 'e10adc3949ba59abbe56e057f20f883e',
-                'cert_path'          => '/cert/apiclient_cert.pem', // XXX: 绝对路径！！！！
-                'key_path'           => '/cert/apiclient_key.pem',      // XXX: 绝对路径！！！！
-                'notify_url'         => 'http://preview.jisxu.com/wechat/notify',       // 你也可以在下单时单独设置来想覆盖它
-            ],
-        ];
-
-        $app = new Application($options);
+        $app = new Application($this->options);
 
         $payment = $app->payment;
 
@@ -356,7 +356,7 @@ class OrdersController extends ApiController
             'body'             => $body,
             'detail'           => $detail,
             'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            //'openid'           => session('wechat.oauth_user')->id,
+            'openid'           => session('wechat.oauth_user')->id,
             'total_fee'        => $payNum['data'],
             'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
@@ -373,6 +373,23 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('FAILED' , $result));
         }
 
+    }
+
+
+    public function notify(){
+
+        $app = new Application($this->options);
+
+        $response = $app->payment->handleNotify(function($notify, $successful){
+
+            if($successful){
+
+            }
+            // 你的逻辑
+            return true; // 或者错误消息
+        });
+
+        return $response;
     }
 
 
