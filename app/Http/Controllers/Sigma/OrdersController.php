@@ -361,7 +361,7 @@ class OrdersController extends ApiController
 //            'total_fee'        => (int)($payNum['data'] * 100),
             'total_fee'        => 1,
             'fee_type'         => 1,
-            'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
 
         $order = new Order($attributes);

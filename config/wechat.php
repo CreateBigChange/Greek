@@ -9,5 +9,5 @@ return [
     'key'           => env('WECHAT_KEY' , 'WECHAT_KEY'),         //商户密钥
     'cert_path'     => env('WECHAT_CERT_PATH' , 'WECHAT_CERT_PATH'),
     'key_path'      => env('WECHAT_KET_PATH' , 'WECHAT_KET_PATH'),
-    'notify_url'    => 'http://preview.jisxu.com/wechat/notify',
+    'notify_url'    => 'http://preview.jisxu.com/sigma/wechat/notify',
 ];
