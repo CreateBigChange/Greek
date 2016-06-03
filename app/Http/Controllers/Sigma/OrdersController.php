@@ -407,6 +407,8 @@ class OrdersController extends ApiController
 
         $response = $app->payment->handleNotify(function($notify, $successful){
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(array(111,222)));
+
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
 
             if($successful){
