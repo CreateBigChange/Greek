@@ -13,6 +13,7 @@ use Validator , Input;
 use Session , Cookie , Config,Log;
 
 use App\Models\Sigma\Users;
+use App\Models\Sigma\WechatPayLog;
 
 use App\Http\Controllers\ApiController;
 
@@ -364,8 +365,6 @@ class OrdersController extends ApiController
 
         $order = new Order($attributes);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payNum));
-
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
 
         $result = $payment->prepare($order);
@@ -374,6 +373,25 @@ class OrdersController extends ApiController
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
+            $payLog = array(
+                'trade_type'        => $attributes['trade_type'],
+                'body'              => $attributes['body'],
+                'detail'            => $attributes['detail'],
+                'out_trade_no'      => $attributes['out_trade_no'],
+                'openid'            => $attributes['openid'],
+                'total_fee'         => $attributes['total_fee'],
+                'fee_type'          => $attributes['fee_type'],
+                'spbill_create_ip'  => $order['spbill_create_ip'],
+                'timeStamp'         => $json['timeStamp'],
+                'nonceStr'          => $json['nonceStr'],
+                'package'           => $json['package'],
+                'signType'          => $json['signType'],
+                'paySign'           => $json['paySign']
+            );
+            
+            $wechatPayLogModel = new WechatPayLog();
+            $wechatPayLogModel->addLog($payLog);
             return response()->json(Message::setResponseInfo('SUCCESS' , $json));
         }else{
             return response()->json(Message::setResponseInfo('FAILED' , $result));
