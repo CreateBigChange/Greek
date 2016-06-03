@@ -356,7 +356,7 @@ class OrdersController extends ApiController
             'body'             => $body,
             'detail'           => $detail,
             'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            'openid'           => session('wechat.oauth_user')->id,
+            'openid'           => 'ovZmSs24EokHlOEyNT8Qn8a8EbZc',
             'total_fee'        => $payNum['data'],
             'notify_url'       => 'http://preview.jisxu.com/wechat/notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
