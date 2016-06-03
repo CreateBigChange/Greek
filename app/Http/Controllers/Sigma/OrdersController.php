@@ -370,7 +370,7 @@ class OrdersController extends ApiController
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->log(json_encode($json));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
             return response()->json(Message::setResponseInfo('SUCCESS' , $json));
         }else{
             return response()->json(Message::setResponseInfo('FAILED' , $result));
@@ -385,7 +385,7 @@ class OrdersController extends ApiController
 
         $response = $app->payment->handleNotify(function($notify, $successful){
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->log(json_encode($notify));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
 
             if($successful){
 
