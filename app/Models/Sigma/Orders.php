@@ -550,14 +550,14 @@ class Orders extends Model
      * 更新支付状态
      */
     public function updateOrderPayTime($orderId , $payTime){
-        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')))){
+        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')['status']))){
             $log = array(
                 'order_id'      => $orderId,
                 'user'          => '',
                 'identity'      => '微信',
                 'platform'      => '手机端',
                 'log'           => '已支付',
-                'status'        => Config::get('orderstatus.paid'),
+                'status'        => Config::get('orderstatus.paid')['status'],
                 'created_at'    => date('Y-m-d H:i:s' , time())
             );
             if(DB::table($this->_order_logs_table)->insert($log)){
