@@ -297,15 +297,16 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/confirm/wechat/1
      *
-     * @apiParam {int} pay_type 支付方式
      * @apiParam {int} out_points 使用积分
      * @apiParam {string} trade_type 来源[JSAPI，NATIVE，APP]
+     * @apiParam {string} opneid 微信openid
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/confirm/wechat/1
      *      {
-     *          out_points : 328,
-     *          trade_type : JSAPI,
+     *          out_points  : 328,
+     *          trade_type  : JSAPI,
+     *          openid      : 'ovZmSs24EokHlOEyNT8Qn8a8EbZc'
      *      }
      * @apiUse CODE_200
      *
@@ -313,7 +314,8 @@ class OrdersController extends ApiController
     public function wechatPay($orderId , Request $request){
 
         $validation = Validator::make($request->all(), [
-            'trade_type'             => 'required'
+            'trade_type'            => 'required',
+            'opneid'                => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -357,7 +359,7 @@ class OrdersController extends ApiController
             'body'             => $body,
             'detail'           => $detail,
             'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            'openid'           => 'ovZmSs24EokHlOEyNT8Qn8a8EbZc',
+            'openid'           => $request->get('openid'),
 //            'total_fee'        => (int)($payNum['data'] * 100),
             'total_fee'        => 1,
             'fee_type'         => 1,

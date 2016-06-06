@@ -61,8 +61,9 @@ class Orders extends Model
                     
                 FROM $this->_orders_table AS o";
 
+        $sql = ' WEHRE 1=1';
         if(isset($search['status'])){
-            $sql .= " WHERE o.status IN (".implode(',' , $search['status']).")";
+            $sql .= " AND o.status IN (".implode(',' , $search['status']).")";
         }
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%'";
