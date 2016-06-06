@@ -70,7 +70,7 @@ class OrdersController extends ApiController
         }elseif ($type == 3){
             $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status']);
         }elseif ($type == 4){
-            $search['status'] = array(Config::get('orderstatus.cancel')['status'] , Config::get('orderstatus.refunding')['status'] , Config::get('orderstatus.refunded')['status']);
+            $search['status'] = array(Config::get('orderstatus.no_pay')['status'] , Config::get('orderstatus.cancel')['status'] , Config::get('orderstatus.refunding')['status'] , Config::get('orderstatus.refunded')['status']);
         }
 
         if($request->has('search')){
