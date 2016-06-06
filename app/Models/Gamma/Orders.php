@@ -50,22 +50,16 @@ class Orders extends Model
                     o.user,
                     o.consignee,
                     o.consignee_tel,
-                    ap.id as province_id,
-                    ap.name as province,
-                    aci.id as city_id,
-                    aci.name as city,
-                    aco.id as county_id,
-                    aco.name as county,
+                    o.consignee_province as province,
+                    o.consignee_city as city,
+                    o.consignee_county as county,
+                    o.consignee_street as street,
                     o.consignee_address,
                     o.remark,
                     o.refund_reason,
                     o.created_at
                     
                 FROM $this->_orders_table AS o";
-
-        $sql .= " LEFT JOIN areas as ap ON ap.id = o.consignee_province";
-        $sql .= " LEFT JOIN areas as aci ON aci.id = o.consignee_city";
-        $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
 
         if(isset($search['status'])){
             $sql .= " WHERE o.status IN (".implode(',' , $search['status']).")";
