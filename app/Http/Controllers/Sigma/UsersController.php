@@ -1118,4 +1118,52 @@ class UsersController extends ApiController
 
     }
 
+
+    /**
+     * @api {POST} /sigma/weixin/openid?code='sadsae2342dadaxxs'&state='app' 微信登录回调
+     * @apiName weixinOpenid
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/weixin/openid?code='sadsae2342dadaxxs'&state='app'
+     *
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/weixin/openid
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function weixinOpenId(){
+
+        if(!isset($_GET['code'])){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        if(isset($_GET['state']) && $_GET['state'] == 'app') {
+            $appid = Config::get('weixin.app_appid');
+            $secret = Config::get('weixin.app_secret');
+        }elseif(isset($_GET['state']) && $_GET['state'] == 'pub'){
+            $appid = Config::get('weixin.pub_appid');
+            $secret = Config::get('weixin.pub_secret');
+        }else{
+            $appid = Config::get('weixin.web_appid');
+            $secret = Config::get('weixin.web_secret');
+        }
+
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
+
+        $data = $this->curlGet($url);
+        $data	= json_decode($data);
+
+        if(isset($data->errcode)){
+            return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
+        }
+
+        $openid		= $data->openid;
+
+        return response()->json(Message::setResponseInfo('SUCCESS', $openid));
+    }
 }
