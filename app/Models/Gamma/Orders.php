@@ -117,7 +117,8 @@ class Orders extends Model
                 'identity'      => '商家管理员',
                 'platform'      => '手机端',
                 'log'           => '将订单'. $id . '的状态改为'.$status,
-                'created_at'    => date('Y-m-d H:i:s' , time())
+                'created_at'    => date('Y-m-d H:i:s' , time()),
+                'status'        => $status
             );
             DB::table($this->_order_logs_table)->insert($log);
             return true;

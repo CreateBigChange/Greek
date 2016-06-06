@@ -299,14 +299,13 @@ class OrdersController extends ApiController
      *
      * @apiParam {int} out_points 使用积分
      * @apiParam {string} trade_type 来源[JSAPI，NATIVE，APP]
-     * @apiParam {string} opneid 微信openid
+     * @apiParam {string} [opneid] 微信openid
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/confirm/wechat/1
      *      {
      *          out_points  : 328,
      *          trade_type  : JSAPI,
-     *          openid      : 'ovZmSs24EokHlOEyNT8Qn8a8EbZc'
      *      }
      * @apiUse CODE_200
      *
@@ -315,7 +314,6 @@ class OrdersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'trade_type'            => 'required',
-            'opneid'                => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -354,12 +352,47 @@ class OrdersController extends ApiController
 
         $payment = $app->payment;
 
+
+        /**
+         * 获取openid
+         */
+
+        if(!$request->has('openid')) {
+            if (!isset($_GET['code'])) {
+                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+            }
+
+            if (isset($_GET['state']) && $_GET['state'] == 'app') {
+                $appid = Config::get('weixin.app_appid');
+                $secret = Config::get('weixin.app_secret');
+            } elseif (isset($_GET['state']) && $_GET['state'] == 'pub') {
+                $appid = Config::get('weixin.pub_appid');
+                $secret = Config::get('weixin.pub_secret');
+            } else {
+                $appid = Config::get('weixin.web_appid');
+                $secret = Config::get('weixin.web_secret');
+            }
+
+            $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $secret . "&code=" . $_GET['code'] . "&grant_type=authorization_code";
+
+            $wechatData = $this->curlGet($url);
+            $wechatData = json_decode($wechatData);
+
+            if (isset($wechatData->errcode)) {
+                return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
+            }
+
+            $openid = $wechatData->openid;
+        }else{
+            $openid = $request->get('openid');
+        }
+
         $attributes = [
             'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
             'body'             => $body,
             'detail'           => $detail,
             'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            'openid'           => $request->get('openid'),
+            'openid'           => $openid,
 //            'total_fee'        => (int)($payNum['data'] * 100),
             'total_fee'        => 1,
             'fee_type'         => 1,
