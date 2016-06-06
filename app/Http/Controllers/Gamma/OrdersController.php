@@ -77,8 +77,6 @@ class OrdersController extends ApiController
             $search['search'] = trim($request->get('search'));
         }
 
-        var_dump($search);die;
-
         $orderNum   = $this->_model->getOrderTotalNum($this->storeId , $search);
 
         $response = array();
