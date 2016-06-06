@@ -61,7 +61,7 @@ class Orders extends Model
                     
                 FROM $this->_orders_table AS o";
 
-        $sql = ' WEHRE 1=1';
+        $sql .= ' WEHRE 1=1';
         if(isset($search['status'])){
             $sql .= " AND o.status IN (".implode(',' , $search['status']).")";
         }
