@@ -54,6 +54,9 @@ class Jpush extends Job implements ShouldQueue
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
+
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(22222));
+
         $push->setPlatform($this->platform);
         if('' != $this->alias){
             $push->addAlias($this->alias);
@@ -61,6 +64,8 @@ class Jpush extends Job implements ShouldQueue
         if(!empty($this->tag)){
             $push->addTag($this->tag);
         }
+
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(33333));
 
         $push->setNotificationAlert('急所需商家版')
             //->addAllAudience()
@@ -70,6 +75,8 @@ class Jpush extends Job implements ShouldQueue
             ->setOptions(100000, 3600, null, false);
 
         $push->send();
+
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(44444));
 
 
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
