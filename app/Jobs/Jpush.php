@@ -50,26 +50,18 @@ class Jpush extends Job implements ShouldQueue
      */
     public function handle()
     {
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(1111));
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
-
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(22222));
-
         $push->setPlatform($this->platform);
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(33333));
         if('' != $this->alias){
-            $push->addAlias($this->alias);
+            BLogger::getLogger(BLogger::LOG_JPUSH)->notice($push->addAlias($this->alias));
         }
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($this->tag));
         if(!empty($this->tag)){
-            BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(6666));
             $push->addTag($this->tag);
         }
-
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(4444));
 
         $push->setNotificationAlert('急所需商家版')
             //->addAllAudience()
