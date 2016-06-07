@@ -501,6 +501,8 @@ class OrdersController extends ApiController
 //                    ->setOptions(100000, 3600, null, false);
 //
 //                $push->send();
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($store[0]->id));
+
                 $this->dispatch(new Jpush(
                     '6bab168dd725bcff4c83e6f6',
                     '9973f83c178d57b8ccc67943',
