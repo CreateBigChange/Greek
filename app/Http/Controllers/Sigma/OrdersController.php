@@ -18,11 +18,14 @@ use App\Models\Sigma\WechatPayLog;
 use App\Http\Controllers\ApiController;
 
 use App\Models\Sigma\Orders;
+use App\Models\Sigma\Stores;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
+
+use App\Jobs\Jpush;
 
 
 class OrdersController extends ApiController
@@ -471,13 +474,31 @@ class OrdersController extends ApiController
             if($successful){
 
                 //更新支付时间和订单状态
-                $isChange = $this->_model->updateOrderPayTime($order->id, $notify->time_end);
+                $this->_model->updateOrderPayTime($order->id, $notify->time_end);
+
+
+                $storeModel = new Stores;
+                $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+
+                if(empty($store)){
+                    return true;
+                }
+                $this->dispatch(new Jpush(
+                    '6bab168dd725bcff4c83e6f6' ,
+                    '9973f83c178d57b8ccc67943',
+                    'all',
+                    $store[0]->id,
+                    array(),
+                    '急所需有新订单啦,请及时处理',
+                    '急所需新订单',
+                    $store[0]->bell
+                ));
 
             }
 
             //更新微信日志
             $wechatPayLogModel = new WechatPayLog();
-            $isChangeLog = $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
+            $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
 
             // 你的逻辑
             return true; // 或者错误消息

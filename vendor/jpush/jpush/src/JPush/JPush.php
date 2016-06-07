@@ -1,17 +1,10 @@
 <?php
 
-namespace App\Libs\Jpush\Src;
-
-use App\Libs\Jpush\Src\Core\PushPayload;
-use App\Libs\Jpush\Src\Core\ReportPayload;
-use App\Libs\Jpush\Src\Core\DevicePayload;
-use App\Libs\Jpush\Src\Core\SchedulePayload;
-use App\Libs\Jpush\Src\Core\JPushException;
-//require_once("Core/PushPayload.php");
-//require_once("Core/ReportPayload.php");
-//require_once("Core/DevicePayload.php");
-//require_once("Core/SchedulePayload.php");
-//require_once("Core/JPushException.php");
+require_once("core/PushPayload.php");
+require_once("core/ReportPayload.php");
+require_once("core/DevicePayload.php");
+require_once("core/SchedulePayload.php");
+require_once("core/JPushException.php");
 
 class JPush {
     const DISABLE_SOUND = "_disable_Sound";

@@ -1,7 +1,7 @@
 <?php
-namespace App\Libs\Jpush;
+namespace App\Libs;
 
-use App\Libs\Jpush\Src\Jpush as JpushLib;
+use JPush as JpushLib;
 
 class Jpush
 {
@@ -24,7 +24,7 @@ class Jpush
         return json_encode($result);
     }
 
-    public function push($platform=array('all') , $alias='' , $tag=array() , $content , $title , $id=0){
+    public function push( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default'){
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
@@ -35,10 +35,12 @@ class Jpush
         if(!empty($tag)){
             $push->addTag($tag);
         }
+
         $push->setNotificationAlert('急所需商家版')
-            ->addAndroidNotification('Hi, android notification', 'notification title', '+1', array("key1"=>"value1", "key2"=>"value2"))
-            ->addIosNotification($content, $title, '+1' , true, 'iOS ORDER NEW', array("type"=>"new", "id"=>"value2"))
-            ->setMessage($content, $title, 'type', array("type"=>"new", "key2"=>"value2"))
+            ->addAllAudience()
+            ->addAndroidNotification($content, $title, 1, array("type"=>"new"))
+            ->addIosNotification($content, $sound, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
+            ->setMessage($content, $title, 'type', array("type"=>"new"))
             ->setOptions(100000, 3600, null, false);
 
         $result = $push->send();

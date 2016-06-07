@@ -1,5 +1,5 @@
 <?php
-namespace App\Libs\Jpush\Src\Core;
+
 /**
  * JPush Exception
  * User: xiezefan

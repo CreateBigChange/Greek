@@ -1,5 +1,4 @@
 <?php
-namespace App\Libs\Jpush\Src\Core;
 
 class SchedulePayload {
     private static $LIMIT_KEYS = array('X-Rate-Limit-Limit'=>'rateLimitLimit', 'X-Rate-Limit-Remaining'=>'rateLimitRemaining', 'X-Rate-Limit-Reset'=>'rateLimitReset');

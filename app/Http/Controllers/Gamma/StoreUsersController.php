@@ -73,7 +73,7 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            $sessionKey = $this->getSalt(16);
+            $sessionKey = md5($userInfo[0]->account);
             Session::put($sessionKey , $userInfo[0]);
 
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));

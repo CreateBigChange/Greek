@@ -23,6 +23,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
+        '968b13b9abb3514a5bb0365cd5f391eb' => __DIR__ . '/..' . '/jpush/jpush/src/JPush/JPush.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -347,6 +348,13 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
                 0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             ),
         ),
+        'j' => 
+        array (
+            'jpush' => 
+            array (
+                0 => __DIR__ . '/..' . '/jpush/jpush/src',
+            ),
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 
@@ -447,7 +455,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Http\\Controllers\\Sigma\\StoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/StoresController.php',
         'App\\Http\\Controllers\\Sigma\\UploadController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/UploadController.php',
         'App\\Http\\Controllers\\Sigma\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/UsersController.php',
-        'App\\Http\\Controllers\\Wxpay\\SetWXOrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/Wxpay/SetWXOrderController.php',
+        'App\\Http\\Controllers\\Wxpay\\WechatController' => __DIR__ . '/../..' . '/app/Http/Controllers/Wxpay/WechatController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckAuth' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckAuth.php',
@@ -461,14 +469,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Jobs\\SendSms' => __DIR__ . '/../..' . '/app/Jobs/SendSms.php',
         'App\\Libs\\BLogger' => __DIR__ . '/../..' . '/app/Libs/BLogger.class.php',
         'App\\Libs\\Curl' => __DIR__ . '/../..' . '/app/Libs/Curl.class.php',
-        'App\\Libs\\Jpush\\Jpush' => __DIR__ . '/../..' . '/app/Libs/Jpush/Jpush.class.php',
-        'App\\Libs\\Jpush\\Src\\Core\\APIConnectionException' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/JPushException.php',
-        'App\\Libs\\Jpush\\Src\\Core\\APIRequestException' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/JPushException.php',
-        'App\\Libs\\Jpush\\Src\\Core\\DevicePayload' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/DevicePayload.php',
-        'App\\Libs\\Jpush\\Src\\Core\\PushPayload' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/PushPayload.php',
-        'App\\Libs\\Jpush\\Src\\Core\\ReportPayload' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/ReportPayload.php',
-        'App\\Libs\\Jpush\\Src\\Core\\SchedulePayload' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/Core/SchedulePayload.php',
-        'App\\Libs\\Jpush\\Src\\JPush' => __DIR__ . '/../..' . '/app/Libs/Jpush/Src/JPush.php',
+        'App\\Libs\\Jpush' => __DIR__ . '/../..' . '/app/Libs/Jpush.class.php',
         'App\\Libs\\Message' => __DIR__ . '/../..' . '/app/Libs/Message.class.php',
         'App\\Libs\\Smsrest\\CCPRestSDK' => __DIR__ . '/../..' . '/app/Libs/Smsrest/CCPRestSDK.php',
         'App\\Libs\\Smsrest\\Sms' => __DIR__ . '/../..' . '/app/Libs/Smsrest/Sms.class.php',
@@ -492,6 +493,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Models\\Sigma\\Orders' => __DIR__ . '/../..' . '/app/Models/Sigma/Orders.php',
         'App\\Models\\Sigma\\Stores' => __DIR__ . '/../..' . '/app/Models/Sigma/Stores.php',
         'App\\Models\\Sigma\\Users' => __DIR__ . '/../..' . '/app/Models/Sigma/Users.php',
+        'App\\Models\\Sigma\\WechatPayLog' => __DIR__ . '/../..' . '/app/Models/Sigma/WechatPayLog.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
@@ -2018,6 +2020,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'Illuminate\\Contracts\\Queue\\Job' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/Job.php',
         'Illuminate\\Contracts\\Queue\\Monitor' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/Monitor.php',
         'Illuminate\\Contracts\\Queue\\Queue' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/Queue.php',
+        'Illuminate\\Contracts\\Queue\\QueueableCollection' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/QueueableCollection.php',
         'Illuminate\\Contracts\\Queue\\QueueableEntity' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/QueueableEntity.php',
         'Illuminate\\Contracts\\Queue\\ShouldQueue' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Queue/ShouldQueue.php',
         'Illuminate\\Contracts\\Redis\\Database' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Redis/Database.php',

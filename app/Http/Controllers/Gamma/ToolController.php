@@ -12,10 +12,11 @@ use Illuminate\Http\Response;
 use Validator , Input;
 use Session , Cookie , Config;
 
+use App\Libs\Jpush;
+
 use App\Http\Controllers\ApiController;
 
 use App\Libs\Message;
-use App\Libs\Jpush\Jpush;
 
 class ToolController extends ApiController
 {
@@ -48,7 +49,7 @@ class ToolController extends ApiController
      */
     public function push(){
         $jpush = new Jpush();
-        return $jpush->push();
+        return $jpush->push('急所需新订单' , '急所需新订单来了');
     }
 
 }

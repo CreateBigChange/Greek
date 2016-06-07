@@ -1,7 +1,4 @@
 <?php
-namespace App\Libs\Jpush\Src\Core;
-
-use App\Libs\Jpush\Src\Jpush;
 
 class PushPayload {
     private static $EFFECTIVE_DEVICE_TYPES = array('ios', 'android', 'winphone');
