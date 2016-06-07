@@ -501,16 +501,16 @@ class OrdersController extends ApiController
 //                    ->setOptions(100000, 3600, null, false);
 //
 //                $push->send();
-//                $this->dispatch(new Jpush(
-//                    '6bab168dd725bcff4c83e6f6',
-//                    '9973f83c178d57b8ccc67943',
-//                    'all',
-//                    $store[0]->id,
-//                    array(),
-//                    '急所需有新订单啦,请及时处理',
-//                    '急所需新订单',
-//                    $store[0]->bell
-//                ));
+                $this->dispatch(new Jpush(
+                    '6bab168dd725bcff4c83e6f6',
+                    '9973f83c178d57b8ccc67943',
+                    'all',
+                    $store[0]->id,
+                    array(),
+                    '急所需有新订单啦,请及时处理',
+                    '急所需新订单',
+                    $store[0]->bell
+                ));
 
             }
 
