@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use JPush as JpushLib;
+use App\Libs\BLogger;
 
 class Jpush extends Job implements ShouldQueue
 {
@@ -68,6 +69,9 @@ class Jpush extends Job implements ShouldQueue
             ->setOptions(100000, 3600, null, false);
 
         $push->send();
+
+
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
 
         return true;
     }
