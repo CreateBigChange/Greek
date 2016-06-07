@@ -60,9 +60,10 @@ class Jpush extends Job implements ShouldQueue
         $push->setPlatform($this->platform);
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(33333));
         if('' != $this->alias){
-            BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($this->alias));
             $push->addAlias($this->alias);
         }
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($this->tag));
         if(!empty($this->tag)){
             BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(6666));
             $push->addTag($this->tag);
