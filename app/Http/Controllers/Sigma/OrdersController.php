@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Sigma;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input;
-use Session , Cookie , Config,Log;
+use Session , Cookie , Config , Log;
 
 use App\Models\Sigma\Users;
 use App\Models\Sigma\WechatPayLog;
@@ -484,16 +484,32 @@ class OrdersController extends ApiController
                 if(empty($store)){
                     return true;
                 }
-                $this->dispatch(new Jpush(
-                    '6bab168dd725bcff4c83e6f6' ,
-                    '9973f83c178d57b8ccc67943',
-                    'all',
-                    $store[0]->id,
-                    array(),
-                    '急所需有新订单啦,请及时处理',
-                    '急所需新订单',
-                    $store[0]->bell
-                ));
+
+                $jpushObj         = new JpushLib('6bab168dd725bcff4c83e6f6', '9973f83c178d57b8ccc67943');
+                // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
+                $push = $jpushObj->push();
+
+                $push->setPlatform('all');
+                $push->addAlias($store[0]->id);
+
+                $push->setNotificationAlert('急所需商家版')
+                    ->addAllAudience()
+                    ->addAndroidNotification("急所需有新订单啦,请及时处理", "急所需新订单", 1, array("type"=>"new"))
+                    ->addIosNotification("急所需有新订单啦,请及时处理", $store[0]->bell, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
+                    ->setMessage("急所需有新订单啦,请及时处理", "急所需新订单", 'type', array("type"=>"new"))
+                    ->setOptions(100000, 3600, null, false);
+
+                $push->send();
+//                $this->dispatch(new Jpush(
+//                    '6bab168dd725bcff4c83e6f6',
+//                    '9973f83c178d57b8ccc67943',
+//                    'all',
+//                    $store[0]->id,
+//                    array(),
+//                    '急所需有新订单啦,请及时处理',
+//                    '急所需新订单',
+//                    $store[0]->bell
+//                ));
 
             }
 
