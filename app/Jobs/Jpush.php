@@ -50,34 +50,8 @@ class Jpush extends Job implements ShouldQueue
      */
     public function handle()
     {
-        // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
-        $push = $this->jpushObj->push();
-
-        $push->setPlatform($this->platform);
-        if('' != $this->alias){
-            BLogger::getLogger(BLogger::LOG_JPUSH)->notice($push->addAlias($this->alias));
-        }
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($this->tag));
-        if(!empty($this->tag)){
-            $push->addTag($this->tag);
-        }
-
-        $push->setNotificationAlert('急所需商家版')
-            //->addAllAudience()
-            ->addAndroidNotification($this->content, $this->title, 1, array("type"=>"new"))
-            ->addIosNotification($this->content, $this->sound, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
-            ->setMessage($this->content, $this->title, 'type', array("type"=>"new"))
-            ->setOptions(100000, 3600, null, false);
-
-        $push->send();
-
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(555));
-
-
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
-
-        return true;
+        $jpush = new Jpush();
+        return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
     }
 
     public function failed(){
