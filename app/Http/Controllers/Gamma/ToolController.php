@@ -47,7 +47,7 @@ class ToolController extends ApiController
      *
      */
     public function push(){
-        $jpush = new Jpush;
+        $jpush = new Jpush();
         return $jpush->push();
     }
 
