@@ -479,6 +479,7 @@ class OrdersController extends ApiController
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($store));
 
                 if(empty($store)){
                     return true;
