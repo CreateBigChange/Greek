@@ -7,16 +7,12 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use JPush as JpushLib;
+use App\Libs\Jpush as JpushLib;
 use App\Libs\BLogger;
 
 class Jpush extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
-
-    private $app_key;
-    private $master_secret;
-    private $jpushObj;
 
     private $platform;
     private $alias;
@@ -29,12 +25,8 @@ class Jpush extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct( $app_key , $master_secret , $platform , $alias , $tag , $content , $title , $sound)
+    public function __construct( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default')
     {
-        $this->app_key          = $app_key;
-        $this->master_secret    = $master_secret;
-        $this->jpushObj         = new JpushLib($this->app_key, $this->master_secret);
-
         $this->platform         = $platform;
         $this->alias            = $alias;
         $this->tag              = $tag;
@@ -50,7 +42,7 @@ class Jpush extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $jpush = new Jpush();
+        $jpush = new JpushLib();
         return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
     }
 
