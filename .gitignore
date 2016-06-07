@@ -12,3 +12,4 @@ composer.lock
 *.swo
 log.txt
 Makefile
+/public/jpush.log
