@@ -481,27 +481,26 @@ class OrdersController extends ApiController
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($store));
 
                 if(empty($store)){
                     return true;
                 }
 
-                $jpushObj         = new JpushLib('6bab168dd725bcff4c83e6f6', '9973f83c178d57b8ccc67943');
-                // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
-                $push = $jpushObj->push();
-
-                $push->setPlatform('all');
-                $push->addAlias($store[0]->id);
-
-                $push->setNotificationAlert('急所需新订单通知')
-                    ->addAllAudience()
-                    ->addAndroidNotification("急所需有新订单啦,请及时处理", "急所需新订单", 1, array("type"=>"new"))
-                    ->addIosNotification("急所需有新订单啦,请及时处理", $store[0]->bell, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
-                    ->setMessage("急所需有新订单啦,请及时处理", "急所需新订单", 'type', array("type"=>"new"))
-                    ->setOptions(100000, 3600, null, false);
-
-                $push->send();
+//                $jpushObj         = new JpushLib('6bab168dd725bcff4c83e6f6', '9973f83c178d57b8ccc67943');
+//                // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
+//                $push = $jpushObj->push();
+//
+//                $push->setPlatform('all');
+//                $push->addAlias($store[0]->id);
+//
+//                $push->setNotificationAlert('急所需新订单通知')
+//                    ->addAllAudience()
+//                    ->addAndroidNotification("急所需有新订单啦,请及时处理", "急所需新订单", 1, array("type"=>"new"))
+//                    ->addIosNotification("急所需有新订单啦,请及时处理", $store[0]->bell, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
+//                    ->setMessage("急所需有新订单啦,请及时处理", "急所需新订单", 'type', array("type"=>"new"))
+//                    ->setOptions(100000, 3600, null, false);
+//
+//                $push->send();
 //                $this->dispatch(new Jpush(
 //                    '6bab168dd725bcff4c83e6f6',
 //                    '9973f83c178d57b8ccc67943',

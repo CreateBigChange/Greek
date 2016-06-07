@@ -37,8 +37,8 @@ class Jpush
         }
 
         $push->setNotificationAlert('急所需商家版')
-            ->addAllAudience()
-            ->addAndroidNotification($content, $title, 1, array("type"=>"new"))
+            //->addAllAudience()
+            //->addAndroidNotification($content, $title, 1, array("type"=>"new"))
             ->addIosNotification($content, $sound, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
             ->setMessage($content, $title, 'type', array("type"=>"new"))
             ->setOptions(100000, 3600, null, false);
