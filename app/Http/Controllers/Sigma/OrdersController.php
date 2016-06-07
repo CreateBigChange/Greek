@@ -501,13 +501,11 @@ class OrdersController extends ApiController
 //                    ->setOptions(100000, 3600, null, false);
 //
 //                $push->send();
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($store[0]->id));
-
                 $this->dispatch(new Jpush(
                     '6bab168dd725bcff4c83e6f6',
                     '9973f83c178d57b8ccc67943',
                     array('ios' , 'android'),
-                    $store[0]->id,
+                    '21',
                     array(),
                     '急所需有新订单啦,请及时处理',
                     '急所需新订单',
