@@ -27,6 +27,7 @@ use EasyWeChat\Payment\Order;
 
 use App\Jobs\Jpush;
 
+use JPush as JpushLib;
 
 class OrdersController extends ApiController
 {
