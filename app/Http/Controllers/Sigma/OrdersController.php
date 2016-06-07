@@ -448,6 +448,7 @@ class OrdersController extends ApiController
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($successful));
 
             $outTradeNo = $notify->out_trade_no;
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
@@ -493,7 +494,7 @@ class OrdersController extends ApiController
                 $push->setPlatform('all');
                 $push->addAlias($store[0]->id);
 
-                $push->setNotificationAlert('急所需商家版')
+                $push->setNotificationAlert('急所需新订单通知')
                     ->addAllAudience()
                     ->addAndroidNotification("急所需有新订单啦,请及时处理", "急所需新订单", 1, array("type"=>"new"))
                     ->addIosNotification("急所需有新订单啦,请及时处理", $store[0]->bell, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
