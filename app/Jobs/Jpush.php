@@ -50,6 +50,7 @@ class Jpush extends Job implements ShouldQueue
      */
     public function handle()
     {
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(1111));
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
