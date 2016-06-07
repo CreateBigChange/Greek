@@ -58,15 +58,17 @@ class Jpush extends Job implements ShouldQueue
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(22222));
 
         $push->setPlatform($this->platform);
-        
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(33333));
         if('' != $this->alias){
+            BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(555));
             $push->addAlias($this->alias);
         }
         if(!empty($this->tag)){
+            BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(6666));
             $push->addTag($this->tag);
         }
 
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(33333));
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(4444));
 
         $push->setNotificationAlert('急所需商家版')
             //->addAllAudience()
@@ -77,7 +79,7 @@ class Jpush extends Job implements ShouldQueue
 
         $push->send();
 
-        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(44444));
+        BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(555));
 
 
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode($push));
