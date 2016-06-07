@@ -62,7 +62,7 @@ class Jpush extends Job implements ShouldQueue
         }
 
         $push->setNotificationAlert('急所需商家版')
-            ->addAllAudience()
+            //->addAllAudience()
             ->addAndroidNotification($this->content, $this->title, 1, array("type"=>"new"))
             ->addIosNotification($this->content, $this->sound, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
             ->setMessage($this->content, $this->title, 'type', array("type"=>"new"))
