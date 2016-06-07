@@ -504,7 +504,7 @@ class OrdersController extends ApiController
                 $this->dispatch(new Jpush(
                     '6bab168dd725bcff4c83e6f6',
                     '9973f83c178d57b8ccc67943',
-                    'all',
+                    array('ios' , 'android'),
                     $store[0]->id,
                     array(),
                     '急所需有新订单啦,请及时处理',

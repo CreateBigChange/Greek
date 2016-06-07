@@ -58,6 +58,7 @@ class Jpush extends Job implements ShouldQueue
         BLogger::getLogger(BLogger::LOG_JPUSH)->notice(json_encode(22222));
 
         $push->setPlatform($this->platform);
+        
         if('' != $this->alias){
             $push->addAlias($this->alias);
         }
