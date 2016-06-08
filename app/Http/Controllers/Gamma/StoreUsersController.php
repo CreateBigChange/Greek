@@ -74,7 +74,7 @@ class StoreUsersController extends ApiController
             //获取登录用户的权限
 
             //清空之前的session
-            $request->session()->pull($userInfo[0]->remember_token);
+            $request->session()->pull($userInfo[0]->remember_token , 'default');
 
             $sessionKey = $this->getSalt(16);
 
