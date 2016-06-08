@@ -53,6 +53,7 @@ class StoreUsers extends Model
                       su.store_id,
                       su.account,
                       su.real_name,
+                      su.remember_token,
                       su.tel,
                       si.name as store_name,
                       si.address,
