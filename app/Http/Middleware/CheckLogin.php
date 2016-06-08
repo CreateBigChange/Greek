@@ -6,6 +6,7 @@ use Closure;
 use Session , Config , Cookie;
 use App\Libs\Message;
 use Illuminate\Http\Response;
+use App\Libs\BLogger;
 
 class CheckLogin
 {
@@ -24,6 +25,9 @@ class CheckLogin
 
         global $userInfo;
         $userInfo = session::get($sessionkey);
+
+        BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode(session::get($sessionkey)));
+
 
         if(!isset($userInfo->id)){
             return response()->json(Message::setResponseInfo('RELOGIN'));
