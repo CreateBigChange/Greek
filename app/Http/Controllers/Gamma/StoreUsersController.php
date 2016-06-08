@@ -114,11 +114,11 @@ class StoreUsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function logout(){
+    public function logout(Request $request){
 
         $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
 
-        session::forget($sessionKey);
+        $request->session()->forget($sessionKey);
 
         return response()->json(Message::setResponseInfo('SUCCESS'));
 
