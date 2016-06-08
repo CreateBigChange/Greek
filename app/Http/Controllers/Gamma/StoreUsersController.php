@@ -73,6 +73,7 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
+            BLogger::getLogger(BLogger::LOG_REQUEST)->info($userInfo[0]->remember_token);
             $request->session()->forget($userInfo[0]->remember_token);
 
             $sessionKey = $this->getSalt(8);
@@ -117,6 +118,8 @@ class StoreUsersController extends ApiController
     public function logout(Request $request){
 
         $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
+
+        BLogger::getLogger(BLogger::LOG_REQUEST)->info($sessionKey);
 
         $request->session()->forget($sessionKey);
 
