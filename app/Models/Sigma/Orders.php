@@ -232,6 +232,7 @@ class Orders extends Model
             $order['consignee_county']      = $address[0]->county;
             $order['consignee_address']     = $address[0]->address;
             $order['consignee_street']      = $address[0]->street;
+            $order['pay_total']             = $total + $storeInfo->deliver;
         }
 
         //开始事物
@@ -328,6 +329,8 @@ class Orders extends Model
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($inPoints / 100);
+
+        $update['pay_total']    = $payNum;
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
             return Message::setResponseInfo('SUCCESS' , $payNum);
