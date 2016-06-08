@@ -73,7 +73,7 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            Session::forget($userInfo[0]->remember_token);
+            session::forget($userInfo[0]->remember_token);
 
             $sessionKey = $this->getSalt(8);
 
