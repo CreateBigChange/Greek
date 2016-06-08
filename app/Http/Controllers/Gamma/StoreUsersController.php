@@ -74,7 +74,7 @@ class StoreUsersController extends ApiController
             //获取登录用户的权限
 
             BLogger::getLogger(BLogger::LOG_REQUEST)->info($userInfo[0]->remember_token);
-            $request->session()->forget($userInfo[0]->remember_token);
+            BLogger::getLogger(BLogger::LOG_REQUEST)->info($request->session()->forget($userInfo[0]->remember_token));
 
             $sessionKey = $this->getSalt(8);
 
