@@ -429,7 +429,7 @@ class OrdersController extends ApiController
                 'signType'          => $json->signType,
                 'paySign'           => $json->paySign
             );
-            
+
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
