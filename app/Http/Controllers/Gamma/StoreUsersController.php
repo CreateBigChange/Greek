@@ -75,6 +75,8 @@ class StoreUsersController extends ApiController
 
             if($request->session()->has($userInfo[0]->remember_token)){
                 $request->session()->pull($userInfo[0]->remember_token , 'default');
+                var_dump($request->session()->get($userInfo[0]->remember_token));
+                exit;
             }
 
             $sessionKey = $this->getSalt(16);
