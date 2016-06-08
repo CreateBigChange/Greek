@@ -51,7 +51,7 @@ class Message {
 				'POINT_NOT_AMPLE'				=> array('code'=>'5004' , 'msg'=>'积分不足'),
 				'MONEY_NOT_AMPLE'				=> array('code'=>'5005' , 'msg'=>'余额不足'),
 				'MONEY_NOT_EQUAL'				=> array('code'=>'5006' , 'msg'=>'支付的金额与需要支付的金额不等'),
-				'EMPTY_CONSIGNEE'						=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
+				'EMPTY_CONSIGNEE'				=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
 
 			);
 

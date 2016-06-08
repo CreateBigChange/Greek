@@ -323,6 +323,10 @@ class Orders extends Model
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
 
+        if(!$order->consignee_id){
+            return Message::setResponseInfo('EMPTY_CONSIGNEE');
+        }
+
         if(!$order){
             return Message::setResponseInfo('FAILED');
         }
