@@ -99,7 +99,7 @@ class StoreUsers extends Model
     }
 
     /**
-     * 更新密码
+     * 更新用户信息
      */
     public function reset($id  , $data){
         return DB::table($this->_table)->where('id' , $id)->update($data);

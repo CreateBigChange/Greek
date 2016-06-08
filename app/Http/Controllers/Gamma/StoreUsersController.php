@@ -73,14 +73,19 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            Session::forget(md5($userInfo[0]->account));
+            Session::forget($userInfo[0]->remember_token);
 
-            $sessionKey = md5($userInfo[0]->account);
+            $sessionKey = $this->getSalt(8);
+
+            $rememberToken = array(
+                'remember_token'    => $sessionKey
+            );
+            $this->_model->reset($userInfo[0]->id , $rememberToken);
+
             Session::put($sessionKey , $userInfo[0]);
 
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
 
-            $userInfo[0]->token = $sessionKey;
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo[0]))->withCookie($cookie);
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
