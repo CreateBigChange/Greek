@@ -73,17 +73,12 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            if($request->session()->has($userInfo[0]->remember_token)){
-                //var_dump(session::get($userInfo[0]->remember_token));
-                $request->session()->forget($userInfo[0]->remember_token);
-                $request->session()->save();
-                //var_dump(session::get($userInfo[0]->remember_token));
-            }
+            $request->session()->getHandler()->destroy($userInfo[0]->remember_token);
 
             $sessionKey = $this->getSalt(16);
 
             $rememberToken = array(
-                'remember_token'    => $sessionKey
+                'remember_token'    => $request->session()->getId()
             );
 
             $this->_model->reset($userInfo[0]->id , $rememberToken);
