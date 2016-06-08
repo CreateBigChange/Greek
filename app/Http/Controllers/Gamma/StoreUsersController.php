@@ -73,7 +73,7 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            session::forget($userInfo[0]->remember_token);
+            $request->session()->forget($userInfo[0]->remember_token);
 
             $sessionKey = $this->getSalt(8);
 
@@ -82,7 +82,7 @@ class StoreUsersController extends ApiController
             );
             $this->_model->reset($userInfo[0]->id , $rememberToken);
 
-            Session::put($sessionKey , $userInfo[0]);
+            $request->session()->put($sessionKey , $userInfo[0]);
 
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
 
