@@ -76,6 +76,8 @@ class StoreUsersController extends ApiController
             //清空之前的session
             $request->session()->pull($userInfo[0]->remember_token , 'default');
 
+            BLogger::getLogger(BLogger::LOG_REQUEST)->notice($userInfo[0]->remember_token);
+
             $sessionKey = $this->getSalt(16);
 
             $rememberToken = array(
