@@ -85,22 +85,20 @@ class Orders extends Model
 
         $goods = DB::table($this->_order_infos_table)->whereIn('order_id' , $orderIds)->get();
 
-        $i = 0;
         foreach ($orders as $o){
             $o->goods = array();
             $o->goodsNum = 0;
 
-            if(!$o->consignee_id){
-                unset($orders[$i]);
-                continue;
-            }
+//            if(!$o->consignee_id){
+//                unset($orders[$i]);
+//                continue;
+//            }
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
                     $o->goodsNum += $g->num;
                 }
             }
-            $i++;
         }
 
         return $orders;
