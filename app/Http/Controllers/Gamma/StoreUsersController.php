@@ -75,6 +75,7 @@ class StoreUsersController extends ApiController
 
             BLogger::getLogger(BLogger::LOG_REQUEST)->info($userInfo[0]->remember_token);
             BLogger::getLogger(BLogger::LOG_REQUEST)->info($request->session()->get($userInfo[0]->remember_token));
+            BLogger::getLogger(BLogger::LOG_REQUEST)->info(1111);
 
             $sessionKey = $this->getSalt(8);
 
