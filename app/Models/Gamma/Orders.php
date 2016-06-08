@@ -49,6 +49,7 @@ class Orders extends Model
                     o.store_id,
                     o.user,
                     o.consignee,
+                    o.consignee_id,
                     o.consignee_tel,
                     o.consignee_province as province,
                     o.consignee_city as city,
@@ -87,6 +88,11 @@ class Orders extends Model
         foreach ($orders as $o){
             $o->goods = array();
             $o->goodsNum = 0;
+
+            if(!$o->consignee_id){
+                unset($o);
+                continue;
+            }
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
