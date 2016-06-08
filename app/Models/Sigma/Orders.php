@@ -192,6 +192,10 @@ class Orders extends Model
         $goodsList  = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
         $storeInfo  = $storeModel->getStoreInfo($storeId);
 
+        if($storeInfo->is_close){
+            return false;
+        }
+
         //计算订单总价
         $total = 0;
         $outPoints = 0;
