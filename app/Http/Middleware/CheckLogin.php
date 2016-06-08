@@ -26,10 +26,6 @@ class CheckLogin
         global $userInfo;
         $userInfo = session::get($sessionkey);
 
-        BLogger::getLogger(BLogger::LOG_REQUEST)->info(111111);
-        BLogger::getLogger(BLogger::LOG_REQUEST)->info($sessionkey);
-
-
         if(!isset($userInfo->id)){
             return response()->json(Message::setResponseInfo('RELOGIN'));
         }
