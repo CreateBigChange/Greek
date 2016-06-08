@@ -26,6 +26,7 @@ class CheckLogin
         global $userInfo;
         $userInfo = session::get($sessionkey);
 
+        BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode(111111));
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode(session::get($sessionkey)));
 
 
