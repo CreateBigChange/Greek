@@ -382,27 +382,29 @@ class Orders extends Model
      */
     public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime){
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payMoney));
-
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1));
         if(!$payType){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付订单失败-支付方式不对');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
             return Message::setResponseInfo('FAILED');
         }
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(2));
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
         if(!$order){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有此订单');
             return Message::setResponseInfo('FAILED');
         }
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(3));
 
         if(!$order->consignee_id){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有添加收货地址');
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
         }
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4));
         $userModel = new Users;
         //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
@@ -412,6 +414,7 @@ class Orders extends Model
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(5));
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
@@ -432,6 +435,8 @@ class Orders extends Model
             }
         }
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(6));
+
         $storeModel = new Stores;
         $storeInfo = $storeModel->getStoreInfo($order->store_id);
 
@@ -441,6 +446,7 @@ class Orders extends Model
             return Message::setResponseInfo('FAILED');
         }
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(7));
 
         DB::beginTransaction();
 
