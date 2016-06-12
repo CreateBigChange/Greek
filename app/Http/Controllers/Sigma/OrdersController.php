@@ -497,7 +497,7 @@ class OrdersController extends ApiController
             if($successful){
 
                 //更新支付时间和订单状态
-                $this->_model->pay($this->userId , $order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
+                $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
