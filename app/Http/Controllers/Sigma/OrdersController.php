@@ -472,7 +472,6 @@ class OrdersController extends ApiController
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
 
             if(!$order){
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(88888888));
                 return 'Order not exist.';
             }
 
@@ -495,14 +494,13 @@ class OrdersController extends ApiController
                 return true;
             }
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222));
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($successful));
-
             if($successful){
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333));
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
                 //更新支付时间和订单状态
                 $this->_model->pay($this->userId , $order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222));
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
