@@ -389,7 +389,7 @@ class Orders extends Model
 
         if(!$payType){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付订单失败-支付方式不对');
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
+            $this->createOrderLog($orderId, 0 , '普通用户', '用户端APP', '支付订单失败-支付方式不对');
             return Message::setResponseInfo('FAILED');
         }
 
