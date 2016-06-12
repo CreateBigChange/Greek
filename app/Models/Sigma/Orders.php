@@ -324,7 +324,7 @@ class Orders extends Model
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
-            return false;
+            return Message::setResponseInfo('FAILED');
         }
 
         $userModel = new Users;
