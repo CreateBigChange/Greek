@@ -179,6 +179,7 @@ class Orders extends Model
         $goodsIds = array();
         $nums = array();
 
+        var_dump($goods);;die;
         //分开goods_id 和 数量
         foreach ($goods as $g){
             $goodsIds[] = $g->goods_id;
