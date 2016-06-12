@@ -244,7 +244,7 @@ class StoreUsersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/cash
      *
-     * @apiParam {sting} num 帐号
+     * @apiParam {sting} num 金额
      *
      * @apiParamExample {json} Request Example
      * POST /gamma/sms
@@ -255,7 +255,15 @@ class StoreUsersController extends ApiController
      *
      */
     public function withdrawCash(Request $request){
+        if(!$request->has('num')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
 
+        $data = array();
+        $data['withdraw_cash_num']          = $request->has('num');
+        $data['store_id']                   = $this->storeId;
+        $data['status']                     = 1;
+        $data['created_time']               = date('Y-m-d H:i:s' , time());
     }
 
 

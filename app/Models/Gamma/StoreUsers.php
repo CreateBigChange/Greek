@@ -123,4 +123,8 @@ class StoreUsers extends Model
         return $isLogin;
     }
 
+    public function addWithdrawCashNum($data){
+        return '';
+    }
+
 }
