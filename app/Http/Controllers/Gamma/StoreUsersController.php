@@ -123,6 +123,8 @@ class StoreUsersController extends ApiController
 
         $request->session()->forget($sessionKey);
 
+        //$request->session()->getHandler()->destroy($request->session()->getId());
+
         return response()->json(Message::setResponseInfo('SUCCESS'));
 
     }
@@ -230,6 +232,29 @@ class StoreUsersController extends ApiController
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
+
+    }
+
+    /**
+     * @api {POST} /gamma/cash 提现
+     * @apiName cash
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/cash
+     *
+     * @apiParam {sting} num 帐号
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/sms
+     * {
+     *      num   : 102.33
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function withdrawCash(Request $request){
 
     }
 

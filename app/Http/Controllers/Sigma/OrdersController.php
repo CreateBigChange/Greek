@@ -293,7 +293,7 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/order/confirm/wechat/{orderId} 确认订单-微信
+     * @api {POST} /sigma/order/confirm/wechat/{orderId} 确认订单-微信(生成微信订单)
      * @apiName ordersConfirmWechat
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
@@ -441,6 +441,23 @@ class OrdersController extends ApiController
     }
 
 
+    /**
+     * @api {POST} /sigma/wechat/notify 微信支付回调
+     * @apiName ordersConfirmWechat
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 确认订单-微信
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/wechat/notify
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+
     public function notify(){
 
         $app = new Application($this->options);
@@ -448,10 +465,10 @@ class OrdersController extends ApiController
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($successful));
 
             $outTradeNo = $notify->out_trade_no;
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+
             if(!$order){
                 return 'Order not exist.';
             }
@@ -476,8 +493,7 @@ class OrdersController extends ApiController
             if($successful){
 
                 //更新支付时间和订单状态
-                $this->_model->updateOrderPayTime($order->id, $notify->time_end);
-
+                $this->_model->pay($this->userId , $order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
@@ -486,21 +502,7 @@ class OrdersController extends ApiController
                     return true;
                 }
 
-//                $jpushObj         = new JpushLib('6bab168dd725bcff4c83e6f6', '9973f83c178d57b8ccc67943');
-//                // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
-//                $push = $jpushObj->push();
-//
-//                $push->setPlatform('all');
-//                $push->addAlias($store[0]->id);
-//
-//                $push->setNotificationAlert('急所需新订单通知')
-//                    ->addAllAudience()
-//                    ->addAndroidNotification("急所需有新订单啦,请及时处理", "急所需新订单", 1, array("type"=>"new"))
-//                    ->addIosNotification("急所需有新订单啦,请及时处理", $store[0]->bell, '+1' , true, 'iOS ORDER NEW', array("type"=>"new"))
-//                    ->setMessage("急所需有新订单啦,请及时处理", "急所需新订单", 'type', array("type"=>"new"))
-//                    ->setOptions(100000, 3600, null, false);
-//
-//                $push->send();
+                //消息推送队列
                 $this->dispatch(new Jpush(
                     '6bab168dd725bcff4c83e6f6',
                     '9973f83c178d57b8ccc67943',

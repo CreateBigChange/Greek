@@ -191,7 +191,8 @@ class Stores extends Model
                       sc.business_time,
                       sc.is_close,
                       sc.bell,
-                      sc.notice
+                      sc.notice,
+                      sc.point
                   FROM $this->_store_infos_table as si";
 
         $sql .= " LEFT JOIN store_configs as sc ON si.id = sc.store_id";
@@ -225,6 +226,13 @@ class Stores extends Model
      */
     public function getStoreCategory(){
         return DB::table($this->_store_categories_table)->where('is_del' , 0)->orderBy('sort','ASC')->orderBy('updated_at','desc')->get();
+    }
+
+    /**
+     * 更新商铺积分
+     */
+    public function updatePoint($storeId , $point){
+        return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('point'=>$point));
     }
 
 
