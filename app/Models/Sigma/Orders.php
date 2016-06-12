@@ -455,7 +455,7 @@ class Orders extends Model
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
 
             //更新店铺积分
-            $storeModel->updatePoint($order->store_id, ($storeInfo->point - $storeInfo->point));
+            $storeModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
 
             //如果是余额支付
             if($payType->id == 3) {
