@@ -381,19 +381,23 @@ class Orders extends Model
      */
     public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime){
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode());
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付订单失败-支付方式不对');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
             return Message::setResponseInfo('FAILED');
         }
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
         if(!$order){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有此订单');
             return Message::setResponseInfo('FAILED');
         }
 
         if(!$order->consignee_id){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有添加收货地址');
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
         }
 
@@ -402,6 +406,7 @@ class Orders extends Model
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
         if($isAmplePoint === false){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
@@ -419,6 +424,7 @@ class Orders extends Model
             //用户余额是否充足
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户余额不足');
                 $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
                 return Message::setResponseInfo('MONEY_NOT_AMPLE');
             }
@@ -429,6 +435,7 @@ class Orders extends Model
 
         //店铺积分是否充足
         if($storeInfo->point < $order->out_points){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
             return Message::setResponseInfo('FAILED');
         }
 
@@ -441,6 +448,7 @@ class Orders extends Model
 
             //更新用户积分
             $userModel->updatePoint($userId, $isAmplePoint);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
 
             //更新店铺积分
             $storeModel->updatePoint($order->store_id, ($storeInfo->point - $storeInfo->point));
@@ -449,6 +457,7 @@ class Orders extends Model
             if($payType == 3) {
                 //更新用户余额
                 $userModel->updateMoney($userId, $isAmpleMoney);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户余额成功,当前余额为' . $isAmpleMoney);
                 $payTime = date('Y-m-d H:i:s' , time());
             }
 
@@ -468,6 +477,8 @@ class Orders extends Model
             return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>$isAmpleMoney));
         }catch (Exception $e){
             DB::rollBack();
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付失败' . $e);
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
             return Message::setResponseInfo('FAILED');
         }

@@ -462,8 +462,6 @@ class OrdersController extends ApiController
 
         $app = new Application($this->options);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($app));
-
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
