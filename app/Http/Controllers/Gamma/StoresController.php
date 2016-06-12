@@ -620,7 +620,6 @@ class StoresController extends ApiController
      *
      * @apiParam {string} [name] 栏目名称
      * @apiParam {number} [sort] 排序
-     *              '
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/nav/update/1

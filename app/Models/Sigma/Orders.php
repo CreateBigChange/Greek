@@ -123,7 +123,7 @@ class Orders extends Model
             $o->goods = array();
             $o->goodsNum = 0;
 
-            $o->payTotal = $o->total + $o->deliver - ($o->out_points / 100);
+            $o->payTotal = $o->total + $o->deliver - ($o->in_points / 100);
 
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
@@ -212,12 +212,11 @@ class Orders extends Model
 
         //店铺积分是否充足
         if($storeInfo->point < $outPoints){
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺积分不足');
             return false;
         }
 
         $userModel = new Users;
-
 
         //生成订单基本信息的数据
         $order = array(

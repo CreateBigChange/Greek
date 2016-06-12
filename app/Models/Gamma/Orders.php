@@ -58,7 +58,8 @@ class Orders extends Model
                     o.consignee_address,
                     o.remark,
                     o.refund_reason,
-                    o.created_at
+                    o.created_at,
+                    o.pay_total
                     
                 FROM $this->_orders_table AS o";
 
