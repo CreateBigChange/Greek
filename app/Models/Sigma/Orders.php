@@ -383,7 +383,7 @@ class Orders extends Model
      * @return array|bool|mixed
      * 支付
      */
-    public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime=0){
+    public function pay($orderId , $payMoney=0 , $payType=1 , $payTime=0){
 
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
@@ -407,6 +407,8 @@ class Orders extends Model
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有添加收货地址');
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
         }
+
+        $userId = $order->user;
 
         $userModel = new Users;
 

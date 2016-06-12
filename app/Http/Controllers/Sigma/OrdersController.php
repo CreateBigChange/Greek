@@ -285,7 +285,7 @@ class OrdersController extends ApiController
             if($userInfo->pay_password != $this->encrypt($payPassword , $userInfo->pay_salt)){
                 return response()->json(Message::setResponseInfo('PAY_PASSWORD_ERROR'));
             }
-            return $this->_model->pay( $userId , $orderId , $payNum['data'] , $payType);
+            return $this->_model->pay($orderId , $payNum['data'] , $payType);
         }else{
             return $payNum;
         }
@@ -530,7 +530,7 @@ class OrdersController extends ApiController
 //
 //        return $response;
 
-        $this->_model->pay($this->userId , 157 , 0.01 , 1 );
+        $this->_model->pay(157 , 0.01 , 1 );
     }
 
 
