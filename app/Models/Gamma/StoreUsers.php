@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StoreUsers extends Model
 {
     protected $_table = 'store_users';
+    protected $_store_withdraw_cash_log_table = 'store_withdraw_cash_log';
 
     /**
      * 获取用户权限列表
@@ -124,7 +125,7 @@ class StoreUsers extends Model
     }
 
     public function addWithdrawCashNum($data){
-        return '';
+        return DB::table($this->_store_withdraw_cash_log_table)->insert($data);
     }
 
 }

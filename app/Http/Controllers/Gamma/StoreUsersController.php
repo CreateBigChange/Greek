@@ -236,18 +236,18 @@ class StoreUsersController extends ApiController
     }
 
     /**
-     * @api {POST} /gamma/cash 提现
+     * @api {POST} /gamma/store/cash 提现
      * @apiName cash
      * @apiGroup GAMMA
      * @apiVersion 1.0.0
      * @apiDescription just a test
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/cash
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash
      *
      * @apiParam {sting} num 金额
      *
      * @apiParamExample {json} Request Example
-     * POST /gamma/sms
+     * POST /gamma/store/cash
      * {
      *      num   : 102.33
      * }
@@ -264,6 +264,12 @@ class StoreUsersController extends ApiController
         $data['store_id']                   = $this->storeId;
         $data['status']                     = 1;
         $data['created_time']               = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->addWithdrawCashNum($data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
     }
 
 
