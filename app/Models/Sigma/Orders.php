@@ -380,7 +380,7 @@ class Orders extends Model
      * @return array|bool|mixed
      * 支付
      */
-    public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime){
+    public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime=0){
 
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
@@ -404,20 +404,16 @@ class Orders extends Model
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
         }
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4));
         $userModel = new Users;
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($userModel));
+
         //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($isAmplePoint));
 
         if($isAmplePoint === false){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(5));
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
@@ -428,7 +424,7 @@ class Orders extends Model
 //        }
 
         //如果是余额支付
-        if($payType == 3) {
+        if($payType->id == 3) {
             //用户余额是否充足
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
@@ -437,8 +433,6 @@ class Orders extends Model
                 return Message::setResponseInfo('MONEY_NOT_AMPLE');
             }
         }
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(6));
 
         $storeModel = new Stores;
         $storeInfo = $storeModel->getStoreInfo($order->store_id);
