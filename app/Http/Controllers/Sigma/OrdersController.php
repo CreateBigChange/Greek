@@ -496,11 +496,8 @@ class OrdersController extends ApiController
 
             if($successful){
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
                 //更新支付时间和订单状态
                 $this->_model->pay($this->userId , $order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
-
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222));
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));

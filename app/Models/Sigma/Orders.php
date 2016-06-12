@@ -449,6 +449,7 @@ class Orders extends Model
             //加上本次订单赠送的积分
             $isAmplePoint += $order->out_points;
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('###################');
             //更新用户积分
             $userModel->updatePoint($userId, $isAmplePoint);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
@@ -482,7 +483,8 @@ class Orders extends Model
         }catch (Exception $e){
             DB::rollBack();
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付失败' . $e);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付失败');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
             return Message::setResponseInfo('FAILED');
         }
