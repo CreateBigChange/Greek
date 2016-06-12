@@ -406,6 +406,7 @@ class Orders extends Model
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4));
         $userModel = new Users;
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($userModel));
         //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
