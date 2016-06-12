@@ -399,6 +399,10 @@ class Orders extends Model
             return Message::setResponseInfo('FAILED');
         }
 
+        if( $order->status != Config::get('orderstatus.no_pay')['status']){
+            return Message::setResponseInfo('FAILED');
+        }
+
         if(!$order->consignee_id){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有添加收货地址');
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
