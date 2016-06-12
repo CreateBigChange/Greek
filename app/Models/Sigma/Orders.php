@@ -409,6 +409,8 @@ class Orders extends Model
         //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($isAmplePoint));
+
         if($isAmplePoint === false){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
