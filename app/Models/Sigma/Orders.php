@@ -485,7 +485,7 @@ class Orders extends Model
 
             DB::commit();
 
-            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>$isAmpleMoney));
+            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
         }catch (Exception $e){
             DB::rollBack();
 
