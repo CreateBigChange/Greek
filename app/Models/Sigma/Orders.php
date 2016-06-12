@@ -646,6 +646,7 @@ class Orders extends Model
      * 根据微信订单ID获取订单信息
      */
     public function getOrderByOutTradeNo($outTradeNo){
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(99999999);
         return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
     }
 }
