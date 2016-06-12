@@ -470,6 +470,7 @@ class Orders extends Model
 
             //更新订单状态
             DB::table($this->_orders_table)->where('user', $userId)->where('id', $orderId)->update($update);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付成功' );
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
 
             DB::commit();
