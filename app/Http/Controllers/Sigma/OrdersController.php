@@ -530,7 +530,7 @@ class OrdersController extends ApiController
 //
 //        return $response;
 
-        $this->_model->pay(157 , 0.01 , 1 );
+        return $this->_model->pay(157 , 0.01 , 1 );
     }
 
 
