@@ -196,13 +196,11 @@ class Orders extends Model
         $goodsList  = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
         $storeInfo  = $storeModel->getStoreInfo($storeId);
 
-        var_dump(11111);
 
         //店铺是否休息
         if($storeInfo->is_close){
             return false;
         }
-        var_dump(22222);
 
         //计算订单总价
         $total = 0;
@@ -211,14 +209,12 @@ class Orders extends Model
             $total += (float) $g->out_price * $nums[$g->id];
             $outPoints += (int) $g->give_points * $nums[$g->id];
         }
-        var_dump(33333);
 
         //店铺积分是否充足
         if($storeInfo->point < $outPoints){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
             return false;
         }
-
-        var_dump(44444);
 
         $userModel = new Users;
 
@@ -295,7 +291,6 @@ class Orders extends Model
             return $orderId;
         }catch(Exception $e){
 
-            var_dump(55555);
             DB::rollBack();
             return false;
         }
