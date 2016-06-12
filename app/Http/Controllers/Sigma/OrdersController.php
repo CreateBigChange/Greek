@@ -471,7 +471,9 @@ class OrdersController extends ApiController
 
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($order);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(888888);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(777777);
 
             if(!$order){
                 return 'Order not exist.';
