@@ -464,9 +464,11 @@ class OrdersController extends ApiController
 
         $response = $app->payment->handleNotify(function($notify, $successful){
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($notify));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
 
             $outTradeNo = $notify->out_trade_no;
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($outTradeNo);
+
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($order);
