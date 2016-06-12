@@ -382,8 +382,6 @@ class Orders extends Model
      */
     public function pay($userId , $orderId , $payMoney=0 , $payType=1 , $payTime=0){
 
-        var_dump(111);die;
-
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
