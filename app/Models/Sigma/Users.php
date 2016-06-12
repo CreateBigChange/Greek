@@ -338,6 +338,7 @@ class Users extends Model
     public function isAmplePoint($userId , $point){
         $havePoint = DB::table($this->_table)->select('points')->where('id' , $userId)->first();
 
+        var_dump($userId);
         var_dump($havePoint);die;
 
         if($point <= $havePoint->points){
