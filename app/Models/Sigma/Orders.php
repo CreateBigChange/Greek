@@ -14,6 +14,7 @@ use App\Libs\Message;
 use App\Models\Sigma\Stores;
 use App\Models\Sigma\Users;
 use Mockery\Exception;
+use App\Libs\BLogger;
 
 class Orders extends Model
 {
