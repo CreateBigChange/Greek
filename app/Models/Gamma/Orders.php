@@ -71,9 +71,9 @@ class Orders extends Model
             $sql .= " AND o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%'";
         }
 
-        $sql .= " AND store_id = $storeId ";
+        $sql .= " AND store_id = $storeId";
 
-        $sql .= "GROUP BY o.id";
+        $sql .= " GROUP BY o.id";
         $sql .= " ORDER BY created_at DESC";
         $sql .= " LIMIT $offset , $length";
 
