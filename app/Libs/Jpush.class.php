@@ -2,6 +2,7 @@
 namespace App\Libs;
 
 use JPush as JpushLib;
+
 use App\Libs\BLogger;
 
 class Jpush

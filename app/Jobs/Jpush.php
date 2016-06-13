@@ -25,7 +25,7 @@ class Jpush extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default')
+    public function __construct( $content , $title , $platform='all' , $alias='' , $tag=array() , $sound='default')
     {
         $this->platform         = $platform;
         $this->alias            = $alias;
