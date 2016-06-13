@@ -12,8 +12,8 @@ use Illuminate\Http\Response;
 use Validator , Input;
 use Session , Cookie , Config;
 
-//use App\Libs\Jpush;
-use App\Jobs\Jpush;
+use App\Libs\Jpush;
+//use App\Jobs\Jpush;
 
 use App\Http\Controllers\ApiController;
 

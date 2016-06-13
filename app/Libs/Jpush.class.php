@@ -3,9 +3,6 @@ namespace App\Libs;
 
 use JPush as JpushLib;
 
-use Log;
-use App\Libs\BLogger;
-
 class Jpush
 {
     private $app_key = '6bab168dd725bcff4c83e6f6';
@@ -47,8 +44,6 @@ class Jpush
             ->setOptions(100000, 3600, null, false);
 
         $result = $push->send();
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
         return json_encode($result);
     }
