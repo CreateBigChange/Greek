@@ -215,12 +215,12 @@ class OrdersController extends ApiController
         $userId     = $this->userId;
 
         //判断是否绑定手机
-//        $userModel = new Users;
-//        $userinfo = $userModel->getUserInfoById($userId);
-//
-//        if(empty($userinfo->mobile)){
-//            return response()->json(Message::setResponseInfo('MOBILE_NO_BIND'));
-//        }
+        $userModel = new Users;
+        $userinfo = $userModel->getUserInfoById($userId);
+
+        if(empty($userinfo->mobile)){
+            return response()->json(Message::setResponseInfo('MOBILE_NO_BIND'));
+        }
 
         $storeId    = $request->get('store');
         $goods = json_decode($request->get('goods'));
