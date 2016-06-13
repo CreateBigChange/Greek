@@ -468,51 +468,50 @@ class OrdersController extends ApiController
 
     public function notify(){
 
-        $app = new Application($this->options);
-
-        $response = $app->payment->handleNotify(function($notify, $successful){
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
-
-            $outTradeNo = $notify->out_trade_no;
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($outTradeNo);
-
-            $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
-
-            if(!$order){
-                return 'Order not exist.';
-            }
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111));
-
-            $data = array(
-                'appid'             => $notify->appid,
-                'bank_type'         => $notify->bank_type,
-                'cash_fee'          => $notify->cash_fee,
-                'mch_id'            => $notify->mch_id,
-                'result_code'       => $notify->result_code,
-                'return_code'       => $notify->return_code,
-                'sign'              => $notify->sign,
-                'time_end'          => $notify->time_end,
-                'transaction_id'    => $notify->transaction_id
-            );
-
-            //已经支付了
-            if($order->pay_time){
-                return true;
-            }
-
-            if($successful){
-
-                //更新支付时间和订单状态
-                $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
-
-                $storeModel = new Stores;
-                $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
-
-                if(empty($store)){
-                    return true;
-                }
+//        $app = new Application($this->options);
+//
+//        $response = $app->payment->handleNotify(function($notify, $successful){
+//
+//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
+//
+//            $outTradeNo = $notify->out_trade_no;
+//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($outTradeNo);
+//
+//            $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+//
+//            if(!$order){
+//                return 'Order not exist.';
+//            }
+//
+//
+//            $data = array(
+//                'appid'             => $notify->appid,
+//                'bank_type'         => $notify->bank_type,
+//                'cash_fee'          => $notify->cash_fee,
+//                'mch_id'            => $notify->mch_id,
+//                'result_code'       => $notify->result_code,
+//                'return_code'       => $notify->return_code,
+//                'sign'              => $notify->sign,
+//                'time_end'          => $notify->time_end,
+//                'transaction_id'    => $notify->transaction_id
+//            );
+//
+//            //已经支付了
+//            if($order->pay_time){
+//                return true;
+//            }
+//
+//            if($successful){
+//
+//                //更新支付时间和订单状态
+//                $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
+//
+//                $storeModel = new Stores;
+//                $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+//
+//                if(empty($store)){
+//                    return true;
+//                }
 
                 //消息推送队列
                 $this->dispatch(new Jpush(
@@ -523,18 +522,18 @@ class OrdersController extends ApiController
                     array(),
                     $store[0]->bell
                 ));
-
-            }
-
-            //更新微信日志
-            $wechatPayLogModel = new WechatPayLog();
-            $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
-
-            // 你的逻辑
-            return true; // 或者错误消息
-        });
-
-        return $response;
+//
+//            }
+//
+//            //更新微信日志
+//            $wechatPayLogModel = new WechatPayLog();
+//            $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
+//
+//            // 你的逻辑
+//            return true; // 或者错误消息
+//        });
+//
+//        return $response;
 
     }
 
