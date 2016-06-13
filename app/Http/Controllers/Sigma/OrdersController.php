@@ -404,7 +404,7 @@ class OrdersController extends ApiController
             'body'             => $body,
             'detail'           => $detail,
             'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            //'openid'           => $openid,
+            'openid'           => $openid,
 //            'total_fee'        => (int)($payNum['data'] * 100),
             'total_fee'        => 1,
             'fee_type'         => 1,
