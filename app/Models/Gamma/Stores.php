@@ -249,7 +249,7 @@ class Stores extends Model
      * @param data   array
      */
     public function addNav($data){
-        return DB::table($this->_store_nav_table)->insert($data);
+        return DB::table($this->_store_nav_table)->insertGetId($data);
     }
 
     /**

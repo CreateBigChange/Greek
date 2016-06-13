@@ -603,8 +603,10 @@ class StoresController extends ApiController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->addNav($data)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
+        $navId = $this->_model->addNav($data);
+
+        if($navId){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $navId));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
