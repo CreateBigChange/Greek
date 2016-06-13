@@ -50,18 +50,18 @@ class ToolController extends ApiController
      */
     public function push(){
 
-        //消息推送队列
-        $this->dispatch(new Jpush(
-            "急所需有新订单啦,请及时处理",
-            "急所需新订单",
-            array('ios' , 'android'),
-            "21",
-            array(),
-            "default"
-        ));
+//        //消息推送队列
+//        $this->dispatch(new Jpush(
+//            "急所需有新订单啦,请及时处理",
+//            "急所需新订单",
+//            array('ios' , 'android'),
+//            "21",
+//            array(),
+//            "default"
+//        ));
 
-//        $jpush = new Jpush();
-//        return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '21');
+        $jpush = new Jpush();
+        return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '21');
     }
 
 }
