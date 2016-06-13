@@ -787,12 +787,22 @@ class StoresController extends ApiController
 
         $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
 
+
+        if(!$visitingNumber){
+            $visitingNumber = 0;
+        }elseif(!$visitingNumber->visiting_number){
+            $visitingNumber = 0;
+        }else{
+            $visitingNumber = $visitingNumber->visiting_number;
+        }
+
         $orderModel = new Orders;
         $orderCount = $orderModel->getOrderTodayCounts($storeId , $date);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
-            'num'       => $visitingNumber,
-            'order'     => $orderCount
+            'visiting_number'       => $visitingNumber,
+            'order_num'             => $orderCount->order_num,
+            'turnover'              => $orderCount->turnover
         )));
     }
 }
