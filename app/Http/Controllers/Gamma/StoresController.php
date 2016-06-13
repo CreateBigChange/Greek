@@ -801,8 +801,8 @@ class StoresController extends ApiController
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
             'visiting_number'       => $visitingNumber,
-            'order_num'             => $orderCount->order_num,
-            'turnover'              => $orderCount->turnover
+            'order_num'             => $orderCount[0]->order_num,
+            'turnover'              => $orderCount[0]->turnover
         )));
     }
 }
