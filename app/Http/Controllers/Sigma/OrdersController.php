@@ -516,13 +516,11 @@ class OrdersController extends ApiController
 
                 //消息推送队列
                 $this->dispatch(new Jpush(
-                    '6bab168dd725bcff4c83e6f6',
-                    '9973f83c178d57b8ccc67943',
-                    array('ios' , 'android'),
-                    '21',
-                    array(),
                     '急所需有新订单啦,请及时处理',
                     '急所需新订单',
+                    array('ios' , 'android'),
+                    $store[0]->id,
+                    array(),
                     $store[0]->bell
                 ));
 
