@@ -473,14 +473,12 @@ class OrdersController extends ApiController
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
 
             $outTradeNo = $notify->out_trade_no;
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($outTradeNo);
 
             $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
 
             if(!$order){
                 return 'Order not exist.';
             }
-
 
             $data = array(
                 'appid'             => $notify->appid,
@@ -511,17 +509,17 @@ class OrdersController extends ApiController
                     return true;
                 }
 
-//                //消息推送队列
-//                $this->dispatch(new Jpush(
-//                    "急所需有新订单啦,请及时处理",
-//                    "急所需新订单",
-//                    array('ios' , 'android'),
-//                    $order->store_id,
-//                    array(),
-//                    $store[0]->bell
-//                ));
-                $jpush = new Jpush();
-                return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , $order->store_id , array() , $store[0]->bell);
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "急所需有新订单啦,请及时处理",
+                    "急所需新订单",
+                    array('ios' , 'android'),
+                    $order->store_id,
+                    array(),
+                    $store[0]->bell
+                ));
+//                $jpush = new Jpush();
+//                return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , $order->store_id , array() , $store[0]->bell);
 
             }
 

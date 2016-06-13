@@ -45,6 +45,8 @@ class Jpush
 
         $result = $push->send();
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
+
         return json_encode($result);
     }
 
