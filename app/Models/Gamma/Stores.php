@@ -346,10 +346,24 @@ class Stores extends Model
         //统计此栏目下是否有售商品
         $goodsNum = DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
         if($goodsNum != 0){
-            return -1;
-        }else{
-            return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+            if($this->xiaJiaNavGoods($navId , $storeId)){
+                return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+            }else{
+                return false;
+            }
         }
+        return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+    }
+
+    /**
+     *
+     * 下架栏目下的所以商品
+     * @param navId     number
+     * @param storeId   number
+     */
+    public function xiaJiaNavGoods($navId , $storeId){
+        return DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_open' => 0));
+
     }
 
     /**
@@ -359,7 +373,6 @@ class Stores extends Model
      * @param storeId   number
      */
     public function delNavGoods($navId , $storeId){
-        //统计此栏目下是否有售商品
         return DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_del' => 1));
 
     }

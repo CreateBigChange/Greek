@@ -724,7 +724,7 @@ class StoresController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function delNav($navId){
+    public function delNav($navId , Request $request){
 
         $storeId = $this->storeId;
 
