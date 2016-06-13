@@ -140,13 +140,18 @@ class Orders extends Model
      * 获取今日订单统计数据
      */
     public function getOrderTodayCounts($storeId , $date=0){
-        return DB::table($this->_orders_table)
-            
-            ->where('store_id' , $storeId)
-            ->where('pay_time' , 'like' , $date.'%')
-            ->whereNotIn('status' , array(
-                Config::get('orderstatus.no_pay')['status'],
-                Config::get('orderstatus.cancel')['status']
-            ))->count('id' , 'user');
+        $sql = "SELECT 
+                    count(`id`) as order_num , 
+                    count(`user`) as buy_num , 
+                    count(`out_points`) as out_point , 
+                    count(`in_points`) as in_point FROM $this->_orders_table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND `pay_time` LIKE " .$date . '%';
+        $sql .= " NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' .')';
+
+
+        return DB::table($this->_orders_table)->select($sql);
+
+
     }
 }
