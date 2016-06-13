@@ -150,6 +150,7 @@ class Orders extends Model
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
 
 
+        echo $sql;die;
         return DB::select($sql);
 
 
