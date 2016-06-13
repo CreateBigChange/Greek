@@ -397,4 +397,14 @@ class Stores extends Model
         return DB::table('goods_brand')->get();
     }
 
+
+    /**
+     * 获取店铺统计数据
+     */
+    public function getTodayStoreCount($storeId , $date ){
+
+        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
+
+    }
+
 }

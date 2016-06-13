@@ -19,6 +19,7 @@ class Stores extends Model
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
     protected $_store_categories_table  = 'store_categories';
+    protected $_store_date_counts_table = 'store_date_counts';
 
     /**
      *
@@ -241,6 +242,24 @@ class Stores extends Model
     public function updateGoodsBuyNum($goodsId , $addNum){
         return DB::table($this->_store_goods_table)->where('id' , $goodsId)->increment('out_num' , $addNum);
     }
+
+    /**
+     * 添加今日到店人数统计数据
+     */
+    public function addStoreCount($storeId){
+        $date = date('Y-m-d' , time());
+
+        if(DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first()){
+            return DB::table($this->_store_date_counts_table)->increment('visiting_number');
+        }else{
+            return DB::table($this->_store_date_counts_table)->insert(array(
+                'date'              => $date,
+                'store_id'          => $storeId,
+                'visiting_number'   => 1
+            ));
+        }
+    }
+
 
 
 }

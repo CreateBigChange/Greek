@@ -666,4 +666,5 @@ class Orders extends Model
     public function getOrderByOutTradeNo($outTradeNo){
         return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
     }
+
 }

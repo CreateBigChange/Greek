@@ -155,6 +155,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//提现
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');
 
+		//今日统计
+		Route::post('/store/count/today', 'StoresController@getStoreTodayCount');
+
 	});
 
 	Route::post('/store/areas', 'StoresController@areas');

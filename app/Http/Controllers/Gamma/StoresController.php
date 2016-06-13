@@ -15,6 +15,7 @@ use Session , Cookie , Config;
 use App\Http\Controllers\ApiController;
 
 use App\Models\Gamma\Stores;
+use App\Models\Gamma\Orders;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -761,5 +762,37 @@ class StoresController extends ApiController
         $info = $this->_model->getNavInfo($navId , $storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $info));
+    }
+
+    /**
+     * @api {POST} /gamma/store/count/today 获取今日统计
+     * @apiName storeCountToday
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取今日统计
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/count/today
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/count/today
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getStoreTodayCount(){
+        $date = date('Y-m-d');
+
+        $storeId = $this->storeId;
+
+        $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
+
+        $orderModel = new Orders;
+        $orderCount = $orderModel->getOrderTodayCounts($storeId , $date);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array(
+            'num'       => $visitingNumber,
+            'order'     => $orderCount
+        )));
     }
 }
