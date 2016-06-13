@@ -10,6 +10,7 @@ namespace App\Models\Gamma;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Stores extends Model
 {
     protected $_store_users_table       = 'store_users';
@@ -18,7 +19,8 @@ class Stores extends Model
     protected $_store_infos_table       = 'store_infos';
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
-
+    protected $_store_date_counts_table = 'store_date_counts';
+    
     /**
      *
      * 地区
