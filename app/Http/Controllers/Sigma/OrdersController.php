@@ -520,13 +520,10 @@ class OrdersController extends ApiController
                     "急所需有新订单啦,请及时处理",
                     "急所需新订单",
                     array('ios' , 'android'),
-                    '21',
+                    $order->store_id,
                     array(),
                     $bell
                 ));
-//                $jpush = new Jpush();
-//                return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , $order->store_id , array() , $store[0]->bell);
-
             }
 
             //更新微信日志

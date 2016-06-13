@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Libs\Jpush as JpushLib;
 use App\Libs\BLogger;
+use Log;
 
 class Jpush extends Job implements ShouldQueue
 {
