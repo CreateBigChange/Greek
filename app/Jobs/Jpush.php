@@ -20,6 +20,7 @@ class Jpush extends Job implements ShouldQueue
     private $tag;
     private $content;
     private $title;
+    private $sound;
 
     /**
      * Create a new job instance.
@@ -44,8 +45,6 @@ class Jpush extends Job implements ShouldQueue
     public function handle()
     {
         $jpush = new JpushLib();
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($jpush);
 
         return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
     }
