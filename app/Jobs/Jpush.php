@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Libs\Jpush as JpushLib;
+use App\Libs\BLogger;
 
 class Jpush extends Job implements ShouldQueue
 {
@@ -44,7 +45,7 @@ class Jpush extends Job implements ShouldQueue
         $jpush = new JpushLib();
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($jpush);
-        
+
         return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
     }
 
