@@ -512,15 +512,17 @@ class OrdersController extends ApiController
 //                if(empty($store)){
 //                    return true;
 //                }
+                $storeid = 21;
+                $storebell = 'default';
 
                 //消息推送队列
                 $this->dispatch(new Jpush(
                     "急所需有新订单啦,请及时处理",
                     "急所需新订单",
                     array('ios' , 'android'),
-                    "$order->store_id",
+                    $storeid,
                     array(),
-                    $store[0]->bell
+                    $storebell
                 ));
 //
 //            }
