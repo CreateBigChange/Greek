@@ -146,7 +146,7 @@ class Orders extends Model
                     count(`out_points`) as out_point , 
                     count(`in_points`) as in_point FROM $this->_orders_table ";
         $sql .= " WHERE `store_id` = $storeId";
-        $sql .= " AND `pay_time` LIKE " .$date . '%';
+        $sql .= " AND `pay_time` LIKE '" .$date . "%'";
         $sql .= " NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
 
 
