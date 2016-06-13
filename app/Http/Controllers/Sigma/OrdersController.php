@@ -25,7 +25,9 @@ use App\Libs\BLogger;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
 
-use App\Libs\Jpush;
+//use App\Libs\Jpush;
+
+use App\Jobs\Jpush;
 
 class OrdersController extends ApiController
 {
@@ -508,6 +510,8 @@ class OrdersController extends ApiController
                 if(empty($store)){
                     return true;
                 }
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($store);
 
                 //消息推送队列
                 $this->dispatch(new Jpush(
