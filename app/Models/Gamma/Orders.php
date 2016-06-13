@@ -7,7 +7,7 @@
  */
 namespace App\Models\Gamma;
 
-use DB;
+use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 
 class Orders extends Model
