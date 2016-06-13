@@ -25,9 +25,7 @@ use App\Libs\BLogger;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
 
-use App\Jobs\Jpush;
-
-use JPush as JpushLib;
+use App\Libs\Jpush;
 
 class OrdersController extends ApiController
 {
@@ -513,15 +511,17 @@ class OrdersController extends ApiController
                     return true;
                 }
 
-                //消息推送队列
-                $this->dispatch(new Jpush(
-                    "急所需有新订单啦,请及时处理",
-                    "急所需新订单",
-                    array('ios' , 'android'),
-                    $order->store_id,
-                    array(),
-                    $store[0]->bell
-                ));
+//                //消息推送队列
+//                $this->dispatch(new Jpush(
+//                    "急所需有新订单啦,请及时处理",
+//                    "急所需新订单",
+//                    array('ios' , 'android'),
+//                    $order->store_id,
+//                    array(),
+//                    $store[0]->bell
+//                ));
+                $jpush = new Jpush();
+                return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , $order->store_id , array() , $store[0]->bell);
 
             }
 
