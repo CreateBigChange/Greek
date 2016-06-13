@@ -398,6 +398,7 @@ class Orders extends Model
             return Message::setResponseInfo('FAILED');
         }
 
+        //如果订单状态不是未支付状态,就不能再支付了
         if( $order->status != Config::get('orderstatus.no_pay')['status']){
             return Message::setResponseInfo('FAILED');
         }
@@ -485,6 +486,7 @@ class Orders extends Model
             DB::commit();
 
             return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
+
         }catch (Exception $e){
             DB::rollBack();
 

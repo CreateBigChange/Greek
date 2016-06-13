@@ -235,5 +235,12 @@ class Stores extends Model
         return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('point'=>$point));
     }
 
+    /**
+     * 更新商品购买数量
+     */
+    public function updateGoodsBuyNum($goodsId , $addNum){
+        return DB::table($this->_store_goods_table)->where('id' , $goodsId)->increment('out_num' , $addNum);
+    }
+
 
 }
