@@ -427,6 +427,10 @@ class OrdersController extends ApiController
             'attach'           => $orderId
         ];
 
+        if($tradeType == 'JSAPI'){
+            $attributes['openid']   = $openid;
+        }
+
         $order = new Order($attributes);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
