@@ -87,7 +87,8 @@ class Stores extends Model
                       sc.business_cycle,
                       sc.business_time,
                       sc.is_close,
-                      sc.bell
+                      sc.bell,
+                      sc.money
                   FROM $this->_store_infos_table as si";
 
         $sql .= " LEFT JOIN store_configs as sc ON si.id = sc.store_id";
