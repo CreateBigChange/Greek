@@ -216,6 +216,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/sendsms/by/bindmobile' , 'UsersController@bindMobilSms');
 
+		Route::post('/user/info' , 'UsersController@userInfo');
+
 	});
 
 	Route::post('/store/list' , 'StoresController@getStoreList');

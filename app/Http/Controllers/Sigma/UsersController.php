@@ -94,6 +94,30 @@ class UsersController extends ApiController
     }
 
     /**
+     * @api {POST} /sigma/user/info 获取用户信息
+     * @apiName userInfo
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/info
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/user/info
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function userInfo(Request $request) {
+
+        $userInfo           = $this->_model->getUserInfoById($this->userId);
+
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+    }
+
+    /**
      * @api {POST} /sigma/register 注册
      * @apiName register
      * @apiGroup SIGMA
