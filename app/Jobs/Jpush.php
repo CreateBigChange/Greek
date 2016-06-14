@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Libs\Jpush as JpushLib;
 use App\Libs\BLogger;
+use Log;
 
 class Jpush extends Job implements ShouldQueue
 {
@@ -19,13 +20,14 @@ class Jpush extends Job implements ShouldQueue
     private $tag;
     private $content;
     private $title;
+    private $sound;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default')
+    public function __construct( $content , $title , $platform='all' , $alias='' , $tag=array() , $sound='default')
     {
         $this->platform         = $platform;
         $this->alias            = $alias;
@@ -43,6 +45,7 @@ class Jpush extends Job implements ShouldQueue
     public function handle()
     {
         $jpush = new JpushLib();
+
         return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
     }
 

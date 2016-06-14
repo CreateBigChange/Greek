@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StoreUsers extends Model
 {
     protected $_table = 'store_users';
+    protected $_store_withdraw_cash_log_table = 'store_withdraw_cash_log';
 
     /**
      * 获取用户权限列表
@@ -53,6 +54,7 @@ class StoreUsers extends Model
                       su.store_id,
                       su.account,
                       su.real_name,
+                      su.remember_token,
                       su.tel,
                       si.name as store_name,
                       si.address,
@@ -99,7 +101,7 @@ class StoreUsers extends Model
     }
 
     /**
-     * 更新密码
+     * 更新用户信息
      */
     public function reset($id  , $data){
         return DB::table($this->_table)->where('id' , $id)->update($data);
@@ -120,6 +122,10 @@ class StoreUsers extends Model
 
 
         return $isLogin;
+    }
+
+    public function addWithdrawCashNum($data){
+        return DB::table($this->_store_withdraw_cash_log_table)->insert($data);
     }
 
 }

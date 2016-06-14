@@ -10,6 +10,7 @@ namespace App\Models\Gamma;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Stores extends Model
 {
     protected $_store_users_table       = 'store_users';
@@ -18,7 +19,8 @@ class Stores extends Model
     protected $_store_infos_table       = 'store_infos';
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
-
+    protected $_store_date_counts_table = 'store_date_counts';
+    
     /**
      *
      * 地区
@@ -249,7 +251,7 @@ class Stores extends Model
      * @param data   array
      */
     public function addNav($data){
-        return DB::table($this->_store_nav_table)->insert($data);
+        return DB::table($this->_store_nav_table)->insertGetId($data);
     }
 
     /**
@@ -346,10 +348,24 @@ class Stores extends Model
         //统计此栏目下是否有售商品
         $goodsNum = DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
         if($goodsNum != 0){
-            return -1;
-        }else{
-            return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+            if($this->xiaJiaNavGoods($navId , $storeId)){
+                return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+            }else{
+                return false;
+            }
         }
+        return DB::table($this->_store_nav_table)->where('id' , $navId)->update(array('is_del' => 1));
+    }
+
+    /**
+     *
+     * 下架栏目下的所以商品
+     * @param navId     number
+     * @param storeId   number
+     */
+    public function xiaJiaNavGoods($navId , $storeId){
+        return DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_open' => 0));
+
     }
 
     /**
@@ -359,7 +375,6 @@ class Stores extends Model
      * @param storeId   number
      */
     public function delNavGoods($navId , $storeId){
-        //统计此栏目下是否有售商品
         return DB::table($this->_store_goods_table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_del' => 1));
 
     }
@@ -382,6 +397,16 @@ class Stores extends Model
     public function getGoodsBrand(){
 
         return DB::table('goods_brand')->get();
+    }
+
+
+    /**
+     * 获取店铺统计数据
+     */
+    public function getTodayStoreCount($storeId , $date ){
+
+        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
+
     }
 
 }

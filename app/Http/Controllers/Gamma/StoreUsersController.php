@@ -73,12 +73,20 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            $sessionKey = md5($userInfo[0]->account);
-            Session::put($sessionKey , $userInfo[0]);
+            //$request->session()->getHandler()->destroy($userInfo[0]->remember_token);
+
+            $sessionKey = $this->getSalt(16);
+
+            $rememberToken = array(
+                'remember_token'    => $request->session()->getId()
+            );
+
+            $this->_model->reset($userInfo[0]->id , $rememberToken);
+
+            $request->session()->put($sessionKey , $userInfo[0]);
 
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
 
-            $userInfo[0]->token = $sessionKey;
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo[0]))->withCookie($cookie);
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -107,11 +115,15 @@ class StoreUsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function logout(){
+    public function logout(Request $request){
 
         $sessionKey = cookie::get(config::get('session.store_app_login_cookie'));
 
-        session::forget($sessionKey);
+        BLogger::getLogger(BLogger::LOG_REQUEST)->info($sessionKey);
+
+        $request->session()->forget($sessionKey);
+
+        //$request->session()->getHandler()->destroy($request->session()->getId());
 
         return response()->json(Message::setResponseInfo('SUCCESS'));
 
@@ -221,6 +233,43 @@ class StoreUsersController extends ApiController
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
+    }
+
+    /**
+     * @api {POST} /gamma/store/cash 提现
+     * @apiName cash
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash
+     *
+     * @apiParam {sting} num 金额
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/store/cash
+     * {
+     *      num   : 102.33
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function withdrawCash(Request $request){
+        if(!$request->has('num')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $data = array();
+        $data['withdraw_cash_num']          = $request->has('num');
+        $data['store_id']                   = $this->storeId;
+        $data['status']                     = 1;
+        $data['created_time']               = date('Y-m-d H:i:s' , time());
+
+        if($this->_model->addWithdrawCashNum($data)){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
     }
 
 

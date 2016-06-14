@@ -39,7 +39,8 @@ class Message {
 				'NOT_UPDATE_ADDRESS'			=> array('code'=>'4016' , 'msg'=>'订单状态显示您现在不能修改订单地址'),
 				'OLD_PASSWORD_ERROR'			=> array('code'=>'4017' , 'msg'=>'旧密码错误'),
 				'NO__HAVE_PAY_PASSWORD'			=> array('code'=>'4018' , 'msg'=>'没有设置支付密码'),
-				'PAY_PASSWORD_ERROR'			=> array('code'=>'4018' , 'msg'=>'支付密码错误'),
+				'PAY_PASSWORD_ERROR'			=> array('code'=>'4019' , 'msg'=>'支付密码错误'),
+				'MOBILE_NO_BIND'				=> array('code'=>'4020' , 'msg'=>'请先绑定手机号'),
 
 
 
@@ -51,7 +52,7 @@ class Message {
 				'POINT_NOT_AMPLE'				=> array('code'=>'5004' , 'msg'=>'积分不足'),
 				'MONEY_NOT_AMPLE'				=> array('code'=>'5005' , 'msg'=>'余额不足'),
 				'MONEY_NOT_EQUAL'				=> array('code'=>'5006' , 'msg'=>'支付的金额与需要支付的金额不等'),
-				'EMPTY_CONSIGNEE'						=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
+				'EMPTY_CONSIGNEE'				=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
 
 			);
 

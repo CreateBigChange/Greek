@@ -7,7 +7,7 @@
  */
 namespace App\Models\Gamma;
 
-use DB;
+use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 
 class Orders extends Model
@@ -49,6 +49,7 @@ class Orders extends Model
                     o.store_id,
                     o.user,
                     o.consignee,
+                    o.consignee_id,
                     o.consignee_tel,
                     o.consignee_province as province,
                     o.consignee_city as city,
@@ -57,7 +58,8 @@ class Orders extends Model
                     o.consignee_address,
                     o.remark,
                     o.refund_reason,
-                    o.created_at
+                    o.created_at,
+                    o.pay_total
                     
                 FROM $this->_orders_table AS o";
 
@@ -69,9 +71,9 @@ class Orders extends Model
             $sql .= " AND o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%'";
         }
 
-        $sql .= " AND store_id = $storeId ";
+        $sql .= " AND store_id = $storeId";
 
-        $sql .= "GROUP BY o.id";
+        $sql .= " GROUP BY o.id";
         $sql .= " ORDER BY created_at DESC";
         $sql .= " LIMIT $offset , $length";
 
@@ -87,6 +89,11 @@ class Orders extends Model
         foreach ($orders as $o){
             $o->goods = array();
             $o->goodsNum = 0;
+
+//            if(!$o->consignee_id){
+//                unset($orders[$i]);
+//                continue;
+//            }
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
@@ -125,6 +132,24 @@ class Orders extends Model
         }else{
             return false;
         }
+
+    }
+
+
+    /**
+     * 获取今日订单统计数据
+     */
+    public function getOrderTodayCounts($storeId , $date=0){
+        $sql = "SELECT 
+                    count(`id`) as order_num , 
+                    sum(`pay_total`) as turnover
+                FROM $this->_orders_table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND `created_at` LIKE '" .$date . "%'";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+
+        return DB::select($sql);
+
 
     }
 }

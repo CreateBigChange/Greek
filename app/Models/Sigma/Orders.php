@@ -14,6 +14,7 @@ use App\Libs\Message;
 use App\Models\Sigma\Stores;
 use App\Models\Sigma\Users;
 use Mockery\Exception;
+use App\Libs\BLogger;
 
 class Orders extends Model
 {
@@ -121,6 +122,9 @@ class Orders extends Model
         foreach ($orders as $o){
             $o->goods = array();
             $o->goodsNum = 0;
+
+            $o->payTotal = $o->total + $o->deliver - ($o->in_points / 100);
+
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
@@ -192,6 +196,12 @@ class Orders extends Model
         $goodsList  = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
         $storeInfo  = $storeModel->getStoreInfo($storeId);
 
+
+        //店铺是否休息
+        if($storeInfo->is_close){
+            return false;
+        }
+
         //计算订单总价
         $total = 0;
         $outPoints = 0;
@@ -200,8 +210,13 @@ class Orders extends Model
             $outPoints += (int) $g->give_points * $nums[$g->id];
         }
 
-        $userModel = new Users;
+        //店铺积分是否充足
+        if($storeInfo->point < $outPoints){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺积分不足');
+            return false;
+        }
 
+        $userModel = new Users;
 
         //生成订单基本信息的数据
         $order = array(
@@ -232,6 +247,7 @@ class Orders extends Model
             $order['consignee_county']      = $address[0]->county;
             $order['consignee_address']     = $address[0]->address;
             $order['consignee_street']      = $address[0]->street;
+            $order['pay_total']             = $total + $storeInfo->deliver;
         }
 
         //开始事物
@@ -273,6 +289,7 @@ class Orders extends Model
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay')['status']);
             return $orderId;
         }catch(Exception $e){
+
             DB::rollBack();
             return false;
         }
@@ -300,15 +317,21 @@ class Orders extends Model
      * 确认订单
      */
     public function confirmOrder($userId , $orderId , $payType , $inPoints){
+        /**
+         * 查看是否有选择的支付方式
+         */
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
-            return false;
+            return Message::setResponseInfo('FAILED');
         }
 
         $userModel = new Users;
-        $isAmplePoint =$userModel->isAmplePoint($userId , $inPoints);
 
+        /**
+         * 判断用户余额是否充足
+         */
+        $isAmplePoint =$userModel->isAmplePoint($userId , $inPoints);
         if($isAmplePoint === false){
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
@@ -321,13 +344,32 @@ class Orders extends Model
         );
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
-
         if(!$order){
             return Message::setResponseInfo('FAILED');
         }
 
+        $storeModel = new Stores;
+        $storeInfo  = $storeModel->getStoreInfo($order->store_id);
+        //店铺积分是否充足
+        if($storeInfo->point < $order->out_points){
+            return Message::setResponseInfo('FAILED');
+        }
+
+        /**
+         * 订单是否填写了收货地址
+         */
+        if(!$order->consignee_id){
+            return Message::setResponseInfo('EMPTY_CONSIGNEE');
+        }
+
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($inPoints / 100);
+
+        if($payNum < 0){
+            return Message::setResponseInfo('FAILED');
+        }
+
+        $update['pay_total']    = $payNum;
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
             return Message::setResponseInfo('SUCCESS' , $payNum);
@@ -345,74 +387,120 @@ class Orders extends Model
      * @return array|bool|mixed
      * 支付
      */
-    public function pay($userId , $orderId , $payMoney , $payType){
+    public function pay($orderId , $payMoney=0 , $payType=1 , $payTime=0){
+
         $payType = DB::table($this->_pay_type_table)->where('id' , $payType)->first();
 
         if(!$payType){
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付方式不对');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付订单失败-支付方式不对');
+            $this->createOrderLog($orderId, 0 , '普通用户', '用户端APP', '支付订单失败-支付方式不对');
             return Message::setResponseInfo('FAILED');
         }
 
         $order = DB::table($this->_orders_table)->where('id' , $orderId)->first();
+        if(!$order){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有此订单');
+            return Message::setResponseInfo('FAILED');
+        }
+
+        //如果订单状态不是未支付状态,就不能再支付了
+        if( $order->status != Config::get('orderstatus.no_pay')['status']){
+            return Message::setResponseInfo('FAILED');
+        }
 
         if(!$order->consignee_id){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----没有添加收货地址');
             return Message::setResponseInfo('EMPTY_CONSIGNEE');
         }
 
+        $userId = $order->user;
+
         $userModel = new Users;
+
+        //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
         if($isAmplePoint === false){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
 
-        $update = array(
-            'status'        => Config::get('orderstatus.paid')['status'],
-            'updated_at'    => date('Y-m-d H:i:s' , time())
-        );
-
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
 
-        if($payMoney != $payNum){
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
-            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+//        if ($payMoney != $payNum) {
+//            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+//            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+//        }
+
+        //如果是余额支付
+        if($payType->id == 3) {
+            //用户余额是否充足
+            $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
+            if ($isAmpleMoney === false) {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户余额不足');
+                $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
+                return Message::setResponseInfo('MONEY_NOT_AMPLE');
+            }
         }
 
-        $isAmpleMoney =$userModel->isAmpleMoney($userId , $payNum);
-        if($isAmpleMoney === false){
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
-            return Message::setResponseInfo('MONEY_NOT_AMPLE');
+        $storeModel = new Stores;
+        $storeInfo = $storeModel->getStoreInfo($order->store_id);
+
+        //店铺积分是否充足
+        if($storeInfo->point < $order->out_points){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
+            return Message::setResponseInfo('FAILED');
         }
 
         DB::beginTransaction();
 
         try {
-
             //加上本次订单赠送的积分
             $isAmplePoint += $order->out_points;
-            //更新用户积分和余额
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('###################');
+            //更新用户积分
             $userModel->updatePoint($userId, $isAmplePoint);
-            $userModel->updateMoney($userId, $isAmpleMoney);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
+
+            //更新店铺积分
+            $storeModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
+
+            //如果是余额支付
+            if($payType->id == 3) {
+                //更新用户余额
+                $userModel->updateMoney($userId, $isAmpleMoney);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户余额成功,当前余额为' . $isAmpleMoney);
+                $payTime = date('Y-m-d H:i:s' , time());
+            }
+
+            //需要更新的订单信息
+            $update = array(
+                'status'        => Config::get('orderstatus.paid')['status'],
+                'updated_at'    => date('Y-m-d H:i:s' , time()),
+                'pay_time'      => $payTime
+            );
 
             //更新订单状态
             DB::table($this->_orders_table)->where('user', $userId)->where('id', $orderId)->update($update);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付成功' );
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
+
             DB::commit();
 
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
-            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>$isAmpleMoney));
+            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
+
         }catch (Exception $e){
             DB::rollBack();
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付失败');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
             return Message::setResponseInfo('FAILED');
         }
 
-//        if(){
-//            return Message::setResponseInfo('SUCCESS' , $payNum);
-//        }else{
-//            return Message::setResponseInfo('FAILED');
-//        }
     }
 
     /**
@@ -543,32 +631,32 @@ class Orders extends Model
         return DB::table($this->_orders_table)->where('id' , $orderId)->update(array('out_trade_no' => $outTradeNo));
     }
 
-    /**
-     * @param $orderId
-     * @param $outTradeNo
-     * @return mixed
-     * 更新支付状态
-     */
-    public function updateOrderPayTime($orderId , $payTime){
-        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')['status']))){
-            $log = array(
-                'order_id'      => $orderId,
-                'user'          => '',
-                'identity'      => '微信',
-                'platform'      => '手机端',
-                'log'           => '已支付',
-                'status'        => Config::get('orderstatus.paid')['status'],
-                'created_at'    => date('Y-m-d H:i:s' , time())
-            );
-            if(DB::table($this->_order_logs_table)->insert($log)){
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
-        }
-    }
+//    /**
+//     * @param $orderId
+//     * @param $outTradeNo
+//     * @return mixed
+//     * 更新支付状态
+//     */
+//    public function updateOrderHandle($orderId , $payTime){
+//        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')['status']))){
+//            $log = array(
+//                'order_id'      => $orderId,
+//                'user'          => '',
+//                'identity'      => '微信',
+//                'platform'      => '手机端',
+//                'log'           => '已支付',
+//                'status'        => Config::get('orderstatus.paid')['status'],
+//                'created_at'    => date('Y-m-d H:i:s' , time())
+//            );
+//            if(DB::table($this->_order_logs_table)->insert($log)){
+//                return true;
+//            }else{
+//                return false;
+//            }
+//        }else{
+//            return false;
+//        }
+//    }
 
     /**
      * @param $outTradeNo
@@ -578,4 +666,5 @@ class Orders extends Model
     public function getOrderByOutTradeNo($outTradeNo){
         return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
     }
+
 }

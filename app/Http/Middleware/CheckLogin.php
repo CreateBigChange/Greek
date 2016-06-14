@@ -6,6 +6,7 @@ use Closure;
 use Session , Config , Cookie;
 use App\Libs\Message;
 use Illuminate\Http\Response;
+use App\Libs\BLogger;
 
 class CheckLogin
 {

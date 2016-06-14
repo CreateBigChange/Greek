@@ -15,6 +15,7 @@ use Session , Cookie , Config;
 use App\Http\Controllers\ApiController;
 
 use App\Models\Gamma\Stores;
+use App\Models\Gamma\Orders;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -168,7 +169,8 @@ class StoresController extends ApiController
      *              铃声       bell<br/>
      *              是否打烊   is_close{0为打烊|1打烊了}<br/>
      *              营业时间   business_time{08:00-20:00}<br/>
-     *              营业周期   business_cycle{星期一,星期二....}'
+     *              营业周期   business_cycle{星期一,星期二....}<br />
+     *              公告      notice  
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/login
@@ -602,8 +604,10 @@ class StoresController extends ApiController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->addNav($data)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
+        $navId = $this->_model->addNav($data);
+
+        if($navId){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $navId));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
@@ -620,7 +624,6 @@ class StoresController extends ApiController
      *
      * @apiParam {string} [name] 栏目名称
      * @apiParam {number} [sort] 排序
-     *              '
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/nav/update/1
@@ -722,7 +725,7 @@ class StoresController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function delNav($navId){
+    public function delNav($navId , Request $request){
 
         $storeId = $this->storeId;
 
@@ -759,5 +762,47 @@ class StoresController extends ApiController
         $info = $this->_model->getNavInfo($navId , $storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $info));
+    }
+
+    /**
+     * @api {POST} /gamma/store/count/today 获取今日统计
+     * @apiName storeCountToday
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取今日统计
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/count/today
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/count/today
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getStoreTodayCount(){
+        $date = date('Y-m-d');
+
+        $storeId = $this->storeId;
+
+        $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
+
+
+        if(!$visitingNumber){
+            $visitingNumber = 0;
+        }elseif(!$visitingNumber->visiting_number){
+            $visitingNumber = 0;
+        }else{
+            $visitingNumber = $visitingNumber->visiting_number;
+        }
+
+        $orderModel = new Orders;
+        $orderCount = $orderModel->getOrderTodayCounts($storeId , $date);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array(
+            'visiting_number'       => $visitingNumber,
+            'order_num'             => $orderCount[0]->order_num,
+            'turnover'              => $orderCount[0]->turnover
+        )));
     }
 }
