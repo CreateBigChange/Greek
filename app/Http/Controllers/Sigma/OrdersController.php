@@ -23,7 +23,7 @@ use App\Libs\Message;
 use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
-use EasyWeChat\Payment\Order;
+use EasyWeChat\Payment\Order as WechatOrder;
 
 //use App\Libs\Jpush;
 
@@ -34,14 +34,15 @@ class OrdersController extends ApiController
     private $_model;
     private $_length;
 
-    private $options;
+    private $pubOptions;
+    private $openOptions;
 
     public function __construct(){
         parent::__construct();
         $this->_model = new Orders;
         $this->_length		= 20;
 
-        $this->options      = [
+        $this->pubOptions      = [
             'app_id' => Config::get('wechat.app_id'),
             'secret' => Config::get('wechat.secret'),
             'token'  => Config::get('wechat.token'),
@@ -52,6 +53,19 @@ class OrdersController extends ApiController
                 'cert_path'          => Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
                 'key_path'           => Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
                 'notify_url'         => Config::get('wechat.notify_url'),       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
+
+        $this->openOptions      = [
+            'app_id' => Config::get('wechat.open_app_id'),
+            'secret' => Config::get('wechat.open_secret'),
+
+            'payment' => [
+                'merchant_id'        => Config::get('wechat.open_merchant_id'),
+                'key'                => Config::get('wechat.open_key'),
+                'cert_path'          => Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
             ],
         ];
     }
@@ -373,11 +387,6 @@ class OrdersController extends ApiController
             $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
         }
 
-        $app = new Application($this->options);
-
-        $payment = $app->payment;
-
-
         $attributes = array();
         $attributes['trade_type']       = $tradeType;
         $attributes['body']             = $body;
@@ -392,54 +401,22 @@ class OrdersController extends ApiController
         //$attributes['total_fee']        = (int)($payNum['data'] * 100);
 
         if($tradeType == 'JSAPI') {
-//            if (!isset($_GET['code'])) {
-//                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-//            }
-//
-//            if (isset($_GET['state']) && $_GET['state'] == 'app') {
-//                $appid = Config::get('weixin.app_appid');
-//                $secret = Config::get('weixin.app_secret');
-//            } elseif (isset($_GET['state']) && $_GET['state'] == 'pub') {
-//                $appid = Config::get('weixin.pub_appid');
-//                $secret = Config::get('weixin.pub_secret');
-//            } else {
-//                $appid = Config::get('weixin.web_appid');
-//                $secret = Config::get('weixin.web_secret');
-//            }
-//
-//            $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $secret . "&code=" . $_GET['code'] . "&grant_type=authorization_code";
-//
-//            $wechatData = $this->curlGet($url);
-//            $wechatData = json_decode($wechatData);
-//
-//            if (isset($wechatData->errcode)) {
-//                return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
-//            }
 
-            //$openid = $wechatData->openid;
-//
-//            $attributes = [
-//                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
-//                'body'             => $body,
-//                'detail'           => $detail,
-//                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-//                //'openid'           => $openid,
-////            'total_fee'        => (int)($payNum['data'] * 100),
-//                'total_fee'        => 1,
-//                'fee_type'         => 1,
-//                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-//                'time_start'       => date('YmdHis'),
-//                'time_expire'      => date('YmdHis') + 30 * 60,
-//                'attach'           => $orderId,
-//            ];
+            $app = new Application($this->pubOptions);
+
+            $payment = $app->payment;
 
             $openid = $request->get('openid');
 
             $attributes['openid']           = $openid;
 
+        }else{
+            $app = new Application($this->openOptions);
+
+            $payment = $app->payment;
         }
 
-        $order = new Order($attributes);
+        $order = new WechatOrder($attributes);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
 
@@ -496,7 +473,11 @@ class OrdersController extends ApiController
 
     public function notify(){
 
-        $app = new Application($this->options);
+        if(isset($_GET['type']) && $_GET['type'] == 'wechat_open'){
+            $app = new Application($this->openOptions);
+        }else{
+            $app = new Application($this->pubOptions);
+        }
 
         $response = $app->payment->handleNotify(function($notify, $successful){
 
