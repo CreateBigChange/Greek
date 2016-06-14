@@ -422,6 +422,9 @@ class OrdersController extends ApiController
             'total_fee'        => 1,
             'fee_type'         => 1,
             'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            'time_start'       => date('YmdHis'),
+            'time_expire'      => date('YmdHis') + 30 * 60,
+            'attach'           => $orderId
         ];
 
         $order = new Order($attributes);
