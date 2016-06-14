@@ -281,6 +281,10 @@ class OrdersController extends ApiController
             return $payNum;
         }
 
+        if($payNum['data'] < 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
         //如果是积分全额支付
         if($payNum['data'] == 0 && $outPoints != 0){
             $payType = Config::get('paytype.money');
