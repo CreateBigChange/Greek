@@ -281,6 +281,15 @@ class OrdersController extends ApiController
             return $payNum;
         }
 
+        //如果是积分全额支付
+        if($payNum['data'] == 0 && $outPoints != 0){
+            $payType = Config::get('paytype.money');
+
+            if(!$request->has('pay_password')){
+                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+            }
+        }
+
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytype.money')){
             $userModel = new Users;

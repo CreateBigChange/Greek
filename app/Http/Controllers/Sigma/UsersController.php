@@ -113,7 +113,6 @@ class UsersController extends ApiController
 
         $userInfo           = $this->_model->getUserInfoById($this->userId);
 
-
         return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
     }
 
