@@ -382,53 +382,65 @@ class OrdersController extends ApiController
          * 获取openid
          */
 
-        if(!$request->has('openid')) {
-            if (!isset($_GET['code'])) {
-                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-            }
+        if($tradeType != 'JSAPI') {
+//            if (!isset($_GET['code'])) {
+//                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+//            }
+//
+//            if (isset($_GET['state']) && $_GET['state'] == 'app') {
+//                $appid = Config::get('weixin.app_appid');
+//                $secret = Config::get('weixin.app_secret');
+//            } elseif (isset($_GET['state']) && $_GET['state'] == 'pub') {
+//                $appid = Config::get('weixin.pub_appid');
+//                $secret = Config::get('weixin.pub_secret');
+//            } else {
+//                $appid = Config::get('weixin.web_appid');
+//                $secret = Config::get('weixin.web_secret');
+//            }
+//
+//            $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $secret . "&code=" . $_GET['code'] . "&grant_type=authorization_code";
+//
+//            $wechatData = $this->curlGet($url);
+//            $wechatData = json_decode($wechatData);
+//
+//            if (isset($wechatData->errcode)) {
+//                return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
+//            }
 
-            if (isset($_GET['state']) && $_GET['state'] == 'app') {
-                $appid = Config::get('weixin.app_appid');
-                $secret = Config::get('weixin.app_secret');
-            } elseif (isset($_GET['state']) && $_GET['state'] == 'pub') {
-                $appid = Config::get('weixin.pub_appid');
-                $secret = Config::get('weixin.pub_secret');
-            } else {
-                $appid = Config::get('weixin.web_appid');
-                $secret = Config::get('weixin.web_secret');
-            }
+            //$openid = $wechatData->openid;
 
-            $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $secret . "&code=" . $_GET['code'] . "&grant_type=authorization_code";
+            $attributes = [
+                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
+                'body'             => $body,
+                'detail'           => $detail,
+                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
+                //'openid'           => $openid,
+//            'total_fee'        => (int)($payNum['data'] * 100),
+                'total_fee'        => 1,
+                'fee_type'         => 1,
+                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'time_start'       => date('YmdHis'),
+                'time_expire'      => date('YmdHis') + 30 * 60,
+                'attach'           => $orderId,
+            ];
 
-            $wechatData = $this->curlGet($url);
-            $wechatData = json_decode($wechatData);
-
-            if (isset($wechatData->errcode)) {
-                return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
-            }
-
-            $openid = $wechatData->openid;
         }else{
             $openid = $request->get('openid');
-        }
 
-        $attributes = [
-            'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
-            'body'             => $body,
-            'detail'           => $detail,
-            'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            //'openid'           => $openid,
+            $attributes = [
+                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
+                'body'             => $body,
+                'detail'           => $detail,
+                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
+                'openid'           => $openid,
 //            'total_fee'        => (int)($payNum['data'] * 100),
-            'total_fee'        => 1,
-            'fee_type'         => 1,
-            'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-            'time_start'       => date('YmdHis'),
-            'time_expire'      => date('YmdHis') + 30 * 60,
-            'attach'           => $orderId,
-        ];
-
-        if($tradeType == 'JSAPI'){
-            $attributes['openid']   = $openid;
+                'total_fee'        => 1,
+                'fee_type'         => 1,
+                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'time_start'       => date('YmdHis'),
+                'time_expire'      => date('YmdHis') + 30 * 60,
+                'attach'           => $orderId,
+            ];
         }
 
         $order = new Order($attributes);
