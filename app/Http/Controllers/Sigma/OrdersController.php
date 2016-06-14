@@ -386,8 +386,8 @@ class OrdersController extends ApiController
         $attributes['total_fee']        = 1;
         $attributes['fee_type']         = 1;
         $attributes['notify_url']       = Config::get('wechat.notify_url');
-        $attributes['time_start']       = date('YmdHis' , time());
-        $attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
+        //$attributes['time_start']       = date('YmdHis' , time());
+        //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
         $attributes['attach']           = $orderId;
         //$attributes['total_fee']        = (int)($payNum['data'] * 100);
 
