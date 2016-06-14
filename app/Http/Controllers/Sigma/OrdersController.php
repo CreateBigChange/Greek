@@ -378,11 +378,20 @@ class OrdersController extends ApiController
         $payment = $app->payment;
 
 
-        /**
-         * 获取openid
-         */
+        $attributes = array();
+        $attributes['trade_type']       = $tradeType;
+        $attributes['body']             = $body;
+        $attributes['detail']           = $detail;
+        $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
+        $attributes['total_fee']        = 1;
+        $attributes['fee_type']         = 1;
+        $attributes['notify_url']       = Config::get('wechat.notify_url');
+        $attributes['time_start']       = date('YmdHis' , time());
+        $attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
+        $attributes['attach']           = $orderId;
+        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
 
-        if($tradeType != 'JSAPI') {
+        if($tradeType == 'JSAPI') {
 //            if (!isset($_GET['code'])) {
 //                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
 //            }
@@ -408,39 +417,26 @@ class OrdersController extends ApiController
 //            }
 
             //$openid = $wechatData->openid;
+//
+//            $attributes = [
+//                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
+//                'body'             => $body,
+//                'detail'           => $detail,
+//                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
+//                //'openid'           => $openid,
+////            'total_fee'        => (int)($payNum['data'] * 100),
+//                'total_fee'        => 1,
+//                'fee_type'         => 1,
+//                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+//                'time_start'       => date('YmdHis'),
+//                'time_expire'      => date('YmdHis') + 30 * 60,
+//                'attach'           => $orderId,
+//            ];
 
-            $attributes = [
-                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
-                'body'             => $body,
-                'detail'           => $detail,
-                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-                //'openid'           => $openid,
-//            'total_fee'        => (int)($payNum['data'] * 100),
-                'total_fee'        => 1,
-                'fee_type'         => 1,
-                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                'time_start'       => date('YmdHis'),
-                'time_expire'      => date('YmdHis') + 30 * 60,
-                'attach'           => $orderId,
-            ];
-
-        }else{
             $openid = $request->get('openid');
 
-            $attributes = [
-                'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
-                'body'             => $body,
-                'detail'           => $detail,
-                'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-                'openid'           => $openid,
-//            'total_fee'        => (int)($payNum['data'] * 100),
-                'total_fee'        => 1,
-                'fee_type'         => 1,
-                'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-                'time_start'       => date('YmdHis'),
-                'time_expire'      => date('YmdHis') + 30 * 60,
-                'attach'           => $orderId,
-            ];
+            $attributes['openid']           = $openid;
+
         }
 
         $order = new Order($attributes);
