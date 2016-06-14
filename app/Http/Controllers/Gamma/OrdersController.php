@@ -37,7 +37,7 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/orders?page=1
      *
-     * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
+     * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单 5获取有效订单
      * @apiParam {string} search 搜索条件
      *
      * @apiParamExample {json} Request Example
@@ -71,6 +71,15 @@ class OrdersController extends ApiController
             $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status']);
         }elseif ($type == 4){
             $search['status'] = array(Config::get('orderstatus.refunding')['status'] , Config::get('orderstatus.refunded')['status']);
+        }elseif ($type == 5){
+            $search['status'] = array(
+                Config::get('orderstatus.paid')['status'] ,
+                Config::get('orderstatus.on_the_way')['status'] ,
+                Config::get('orderstatus.accepted')['status'] ,
+                Config::get('orderstatus.completd')['status'] ,
+                Config::get('orderstatus.arrive')['status'] ,
+                Config::get('orderstatus.refunding')['status']
+            );
         }else{
             $search['status'] = array(
                 Config::get('orderstatus.paid')['status'] ,

@@ -596,7 +596,7 @@ class Orders extends Model
      */
     public function evaluate($data){
         if(DB::table($this->_order_evaluates)->insert($data)){
-            DB::table($this->_orders_table)->where('id' , $data['order_id'])->update(array('is_evaluate' => 1));
+            DB::table($this->_orders_table)->where('id' , $data['order_id'])->update(array('is_evaluate' => 1 , 'status' => 1));
             return true;
         }else{
             return false;
