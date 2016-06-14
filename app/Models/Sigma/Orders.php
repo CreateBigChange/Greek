@@ -144,23 +144,44 @@ class Orders extends Model
      * @param id        number
      * @param status    number
      */
-    public function changeStatus($storeId , $userId , $id , $status){
+    public function changeStatus($storeId , $userId , $orderId , $status){
 
-        $isChange = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status));
+        DB::beginTransaction();
+        try {
+            //更新订单状态
+            DB::table($this->_orders_table)->where('store_id', $storeId)->where('id', $orderId)->update(array('status' => $status));
 
-        if($isChange){
+            if ($status == Config::get('orderstatus.arrive')['status']) {
+
+                //发放用户积分
+                $userModel = new Users;
+                $userInfo = $userModel->getUserInfoById($userId);
+                $orderInfo = DB::table($this->_orders_table)->where('id', $orderId)->first();
+
+                if (!$orderInfo || !$userInfo) {
+                    return false;
+                }
+                $point = $userInfo->points + $orderInfo->out_points;
+                $userModel->updatePoint($userId, $point);
+
+            }
 
             $log = array(
-                'order_id'      => $id,
-                'user'          => $userId,
-                'identity'      => '商家管理员',
-                'platform'      => '手机端',
-                'log'           => '将订单'. $id . '的状态改为'.$status,
-                'created_at'    => date('Y-m-d H:i:s' , time())
+                'order_id' => $orderId,
+                'user' => $userId,
+                'identity' => '商家管理员',
+                'platform' => '手机端',
+                'log' => '将订单' . $orderId . '的状态改为' . $status,
+                'created_at' => date('Y-m-d H:i:s', time())
             );
             DB::table($this->_order_logs_table)->insert($log);
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
+            DB::commit();
             return true;
-        }else{
+        }catch (Exception $e){
+            DB::rollBack();
+
             return false;
         }
 
@@ -436,7 +457,7 @@ class Orders extends Model
 //        }
 
         //如果是余额支付
-        if($payType->id == 3) {
+        if($payType->id == Config::get('paytype.money')) {
             //用户余额是否充足
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
@@ -459,18 +480,18 @@ class Orders extends Model
 
         try {
             //加上本次订单赠送的积分
-            $isAmplePoint += $order->out_points;
+            //$isAmplePoint += $order->out_points;
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('###################');
             //更新用户积分
             $userModel->updatePoint($userId, $isAmplePoint);
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除用户'.$userId.'积分成功,当前积分为' . $isAmplePoint);
 
             //更新店铺积分
             $storeModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除店铺'.$order->store_id.'积分成功,当前积分为' . ($storeInfo->point - $order->out_points));
 
             //如果是余额支付
-            if($payType->id == 3) {
+            if($payType->id == Config::get('paytype.money')) {
                 //更新用户余额
                 $userModel->updateMoney($userId, $isAmpleMoney);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户余额成功,当前余额为' . $isAmpleMoney);
