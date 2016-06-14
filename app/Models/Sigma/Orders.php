@@ -124,7 +124,7 @@ class Orders extends Model
             $o->goodsNum = 0;
 
             $o->payTotal            = $o->total + $o->deliver - ($o->in_points / 100);
-            $o->in_points_to_money  = $o->in_points / 100;
+            $o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
