@@ -142,7 +142,7 @@ class Orders extends Model
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`pay_total`) as turnover
+                    sum(`total`) as turnover
                 FROM $this->_orders_table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
@@ -165,6 +165,6 @@ class Orders extends Model
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
 
         return DB::select($sql);
-        
+
     }
 }
