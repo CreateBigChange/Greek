@@ -394,7 +394,6 @@ class OrdersController extends ApiController
         $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
         $attributes['total_fee']        = 1;
         $attributes['fee_type']         = 1;
-        $attributes['notify_url']       = Config::get('wechat.notify_url');
         //$attributes['time_start']       = date('YmdHis' , time());
         //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
         $attributes['attach']           = $orderId;
@@ -407,9 +406,11 @@ class OrdersController extends ApiController
             $openid = $request->get('openid');
 
             $attributes['openid']           = $openid;
+            $attributes['notify_url']       = Config::get('wechat.notify_url');
 
         }else{
             $app = new Application($this->openOptions);
+            $attributes['notify_url']       = Config::get('wechat.open_notify_url');
 
         }
 
