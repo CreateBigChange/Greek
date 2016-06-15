@@ -423,8 +423,6 @@ class OrdersController extends ApiController
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
-
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111111));
@@ -449,6 +447,7 @@ class OrdersController extends ApiController
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
 
             if($tradeType == 'JSAPI') {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payment));
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
 
