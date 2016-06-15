@@ -19,5 +19,5 @@ return [
     'open_key'           => env('WECHAT_OPEN_KEY' , 'WECHAT_KEY'),         //商户密钥
     'open_cert_path'     => env('WECHAT_OPEN_CERT_PATH' , 'WECHAT_CERT_PATH'),
     'open_key_path'      => env('WECHAT_OPEN_KET_PATH' , 'WECHAT_KET_PATH'),
-    'open_notify_url'    => 'http://preview.jisxu.com/sigma/wechat/notify',
+    'open_notify_url'    => 'http://preview.jisxu.com/sigma/wechat/notify?type=wechat_open',
 ];
