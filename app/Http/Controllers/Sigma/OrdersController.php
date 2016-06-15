@@ -426,31 +426,49 @@ class OrdersController extends ApiController
 
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
             $prepayId = $result->prepay_id;
+
+            $payLog = array();
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['total_fee']            = $attributes['total_fee'];
+            $payLog['fee_type']             = $attributes['fee_type'];
+            $payLog['spbill_create_ip']     = $order->spbill_create_ip;
+
             if($tradeType == 'JSAPI') {
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
+                $payLog['openid']           = $attributes['openid'];
+                $payLog['timeStamp']        = $json->timeStamp;
+                $payLog['nonceStr']         = $json->nonceStr;
+                $payLog['package']          = $json->package;
+                $payLog['signType']         = $json->signType;
+                $payLog['paySign']          = $json->paySig;
             }else{
                 $json = $payment->configForAppPayment($prepayId);
                 $json = json_decode($json);
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
+                $payLog['openid']           = $attributes['openid'];
+                $payLog['timeStamp']        = $json->timeStamp;
+                $payLog['nonceStr']         = $json->nonceStr;
+                $payLog['package']          = $json->package;
+                $payLog['signType']         = $json->signType;
+                $payLog['paySign']          = $json->paySig;
             }
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
 
-            $payLog = array(
-                'trade_type'        => $attributes['trade_type'],
-                'body'              => $attributes['body'],
-                'detail'            => $attributes['detail'],
-                'out_trade_no'      => $attributes['out_trade_no'],
-                'openid'            => isset($attributes['openid']) ? $attributes['openid'] : '',
-                'total_fee'         => $attributes['total_fee'],
-                'fee_type'          => $attributes['fee_type'],
-                'spbill_create_ip'  => $order->spbill_create_ip,
-                'timeStamp'         => $json->timeStamp,
-                'nonceStr'          => $json->nonceStr,
-                'package'           => $json->package,
-                'signType'          => $json->signType,
-                'paySign'           => $json->paySign
-            );
+
+
 
 //            if($tradeType != 'JSAPI'){
 //                $json->partnerId    = $this->pubOptions['payment']['merchant_id'];
