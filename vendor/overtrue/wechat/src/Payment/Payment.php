@@ -25,7 +25,7 @@ use EasyWeChat\Support\Url as UrlHelper;
 use EasyWeChat\Support\XML;
 use Overtrue\Socialite\AccessTokenInterface;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Libs\BLogger;
 /**
  * Class Payment.
  *
@@ -177,6 +177,7 @@ class Payment
      */
     public function configForAppPayment($prepayId)
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(2222222222222));
         $params = [
             'appid' => $this->merchant->app_id,
             'partnerid' => $this->merchant->merchant_id,
