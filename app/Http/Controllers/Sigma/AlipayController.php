@@ -107,6 +107,8 @@ class AlipayController extends ApiController
 
 
     public function notify(){
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(111111111);
+
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
@@ -117,16 +119,24 @@ class AlipayController extends ApiController
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey(public_path().'/alipay/rsa_private_key.pem');
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(2222222222222);
         $options = [
             'request_params'=> array_merge($_POST, $_GET),
         ];
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($options);
 
         $response = $gateway->completePurchase($options)->send();
 
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(44444444444444444);
+
+
         if ($response->isSuccessful() && $response->isTradeStatusOk()) {
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(3333333333333);
 
             //更新支付时间和订单状态
             $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 1 , $_POST['gmt_payment']);
@@ -137,8 +147,6 @@ class AlipayController extends ApiController
             if(empty($store)){
                 return true;
             }
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($store);
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 

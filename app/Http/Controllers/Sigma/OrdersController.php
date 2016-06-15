@@ -571,8 +571,6 @@ class OrdersController extends ApiController
                     return true;
                 }
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($store);
-
                 $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
                 //消息推送队列
