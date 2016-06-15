@@ -250,7 +250,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::any('/wechat/notify/pub', 'OrdersController@notifyPub');
 	Route::any('/wechat/notify/open', 'OrdersController@notifyOpen');
 
-	Route::get('/alipay/notify' , 'AlipayController@notify');
+	Route::any('/alipay/notify' , 'AlipayController@notify');
 
 });
 
