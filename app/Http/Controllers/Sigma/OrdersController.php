@@ -425,6 +425,9 @@ class OrdersController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111111));
+
             $prepayId = $result->prepay_id;
 
             $payLog = array();
@@ -440,6 +443,8 @@ class OrdersController extends ApiController
             $payLog['fee_type']             = $attributes['fee_type'];
             $payLog['spbill_create_ip']     = $order->spbill_create_ip;
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
+
             if($tradeType == 'JSAPI') {
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
@@ -452,31 +457,22 @@ class OrdersController extends ApiController
                 $payLog['package']          = $json->package;
                 $payLog['signType']         = $json->signType;
                 $payLog['paySign']          = $json->paySig;
-            }else{
+            }elseif($tradeType == 'APP'){
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333333333));
                 $json = $payment->configForAppPayment($prepayId);
                 $json = json_decode($json);
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
 
-                $payLog['openid']           = $attributes['openid'];
-                $payLog['timeStamp']        = $json->timeStamp;
-                $payLog['nonceStr']         = $json->nonceStr;
+                $payLog['timeStamp']        = $json->timestamp;
+                $payLog['nonceStr']         = $json->noncestr;
                 $payLog['package']          = $json->package;
                 $payLog['signType']         = $json->signType;
                 $payLog['paySign']          = $json->paySig;
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(44444444444444));
             }
 
 
-
-
-
-//            if($tradeType != 'JSAPI'){
-//                $json->partnerId    = $this->pubOptions['payment']['merchant_id'];
-//                $json->prepayid     = $prepayId;
-//                $json->package      = 'Sign=WXPay';
-//                $json->nonceStr     = $result->nonce_str;
-//            }
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
