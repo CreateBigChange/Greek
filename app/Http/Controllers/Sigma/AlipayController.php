@@ -74,7 +74,6 @@ class AlipayController extends ApiController
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
         $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setReturnUrl('http://preview.jisxu.com/sigma/alipay/return');
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
@@ -113,7 +112,6 @@ class AlipayController extends ApiController
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
         $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey(public_path().'/alipay/rsa_private_key.pem');
