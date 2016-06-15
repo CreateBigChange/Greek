@@ -78,7 +78,7 @@ class AlipayController extends ApiController
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setPrivateKey('./alipay/rsa_private_key.pem');
+        $gateway->setPrivateKey(public_path().'/alipay/rsa_private_key.pem');
 
         $options = [
             'out_trade_no'  => date('YmdHis') . mt_rand(1000,9999),
