@@ -243,7 +243,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
 
-	Route::any('/wechat/notify', 'OrdersController@notify');
+	Route::any('/wechat/notify/pub', 'OrdersController@notifyPub');
+	Route::any('/wechat/notify/open', 'OrdersController@notifyOpen');
 
 });
 

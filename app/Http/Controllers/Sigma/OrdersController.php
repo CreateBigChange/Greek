@@ -458,30 +458,56 @@ class OrdersController extends ApiController
 
 
     /**
-     * @api {POST} /sigma/wechat/notify 微信支付回调
-     * @apiName ordersConfirmWechat
+     * @api {POST} /sigma/wechat/notify/pub 微信pub支付回调
+     * @apiName ordersWechatNotifyPub
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 确认订单-微信
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify
+     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify/pub
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/wechat/notify
+     *      POST /sigma/wechat/notify/pub
      *      {
      *      }
      * @apiUse CODE_200
      *
      */
 
-    public function notify(){
+    public function notifyPub(){
 
-        if(isset($_GET['type']) && $_GET['type'] == 'wechat_open'){
-            $app = new Application($this->openOptions);
-        }else{
-            $app = new Application($this->pubOptions);
-        }
+        $app = new Application($this->pubOptions);
 
+        return $this->setPayData($app);
+
+    }
+
+    /**
+     * @api {POST} /sigma/wechat/notify/open 微信open支付回调
+     * @apiName ordersWechatNotifyOpen
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 确认订单-微信
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify/open
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/wechat/notify/open
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+
+    public function notifyOpen(){
+
+        $app = new Application($this->openOptions);
+
+        return $this->setPayData($app);
+
+    }
+
+    private function setPayData($app){
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
@@ -547,7 +573,6 @@ class OrdersController extends ApiController
         });
 
         return $response;
-
     }
 
 
