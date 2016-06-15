@@ -633,7 +633,8 @@ class OrdersController extends ApiController
 
             $payment = $app->payment;
             $wechat = $payment->query($orderNo);
-            var_dump($wechat);die;
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($wechat));
 
         }
 
