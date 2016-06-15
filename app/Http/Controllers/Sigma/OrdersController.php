@@ -448,7 +448,11 @@ class OrdersController extends ApiController
                 'signType'          => $json->signType,
                 'paySign'           => $json->paySign
             );
-            
+
+            if($tradeType != 'JSAPI'){
+                $json->partnerId    = $this->pubOptions['payment']['merchant_id'];
+                $json->prepayid     = $prepayId;
+            }
             $wechatPayLogModel = new WechatPayLog();
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('**************'));
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
