@@ -448,8 +448,6 @@ class OrdersController extends ApiController
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
-
                 $payLog['openid']           = $attributes['openid'];
                 $payLog['timeStamp']        = $json->timeStamp;
                 $payLog['nonceStr']         = $json->nonceStr;
@@ -459,10 +457,6 @@ class OrdersController extends ApiController
 
             }else if($tradeType == 'APP'){
                 $json = $payment->configForAppPayment($prepayId);
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($json);
-                $json = json_decode($json);
-
-
 
                 $payLog['timeStamp']        = $json->timestamp;
                 $payLog['nonceStr']         = $json->noncestr;
@@ -471,7 +465,8 @@ class OrdersController extends ApiController
                 $payLog['paySign']          = $json->paySig;
             }
 
-
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+            
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
