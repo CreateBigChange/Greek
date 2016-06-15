@@ -615,16 +615,16 @@ class OrdersController extends ApiController
      *
      */
     public function getOrderStatus($orderId , Request $request){
-        $orderInfo = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+        $orderInfo = $this->_model->getOrderById($this->userId , $orderId);
 
-        if(!isset($orderInfo[0])){
+        if(!$orderInfo){
             return response()->json(Message::setResponseInfo('ORDER_NOT_EXIST'));
         }
         $tradeType    = $request->get('trade_type');
 
-        $orderNo = $orderInfo[0]->out_trade_no;
+        $orderNo = $orderInfo->out_trade_no;
 
-        if($orderInfo[0]->status == Config::get('orderstatus.no_pay')['status']){
+        if($orderInfo->status == Config::get('orderstatus.no_pay')['status']){
             if($tradeType == 'APP') {
 
                 $app = new Application($this->openOptions);
@@ -635,7 +635,7 @@ class OrdersController extends ApiController
             $wechat = $payment->query($orderNo);
         }
 
-        return $orderInfo[0]->status;
+        return $orderInfo->status;
 
 
 

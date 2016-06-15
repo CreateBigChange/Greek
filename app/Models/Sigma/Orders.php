@@ -690,4 +690,13 @@ class Orders extends Model
         return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
     }
 
+    /**
+     * @param $outTradeNo
+     * @return mixed
+     * 根据订单ID获取订单信息
+     */
+    public function getOrderById($userId , $orderId){
+        return DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->first();
+    }
+
 }
