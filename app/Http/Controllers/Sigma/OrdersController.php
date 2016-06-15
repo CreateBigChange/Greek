@@ -418,6 +418,7 @@ class OrdersController extends ApiController
 
         $order = new WechatOrder($attributes);
 
+        var_dump(111);die;
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
 
         $result = $payment->prepare($order);
