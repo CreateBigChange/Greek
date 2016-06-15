@@ -88,22 +88,74 @@ class AlipayController extends ApiController
             //'total_fee'     => (int)($payNum['data'] * 100)
         ];
 
-
-
         $response = $gateway->purchase($options)->send();
 
-        var_dump($response);die;
+        $aliOrderString = $response->getOrderString();
 
-        $wechatPayLogModel = new WechatPayLog();
-        if($this->_model->updateOrderOutTradeNo($orderId, $options['out_trade_no'])){
-            return response()->json(Message::setResponseInfo('SUCCESS' , $response->getOrderString()));
+        //$wechatPayLogModel = new WechatPayLog();
+        if($aliOrderString) {
+            if ($this->_model->updateOrderOutTradeNo($orderId, $options['out_trade_no'])) {
+                return response()->json(Message::setResponseInfo('SUCCESS', $aliOrderString));
+            } else {
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
-        //For 'Alipay_MobileExpress'
-        //Use the order string with iOS or Android SDK
+    }
 
+
+    public function notify(){
+        $gateway = Omnipay::create('Alipay_MobileExpress');
+        $gateway->setPartner('2088121058783821');
+        $gateway->setKey('2016060201471049');
+        $gateway->setSellerEmail('zxhy201510@163.com');
+        $gateway->setReturnUrl('http://preview.jisxu.com/sigma/alipay/return');
+        $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
+
+        //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
+        $gateway->setPrivateKey(public_path().'/alipay/rsa_private_key.pem');
+
+        $options = [
+            'request_params'=> array_merge($_POST, $_GET),
+        ];
+
+        $response = $gateway->completePurchase($options)->send();
+
+        $outTradeNo = $_POST['out_trade_no'];
+        $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+
+        if ($response->isSuccessful() && $response->isTradeStatusOk()) {
+
+            //更新支付时间和订单状态
+            $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 1 , $_POST['gmt_payment']);
+
+            $storeModel = new Stores;
+            $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+
+            if(empty($store)){
+                return true;
+            }
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($store);
+
+            $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
+
+            //消息推送队列
+            $this->dispatch(new Jpush(
+                "急所需有新订单啦,请及时处理",
+                "急所需新订单",
+                array('ios' , 'android'),
+                "$order->store_id",
+                array(),
+                $bell
+            ));
+            die("success");
+        } else {
+
+            die('fail');
+        }
     }
 
 
