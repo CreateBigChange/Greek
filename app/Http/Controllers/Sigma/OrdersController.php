@@ -438,7 +438,7 @@ class OrdersController extends ApiController
                 'body'              => $attributes['body'],
                 'detail'            => $attributes['detail'],
                 'out_trade_no'      => $attributes['out_trade_no'],
-                'openid'            => $attributes['openid'],
+                'openid'            => isset($attributes['openid']) ? $attributes['openid'] : '',
                 'total_fee'         => $attributes['total_fee'],
                 'fee_type'          => $attributes['fee_type'],
                 'spbill_create_ip'  => $order->spbill_create_ip,
