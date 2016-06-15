@@ -221,7 +221,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/user/info' , 'UsersController@userInfo');
 
 		Route::post('/alipay/order/{orderId}' , 'AlipayController@aliPay');
-		Route::post('/alipay/notify' , 'AlipayController@notify');
 
 	});
 
@@ -250,6 +249,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::any('/wechat/notify/pub', 'OrdersController@notifyPub');
 	Route::any('/wechat/notify/open', 'OrdersController@notifyOpen');
+
+	Route::post('/alipay/notify' , 'AlipayController@notify');
 
 });
 
