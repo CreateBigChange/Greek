@@ -40,7 +40,7 @@ class AlipayController extends ApiController
 
     }
 
-    public function aliPay(){
+    public function aliPay($orderId , Request $request){
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
@@ -68,7 +68,7 @@ class AlipayController extends ApiController
 
         //For 'Alipay_MobileExpress'
         //Use the order string with iOS or Android SDK
-        var_dump($response->getOrderString());die;
+        return $response->getOrderString();
 
     }
 
