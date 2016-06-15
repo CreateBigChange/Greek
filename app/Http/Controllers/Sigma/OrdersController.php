@@ -442,12 +442,9 @@ class OrdersController extends ApiController
             $payLog['fee_type']             = $attributes['fee_type'];
             $payLog['spbill_create_ip']     = $order->spbill_create_ip;
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payment));
-
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
 
             if($tradeType == 'JSAPI') {
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payment));
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
 
@@ -462,6 +459,7 @@ class OrdersController extends ApiController
 
             }elseif($tradeType == 'APP'){
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333333333));
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($payment);
                 $json = $payment->configForAppPayment($prepayId);
                 $json = json_decode($json);
 
