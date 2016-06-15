@@ -457,8 +457,8 @@ class OrdersController extends ApiController
                 $payLog['timeStamp']        = $json->timestamp;
                 $payLog['nonceStr']         = $json->noncestr;
                 $payLog['package']          = $json->package;
-                $payLog['signType']         = $json->signType;
-                $payLog['paySign']          = $json->paySig;
+                $payLog['signType']         = '';
+                $payLog['paySign']          = $json->sign;
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($json);
