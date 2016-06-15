@@ -422,6 +422,7 @@ class OrdersController extends ApiController
 
         $result = $payment->prepare($order);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('!!!!!!!!!!!!!!!!'));
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
