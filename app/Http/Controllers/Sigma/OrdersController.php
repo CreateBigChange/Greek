@@ -633,9 +633,11 @@ class OrdersController extends ApiController
 
             $payment = $app->payment;
             $wechat = $payment->query($orderNo);
+
+            var_dump($wechat);die;
         }
 
-        return $orderInfo->status;
+        return response()->json(Message::setResponseInfo('SUCCESS' , $orderInfo->status));
 
 
 
