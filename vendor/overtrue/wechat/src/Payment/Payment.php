@@ -177,7 +177,6 @@ class Payment
      */
     public function configForAppPayment($prepayId)
     {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(2222222222222));
         $params = [
             'appid' => $this->merchant->app_id,
             'partnerid' => $this->merchant->merchant_id,
@@ -188,8 +187,6 @@ class Payment
         ];
 
         $params['sign'] = generate_sign($params, $this->merchant->key);
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
 
         return $params;
     }
