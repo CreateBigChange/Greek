@@ -466,7 +466,7 @@ class OrdersController extends ApiController
                 $payLog['paySign']          = $json['sign'];
             }
 
-            var_dump(44444);die;
+            var_dump($json);die;
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($json);
             var_dump(2222);die;
 
