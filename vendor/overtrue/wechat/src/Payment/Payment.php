@@ -177,6 +177,7 @@ class Payment
      */
     public function configForAppPayment($prepayId)
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(55555555555555555));
         $params = [
             'appid' => $this->merchant->app_id,
             'partnerid' => $this->merchant->merchant_id,
@@ -185,6 +186,7 @@ class Payment
             'timestamp' => time(),
             'package' => 'Sign=WXPay',
         ];
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(66666666666666666666));
 
         $params['sign'] = generate_sign($params, $this->merchant->key);
 
