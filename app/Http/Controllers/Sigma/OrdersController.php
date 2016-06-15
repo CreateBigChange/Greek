@@ -450,6 +450,7 @@ class OrdersController extends ApiController
                 $json->partnerId    = $this->pubOptions['payment']['merchant_id'];
                 $json->prepayid     = $prepayId;
                 $json->package      = 'Sign=WXPay';
+                $json->nonceStr     = $result->nonce_str;
             }
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
