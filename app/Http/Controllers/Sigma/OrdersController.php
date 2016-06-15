@@ -404,8 +404,6 @@ class OrdersController extends ApiController
 
             $app = new Application($this->pubOptions);
 
-            $payment = $app->payment;
-
             $openid = $request->get('openid');
 
             $attributes['openid']           = $openid;
@@ -413,8 +411,9 @@ class OrdersController extends ApiController
         }else{
             $app = new Application($this->openOptions);
 
-            $payment = $app->payment;
         }
+
+        $payment = $app->payment;
 
         $order = new WechatOrder($attributes);
 
@@ -443,6 +442,8 @@ class OrdersController extends ApiController
             $payLog['fee_type']             = $attributes['fee_type'];
             $payLog['spbill_create_ip']     = $order->spbill_create_ip;
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($payment));
+
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
 
             if($tradeType == 'JSAPI') {
@@ -457,6 +458,7 @@ class OrdersController extends ApiController
                 $payLog['package']          = $json->package;
                 $payLog['signType']         = $json->signType;
                 $payLog['paySign']          = $json->paySig;
+
             }elseif($tradeType == 'APP'){
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333333333));
                 $json = $payment->configForAppPayment($prepayId);
