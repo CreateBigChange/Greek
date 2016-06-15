@@ -116,7 +116,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}.
      */
-    public function getAccessToken($code)
+    public function getAccessTokenResponse($code)
     {
         $response = $this->getHttpClient()->get($this->getTokenUrl(), [
             'query' => $this->getTokenFields($code),
@@ -125,7 +125,7 @@ class Provider extends AbstractProvider implements ProviderInterface
         $this->credentialsResponseBody = json_decode($response->getBody(), true);
         $this->openId = $this->credentialsResponseBody['openid'];
 
-        return $this->parseAccessToken($response->getBody());
+        return $this->credentialsResponseBody;
     }
 
     public static function additionalConfigKeys()

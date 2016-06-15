@@ -161,6 +161,12 @@ return [
         //微信
         Overtrue\LaravelWechat\ServiceProvider::class,
 
+        //支付宝
+        //Latrell\Alipay\AlipayServiceProvider::class
+        Ignited\LaravelOmnipay\LaravelOmnipayServiceProvider::class,
+
+
+
     ],
 
     /*
@@ -208,6 +214,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'Omnipay' => Ignited\LaravelOmnipay\Facades\OmnipayFacade::class
 
     ],
 

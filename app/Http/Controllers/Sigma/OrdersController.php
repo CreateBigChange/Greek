@@ -450,7 +450,7 @@ class OrdersController extends ApiController
                 $payLog['nonceStr']         = $json->nonceStr;
                 $payLog['package']          = $json->package;
                 $payLog['signType']         = $json->signType;
-                $payLog['paySign']          = $json->paySig;
+                $payLog['paySign']          = $json->paySign;
 
             }else if($tradeType == 'APP'){
                 $json = $payment->configForAppPayment($prepayId);

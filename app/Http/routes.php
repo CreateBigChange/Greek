@@ -220,6 +220,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/user/info' , 'UsersController@userInfo');
 
+		Route::post('/alipay/order/{orderId}' , 'AlipayController@aliPay');
+		Route::post('/alipay/notify' , 'AlipayController@notify');
+
 	});
 
 	Route::post('/store/list' , 'StoresController@getStoreList');
