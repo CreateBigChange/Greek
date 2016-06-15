@@ -92,6 +92,7 @@ class AlipayController extends ApiController
 
         $response = $gateway->purchase($options)->send();
 
+        var_dump($response);die;
 
         $wechatPayLogModel = new WechatPayLog();
         if($this->_model->updateOrderOutTradeNo($orderId, $options['out_trade_no'])){
