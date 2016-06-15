@@ -455,6 +455,10 @@ class OrdersController extends ApiController
             }else if($tradeType == 'APP'){
                 $json = $payment->configForAppPayment($prepayId);
 
+                if(isset($json['package'])){
+                    $json['packageValue'] = $json['package'];
+                }
+
                 $payLog['timeStamp']        = $json['timestamp'];
                 $payLog['nonceStr']         = $json['noncestr'];
                 $payLog['package']          = $json['package'];
@@ -591,6 +595,50 @@ class OrdersController extends ApiController
         });
 
         return $response;
+    }
+
+    /**
+     * @api {POST} /sigma/order/status/{orderId} 获取订单状态
+     * @apiName ordersStatus
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取订单状态
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/order/status
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/order/status
+     *      {
+     *          trade_type  : APP
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getOrderStatus($orderId , Request $request){
+        $orderInfo = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+
+        if(!isset($orderInfo[0])){
+            return response()->json(Message::setResponseInfo('ORDER_NOT_EXIST'));
+        }
+        $tradeType    = $request->get('trade_type');
+
+        $orderNo = $orderInfo[0]->out_trade_no;
+
+        if($orderInfo[0]->status == Config::get('orderstatus.no_pay')['status']){
+            if($tradeType == 'APP') {
+
+                $app = new Application($this->openOptions);
+
+            }
+
+            $payment = $app->payment;
+            $wechat = $payment->query($orderNo);
+        }
+
+        return $orderInfo[0];
+
+
+
     }
 
 

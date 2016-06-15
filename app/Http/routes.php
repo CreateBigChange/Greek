@@ -194,6 +194,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
 		Route::post('/order/change/status/{id}' , 'OrdersController@changeStatus');
 
+		Route::post('/order/status/{orderId}' , 'OrdersController@getOrderStatus');
+
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
 		//Route::group(['middleware' => ['wechat.oauth']] , function() {

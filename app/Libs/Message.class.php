@@ -41,6 +41,7 @@ class Message {
 				'NO__HAVE_PAY_PASSWORD'			=> array('code'=>'4018' , 'msg'=>'没有设置支付密码'),
 				'PAY_PASSWORD_ERROR'			=> array('code'=>'4019' , 'msg'=>'支付密码错误'),
 				'MOBILE_NO_BIND'				=> array('code'=>'4020' , 'msg'=>'请先绑定手机号'),
+				'ORDER_NOT_EXIST'				=> array('code'=>'4021' , 'msg'=>'订单不存在'),
 
 
 
