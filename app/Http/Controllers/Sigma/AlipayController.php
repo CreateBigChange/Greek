@@ -41,6 +41,35 @@ class AlipayController extends ApiController
     }
 
     public function aliPay($orderId , Request $request){
+
+        $userId     = $this->userId;
+
+        if(!$request->has('out_points')){
+            $outPoints = 0;
+        }else{
+            $outPoints  = $request->get('out_points');
+        }
+
+        //更新订单
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+
+        if($payNum['code'] != 0000){
+            return $payNum;
+        }
+
+        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+
+        if(count($info) == 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        $body       = $info[0]->sname;
+        $detail     = '';
+        foreach ($info[0]->goods as $g){
+            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+        }
+
+
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
@@ -51,12 +80,12 @@ class AlipayController extends ApiController
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey('./alipay/rsa_private_key.pem');
 
-
-
         $options = [
-            'out_trade_no' => date('YmdHis') . mt_rand(1000,9999),
-            'subject' => 'Alipay Test',
-            'total_fee' => '0.01',
+            'out_trade_no'  => date('YmdHis') . mt_rand(1000,9999),
+            'subject'       => $body,
+            'total_fee'     => '0.01',
+            'body'          => $detail,
+            //'total_fee'     => (int)($payNum['data'] * 100)
         ];
 
 
@@ -64,11 +93,15 @@ class AlipayController extends ApiController
         $response = $gateway->purchase($options)->send();
 
 
-
+        $wechatPayLogModel = new WechatPayLog();
+        if($this->_model->updateOrderOutTradeNo($orderId, $options['out_trade_no'])){
+            return response()->json(Message::setResponseInfo('SUCCESS' , $response->getOrderString()));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
 
         //For 'Alipay_MobileExpress'
         //Use the order string with iOS or Android SDK
-        return $response->getOrderString();
 
     }
 
