@@ -425,8 +425,6 @@ class OrdersController extends ApiController
 
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111111));
-
             $prepayId = $result->prepay_id;
 
             $payLog = array();
@@ -441,8 +439,6 @@ class OrdersController extends ApiController
             $payLog['total_fee']            = $attributes['total_fee'];
             $payLog['fee_type']             = $attributes['fee_type'];
             $payLog['spbill_create_ip']     = $order->spbill_create_ip;
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
 
             if($tradeType == 'JSAPI') {
                 $json = $payment->configForPayment($prepayId);
@@ -465,7 +461,7 @@ class OrdersController extends ApiController
                 $payLog['paySign']          = $json->paySig;
             }
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($json);
 
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
