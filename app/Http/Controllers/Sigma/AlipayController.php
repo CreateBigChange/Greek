@@ -90,6 +90,7 @@ class AlipayController extends ApiController
         $response = $gateway->purchase($options)->send();
 
         $aliOrderString = $response->getOrderString();
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($aliOrderString);
 
         //$wechatPayLogModel = new WechatPayLog();
         if($aliOrderString) {
@@ -121,7 +122,7 @@ class AlipayController extends ApiController
             'request_params'=> array_merge($_POST, $_GET),
         ];
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($options);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
 
         $response = $gateway->completePurchase($options)->send();
 
