@@ -424,7 +424,7 @@ class OrdersController extends ApiController
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
-        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+        if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
