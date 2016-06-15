@@ -422,15 +422,12 @@ class OrdersController extends ApiController
 
         $result = $payment->prepare($order);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('!!!!!!!!!!!!!!!!'));
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
 
         if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('99999999999999'));
             $prepayId = $result->prepay_id;
             $json = $payment->configForPayment($prepayId);
             $json = json_decode($json);
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('8888888888888'));
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
 
             $payLog = array(
@@ -452,11 +449,10 @@ class OrdersController extends ApiController
             if($tradeType != 'JSAPI'){
                 $json->partnerId    = $this->pubOptions['payment']['merchant_id'];
                 $json->prepayid     = $prepayId;
+                $json->package      = 'Sign=WXPay';
             }
             $wechatPayLogModel = new WechatPayLog();
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('**************'));
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('######################'));
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
             }
         }else{
