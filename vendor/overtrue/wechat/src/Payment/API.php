@@ -24,6 +24,7 @@ use EasyWeChat\Core\AbstractAPI;
 use EasyWeChat\Support\Collection;
 use EasyWeChat\Support\XML;
 use Psr\Http\Message\ResponseInterface;
+use App\Libs\BLogger;
 
 /**
  * Class API.
@@ -392,6 +393,7 @@ class API extends AbstractAPI
             'body' => XML::build($params),
         ], $options);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
         $response = $this->getHttp()->request($api, $method, $options);
 
         return $returnResponse ? $response : $this->parseResponse($response);
