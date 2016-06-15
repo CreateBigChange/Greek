@@ -434,6 +434,8 @@ class OrdersController extends ApiController
                 $json = json_decode($json);
             }
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
             $payLog = array(
                 'trade_type'        => $attributes['trade_type'],
                 'body'              => $attributes['body'],
