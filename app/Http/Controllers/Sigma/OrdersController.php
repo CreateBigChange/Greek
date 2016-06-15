@@ -459,7 +459,6 @@ class OrdersController extends ApiController
 
             }else if($tradeType == 'APP'){
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('&&&&&&&&&&&&&&&&&&&&&'));
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($payment);
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
 
