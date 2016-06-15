@@ -624,7 +624,7 @@ class OrdersController extends ApiController
 
         $orderNo = $orderInfo->out_trade_no;
 
-        if($orderInfo->status == Config::get('orderstatus.no_pay')['status']){
+        if($orderInfo->status == Config::get('orderstatus.no_pay')['status'] && !empty($orderNo)){
             if($tradeType == 'APP') {
 
                 $app = new Application($this->openOptions);
@@ -634,7 +634,6 @@ class OrdersController extends ApiController
             $payment = $app->payment;
             $wechat = $payment->query($orderNo);
 
-            var_dump($wechat);die;
         }
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $orderInfo->status));
