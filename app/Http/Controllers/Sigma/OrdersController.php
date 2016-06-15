@@ -635,7 +635,7 @@ class OrdersController extends ApiController
             $wechat = $payment->query($orderNo);
         }
 
-        return $orderInfo[0];
+        return $orderInfo[0]->status;
 
 
 
