@@ -351,135 +351,133 @@ class OrdersController extends ApiController
      */
     public function wechatPay($orderId , Request $request){
 
-//        $validation = Validator::make($request->all(), [
-//            'trade_type'            => 'required',
-//        ]);
-//        if($validation->fails()){
-//            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-//        }
-//
-//        $userId     = $this->userId;
-//
-//        if(!$request->has('out_points')){
-//            $outPoints = 0;
-//        }else{
-//            $outPoints  = $request->get('out_points');
-//        }
-//        $tradeType    = $request->get('trade_type');
-//
-//        //更新订单
-//        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
-//
-//        if($payNum['code'] != 0000){
-//            return $payNum;
-//        }
-//
-//        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
-//
-//        if(count($info) == 0){
-//            return response()->json(Message::setResponseInfo('FAILED'));
-//        }
-//
-//        //微信下单
-//        $body       = $info[0]->sname;
-//        $detail     = '';
-//        foreach ($info[0]->goods as $g){
-//            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
-//        }
-//
-//        $attributes = array();
-//        $attributes['trade_type']       = $tradeType;
-//        $attributes['body']             = $body;
-//        $attributes['detail']           = $detail;
-//        $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
-//        $attributes['total_fee']        = 1;
-//        $attributes['fee_type']         = 1;
-//        $attributes['notify_url']       = Config::get('wechat.notify_url');
-//        //$attributes['time_start']       = date('YmdHis' , time());
-//        //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
-//        $attributes['attach']           = $orderId;
-//        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
-//
-//        if($tradeType == 'JSAPI') {
-//
-//            $app = new Application($this->pubOptions);
-//
-//            $openid = $request->get('openid');
-//
-//            $attributes['openid']           = $openid;
-//
-//        }else{
+        $validation = Validator::make($request->all(), [
+            'trade_type'            => 'required',
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $userId     = $this->userId;
+
+        if(!$request->has('out_points')){
+            $outPoints = 0;
+        }else{
+            $outPoints  = $request->get('out_points');
+        }
+        $tradeType    = $request->get('trade_type');
+
+        //更新订单
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+
+        if($payNum['code'] != 0000){
+            return $payNum;
+        }
+
+        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+
+        if(count($info) == 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        //微信下单
+        $body       = $info[0]->sname;
+        $detail     = '';
+        foreach ($info[0]->goods as $g){
+            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+        }
+
+        $attributes = array();
+        $attributes['trade_type']       = $tradeType;
+        $attributes['body']             = $body;
+        $attributes['detail']           = $detail;
+        $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
+        $attributes['total_fee']        = 1;
+        $attributes['fee_type']         = 1;
+        $attributes['notify_url']       = Config::get('wechat.notify_url');
+        //$attributes['time_start']       = date('YmdHis' , time());
+        //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
+        $attributes['attach']           = $orderId;
+        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
+
+        if($tradeType == 'JSAPI') {
+
+            $app = new Application($this->pubOptions);
+
+            $openid = $request->get('openid');
+
+            $attributes['openid']           = $openid;
+
+        }else{
             $app = new Application($this->openOptions);
-//
-//        }
-//
+
+        }
+
         $payment = $app->payment;
-//
-//        $order = new WechatOrder($attributes);
-//
-//        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
-//
-//        $result = $payment->prepare($order);
-//
-//        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
-//
-//        if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
-//
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111111));
-//
-//            $prepayId = $result->prepay_id;
-//
-//            $payLog = array();
-//            $payLog['trade_type']           = $attributes['trade_type'];
-//            $payLog['body']                 = $attributes['body'];
-//            $payLog['detail']               = $attributes['detail'];
-//            $payLog['out_trade_no']         = $attributes['out_trade_no'];
-//            $payLog['trade_type']           = $attributes['trade_type'];
-//            $payLog['body']                 = $attributes['body'];
-//            $payLog['detail']               = $attributes['detail'];
-//            $payLog['out_trade_no']         = $attributes['out_trade_no'];
-//            $payLog['total_fee']            = $attributes['total_fee'];
-//            $payLog['fee_type']             = $attributes['fee_type'];
-//            $payLog['spbill_create_ip']     = $order->spbill_create_ip;
-//
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
-//
-//            if($tradeType == 'JSAPI') {
-//                $json = $payment->configForPayment($prepayId);
-//                $json = json_decode($json);
-//
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
-//
-//                $payLog['openid']           = $attributes['openid'];
-//                $payLog['timeStamp']        = $json->timeStamp;
-//                $payLog['nonceStr']         = $json->nonceStr;
-//                $payLog['package']          = $json->package;
-//                $payLog['signType']         = $json->signType;
-//                $payLog['paySign']          = $json->paySig;
-//
-//            }else if($tradeType == 'APP'){
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111));
-                $json = $payment->configForAppPayment('wx2016061513354933b5e46f7a0702363400');
+
+        $order = new WechatOrder($attributes);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
+
+        $result = $payment->prepare($order);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
+
+        if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(11111111));
+
+            $prepayId = $result->prepay_id;
+
+            $payLog = array();
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['total_fee']            = $attributes['total_fee'];
+            $payLog['fee_type']             = $attributes['fee_type'];
+            $payLog['spbill_create_ip']     = $order->spbill_create_ip;
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(222222222));
+
+            if($tradeType == 'JSAPI') {
+                $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
-//
-//                $payLog['timeStamp']        = $json->timestamp;
-//                $payLog['nonceStr']         = $json->noncestr;
-//                $payLog['package']          = $json->package;
-//                $payLog['signType']         = $json->signType;
-//                $payLog['paySign']          = $json->paySig;
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(44444444444444));
-//            }
-//
-//
-//            $wechatPayLogModel = new WechatPayLog();
-//            if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
-//                return response()->json(Message::setResponseInfo('SUCCESS' , $json));
-//            }
-//        }else{
-//            return response()->json(Message::setResponseInfo('FAILED' , $result));
-//        }
+
+                $payLog['openid']           = $attributes['openid'];
+                $payLog['timeStamp']        = $json->timeStamp;
+                $payLog['nonceStr']         = $json->nonceStr;
+                $payLog['package']          = $json->package;
+                $payLog['signType']         = $json->signType;
+                $payLog['paySign']          = $json->paySig;
+
+            }else if($tradeType == 'APP'){
+                $json = $payment->configForAppPayment($prepayId);
+                $json = json_decode($json);
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
+                $payLog['timeStamp']        = $json->timestamp;
+                $payLog['nonceStr']         = $json->noncestr;
+                $payLog['package']          = $json->package;
+                $payLog['signType']         = $json->signType;
+                $payLog['paySign']          = $json->paySig;
+            }
+
+
+            $wechatPayLogModel = new WechatPayLog();
+            if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
+                return response()->json(Message::setResponseInfo('SUCCESS' , $json));
+            }
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED' , $result));
+        }
 
     }
 

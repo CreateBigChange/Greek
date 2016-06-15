@@ -186,6 +186,8 @@ class Payment
             'timestamp' => time(),
             'package' => 'Sign=WXPay',
         ];
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
         $params['sign'] = generate_sign($params, $this->merchant->key);
 
         return $params;
