@@ -466,7 +466,7 @@ class OrdersController extends ApiController
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
-            
+
             $wechatPayLogModel = new WechatPayLog();
             if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
