@@ -68,7 +68,7 @@ class AlipayController extends ApiController
 
         //For 'Alipay_MobileExpress'
         //Use the order string with iOS or Android SDK
-        $response->getOrderString();
+        var_dump($response->getOrderString());die;
 
     }
 
