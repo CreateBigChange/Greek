@@ -3,6 +3,7 @@
 namespace Omnipay\Alipay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
+use App\Libs\BLogger;
 
 class ExpressCompletePurchaseRequest extends BasePurchaseRequest
 {
@@ -210,6 +211,8 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
             $status                 = $this->getTradeStatus();
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
             $data['is_paid']        = $data['verify_success'] && $this->isNotifyVerifiedOK() && $statusOk;
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         } else {
             $status                 = $this->getTradeStatus();
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
