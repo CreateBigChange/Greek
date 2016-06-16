@@ -117,7 +117,6 @@ class AlipayController extends ApiController
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setAlipayPublicKey(public_path().'/alipay/rsa_public_key.pem');
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
         if(!$order){
@@ -138,7 +137,7 @@ class AlipayController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(44444444444444444);
 
 
-        if ($response->isSuccessful() && $response->isTradeStatusOk()) {
+        if ($response->isPaid()) {
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(3333333333333);
 
