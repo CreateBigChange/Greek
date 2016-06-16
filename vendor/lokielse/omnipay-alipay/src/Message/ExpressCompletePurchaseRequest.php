@@ -212,7 +212,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
             $data['is_paid']        = $data['verify_success'] && $this->isNotifyVerifiedOK() && $statusOk;
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
+            //BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         } else {
             $status                 = $this->getTradeStatus();
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
@@ -295,9 +295,8 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     protected function verifyWithRSA($data, $publicKey, $sign)
     {
         $publicKey = $this->prefixCertificateKeyPath($publicKey);
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($publicKey);
         $res       = openssl_pkey_get_public($publicKey);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($res);
         $result    = (bool) openssl_verify($data, base64_decode($sign), $res);
         openssl_free_key($res);
 
