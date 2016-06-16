@@ -115,7 +115,7 @@ class AlipayController extends ApiController
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setPrivateKey(public_path().'/alipay/rsa_public_key.pem');
+        $gateway->setAlipayPublicKey(public_path().'/alipay/rsa_public_key.pem');
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
         $outTradeNo = $_POST['out_trade_no'];
