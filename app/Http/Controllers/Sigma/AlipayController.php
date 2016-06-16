@@ -76,7 +76,6 @@ class AlipayController extends ApiController
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('2016060201471049');
         $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setSignType('MD5');
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
