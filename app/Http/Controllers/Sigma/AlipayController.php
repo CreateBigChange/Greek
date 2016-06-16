@@ -40,33 +40,34 @@ class AlipayController extends ApiController
 
     }
 
-    public function aliPay($orderId , Request $request){
+    public function aliPay($orderId , Request $request)
+    {
 
-        $userId     = $this->userId;
+        $userId = $this->userId;
 
-        if(!$request->has('out_points')){
+        if (!$request->has('out_points')) {
             $outPoints = 0;
-        }else{
-            $outPoints  = $request->get('out_points');
+        } else {
+            $outPoints = $request->get('out_points');
         }
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+        $payNum = $this->_model->confirmOrder($userId, $orderId, 2, $outPoints);
 
-        if($payNum['code'] != 0000){
+        if ($payNum['code'] != 0000) {
             return $payNum;
         }
 
-        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 2 , 0);
+        $info = $this->_model->getOrderList($this->userId, array('id' => $orderId), 1, 0);
 
-        if(count($info) == 0){
+        if (count($info) == 0) {
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
-        $body       = $info[0]->sname;
-        $detail     = '';
-        foreach ($info[0]->goods as $g){
-            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+        $body = $info[0]->sname;
+        $detail = '';
+        foreach ($info[0]->goods as $g) {
+            $detail .= $g->name . ' ';
         }
 
 
@@ -77,19 +78,24 @@ class AlipayController extends ApiController
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setPrivateKey(public_path().'/alipay/rsa_private_key.pem');
+        $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
 
         $options = [
-            'out_trade_no'  => date('YmdHis') . mt_rand(1000,9999),
-            'subject'       => $body,
-            'total_fee'     => '0.01',
-            'body'          => $detail,
+            'out_trade_no' => date('YmdHis') . mt_rand(1000, 9999),
+            'subject' => $detail,
+            'total_fee' => '0.01',
+            'body' => $body,
             //'total_fee'     => (int)($payNum['data'] * 100)
         ];
 
         $response = $gateway->purchase($options)->send();
 
-        $aliOrderString = $response->getOrderString();
+        if ($response->isSuccessful()) {
+            $aliOrderString = $response->getOrderString();
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($aliOrderString);
 
         //$wechatPayLogModel = new WechatPayLog();
@@ -115,7 +121,7 @@ class AlipayController extends ApiController
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setAlipayPublicKey(public_path().'/alipay/rsa_public_key.pem');
+        $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_public_key.pem');
 
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);

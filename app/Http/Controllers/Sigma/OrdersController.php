@@ -384,13 +384,13 @@ class OrdersController extends ApiController
         $body       = $info[0]->sname;
         $detail     = '';
         foreach ($info[0]->goods as $g){
-            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+            $detail .= $g->name . ' ' ;
         }
 
         $attributes = array();
         $attributes['trade_type']       = $tradeType;
-        $attributes['body']             = $body;
-        $attributes['detail']           = $detail;
+        $attributes['body']             = $detail;
+        $attributes['detail']           = $body;
         $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
         $attributes['total_fee']        = 1;
         $attributes['fee_type']         = 1;
