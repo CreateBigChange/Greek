@@ -132,7 +132,8 @@ class AlipayController extends ApiController
 
         $response = $gateway->completePurchase($options)->send();
 
-        var_dump($response);die;
+        var_dump($response);
+        var_dump($response->isPaid());die;
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(44444444444444444);
 
