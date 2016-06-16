@@ -132,10 +132,9 @@ class AlipayController extends ApiController
 
         $response = $gateway->completePurchase($options)->send();
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(44444444444444444);
-
 
         if ($response->isPaid()) {
 
@@ -164,7 +163,7 @@ class AlipayController extends ApiController
             ));
             die("success");
         } else {
-
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('fail');
             die('fail');
         }
     }
