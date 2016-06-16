@@ -3,7 +3,6 @@
 namespace Omnipay\Alipay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
-use App\Libs\BLogger;
 
 class ExpressCompletePurchaseRequest extends BasePurchaseRequest
 {
@@ -293,12 +292,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     protected function verifyWithRSA($data, $publicKey, $sign)
     {
         $publicKey = $this->prefixCertificateKeyPath($publicKey);
-
-
         $res       = openssl_pkey_get_public($publicKey);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(22222222);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($res);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(11111111111);
         $result    = (bool) openssl_verify($data, base64_decode($sign), $res);
         openssl_free_key($res);
 

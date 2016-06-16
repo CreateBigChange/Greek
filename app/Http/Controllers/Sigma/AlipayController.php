@@ -130,7 +130,6 @@ class AlipayController extends ApiController
             die('Order not exist.');
         }
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(2222222222222);
         $options = [
             'request_params'=> array_merge($_POST, $_GET),
         ];
@@ -139,6 +138,9 @@ class AlipayController extends ApiController
 
         try {
             $response = $gateway->completePurchase($options)->send();
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('#################');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->isSuccessful());
+
         }catch (Exception $e){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
         }
