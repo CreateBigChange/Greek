@@ -57,7 +57,7 @@ class AlipayController extends ApiController
             return $payNum;
         }
 
-        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 2 , 0);
 
         if(count($info) == 0){
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -117,6 +117,12 @@ class AlipayController extends ApiController
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey(public_path().'/alipay/rsa_public_key.pem');
 
+        $outTradeNo = $_POST['out_trade_no'];
+        $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+        if(!$order){
+            return 'Order not exist.';
+        }
+
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(2222222222222);
         $options = [
             'request_params'=> array_merge($_POST, $_GET),
@@ -126,8 +132,7 @@ class AlipayController extends ApiController
 
         $response = $gateway->completePurchase($options)->send();
 
-        $outTradeNo = $_POST['out_trade_no'];
-        $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(44444444444444444);
 
