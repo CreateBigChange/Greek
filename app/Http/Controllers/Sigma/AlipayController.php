@@ -122,6 +122,8 @@ class AlipayController extends ApiController
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_pubilc_key.pem');
+        
+        var_dump(openssl_verify('ss', 'ss', public_path().'/alipay/alipay_pubilc_key.pem'));die;
 
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
