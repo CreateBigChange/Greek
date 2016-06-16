@@ -144,9 +144,8 @@ class AlipayController extends ApiController
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
         }
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->isPaid());
-
-        if ($response->isPaid()) {
+        //if ($response->isPaid()) {
+        if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS')
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(3333333333333);
 
