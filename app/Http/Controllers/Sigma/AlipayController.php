@@ -74,7 +74,7 @@ class AlipayController extends ApiController
 
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
-        $gateway->setKey('f4efdbf409504fe8baf2778eccc0b1ba');
+        $gateway->setKey('2016060201471049');
         $gateway->setSellerEmail('zxhy201510@163.com');
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
@@ -118,7 +118,7 @@ class AlipayController extends ApiController
 
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
-        $gateway->setKey('f4efdbf409504fe8baf2778eccc0b1ba');
+        $gateway->setKey('2016060201471049');
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
