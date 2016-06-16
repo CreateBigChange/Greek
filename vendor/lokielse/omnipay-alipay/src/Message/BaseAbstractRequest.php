@@ -4,7 +4,6 @@ namespace Omnipay\Alipay\Message;
 
 use Exception;
 use Omnipay\Common\Message\AbstractRequest;
-use App\Libs\BLogger;
 
 abstract class BaseAbstractRequest extends AbstractRequest
 {

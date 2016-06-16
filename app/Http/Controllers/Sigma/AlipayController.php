@@ -131,6 +131,11 @@ class AlipayController extends ApiController
             die('Order not exist.');
         }
 
+        //已经支付了
+        if($order->pay_time){
+            die("success");
+        }
+
         $options = [
             'request_params'=> array_merge($_POST, $_GET),
         ];
@@ -147,8 +152,6 @@ class AlipayController extends ApiController
 
         //if ($response->isPaid()) {
         if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS'){
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(3333333333333);
 
             //更新支付时间和订单状态
             $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 2 , $_POST['gmt_payment']);
@@ -171,9 +174,11 @@ class AlipayController extends ApiController
                 array(),
                 $bell
             ));
+
             die("success");
+
         } else {
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->getMessage());
+
             die('fail');
         }
     }
