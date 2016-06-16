@@ -4,6 +4,7 @@ namespace Omnipay\Alipay\Message;
 
 use Exception;
 use Omnipay\Common\Message\AbstractRequest;
+use App\Libs\BLogger;
 
 abstract class BaseAbstractRequest extends AbstractRequest
 {
@@ -69,6 +70,7 @@ abstract class BaseAbstractRequest extends AbstractRequest
 
     protected function signWithRSA($data, $privateKey)
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         $privateKey = $this->prefixCertificateKeyPath($privateKey);
         $res        = openssl_pkey_get_private($privateKey);
         openssl_sign($data, $sign, $res);
