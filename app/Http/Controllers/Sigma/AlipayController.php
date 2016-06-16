@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Sigma;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Mockery\CountValidator\Exception;
 use Validator , Input;
 use Session , Cookie , Config , Log;
 
@@ -121,10 +122,8 @@ class AlipayController extends ApiController
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_pubilc_key.pem');
+        $gateway->setAlipayPublicKey(public_path().'/alipay/rsa_pubilc_key.pem');
         
-        var_dump(openssl_verify('ss', 'ss', public_path().'/alipay/rsa_public_key.pem'));die;
-
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
         if(!$order){
@@ -138,7 +137,11 @@ class AlipayController extends ApiController
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
 
-        $response = $gateway->completePurchase($options)->send();
+        try {
+            $response = $gateway->completePurchase($options)->send();
+        }catch (Exception $e){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
+        }
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->isPaid());
 
