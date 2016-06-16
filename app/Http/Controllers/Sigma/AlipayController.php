@@ -127,6 +127,7 @@ class AlipayController extends ApiController
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
         if(!$order){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('Order not exist.'));
             die('Order not exist.');
         }
 
@@ -138,7 +139,7 @@ class AlipayController extends ApiController
 
         try {
             $response = $gateway->completePurchase($options)->send();
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->isSuccessful());
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->isPaid());
 
         }catch (Exception $e){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
@@ -150,7 +151,7 @@ class AlipayController extends ApiController
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(3333333333333);
 
             //更新支付时间和订单状态
-            $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 1 , $_POST['gmt_payment']);
+            $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 2 , $_POST['gmt_payment']);
 
             $storeModel = new Stores;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
