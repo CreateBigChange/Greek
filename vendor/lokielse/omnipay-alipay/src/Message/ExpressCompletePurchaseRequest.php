@@ -3,6 +3,7 @@
 namespace Omnipay\Alipay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
+use App\Libs\BLogger;
 
 class ExpressCompletePurchaseRequest extends BasePurchaseRequest
 {
