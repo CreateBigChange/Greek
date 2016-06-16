@@ -233,6 +233,8 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
 
         $responseTxt = $this->getHttpResponseGET($url, $this->getCacertPath());
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($responseTxt);
+
         return $responseTxt;
     }
 
