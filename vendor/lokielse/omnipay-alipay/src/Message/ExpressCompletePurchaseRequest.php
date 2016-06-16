@@ -210,6 +210,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
             $data['verify_success'] = $this->isSignMatch();
             $status                 = $this->getTradeStatus();
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($this->isNotifyVerifiedOK());
             $data['is_paid']        = $data['verify_success'] && $this->isNotifyVerifiedOK() && $statusOk;
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
@@ -232,8 +233,6 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
         $url = "{$endpoint}partner={$partner}&notify_id={$notifyId}";
 
         $responseTxt = $this->getHttpResponseGET($url, $this->getCacertPath());
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($responseTxt);
 
         return $responseTxt;
     }
