@@ -161,7 +161,7 @@ class AlipayController extends ApiController
             ));
             die("success");
         } else {
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('fail');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->getMessage());
             die('fail');
         }
     }
