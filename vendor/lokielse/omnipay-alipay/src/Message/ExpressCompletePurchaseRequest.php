@@ -294,8 +294,9 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     {
         $publicKey = $this->prefixCertificateKeyPath($publicKey);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($publicKey);
+
         $res       = openssl_pkey_get_public($publicKey);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($res);
         $result    = (bool) openssl_verify($data, base64_decode($sign), $res);
         openssl_free_key($res);
 
