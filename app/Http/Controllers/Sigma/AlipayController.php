@@ -126,7 +126,7 @@ class AlipayController extends ApiController
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
         if(!$order){
-            return 'Order not exist.';
+            die('Order not exist.');
         }
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(2222222222222);
