@@ -272,7 +272,6 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
         } elseif ($signType == 'RSA' || $signType == '0001') {
             $publicKey = $this->getAlipayPublicKey();
             $result    = $this->verifyWithRSA($queryString, trim($publicKey), $requestSign);
-
             return $result;
         } else {
             return false;
@@ -296,7 +295,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     {
         $publicKey = $this->prefixCertificateKeyPath($publicKey);
         $res       = openssl_pkey_get_public($publicKey);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($res);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(openssl_verify($data, base64_decode($sign), $res));
         $result    = (bool) openssl_verify($data, base64_decode($sign), $res);
         openssl_free_key($res);
 
