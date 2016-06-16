@@ -70,7 +70,6 @@ abstract class BaseAbstractRequest extends AbstractRequest
 
     protected function signWithRSA($data, $privateKey)
     {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         $privateKey = $this->prefixCertificateKeyPath($privateKey);
         $res        = openssl_pkey_get_private($privateKey);
         openssl_sign($data, $sign, $res);
