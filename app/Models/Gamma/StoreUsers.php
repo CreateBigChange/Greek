@@ -213,7 +213,9 @@ class StoreUsers extends Model
                 'bank_card_holder'
         )->leftJoin($this->_table , 'store_withdraw_cash_log.user_id' , '=' ,'store_users.id' )->get();
 
-        return $sql;
+        foreach ($sql as $s){
+            $s->bank_card_num = substr_replace($s->bank_card_num, '', -1 , 4);
+        }
     }
 
     /**

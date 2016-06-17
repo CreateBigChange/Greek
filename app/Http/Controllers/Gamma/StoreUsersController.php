@@ -236,6 +236,28 @@ class StoreUsersController extends ApiController
     }
 
     /**
+     * @api {POST} /gamma/store/cash/log 提现记录
+     * @apiName cashLog
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash/log
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/store/cash/log
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function getWithdrawCashLog(){
+        $log = $this->_model->getWithdrawCashLog($this->storeId , date('Y-m-d' , time()));
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $log));
+    }
+
+    /**
      * @api {POST} /gamma/store/cash 提现
      * @apiName cash
      * @apiGroup GAMMA
