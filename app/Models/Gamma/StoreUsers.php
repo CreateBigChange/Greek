@@ -205,13 +205,13 @@ class StoreUsers extends Model
         $sql->select(
                 'real_name',
                 'withdraw_cash_num',
-                'created_at',
-                'updated_at',
+                $this->_store_withdraw_cash_log_table.'.created_at',
+                $this->_store_withdraw_cash_log_table.'.updated_at',
                 'status',
                 'reason',
                 'bank_card_num',
                 'bank_card_holder'
-        )->leftJoin($this->_table , 'store_withdraw_cash_log.user_id' , '=' ,'store_users.id' )->get();
+        )->leftJoin("store_users" , 'store_withdraw_cash_log.user_id' , '=' ,'store_users.id' )->get();
 
         foreach ($sql as $s){
             $s->bank_card_num = substr_replace($s->bank_card_num, '', -1 , 4);
