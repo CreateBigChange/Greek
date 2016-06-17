@@ -22,7 +22,7 @@ class Stores extends Model
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
     protected $_store_date_counts_table = 'store_date_counts';
-    protected $_store_bank_cards_table  = 'bank_card';
+    protected $_store_bank_cards_table  = 'store_bank_card';
     
     /**
      *
