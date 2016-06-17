@@ -426,7 +426,7 @@ class Stores extends Model
      * 判断余额是否充足
      */
     public function isAmpleStoreMoney($storeId , $money){
-        $storeMoney = DB::table($this->_store_configs_table)->select('money')->where('store_id' , $storeId)->frist();
+        $storeMoney = DB::table($this->_store_configs_table)->select('money')->where('store_id' , $storeId)->first();
 
         $temMoney = $storeMoney->money - $money;
         if($temMoney >= 0) {
