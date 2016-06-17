@@ -149,11 +149,11 @@ class StoreUsers extends Model
         if(!$bankInfo){
             return Message::setResponseInfo('NO_BANK');
         }
-        $data['bank_card_num']                          = $bankInfo['bank_card_num'];
-        $data['bank_card_holder']                       = $bankInfo['bank_card_holder'];
-        $data['bank_card_type']                         = $bankInfo['bank_card_type'];
-        $data['bank_name']                              = $bankInfo['bank_name'];
-        $data['bank_reserved_telephone']                = $bankInfo['bank_reserved_telephone'];
+        $data['bank_card_num']                          = $bankInfo->bank_card_num;
+        $data['bank_card_holder']                       = $bankInfo->bank_card_holder;
+        $data['bank_card_type']                         = $bankInfo->bank_card_type;
+        $data['bank_name']                              = $bankInfo->bank_name;
+        $data['bank_reserved_telephone']                = $bankInfo->bank_reserved_telephone;
 
 
         if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d' , time()) ) > Config::get('withdrawcash.times')){
