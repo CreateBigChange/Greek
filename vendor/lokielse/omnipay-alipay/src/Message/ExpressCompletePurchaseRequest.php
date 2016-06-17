@@ -295,11 +295,11 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     {
         $publicKey = $this->prefixCertificateKeyPath($publicKey);
         $res       = openssl_pkey_get_public($publicKey);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('############');
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         $result    = (bool) openssl_verify($data, base64_decode($sign), $res);
         openssl_free_key($res);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('####验证sign#####');
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
         return $result;
     }
 
@@ -307,6 +307,8 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     protected function isNotifyVerifiedOK()
     {
         if (preg_match("/true$/i", $this->verifyResponse)) {
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('####验证response text#####');
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(preg_match("/true$/i", $this->verifyResponse);
             return true;
         } else {
             return false;
