@@ -196,7 +196,7 @@ class StoreUsers extends Model
      */
     public function getWithdrawCashLog($storeId , $date=''){
 
-        $sql = DB::table($this->_store_withdraw_cash_log_table)->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
+        $sql = DB::table($this->_store_withdraw_cash_log_table);
 
         $sql->select(
                 'real_name',
@@ -209,12 +209,13 @@ class StoreUsers extends Model
                 'bank_card_holder'
             )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' );
 
-            if($date){
-                $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
-            };
+        if($date){
+            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
+        };
 
+        $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
-         $result = $sql->get();
+        $result = $sql->get();
 
         var_dump($result);die;
         foreach ($result as $r){
