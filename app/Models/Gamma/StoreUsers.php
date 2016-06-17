@@ -201,7 +201,7 @@ class StoreUsers extends Model
         $sql->select(
                 $this->_table.'.real_name',
                 $this->_store_withdraw_cash_log_table.'.withdraw_cash_num',
-                $this->_store_withdraw_cash_log_table.'.created_at',
+                $this->_store_withdraw_cash_log_table.'.created_time',
                 $this->_store_withdraw_cash_log_table.'.updated_at',
                 $this->_store_withdraw_cash_log_table.'.status',
                 $this->_store_withdraw_cash_log_table.'.reason',
