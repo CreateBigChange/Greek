@@ -264,7 +264,7 @@ class StoreUsersController extends ApiController
         $data['store_id']                   = $this->storeId;
         $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
-        $data['created_time']               = date('Y-m-d H:i:s' , time());
+        $data['created_at']               = date('Y-m-d H:i:s' , time());
 
         $result = $this->_model->withdrawCash($data);
 
