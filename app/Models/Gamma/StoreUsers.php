@@ -173,7 +173,7 @@ class StoreUsers extends Model
 
         try{
 
-            $storeModel->config(array('money' => $isAmple));
+            $storeModel->config($data['store_id'] , array('money' => $isAmple));
 
             DB::table($this->_store_withdraw_cash_log_table)->insert($data);
             DB::commit();
