@@ -216,6 +216,9 @@ class StoreUsers extends Model
         foreach ($sql as $s){
             $s->bank_card_num = substr_replace($s->bank_card_num, '', -1 , 4);
         }
+
+
+        return $sql;
     }
 
     /**
