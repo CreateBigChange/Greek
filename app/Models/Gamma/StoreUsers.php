@@ -244,7 +244,9 @@ class StoreUsers extends Model
 
         $result = DB::select($sql);
 
-        return $result[0]->num;
+        var_dump($result);die;
+
+        return isset($result[0]) ? $result[0]->num : 0;
     }
 
 
