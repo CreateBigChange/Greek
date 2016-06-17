@@ -218,12 +218,12 @@ class StoreUsers extends Model
 //        $result = $sql->get();
 
         $sql = "SELECT 
-                    store_users.real_name,
-                    store_withdraw_cash_log.withdraw_cash_num,
-                    store_withdraw_cash_log.created_at,
-                    store_withdraw_cash_log.status,
-                    store_withdraw_cash_log.reason,
-                    store_withdraw_cash_log.bank_card_num
+                    su.real_name,
+                    sw.withdraw_cash_num,
+                    sw.created_at,
+                    sw.status,
+                    sw.reason,
+                    sw.bank_card_num
                
                FROM store_withdraw_cash_log as sw" ;
 
@@ -231,7 +231,7 @@ class StoreUsers extends Model
 
         $sql .= " WHERE sw.store_id = $storeId";
         if($date){
-            $sql.= " AND sw.created_at LIKE '" . $date ."'%";
+            $sql.= " AND sw.created_at LIKE '" . $date ."%'";
         };
 
         $result = DB::select($sql);
