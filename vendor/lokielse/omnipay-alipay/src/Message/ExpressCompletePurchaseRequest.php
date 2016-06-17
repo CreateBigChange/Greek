@@ -308,7 +308,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
     {
         if (preg_match("/true$/i", $this->verifyResponse)) {
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('####验证response text#####');
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(preg_match("/true$/i", $this->verifyResponse);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(preg_match("/true$/i", $this->verifyResponse));
             return true;
         } else {
             return false;
