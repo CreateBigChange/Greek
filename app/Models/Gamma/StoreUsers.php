@@ -196,26 +196,45 @@ class StoreUsers extends Model
      */
     public function getWithdrawCashLog($storeId , $date=''){
 
-        $sql = DB::table($this->_store_withdraw_cash_log_table);
+//        $sql = DB::table($this->_store_withdraw_cash_log_table);
+//
+//        $sql->select(
+//                $this->_table.'.real_name',
+//                $this->_store_withdraw_cash_log_table.'.withdraw_cash_num',
+//                $this->_store_withdraw_cash_log_table.'.created_at',
+//                $this->_store_withdraw_cash_log_table.'.updated_at',
+//                $this->_store_withdraw_cash_log_table.'.status',
+//                $this->_store_withdraw_cash_log_table.'.reason',
+//                $this->_store_withdraw_cash_log_table.'.bank_card_num',
+//                $this->_store_withdraw_cash_log_table.'.bank_card_holder'
+//            )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' );
+//
+//        if($date){
+//            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date." %'");
+//        };
+//
+//        $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
+//
+//        $result = $sql->get();
 
-        $sql->select(
-                $this->_store_withdraw_cash_log_table.'.withdraw_cash_num',
-                $this->_store_withdraw_cash_log_table.'.created_at',
-                $this->_store_withdraw_cash_log_table.'.updated_at',
-                $this->_store_withdraw_cash_log_table.'.status',
-                $this->_store_withdraw_cash_log_table.'.reason',
-                $this->_store_withdraw_cash_log_table.'.bank_card_num',
-                $this->_store_withdraw_cash_log_table.'.bank_card_holder'
-            );
+        $sql = "SELECT 
+                    store_users.real_name,
+                    store_withdraw_cash_log.withdraw_cash_num,
+                    store_withdraw_cash_log.created_at,
+                    store_withdraw_cash_log.status,
+                    store_withdraw_cash_log.reason,
+                    store_withdraw_cash_log.bank_card_num,
+               
+               FROM store_withdraw_cash_log as sw" ;
 
+        $sql .= " LEFT JOIN store_users as su on su.id = sw.user_id";
+
+        $sql .= " WHERE sw.store_id = $storeId";
         if($date){
-            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date." %'");
+            $sql.= " AND sw.created_at LIKE '" . $date ."'%";
         };
 
-        $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
-
-        $result = $sql->get();
-
+        $result = DB::select($sql);
         foreach ($result as $r){
 
             $r->bank_card_num = preg_replace('/(^.*)\d{4}(\d{4})$/','\\2',$r->bank_card_num);
