@@ -202,7 +202,7 @@ class StoreUsers extends Model
             $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
         }
 
-        $sql->select(
+        $result = $sql->select(
                 'real_name',
                 'withdraw_cash_num',
                 $this->_store_withdraw_cash_log_table.'.created_at',
@@ -213,12 +213,12 @@ class StoreUsers extends Model
                 'bank_card_holder'
         )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' )->get();
 
-        foreach ($sql as $s){
-            $s->bank_card_num = substr_replace($s->bank_card_num, '', -1 , 4);
+        foreach ($result as $r){
+            $r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
         }
 
 
-        return $sql;
+        return $result;
     }
 
     /**
