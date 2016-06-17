@@ -68,7 +68,7 @@ class AlipayController extends ApiController
         $body = $info[0]->sname;
         $detail = '';
         foreach ($info[0]->goods as $g) {
-            $detail .= $g->name . ' ';
+            $detail .= $g->name . '/';
         }
 
 
@@ -120,7 +120,7 @@ class AlipayController extends ApiController
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_rsa_public_key.pem');
+        $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_public_key.pem');
         
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);
