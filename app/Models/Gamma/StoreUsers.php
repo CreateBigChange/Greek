@@ -5,6 +5,12 @@ namespace App\Models\Gamma;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Gamma\Stores;
+use Config;
+use App\Libs\Message;
+use Mockery\Exception;
+use App\Libs\BLogger;
+
 class StoreUsers extends Model
 {
     protected $_table = 'store_users';
@@ -124,8 +130,102 @@ class StoreUsers extends Model
         return $isLogin;
     }
 
-    public function addWithdrawCashNum($data){
-        return DB::table($this->_store_withdraw_cash_log_table)->insert($data);
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 增加提现记录
+     */
+    public function withdrawCash($data){
+
+        if(!isset($data['store_id'])){
+            return false;
+        }
+
+        //获取银行信息
+        $storeModel = new Stores;
+        $bankInfo = $storeModel->getBankCard($data['store_id'], 0);
+
+        if(!$bankInfo){
+            return Message::setResponseInfo('NO_BANK');
+        }
+        $data['bank_card_num']                          = $bankInfo['bank_card_num'];
+        $data['bank_card_holder']                       = $bankInfo['bank_card_holder'];
+        $data['bank_card_type']                         = $bankInfo['bank_card_type'];
+        $data['bank_name']                              = $bankInfo['bank_name'];
+        $data['bank_reserved_telephone']                = $bankInfo['bank_reserved_telephone'];
+
+
+        if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d') ) > Config::get('withdrawcash.times')){
+            return Message::setResponseInfo('NO_TIMES');
+        }
+
+        if($data['withdraw_cash_num'] > Config::get('withdrawcash.total')){
+            return Message::setResponseInfo('EXCEED_MONEY_LIMIT');
+        }
+
+        $isAmple = $storeModel->isAmpleStoreMoney($data['store_id'], $data['withdraw_cash_num']);
+        if($isAmple === false){
+            return Message::setResponseInfo('MONEY_NOT_AMPLE');
+        }
+
+        DB::beginTransaction();
+
+        try{
+
+            $storeModel->config(array('money' => $isAmple));
+
+            DB::table($this->_store_withdraw_cash_log_table)->insert($data);
+            DB::commit();
+            return Message::setResponseInfo('SUCCESS');
+
+        }catch (Exception $e){
+            DB::rollBack();
+
+            return Message::setResponseInfo('FAILED');
+        }
+
+        return Message::setResponseInfo('FAILED');
     }
+
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 获取提现记录
+     */
+    public function getWithdrawCashLog($storeId , $date=''){
+
+        $sql = DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId);
+
+        if($date){
+            $sql->where('created_at' , 'like' , $date.'%');
+        }
+
+        $sql->select(
+                'real_name',
+                'withdraw_cash_num',
+                'created_at',
+                'updated_at',
+                'status',
+                'reason',
+                'bank_card_num',
+                'bank_card_holder'
+        )->leftJoin($this->_table , 'store_withdraw_cash_log.user_id' , '=' ,'store_users.id' )->get();
+
+        return $sql;
+    }
+
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 获取今日提现
+     */
+    public function getWithdrawCashTimes($storeId , $date=''){
+
+        return DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_at' , 'like' , $date.'%')->count();
+    }
+
 
 }

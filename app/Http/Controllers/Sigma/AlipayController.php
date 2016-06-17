@@ -114,8 +114,6 @@ class AlipayController extends ApiController
 
 
     public function notify(){
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(111111111);
-
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');

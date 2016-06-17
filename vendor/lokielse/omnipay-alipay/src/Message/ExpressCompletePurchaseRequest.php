@@ -212,7 +212,7 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
             $data['is_paid']        = $data['verify_success'] && $this->isNotifyVerifiedOK() && $statusOk;
 
-            //BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($data);
         } else {
             $status                 = $this->getTradeStatus();
             $statusOk               = $status == 'TRADE_FINISHED' || $status == 'TRADE_SUCCESS';
@@ -306,9 +306,9 @@ class ExpressCompletePurchaseRequest extends BasePurchaseRequest
 
     protected function isNotifyVerifiedOK()
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('####验证response text#####');
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(preg_match("/true$/i", $this->verifyResponse));
         if (preg_match("/true$/i", $this->verifyResponse)) {
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('####验证response text#####');
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(preg_match("/true$/i", $this->verifyResponse));
             return true;
         } else {
             return false;

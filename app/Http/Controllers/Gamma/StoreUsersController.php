@@ -262,10 +262,13 @@ class StoreUsersController extends ApiController
         $data = array();
         $data['withdraw_cash_num']          = $request->has('num');
         $data['store_id']                   = $this->storeId;
+        $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
         $data['created_time']               = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->addWithdrawCashNum($data)){
+        $result = $this->_model->withdrawCash($data);
+
+        if($result){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

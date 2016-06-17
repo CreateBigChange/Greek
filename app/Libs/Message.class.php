@@ -55,6 +55,10 @@ class Message {
 				'MONEY_NOT_EQUAL'				=> array('code'=>'5006' , 'msg'=>'支付的金额与需要支付的金额不等'),
 				'EMPTY_CONSIGNEE'				=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
 
+				'NO_BANK'						=> array('code'=>'5008' , 'msg'=>'没有银行信息'),
+				'NO_TIMES'						=> array('code'=>'5009' , 'msg'=>'提现次数超过限制了'),
+				'EXCEED_MONEY_LIMIT'			=> array('code'=>'5009' , 'msg'=>'超过金额限制了'),
+
 			);
 
 			if(isset($error[strtoupper($errorkey)])){

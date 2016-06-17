@@ -20,6 +20,7 @@ class Stores extends Model
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
     protected $_store_date_counts_table = 'store_date_counts';
+    protected $_store_bank_cards_table  = 'bank_card';
     
     /**
      *
@@ -408,6 +409,29 @@ class Stores extends Model
 
         return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
 
+    }
+
+    /**
+     * 返回店铺绑定的银行卡
+     */
+    public function getBankCard($storeId , $bankId){
+
+        return DB::table($this->_store_bank_cards_table)->where('store_id' , $storeId)->first();
+
+    }
+
+    /**
+     * 判断余额是否充足
+     */
+    public function isAmpleStoreMoney($storeId , $money){
+        $storeMoney = DB::table($this->_store_configs_table)->select('money')->where('store_id' , $storeId)->frist();
+
+        $temMoney = $storeMoney->money - $money;
+        if($temMoney >= 0) {
+            return $temMoney;
+        }else{
+            return false;
+        }
     }
 
 }
