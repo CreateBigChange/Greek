@@ -199,7 +199,7 @@ class StoreUsers extends Model
         $sql = DB::table($this->_store_withdraw_cash_log_table)->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
         if($date){
-            $sql->where('created_at' , 'like' , "'".$date."%'");
+            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
         }
 
         $sql->select(
