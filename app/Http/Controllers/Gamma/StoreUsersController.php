@@ -268,11 +268,8 @@ class StoreUsersController extends ApiController
 
         $result = $this->_model->withdrawCash($data);
 
-        if($result){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
-        }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
-        }
+        return $result;
+
     }
 
 
