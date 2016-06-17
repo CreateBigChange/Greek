@@ -140,7 +140,7 @@ class AlipayController extends ApiController
             'request_params'=> array_merge($_POST, $_GET),
         ];
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($options);
 
         try {
             $response = $gateway->completePurchase($options)->send();
