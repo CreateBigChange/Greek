@@ -272,6 +272,28 @@ class StoreUsersController extends ApiController
 
     }
 
+    /**
+     * @api {POST} /gamma/store/cash/config 提现配置
+     * @apiName cashConfig
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash/config
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/store/cash/config
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function withdrawCashConfig(Request $request){
 
+        $data = $this->_model->withdrawCashConfig($this->storeId , date('Y-m-d' , time()));
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
+
+    }
 
 }

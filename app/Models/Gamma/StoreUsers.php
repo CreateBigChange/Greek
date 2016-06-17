@@ -156,7 +156,7 @@ class StoreUsers extends Model
         $data['bank_reserved_telephone']                = $bankInfo['bank_reserved_telephone'];
 
 
-        if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d') ) > Config::get('withdrawcash.times')){
+        if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d' , time()) ) > Config::get('withdrawcash.times')){
             return Message::setResponseInfo('NO_TIMES');
         }
 
@@ -227,5 +227,15 @@ class StoreUsers extends Model
         return DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_at' , 'like' , $date.'%')->count();
     }
 
+
+    public function withdrawCashConfig($storeId , $date=''){
+        $data = array();
+        $data['used_times']     = DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_at' , 'like' , $date.'%')->count();
+        $data['times']          = Config::get('withdrawcash.times');
+        $data['total']          = Config::get('withdrawcash.total');
+        $data['using_times']    = $data['times'] - $data['used_times'];
+
+        return $data;
+    }
 
 }
