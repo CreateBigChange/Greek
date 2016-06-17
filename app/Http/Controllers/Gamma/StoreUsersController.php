@@ -260,11 +260,11 @@ class StoreUsersController extends ApiController
         }
 
         $data = array();
-        $data['withdraw_cash_num']          = $request->has('num');
+        $data['withdraw_cash_num']          = $request->get('num');
         $data['store_id']                   = $this->storeId;
         $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
-        $data['created_at']               = date('Y-m-d H:i:s' , time());
+        $data['created_at']                 = date('Y-m-d H:i:s' , time());
 
         $result = $this->_model->withdrawCash($data);
 
