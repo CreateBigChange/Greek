@@ -209,9 +209,9 @@ class StoreUsers extends Model
                 $this->_store_withdraw_cash_log_table.'.bank_card_holder'
             )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' );
 
-//        if($date){
-//            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
-//        };
+        if($date){
+            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'%".$date."%'");
+        };
 
         $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
