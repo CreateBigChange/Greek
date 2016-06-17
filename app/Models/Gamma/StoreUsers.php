@@ -198,11 +198,7 @@ class StoreUsers extends Model
 
         $sql = DB::table($this->_store_withdraw_cash_log_table)->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
-        if($date){
-            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
-        }
-
-        $result = $sql->select(
+        $sql->select(
                 'real_name',
                 'withdraw_cash_num',
                 $this->_store_withdraw_cash_log_table.'.created_at',
@@ -211,7 +207,14 @@ class StoreUsers extends Model
                 'reason',
                 'bank_card_num',
                 'bank_card_holder'
-        )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' )->get();
+            )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' )
+
+            if($date){
+                $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date."%'");
+            };
+
+
+         $result = $sql->get();
 
         var_dump($result);die;
         foreach ($result as $r){
