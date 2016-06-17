@@ -201,7 +201,7 @@ class StoreUsers extends Model
         $sql->select(
                 $this->_table.'.real_name',
                 $this->_store_withdraw_cash_log_table.'.withdraw_cash_num',
-                $this->_store_withdraw_cash_log_table.'.created_time',
+                $this->_store_withdraw_cash_log_table.'.created_at',
                 $this->_store_withdraw_cash_log_table.'.updated_at',
                 $this->_store_withdraw_cash_log_table.'.status',
                 $this->_store_withdraw_cash_log_table.'.reason',
@@ -210,7 +210,7 @@ class StoreUsers extends Model
             )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' );
 
         if($date){
-            $sql->where($this->_store_withdraw_cash_log_table.'.created_time' , 'like' , "'".$date." %'");
+            $sql->where($this->_store_withdraw_cash_log_table.'.created_at' , 'like' , "'".$date." %'");
         };
 
         $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
@@ -235,7 +235,7 @@ class StoreUsers extends Model
      */
     public function getWithdrawCashTimes($storeId , $date=''){
 
-        return DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_time' , 'like' , "'".$date." %'")->count();
+        return DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_at' , 'like' , "'".$date." %'")->count();
     }
 
 
