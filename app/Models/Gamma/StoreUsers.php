@@ -223,7 +223,7 @@ class StoreUsers extends Model
                     store_withdraw_cash_log.created_at,
                     store_withdraw_cash_log.status,
                     store_withdraw_cash_log.reason,
-                    store_withdraw_cash_log.bank_card_num,
+                    store_withdraw_cash_log.bank_card_num
                
                FROM store_withdraw_cash_log as sw" ;
 
