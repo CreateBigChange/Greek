@@ -156,7 +156,7 @@ class StoreUsers extends Model
         $data['bank_reserved_telephone']                = $bankInfo->bank_reserved_telephone;
 
 
-        if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d' , time()) ) > Config::get('withdrawcash.times')){
+        if($this->getWithdrawCashTimes($data['store_id'] , date('Y-m-d' , time()) ) + 1 > Config::get('withdrawcash.times')){
             return Message::setResponseInfo('NO_TIMES');
         }
 
