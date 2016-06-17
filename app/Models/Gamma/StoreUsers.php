@@ -220,7 +220,7 @@ class StoreUsers extends Model
         foreach ($result as $r){
 
             ///(^.*)\d{4}(\d{4})$/
-            $r->bank_card_num = preg_replace('/(\d{4})$/','\\1',$r->bank_card_num);
+            $r->bank_card_num = preg_replace('/(\d{4})$/','\\2',$r->bank_card_num);
             //$r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
         }
 
