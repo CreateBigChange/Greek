@@ -217,6 +217,8 @@ class StoreUsers extends Model
 
         $result = $sql->get();
 
+        $result = DB::table($this->_store_withdraw_cash_log_table)->get();
+
         var_dump($result);die;
         foreach ($result as $r){
             $r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
