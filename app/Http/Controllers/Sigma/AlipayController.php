@@ -74,7 +74,7 @@ class AlipayController extends ApiController
 
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
-        $gateway->setKey('2016060201471049');
+        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
         $gateway->setSellerEmail('zxhy201510@163.com');
         $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
 
@@ -82,10 +82,10 @@ class AlipayController extends ApiController
         $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
 
         $options = [
-            'out_trade_no' => date('YmdHis') . mt_rand(1000, 9999),
-            'subject' => $detail,
-            'total_fee' => '0.01',
-            'body' => $body,
+            'out_trade_no'      => date('YmdHis') . mt_rand(1000, 9999),
+            'subject'           => $detail,
+            'total_fee'         => '0.01',
+            'body'              => $body,
             //'total_fee'     => (int)($payNum['data'] * 100)
         ];
 
@@ -118,7 +118,7 @@ class AlipayController extends ApiController
 
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
-        $gateway->setKey('2016060201471049');
+        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
         $gateway->setSellerEmail('zxhy201510@163.com');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
