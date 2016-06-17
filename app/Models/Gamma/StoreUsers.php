@@ -199,14 +199,14 @@ class StoreUsers extends Model
         $sql = DB::table($this->_store_withdraw_cash_log_table);
 
         $sql->select(
-                'real_name',
-                'withdraw_cash_num',
+                $this->_table.'.real_name',
+                $this->_store_withdraw_cash_log_table.'.withdraw_cash_num',
                 $this->_store_withdraw_cash_log_table.'.created_at',
                 $this->_store_withdraw_cash_log_table.'.updated_at',
-                'status',
-                'reason',
-                'bank_card_num',
-                'bank_card_holder'
+                $this->_store_withdraw_cash_log_table.'.status',
+                $this->_store_withdraw_cash_log_table.'.reason',
+                $this->_store_withdraw_cash_log_table.'.bank_card_num',
+                $this->_store_withdraw_cash_log_table.'.bank_card_holder'
             )->leftJoin($this->_table , $this->_store_withdraw_cash_log_table.'.user_id' , '=' , $this->_table.'.id' );
 
         if($date){
@@ -216,8 +216,6 @@ class StoreUsers extends Model
         $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
         $result = $sql->get();
-
-        $result = DB::table($this->_store_withdraw_cash_log_table)->get();
 
         var_dump($result);die;
         foreach ($result as $r){
