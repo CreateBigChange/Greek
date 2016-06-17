@@ -228,7 +228,7 @@ class StoreUsers extends Model
      * @param $account
      * @param $password
      * @return mixed
-     * 获取今日提现
+     * 获取今日提现的次数
      */
     public function getWithdrawCashTimes($storeId , $date=''){
 
@@ -252,7 +252,7 @@ class StoreUsers extends Model
 
     public function withdrawCashConfig($storeId , $date=''){
         $data = array();
-        $data['used_times']     = DB::table($this->_store_withdraw_cash_log_table)->where('store_id' , $storeId)->where('created_at' , 'like' , "'".$date."%'")->count();
+        $data['used_times']     = $this->getWithdrawCashTimes($storeId , $date);
         $data['times']          = Config::get('withdrawcash.times');
         $data['total']          = Config::get('withdrawcash.total');
         $data['using_times']    = $data['times'] - $data['used_times'];
