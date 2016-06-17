@@ -216,7 +216,7 @@ class StoreUsers extends Model
         $sql->where($this->_store_withdraw_cash_log_table.'.store_id' , $storeId);
 
         $result = DB::table($this->_store_withdraw_cash_log_table)->select('withdraw_cash_num' , 'created_at' , 'updated_at' , 'status' , 'reason' , 'bank_card_num' , 'bank_card_holder')
-            ->get();
+            ->where('created_at' , 'like' , "\'$date%\'")->get();
 
         var_dump($result);die;
         foreach ($result as $r){
