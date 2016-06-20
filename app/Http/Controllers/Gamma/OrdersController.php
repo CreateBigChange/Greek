@@ -19,6 +19,7 @@ use App\Libs\Message;
 use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
+use Omnipay\Omnipay;
 
 class OrdersController extends ApiController
 {
