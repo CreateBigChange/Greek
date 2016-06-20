@@ -136,6 +136,8 @@ class OrdersController extends ApiController
 
         //确认退款
         if($status == Config::get('orderstatus.refunded')){
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222222222222));
+
 
             $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
             if(!isset($orderInfo)){
@@ -150,8 +152,9 @@ class OrdersController extends ApiController
             $orderNo    = $orderInfo[0]->out_trade_no;
 
             if($orderInfo[0]->pay_type_id == 1) {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333333333333333333333));
                 if ($this->_wechatRefund($orderNo, $refundNo, $payTotal)) {
-
+                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4444444444444444444444444444));
                     if ($this->_model->refund($orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
@@ -162,12 +165,13 @@ class OrdersController extends ApiController
 
             }
 
-        }
-        
-        if($this->_model->changeStatus($this->storeId , $this->userId , $orderId , $status)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
-        }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+        }else {
+
+            if ($this->_model->changeStatus($this->storeId, $this->userId, $orderId, $status)) {
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            } else {
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }
     }
 
