@@ -154,7 +154,7 @@ class OrdersController extends ApiController
             $orderNo    = $orderInfo[0]->out_trade_no;
 
             if($orderInfo[0]->pay_type_id == 1) {
-                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal)) {
+                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100)) {
                     BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4444444444444444444444444444));
                     if ($this->_model->refund($orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -187,6 +187,7 @@ class OrdersController extends ApiController
                 'cert_path'          => Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
                 'key_path'           => Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
                 'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
+                'fee_type'           => 'CNY'
             ],
         ];
 
