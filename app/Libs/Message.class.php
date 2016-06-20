@@ -41,6 +41,7 @@ class Message {
 				'NO__HAVE_PAY_PASSWORD'			=> array('code'=>'4018' , 'msg'=>'没有设置支付密码'),
 				'PAY_PASSWORD_ERROR'			=> array('code'=>'4019' , 'msg'=>'支付密码错误'),
 				'MOBILE_NO_BIND'				=> array('code'=>'4020' , 'msg'=>'请先绑定手机号'),
+				'ORDER_NOT_EXIST'				=> array('code'=>'4021' , 'msg'=>'订单不存在'),
 
 
 
@@ -53,6 +54,10 @@ class Message {
 				'MONEY_NOT_AMPLE'				=> array('code'=>'5005' , 'msg'=>'余额不足'),
 				'MONEY_NOT_EQUAL'				=> array('code'=>'5006' , 'msg'=>'支付的金额与需要支付的金额不等'),
 				'EMPTY_CONSIGNEE'				=> array('code'=>'5007' , 'msg'=>'请填写收货地址'),
+
+				'NO_BANK'						=> array('code'=>'5008' , 'msg'=>'没有银行信息'),
+				'NO_TIMES'						=> array('code'=>'5009' , 'msg'=>'提现次数超过限制了'),
+				'EXCEED_MONEY_LIMIT'			=> array('code'=>'5009' , 'msg'=>'超过金额限制了'),
 
 			);
 

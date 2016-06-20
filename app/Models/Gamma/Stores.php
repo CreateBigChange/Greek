@@ -9,6 +9,8 @@ namespace App\Models\Gamma;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Gamma\StoreUsers;
+use Overtrue\Socialite\Config;
 
 
 class Stores extends Model
@@ -20,6 +22,7 @@ class Stores extends Model
     protected $_store_goods_table       = 'store_goods';
     protected $_store_nav_table         = 'store_nav';
     protected $_store_date_counts_table = 'store_date_counts';
+    protected $_store_bank_cards_table  = 'store_bank_card';
     
     /**
      *
@@ -87,7 +90,8 @@ class Stores extends Model
                       sc.business_cycle,
                       sc.business_time,
                       sc.is_close,
-                      sc.bell
+                      sc.bell,
+                      sc.money
                   FROM $this->_store_infos_table as si";
 
         $sql .= " LEFT JOIN store_configs as sc ON si.id = sc.store_id";
@@ -407,6 +411,29 @@ class Stores extends Model
 
         return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
 
+    }
+
+    /**
+     * 返回店铺绑定的银行卡
+     */
+    public function getBankCard($storeId , $bankId){
+
+        return DB::table($this->_store_bank_cards_table)->where('store_id' , $storeId)->first();
+
+    }
+
+    /**
+     * 判断余额是否充足
+     */
+    public function isAmpleStoreMoney($storeId , $money){
+        $storeMoney = DB::table($this->_store_configs_table)->select('money')->where('store_id' , $storeId)->first();
+
+        $temMoney = $storeMoney->money - $money;
+        if($temMoney >= 0) {
+            return $temMoney;
+        }else{
+            return false;
+        }
     }
 
 }

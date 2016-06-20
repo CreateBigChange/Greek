@@ -123,7 +123,8 @@ class Orders extends Model
             $o->goods = array();
             $o->goodsNum = 0;
 
-            $o->payTotal = $o->total + $o->deliver - ($o->in_points / 100);
+            $o->payTotal            = $o->total + $o->deliver - ($o->in_points / 100);
+            $o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
@@ -143,23 +144,44 @@ class Orders extends Model
      * @param id        number
      * @param status    number
      */
-    public function changeStatus($storeId , $userId , $id , $status){
+    public function changeStatus($storeId , $userId , $orderId , $status){
 
-        $isChange = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status));
+        DB::beginTransaction();
+        try {
+            //更新订单状态
+            DB::table($this->_orders_table)->where('store_id', $storeId)->where('id', $orderId)->update(array('status' => $status));
 
-        if($isChange){
+            if ($status == Config::get('orderstatus.arrive')['status']) {
+
+                //发放用户积分
+                $userModel = new Users;
+                $userInfo = $userModel->getUserInfoById($userId);
+                $orderInfo = DB::table($this->_orders_table)->where('id', $orderId)->first();
+
+                if (!$orderInfo || !$userInfo) {
+                    return false;
+                }
+                $point = $userInfo->points + $orderInfo->out_points;
+                $userModel->updatePoint($userId, $point);
+
+            }
 
             $log = array(
-                'order_id'      => $id,
-                'user'          => $userId,
-                'identity'      => '商家管理员',
-                'platform'      => '手机端',
-                'log'           => '将订单'. $id . '的状态改为'.$status,
-                'created_at'    => date('Y-m-d H:i:s' , time())
+                'order_id' => $orderId,
+                'user' => $userId,
+                'identity' => '商家管理员',
+                'platform' => '手机端',
+                'log' => '将订单' . $orderId . '的状态改为' . $status,
+                'created_at' => date('Y-m-d H:i:s', time())
             );
             DB::table($this->_order_logs_table)->insert($log);
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
+            DB::commit();
             return true;
-        }else{
+        }catch (Exception $e){
+            DB::rollBack();
+
             return false;
         }
 
@@ -293,17 +315,6 @@ class Orders extends Model
             DB::rollBack();
             return false;
         }
-//        //提交事物
-//        if() {
-//
-//        }else{
-//            //失败事物回滚
-//
-//            return false;
-//        }
-
-
-
 
     }
 
@@ -435,7 +446,7 @@ class Orders extends Model
 //        }
 
         //如果是余额支付
-        if($payType->id == 3) {
+        if($payType->id == Config::get('paytype.money')) {
             //用户余额是否充足
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
@@ -458,18 +469,18 @@ class Orders extends Model
 
         try {
             //加上本次订单赠送的积分
-            $isAmplePoint += $order->out_points;
+            //$isAmplePoint += $order->out_points;
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('###################');
             //更新用户积分
             $userModel->updatePoint($userId, $isAmplePoint);
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户积分成功,当前积分为' . $isAmplePoint);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除用户'.$userId.'积分成功,当前积分为' . $isAmplePoint);
 
             //更新店铺积分
             $storeModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除店铺'.$order->store_id.'积分成功,当前积分为' . ($storeInfo->point - $order->out_points));
 
             //如果是余额支付
-            if($payType->id == 3) {
+            if($payType->id == Config::get('paytype.money')) {
                 //更新用户余额
                 $userModel->updateMoney($userId, $isAmpleMoney);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户余额成功,当前余额为' . $isAmpleMoney);
@@ -596,7 +607,8 @@ class Orders extends Model
      */
     public function evaluate($data){
         if(DB::table($this->_order_evaluates)->insert($data)){
-            DB::table($this->_orders_table)->where('id' , $data['order_id'])->update(array('is_evaluate' => 1));
+            DB::table($this->_orders_table)->where('id' , $data['order_id'])->update(array('is_evaluate' => 1 , 'status' => 1));
+            $this->createOrderLog($data['order_id'], $data['user_id'], '普通用户', '用户端APP', '订单评价完成' , Config::get('orderstatus.completd')['status']);
             return true;
         }else{
             return false;
@@ -631,33 +643,6 @@ class Orders extends Model
         return DB::table($this->_orders_table)->where('id' , $orderId)->update(array('out_trade_no' => $outTradeNo));
     }
 
-//    /**
-//     * @param $orderId
-//     * @param $outTradeNo
-//     * @return mixed
-//     * 更新支付状态
-//     */
-//    public function updateOrderHandle($orderId , $payTime){
-//        if(DB::table($this->_orders_table)->where('id' , $orderId)->update(array('pay_time' => $payTime , 'status' => Config::get('orderstatus.paid')['status']))){
-//            $log = array(
-//                'order_id'      => $orderId,
-//                'user'          => '',
-//                'identity'      => '微信',
-//                'platform'      => '手机端',
-//                'log'           => '已支付',
-//                'status'        => Config::get('orderstatus.paid')['status'],
-//                'created_at'    => date('Y-m-d H:i:s' , time())
-//            );
-//            if(DB::table($this->_order_logs_table)->insert($log)){
-//                return true;
-//            }else{
-//                return false;
-//            }
-//        }else{
-//            return false;
-//        }
-//    }
-
     /**
      * @param $outTradeNo
      * @return mixed
@@ -665,6 +650,15 @@ class Orders extends Model
      */
     public function getOrderByOutTradeNo($outTradeNo){
         return DB::table($this->_orders_table)->where('out_trade_no' , $outTradeNo)->first();
+    }
+
+    /**
+     * @param $outTradeNo
+     * @return mixed
+     * 根据订单ID获取订单信息
+     */
+    public function getOrderById($userId , $orderId){
+        return DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->first();
     }
 
 }

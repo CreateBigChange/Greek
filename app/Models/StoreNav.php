@@ -12,6 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreNav extends Model{
 
-
+    protected $table  = 'store_nav';
 
 }

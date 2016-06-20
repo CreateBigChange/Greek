@@ -801,8 +801,41 @@ class StoresController extends ApiController
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
             'visiting_number'       => $visitingNumber,
-            'order_num'             => $orderCount[0]->order_num,
-            'turnover'              => $orderCount[0]->turnover
+            'order_num'             => $orderCount[0]->order_num ? $orderCount[0]->order_num : 0,
+            'turnover'              => $orderCount[0]->turnover ? $orderCount[0]->turnover : 0
+        )));
+    }
+
+    /**
+     * @api {POST} /gamma/store/month/points 获取本月的积分
+     * @apiName storeMonthPoints
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取本月的积分
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/month/points
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/store/month/points
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getStoreMonthPoint(){
+        $date = date('Y-m');
+
+        $storeId = $this->storeId;
+
+        $storeInfo = $this->_model->getStoreInfo($storeId);
+
+        $orderModel = new Orders;
+        $orderCount = $orderModel->getOrderMonthPoint($storeId , $date);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array(
+            'usable_points'          => $storeInfo->point ? $storeInfo->point : 0,
+            'out_points'             => $orderCount[0]->out_points ? $orderCount[0]->out_points : 0,
+            'in_points'              => $orderCount[0]->in_points ? $orderCount[0]->in_points : 0
         )));
     }
 }

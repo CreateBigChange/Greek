@@ -142,7 +142,7 @@ class Orders extends Model
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`pay_total`) as turnover
+                    sum(`total`) as turnover
                 FROM $this->_orders_table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
@@ -150,6 +150,21 @@ class Orders extends Model
 
         return DB::select($sql);
 
+    }
+
+    /**
+     * 获取本月收入的积分和使用的积分
+     */
+    public function getOrderMonthPoint($storeId , $date=0){
+        $sql = "SELECT 
+                    sum(`out_points`) as out_points , 
+                    sum(`in_points`) as in_points
+                FROM $this->_orders_table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND `created_at` LIKE '" .$date . "%'";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
+
+        return DB::select($sql);
 
     }
 }

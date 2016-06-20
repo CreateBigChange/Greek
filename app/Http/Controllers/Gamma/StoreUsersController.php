@@ -236,6 +236,28 @@ class StoreUsersController extends ApiController
     }
 
     /**
+     * @api {POST} /gamma/store/cash/log 提现记录
+     * @apiName cashLog
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash/log
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/store/cash/log
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function getWithdrawCashLog(){
+        $log = $this->_model->getWithdrawCashLog($this->storeId , date('Y-m-d' , time()));
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $log));
+    }
+
+    /**
      * @api {POST} /gamma/store/cash 提现
      * @apiName cash
      * @apiGroup GAMMA
@@ -260,18 +282,40 @@ class StoreUsersController extends ApiController
         }
 
         $data = array();
-        $data['withdraw_cash_num']          = $request->has('num');
+        $data['withdraw_cash_num']          = $request->get('num');
         $data['store_id']                   = $this->storeId;
+        $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
-        $data['created_time']               = date('Y-m-d H:i:s' , time());
+        $data['created_at']                 = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->addWithdrawCashNum($data)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
-        }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
-        }
+        $result = $this->_model->withdrawCash($data);
+
+        return $result;
+
     }
 
+    /**
+     * @api {POST} /gamma/store/cash/config 提现配置
+     * @apiName cashConfig
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/cash/config
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/store/cash/config
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function withdrawCashConfig(Request $request){
 
+        $data = $this->_model->withdrawCashConfig($this->storeId , date('Y-m-d' , time()));
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
+
+    }
 
 }

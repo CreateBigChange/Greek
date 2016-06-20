@@ -23,7 +23,7 @@ use App\Libs\Message;
 use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
-use EasyWeChat\Payment\Order;
+use EasyWeChat\Payment\Order as WechatOrder;
 
 //use App\Libs\Jpush;
 
@@ -34,14 +34,15 @@ class OrdersController extends ApiController
     private $_model;
     private $_length;
 
-    private $options;
+    private $pubOptions;
+    private $openOptions;
 
     public function __construct(){
         parent::__construct();
         $this->_model = new Orders;
         $this->_length		= 20;
 
-        $this->options      = [
+        $this->pubOptions      = [
             'app_id' => Config::get('wechat.app_id'),
             'secret' => Config::get('wechat.secret'),
             'token'  => Config::get('wechat.token'),
@@ -52,6 +53,19 @@ class OrdersController extends ApiController
                 'cert_path'          => Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
                 'key_path'           => Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
                 'notify_url'         => Config::get('wechat.notify_url'),       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
+
+        $this->openOptions      = [
+            'app_id' => Config::get('wechat.open_app_id'),
+            'secret' => Config::get('wechat.open_secret'),
+
+            'payment' => [
+                'merchant_id'        => Config::get('wechat.open_merchant_id'),
+                'key'                => Config::get('wechat.open_key'),
+                'cert_path'          => Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
             ],
         ];
     }
@@ -281,6 +295,19 @@ class OrdersController extends ApiController
             return $payNum;
         }
 
+        if($payNum['data'] < 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        //如果是积分全额支付
+        if($payNum['data'] == 0 && $outPoints != 0){
+            $payType = Config::get('paytype.money');
+
+            if(!$request->has('pay_password')){
+                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+            }
+        }
+
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytype.money')){
             $userModel = new Users;
@@ -341,7 +368,7 @@ class OrdersController extends ApiController
         $tradeType    = $request->get('trade_type');
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , 3 , $outPoints);
 
         if($payNum['code'] != 0000){
             return $payNum;
@@ -357,69 +384,88 @@ class OrdersController extends ApiController
         $body       = $info[0]->sname;
         $detail     = '';
         foreach ($info[0]->goods as $g){
-            $detail .= $g->name . ' ' . $g->c_name . ' ' . $g->b_name . ' ' . $g->num . '<br />';
+            $detail .= $g->name . ' ' ;
         }
 
-        $app = new Application($this->options);
+        $attributes = array();
+        $attributes['trade_type']       = $tradeType;
+        $attributes['body']             = $detail;
+        $attributes['detail']           = $body;
+        $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
+        $attributes['total_fee']        = 1;
+        $attributes['fee_type']         = 1;
+        //$attributes['time_start']       = date('YmdHis' , time());
+        //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
+        $attributes['attach']           = $orderId;
+        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
+
+        if($tradeType == 'JSAPI') {
+
+            $app = new Application($this->pubOptions);
+
+            $openid = $request->get('openid');
+
+            $attributes['openid']           = $openid;
+            $attributes['notify_url']       = Config::get('wechat.notify_url');
+
+        }else{
+            $app = new Application($this->openOptions);
+            $attributes['notify_url']       = Config::get('wechat.open_notify_url');
+
+        }
 
         $payment = $app->payment;
 
-
-        /**
-         * 获取openid
-         */
-
-        if(!$request->has('openid')) {
-            if (!isset($_GET['code'])) {
-                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-            }
-
-            if (isset($_GET['state']) && $_GET['state'] == 'app') {
-                $appid = Config::get('weixin.app_appid');
-                $secret = Config::get('weixin.app_secret');
-            } elseif (isset($_GET['state']) && $_GET['state'] == 'pub') {
-                $appid = Config::get('weixin.pub_appid');
-                $secret = Config::get('weixin.pub_secret');
-            } else {
-                $appid = Config::get('weixin.web_appid');
-                $secret = Config::get('weixin.web_secret');
-            }
-
-            $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $secret . "&code=" . $_GET['code'] . "&grant_type=authorization_code";
-
-            $wechatData = $this->curlGet($url);
-            $wechatData = json_decode($wechatData);
-
-            if (isset($wechatData->errcode)) {
-                return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
-            }
-
-            $openid = $wechatData->openid;
-        }else{
-            $openid = $request->get('openid');
-        }
-
-        $attributes = [
-            'trade_type'       => $tradeType, // JSAPI，NATIVE，APP...
-            'body'             => $body,
-            'detail'           => $detail,
-            'out_trade_no'     => time() . $info[0]->id . $this->getSalt(8 , 1),
-            'openid'           => $openid,
-//            'total_fee'        => (int)($payNum['data'] * 100),
-            'total_fee'        => 1,
-            'fee_type'         => 1,
-            'notify_url'       => Config::get('wechat.notify_url'), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-        ];
-
-        $order = new Order($attributes);
+        $order = new WechatOrder($attributes);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($order));
 
         $result = $payment->prepare($order);
-        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
+
+        if ($result->return_code == 'SUCCESS' && $result->return_msg == 'OK'){
+
             $prepayId = $result->prepay_id;
-            $json = $payment->configForPayment($prepayId);
-            $json = json_decode($json);
+
+            $payLog = array();
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['trade_type']           = $attributes['trade_type'];
+            $payLog['body']                 = $attributes['body'];
+            $payLog['detail']               = $attributes['detail'];
+            $payLog['out_trade_no']         = $attributes['out_trade_no'];
+            $payLog['total_fee']            = $attributes['total_fee'];
+            $payLog['fee_type']             = $attributes['fee_type'];
+            $payLog['spbill_create_ip']     = $order->spbill_create_ip;
+
+            if($tradeType == 'JSAPI') {
+                $json = $payment->configForPayment($prepayId);
+                $json = json_decode($json);
+
+                $payLog['openid']           = $attributes['openid'];
+                $payLog['timeStamp']        = $json->timeStamp;
+                $payLog['nonceStr']         = $json->nonceStr;
+                $payLog['package']          = $json->package;
+                $payLog['signType']         = $json->signType;
+                $payLog['paySign']          = $json->paySign;
+
+            }else if($tradeType == 'APP'){
+                $json = $payment->configForAppPayment($prepayId);
+
+                if(isset($json['package'])){
+                    $json['packageValue'] = $json['package'];
+                }
+
+                $payLog['timeStamp']        = $json['timestamp'];
+                $payLog['nonceStr']         = $json['noncestr'];
+                $payLog['package']          = $json['package'];
+                $payLog['signType']         = '';
+                $payLog['paySign']          = $json['sign'];
+            }
+
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
 
             $payLog = array(
@@ -450,26 +496,56 @@ class OrdersController extends ApiController
 
 
     /**
-     * @api {POST} /sigma/wechat/notify 微信支付回调
-     * @apiName ordersConfirmWechat
+     * @api {POST} /sigma/wechat/notify/pub 微信pub支付回调
+     * @apiName ordersWechatNotifyPub
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
      * @apiDescription 确认订单-微信
      * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify
+     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify/pub
      *
      * @apiParamExample {json} Request Example
-     *      POST /sigma/wechat/notify
+     *      POST /sigma/wechat/notify/pub
      *      {
      *      }
      * @apiUse CODE_200
      *
      */
 
-    public function notify(){
+    public function notifyPub(){
 
-        $app = new Application($this->options);
+        $app = new Application($this->pubOptions);
 
+        return $this->setPayData($app);
+
+    }
+
+    /**
+     * @api {POST} /sigma/wechat/notify/open 微信open支付回调
+     * @apiName ordersWechatNotifyOpen
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 确认订单-微信
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/wechat/notify/open
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/wechat/notify/open
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+
+    public function notifyOpen(){
+
+        $app = new Application($this->openOptions);
+
+        return $this->setPayData($app);
+
+    }
+
+    private function setPayData($app){
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
@@ -511,8 +587,6 @@ class OrdersController extends ApiController
                     return true;
                 }
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($store);
-
                 $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
                 //消息推送队列
@@ -535,6 +609,52 @@ class OrdersController extends ApiController
         });
 
         return $response;
+    }
+
+    /**
+     * @api {POST} /sigma/order/status/{orderId} 获取订单状态
+     * @apiName ordersStatus
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取订单状态
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/order/status
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/order/status
+     *      {
+     *          trade_type  : APP
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getOrderStatus($orderId , Request $request){
+        $orderInfo = $this->_model->getOrderById($this->userId , $orderId);
+
+        if(!$orderInfo){
+            return response()->json(Message::setResponseInfo('ORDER_NOT_EXIST'));
+        }
+        $tradeType    = $request->get('trade_type');
+
+        $orderNo = $orderInfo->out_trade_no;
+
+        if($orderInfo->status == Config::get('orderstatus.no_pay')['status'] && !empty($orderNo)){
+            if($tradeType == 'APP') {
+
+                $app = new Application($this->openOptions);
+
+            }
+
+            $payment = $app->payment;
+            $wechat = $payment->query($orderNo);
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($wechat));
+
+        }
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $orderInfo->status));
+
+
 
     }
 

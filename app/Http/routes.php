@@ -154,9 +154,12 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 		//提现
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');
+		Route::post('/store/cash/config', 'StoreUsersController@withdrawCashConfig');
+		Route::post('/store/cash/log', 'StoreUsersController@getWithdrawCashLog');
 
-		//今日统计
+		//统计
 		Route::post('/store/count/today', 'StoresController@getStoreTodayCount');
+		Route::post('/store/month/points', 'StoresController@getStoreMonthPoint');
 
 	});
 
@@ -193,6 +196,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
 		Route::post('/order/change/status/{id}' , 'OrdersController@changeStatus');
 
+		Route::post('/order/status/{orderId}' , 'OrdersController@getOrderStatus');
+
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
 		//Route::group(['middleware' => ['wechat.oauth']] , function() {
@@ -214,6 +219,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/update/mobile' , 'UsersController@updateMobile');
 
 		Route::post('/sendsms/by/bindmobile' , 'UsersController@bindMobilSms');
+
+		Route::post('/user/info' , 'UsersController@userInfo');
+
+		Route::post('/alipay/order/{orderId}' , 'AlipayController@aliPay');
 
 	});
 
@@ -240,7 +249,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
 
-	Route::any('/wechat/notify', 'OrdersController@notify');
+	Route::any('/wechat/notify/pub', 'OrdersController@notifyPub');
+	Route::any('/wechat/notify/open', 'OrdersController@notifyOpen');
+
+	Route::any('/alipay/notify' , 'AlipayController@notify');
 
 });
 

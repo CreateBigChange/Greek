@@ -14,7 +14,8 @@ use App\Libs\Smsrest\Sms;
 use App\Jobs\SendSms;
 use App\Libs\BLogger;
 
-use App\Models\Sigma\Users;
+use App\Models\User;
+use App\Models\ConsigneeAddress;
 
 class UsersController extends ApiController
 {
@@ -23,7 +24,7 @@ class UsersController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model       = new Users;
+        $this->_model       = new User;
         $this->_length		= 20;
     }
 
@@ -91,6 +92,29 @@ class UsersController extends ApiController
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
+    }
+
+    /**
+     * @api {POST} /sigma/user/info 获取用户信息
+     * @apiName userInfo
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/info
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/user/info
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function userInfo(Request $request) {
+
+        $userInfo           = $this->_model->getUserInfoById($this->userId);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
     }
 
     /**
@@ -350,11 +374,12 @@ class UsersController extends ApiController
             $page = $_GET['page'];
         }
 
-        $addNum   = $this->_model->getCAByUidTotalNum($this->userId);
+        $ConsigneeAddressModel = new ConsigneeAddress;
+        $addNum   = $ConsigneeAddressModel->getCAByUidTotalNum($this->userId);
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $addNum);
-        $response['address']   = $this->_model->getConsigneeAddressByUserId($this->userId , $this->_length , $response['pageData']->offset);
+        $response['address']    = $ConsigneeAddressModel->getConsigneeAddressByUserId($this->userId , $this->_length , $response['pageData']->offset);
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
@@ -427,7 +452,8 @@ class UsersController extends ApiController
         $data['created_at'] = date('Y-m-d H:i:s' , time());
         $data['updated_at'] =date('Y-m-d H:i:s' , time());
 
-        $addressid = $this->_model->addConsigneeAddress($data);
+        $ConsigneeAddressModel = new ConsigneeAddress;
+        $addressid = $ConsigneeAddressModel->addConsigneeAddress($data);
 
         if($addressid){
             return response()->json(Message::setResponseInfo('SUCCESS' , $addressid));
@@ -507,8 +533,9 @@ class UsersController extends ApiController
         }
         $data['updated_at'] =date('Y-m-d H:i:s' , time());
 
+        $ConsigneeAddressModel = new ConsigneeAddress;
 
-        if($this->_model->updateConsigneeAddress($this->userId , $addressId , $data)){
+        if($ConsigneeAddressModel->updateConsigneeAddress($this->userId , $addressId , $data)){
             return response()->json(Message::setResponseInfo('SUCCESS' ));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -539,8 +566,8 @@ class UsersController extends ApiController
         $data['is_del'] = 1;
         $data['updated_at'] =date('Y-m-d H:i:s' , time());
 
-
-        if($this->_model->updateConsigneeAddress($this->userId , $addressId , $data)){
+        $ConsigneeAddressModel = new ConsigneeAddress;
+        if($ConsigneeAddressModel->updateConsigneeAddress($this->userId , $addressId , $data)){
             return response()->json(Message::setResponseInfo('SUCCESS' ));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

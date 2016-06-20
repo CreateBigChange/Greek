@@ -10,8 +10,12 @@ namespace App\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
+use Mockery\Exception;
+use App\Libs\BLogger;
+use App\Libs\Message;
+
 class OrderInfo extends Model{
 
-
+    protected $table = 'order_infos';
 
 }

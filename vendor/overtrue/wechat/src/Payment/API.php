@@ -24,6 +24,7 @@ use EasyWeChat\Core\AbstractAPI;
 use EasyWeChat\Support\Collection;
 use EasyWeChat\Support\XML;
 use Psr\Http\Message\ResponseInterface;
+use App\Libs\BLogger;
 
 /**
  * Class API.
