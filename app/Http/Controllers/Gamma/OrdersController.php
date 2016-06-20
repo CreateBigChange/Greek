@@ -249,10 +249,7 @@ class OrdersController extends ApiController
 
         $result = $alipay->buildRequestHttp($parameter);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222));
-
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
     }
 
 }
