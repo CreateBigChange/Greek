@@ -149,6 +149,9 @@ class OrdersController extends ApiController
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('************'));
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('~~~~~~~~~~~~~~~~~~~~~~~~~~~~'));
+
+
             $refundNo = time() . $this->getSalt(6 , 1);
 
             $payTotal   = $orderInfo[0]->pay_total;
