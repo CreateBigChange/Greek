@@ -393,7 +393,7 @@ class API extends AbstractAPI
             'body' => XML::build($params),
         ], $options);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($params);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($this->getHttp());
 
         $response = $this->getHttp()->request($api, $method, $options);
 

@@ -217,7 +217,6 @@ class Http
      */
     public function request($url, $method = 'GET', $options = [])
     {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(222222222222);
         $method = strtoupper($method);
 
         $options = array_merge(self::$defaults, $options);
@@ -226,7 +225,6 @@ class Http
 
         $options['handler'] = $this->getHandler();
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(222222222222);
         $response = $this->getClient()->request($method, $url, $options);
 
         Log::debug('API response:', [
