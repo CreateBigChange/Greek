@@ -192,6 +192,7 @@ class API extends AbstractAPI
         $opUserId = null,
         $type = self::OUT_TRADE_NO
         ) {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(123456789));
         $params = [
             $type => $orderNo,
             'out_refund_no' => $refundNo,
