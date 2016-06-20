@@ -217,6 +217,7 @@ class Http
      */
     public function request($url, $method = 'GET', $options = [])
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(222222222222);
         $method = strtoupper($method);
 
         $options = array_merge(self::$defaults, $options);
