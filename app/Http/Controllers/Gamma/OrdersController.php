@@ -157,7 +157,7 @@ class OrdersController extends ApiController
             $payTotal   = $orderInfo[0]->pay_total;
             $orderNo    = $orderInfo[0]->out_trade_no;
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($orderInfo[0]->pay_type_id));
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($orderInfo[0]));
             if($orderInfo[0]->pay_type_id == 1) {
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(333333333333333333333333));
                 if ($this->_wechatRefund($orderNo, $refundNo, $payTotal)) {
