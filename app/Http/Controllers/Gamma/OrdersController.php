@@ -191,13 +191,10 @@ class OrdersController extends ApiController
             ],
         ];
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($openOptions));
         $app = new Application($openOptions);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($app->payment));
         $payment = $app->payment;
 
         $result = $payment->refund($orderNo, $refundNo, $payTotal);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(999999));
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
         if($result) {
             return true;
