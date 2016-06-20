@@ -233,7 +233,7 @@ class Http
             'Headers' => $response->getHeaders(),
             'Body' => strval($response->getBody()),
         ]);
-
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response);
         return $response;
     }
 
