@@ -60,7 +60,8 @@ class Orders extends Model
                     o.refund_reason,
                     o.created_at,
                     o.pay_total,
-                    o.pay_type_id
+                    o.pay_type_id,
+                    o.out_trade_no
                     
                 FROM $this->_orders_table AS o";
 
