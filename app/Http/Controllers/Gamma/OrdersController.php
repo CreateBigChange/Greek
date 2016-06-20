@@ -242,7 +242,7 @@ class OrdersController extends ApiController
             //'total_fee'     => (int)($payNum['data'] * 100)
         ];
 
-        $response = $gateway->refund($options)->send();
+        $response = $gateway->purchase($options)->refund();
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
     }
