@@ -368,7 +368,7 @@ class OrdersController extends ApiController
         $tradeType    = $request->get('trade_type');
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , 3 , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
 
         if($payNum['code'] != 0000){
             return $payNum;

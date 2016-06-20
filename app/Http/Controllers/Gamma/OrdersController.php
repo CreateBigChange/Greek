@@ -10,12 +10,13 @@ namespace App\Http\Controllers\Gamma;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input;
-use Session , Cookie , Config;
+use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
 
 use App\Models\Gamma\Orders;
 use App\Libs\Message;
+use App\Libs\BLogger;
 
 class OrdersController extends ApiController
 {
@@ -187,7 +188,8 @@ class OrdersController extends ApiController
         $app = new Application($this->openOptions);
         $payment = $app->payment;
         $result = $payment->refund($orderNo, $refundNo, $payTotal);
-
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111111111111111111111111111111));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
         if($result) {
             return true;
         }else{
