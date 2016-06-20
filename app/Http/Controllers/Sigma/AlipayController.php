@@ -148,8 +148,8 @@ class AlipayController extends ApiController
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
         }
 
-        //if ($response->isPaid()) {
-        if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS'){
+        if ($response->isPaid()) {
+//        if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS'){
 
             //更新支付时间和订单状态
             $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 2 , $_POST['gmt_payment']);
