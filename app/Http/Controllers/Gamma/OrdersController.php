@@ -125,6 +125,7 @@ class OrdersController extends ApiController
      *
      */
     public function changeStatus($orderId , Request $request){
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(5555555555555555555555555555555));
 
         $validation = Validator::make($request->all(), [
             'status'          => 'required',
@@ -135,7 +136,7 @@ class OrdersController extends ApiController
         $status = $request->get('status');
 
         //确认退款
-        if($status == Config::get('orderstatus.refunded')){
+        if($status == Config::get('orderstatus.refunded')['status']){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222222222222));
 
 
