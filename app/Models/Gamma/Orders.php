@@ -70,6 +70,9 @@ class Orders extends Model
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%'";
         }
+        if(isset($search['id'])){
+            $sql .= " AND o.id =" . $search['id'];
+        }
 
         $sql .= " AND store_id = $storeId";
 
@@ -165,6 +168,39 @@ class Orders extends Model
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
 
         return DB::select($sql);
+
+    }
+
+    /**
+     * 退款
+     * @param storeId   number
+     * @param id        number
+     * @param status    number
+     */
+    public function refund($orderId , $refundNo){
+
+        $isChange = DB::table($this->_orders_table)->where('id' , $orderId)->update(array(
+            'status'    => Config::get('orderstatus.refunded')['status'],
+            'refund_no' => $refundNo
+        ));
+
+        if($isChange){
+
+            $log = array(
+                'order_id'      => $orderId,
+                'user'          => '',
+                'identity'      => '商家管理员',
+                'platform'      => '手机端',
+                'log'           => '将订单'. $orderId . '的状态改为'.Config::get('orderstatus.refunded')['status'],
+                'created_at'    => date('Y-m-d H:i:s' , time()),
+                'status'        => Config::get('orderstatus.refunded')['status']
+            );
+            DB::table($this->_order_logs_table)->insert($log);
+            return true;
+        }else{
+            return false;
+        }
+
 
     }
 }

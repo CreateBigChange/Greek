@@ -150,7 +150,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 		//订单
 		Route::post('/store/orders', 'OrdersController@getOrderList');
-		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
+		Route::post('/store/orders/change/status/{orderId}', 'OrdersController@changeStatus');
 
 		//提现
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');

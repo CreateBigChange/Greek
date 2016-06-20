@@ -123,7 +123,7 @@ class OrdersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function changeStatus($id , Request $request){
+    public function changeStatus($orderId , Request $request){
 
         $validation = Validator::make($request->all(), [
             'status'          => 'required',
@@ -132,11 +132,66 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
         $status = $request->get('status');
+
+        //确认退款
+        if($status == Config::get('orderstatus.refunded')){
+
+            $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
+            if(!isset($orderInfo)){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+            if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+            $refundNo = time() . $this->getSalt(6 , 1);
+
+            $payTotal   = $orderInfo[0]->pay_total;
+            $orderNo    = $orderInfo[0]->out_trade_no;
+
+            if($orderInfo[0]->pay_type_id == 1) {
+                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal)) {
+
+                    if ($this->_model->refund($orderId, $refundNo)) {
+                        return response()->json(Message::setResponseInfo('SUCCESS'));
+                    } else {
+                        return response()->json(Message::setResponseInfo('FAILED'));
+                    }
+                }
+            }elseif($orderInfo[0]->pay_type_id == 2){
+
+            }
+
+        }
         
-        if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
+        if($this->_model->changeStatus($this->storeId , $this->userId , $orderId , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
+        }
+    }
+
+    public function _wechatRefund($orderNo , $refundNo , $payTotal ){
+        $this->openOptions      = [
+            'app_id' => Config::get('wechat.open_app_id'),
+            'secret' => Config::get('wechat.open_secret'),
+
+            'payment' => [
+                'merchant_id'        => Config::get('wechat.open_merchant_id'),
+                'key'                => Config::get('wechat.open_key'),
+                'cert_path'          => Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
+            ],
+        ];
+
+        $app = new Application($this->openOptions);
+        $payment = $app->payment;
+        $result = $payment->refund($orderNo, $refundNo, $payTotal);
+
+        if($result) {
+            return true;
+        }else{
+            return false;
         }
     }
 
