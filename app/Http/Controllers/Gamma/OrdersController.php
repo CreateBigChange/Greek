@@ -237,7 +237,7 @@ class OrdersController extends ApiController
             "refund_date"	=> trim(Config::get('alipay.refund_date')),
             "batch_no"	=> date('YmdHis' , time()) . $this->getSalt(4, 1),
             "batch_num"	=> 1,
-            "detail_data"	=> $orderNo.'^'.$payTotal.'^'.'正常退款',
+            "detail_data"	=> '2016062021001004120267447870'.'^'.$payTotal.'^'.'正常退款',
             "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
 
         );
@@ -247,7 +247,7 @@ class OrdersController extends ApiController
 
         $alipay = new Alipay(Config::get('alipay'));
 
-        $result = $alipay->buildRequestParaToString($parameter);
+        $result = $alipay->buildRequestHttp($parameter);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222));
 
