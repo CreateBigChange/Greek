@@ -230,16 +230,23 @@ class OrdersController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111111111111));
         //构造要请求的参数数组，无需改动
         $parameter = array(
-            "service" => trim(Config::get('alipay.service')),
-            "partner" => trim(Config::get('alipay.partner')),
-            "notify_url"	=> trim(Config::get('alipay.notify_url')),
-            "seller_user_id"	=> trim(Config::get('alipay.seller_user_id')),
-            "refund_date"	=> trim(Config::get('alipay.refund_date')),
-            "batch_no"	=> date('YmdHis' , time()) . $this->getSalt(4, 1),
-            "batch_num"	=> 1,
-            "detail_data"	=> '2016062021001004120267447870'.'^'.$payTotal.'^'.'正常退款',
-            "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
-
+//            "service" => trim(Config::get('alipay.service')),
+//            "partner" => trim(Config::get('alipay.partner')),
+//            "notify_url"	=> trim(Config::get('alipay.notify_url')),
+//            "seller_user_id"	=> trim(Config::get('alipay.seller_user_id')),
+//            "refund_date"	=> trim(Config::get('alipay.refund_date')),
+//            "batch_no"	=> date('YmdHis' , time()) . $this->getSalt(4, 1),
+//            "batch_num"	=> 1,
+//            "detail_data"	=> '2016062021001004120267447870'.'^'.$payTotal.'^'.'正常退款',
+//            "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
+            "service"           => trim(Config::get('alipay.service')),
+            "partner"           => trim(Config::get('alipay.partner')),
+            "charset"	        => trim(Config::get('alipay.input_charset')),
+            "timestamp"         => date('Y-m-d H:i:s' , time()),
+            "version"           => "1.0",
+            "out_trade_no"      => $orderNo,
+            "refund_amount"     => $payTotal,
+            "refund_reason"     => "正常退款"
         );
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($parameter);
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(Config::get('alipay'));

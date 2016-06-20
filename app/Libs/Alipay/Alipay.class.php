@@ -22,7 +22,8 @@ class Alipay
     /**
      *支付宝网关地址（新）
      */
-    protected $alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
+    //protected $alipay_gateway_new = 'https://mapi.alipay.com/gateway.do?';
+    protected $alipay_gateway_new = "https://openapi.alipay.com/gateway.do?";
 
     public function __construct($alipay_config){
         $this->alipay_config = $alipay_config;
