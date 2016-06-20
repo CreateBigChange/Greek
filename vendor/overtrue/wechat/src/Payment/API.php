@@ -396,10 +396,6 @@ class API extends AbstractAPI
 
         $response = $this->getHttp()->request($api, $method, $options);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(1111111111);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response);
-
-
         return $returnResponse ? $response : $this->parseResponse($response);
     }
 
