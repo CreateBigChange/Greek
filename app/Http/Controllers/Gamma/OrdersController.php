@@ -184,32 +184,32 @@ class OrdersController extends ApiController
         $options = array();
 
 //        if($type == 1) {
-            $options = [
-                'app_id' => Config::get('wechat.open_app_id'),
-                'secret' => Config::get('wechat.open_secret'),
-
-                'payment' => [
-                    'merchant_id' => Config::get('wechat.open_merchant_id'),
-                    'key' => Config::get('wechat.open_key'),
-                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
-                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
-                    'fee_type'  => 'CNY'
-                ],
-            ];
-//        }else{
-//            $options      = [
-//                'app_id' => Config::get('wechat.app_id'),
-//                'secret' => Config::get('wechat.secret'),
-//                'token'  => Config::get('wechat.token'),
+//            $options = [
+//                'app_id' => Config::get('wechat.open_app_id'),
+//                'secret' => Config::get('wechat.open_secret'),
 //
 //                'payment' => [
-//                    'merchant_id'        => Config::get('wechat.merchant_id'),
-//                    'key'                => Config::get('wechat.key'),
-//                    'cert_path'          => public_path() . Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
-//                    'key_path'           => public_path() . Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
-//                    'fee_type' => 'CNY'
+//                    'merchant_id' => Config::get('wechat.open_merchant_id'),
+//                    'key' => Config::get('wechat.open_key'),
+//                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+//                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+//                    'fee_type'  => 'CNY'
 //                ],
 //            ];
+//        }else{
+            $options      = [
+                'app_id' => Config::get('wechat.app_id'),
+                'secret' => Config::get('wechat.secret'),
+                'token'  => Config::get('wechat.token'),
+
+                'payment' => [
+                    'merchant_id'        => Config::get('wechat.merchant_id'),
+                    'key'                => Config::get('wechat.key'),
+                    'cert_path'          => public_path() . Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
+                    'key_path'           => public_path() . Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+                    'fee_type' => 'CNY'
+                ],
+            ];
 //        }
 
         $app = new Application($options);
