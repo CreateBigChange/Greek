@@ -166,7 +166,7 @@ class OrdersController extends ApiController
                     }
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
-
+                $this->_aliPayRefund($orderNo, $refundNo, $payTotal)
             }
 
         }else {
@@ -222,6 +222,28 @@ class OrdersController extends ApiController
         }else{
             return false;
         }
+    }
+
+    public function _aliPayRefund($orderNo , $refundNo , $payTotal , $type=1){
+        $gateway = Omnipay::create('Alipay_MobileExpress');
+        $gateway->setPartner('2088121058783821');
+        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
+        $gateway->setSellerEmail('zxhy201510@163.com');
+        $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
+
+        //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
+        $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
+
+        $options = [
+            'out_trade_no'          => $orderNo,
+            'refund_amount'         => '0.01',
+            'refund_reason'         => '正常退款'
+            //'total_fee'     => (int)($payNum['data'] * 100)
+        ];
+
+        $response = $gateway->refund($options)->send();
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
     }
 
 }
