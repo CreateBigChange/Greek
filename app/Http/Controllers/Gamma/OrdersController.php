@@ -183,8 +183,8 @@ class OrdersController extends ApiController
             'payment' => [
                 'merchant_id'        => Config::get('wechat.open_merchant_id'),
                 'key'                => Config::get('wechat.open_key'),
-                'cert_path'          => Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
-                'key_path'           => Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                'cert_path'          => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                'key_path'           => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
                 'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
                 'fee_type'           => 'CNY'
             ],
