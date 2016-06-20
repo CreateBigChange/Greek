@@ -195,7 +195,7 @@ class OrdersController extends ApiController
 
         $result = $payment->refund($orderNo, $refundNo, $payTotal);
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
-        if($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'OK' {
+        if($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'OK') {
             return true;
         }else{
             return false;
