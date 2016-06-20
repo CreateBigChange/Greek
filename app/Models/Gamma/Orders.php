@@ -59,7 +59,8 @@ class Orders extends Model
                     o.remark,
                     o.refund_reason,
                     o.created_at,
-                    o.pay_total
+                    o.pay_total,
+                    o.pay_type_id
                     
                 FROM $this->_orders_table AS o";
 
