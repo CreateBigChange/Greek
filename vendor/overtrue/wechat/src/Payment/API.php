@@ -380,8 +380,6 @@ class API extends AbstractAPI
      */
     protected function request($api, array $params, $method = 'post', array $options = [], $returnResponse = false)
     {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
-
         $params = array_merge($params, $this->merchant->only(['sub_appid', 'sub_mch_id']));
 
         $params['appid'] = $this->merchant->app_id;
@@ -395,7 +393,13 @@ class API extends AbstractAPI
             'body' => XML::build($params),
         ], $options);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($params);
+
         $response = $this->getHttp()->request($api, $method, $options);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(1111111111);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response);
+
 
         return $returnResponse ? $response : $this->parseResponse($response);
     }
