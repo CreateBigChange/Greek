@@ -55,6 +55,10 @@ class Stores extends Model
         if(isset($search['ids'])){
             $sql .= " AND si.id IN (" . $search['ids'] .")";
         }
+        if(isset($search['cid'])){
+            $sql .= " AND si.c_id = " . $search['cid'];
+        }
+
 
         $sql .= " LIMIT $offset , $length ";
 

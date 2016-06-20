@@ -94,7 +94,9 @@ class StoresController extends ApiController
      * @apiParamExample {json} Request Example
      *      POST /sigma/store/list/byids
      *      {
-     *          ids : "1,2,3,4,5,6,7"
+     *          ids : "1,2,3,4,5,6,7",
+     *          cid : 1
+     *
      *      }
      * @apiUse CODE_200
      *
@@ -111,13 +113,15 @@ class StoresController extends ApiController
         }
         $ids = $request->get('ids');
 
+        $cid = $request->get('cid');
+
         $totalNum = count(explode(',', $ids));
 
         $response = array();
 
         $response['pageData'] = $this->getPageData($page , $this->_length , $totalNum);
 
-        $response['storeList'] = $this->_model->getStoreList(array('ids'=>$ids) , $this->_length , $response['pageData']->offset);
+        $response['storeList'] = $this->_model->getStoreList(array('ids'=>$ids , 'cid'=>$cid) , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
