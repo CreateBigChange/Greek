@@ -18,6 +18,8 @@ use App\Models\Gamma\Orders;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
+use EasyWeChat\Foundation\Application;
+
 class OrdersController extends ApiController
 {
     private $_model;
