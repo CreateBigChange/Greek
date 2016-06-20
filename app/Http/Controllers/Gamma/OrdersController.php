@@ -149,7 +149,8 @@ class OrdersController extends ApiController
 
             $refundNo = time() . $this->getSalt(6 , 1);
 
-            $payTotal   = $orderInfo[0]->pay_total;
+            //$payTotal   = $orderInfo[0]->pay_total;
+            $payTotal   = 0.01;
             $orderNo    = $orderInfo[0]->out_trade_no;
 
             if($orderInfo[0]->pay_type_id == 1) {
