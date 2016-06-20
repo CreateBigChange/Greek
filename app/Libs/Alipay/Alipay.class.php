@@ -41,7 +41,7 @@ class Alipay
     public function buildRequestMysign($para_sort) {
 
         //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        $prestr = createLinkstring($para_sort);
+        $prestr = $this->core->createLinkstring($para_sort);
 
         $mysign = "";
         switch (strtoupper(trim($this->alipay_config['sign_type']))) {
