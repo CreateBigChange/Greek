@@ -395,6 +395,7 @@ class API extends AbstractAPI
 
         $response = $this->getHttp()->request($api, $method, $options);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111111));
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
 
 
