@@ -19,7 +19,8 @@ use App\Libs\Message;
 use App\Libs\BLogger;
 
 use EasyWeChat\Foundation\Application;
-use Omnipay\Omnipay;
+
+use App\Libs\Alipay\Alipay;
 
 class OrdersController extends ApiController
 {
@@ -226,25 +227,25 @@ class OrdersController extends ApiController
     }
 
     public function _aliPayRefund($orderNo , $refundNo , $payTotal){
-        $gateway = Omnipay::create('Alipay_MobileExpress');
-        $gateway->setPartner('2088121058783821');
-        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
-        $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
+        //构造要请求的参数数组，无需改动
+        $parameter = array(
+            "service" => trim(Config::get('alipay.service')),
+            "partner" => trim(Config::get('alipay.partner')),
+            "notify_url"	=> trim(Config::get('alipay.notify_url')),
+            "seller_user_id"	=> trim(Config::get('alipay.seller_user_id')),
+            "refund_date"	=> trim(Config::get('alipay.refund_date')),
+            "batch_no"	=> date('YmdHis' , time()) . $this->getSalt(4, 1),
+            "batch_num"	=> 1,
+            "detail_data"	=> $orderNo.'^'.$payTotal.'^'.'正常退款',
+            "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
 
-        //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
+        );
 
-        $options = [
-            'out_trade_no'          => $orderNo,
-            'refund_amount'         => '0.01',
-            'refund_reason'         => '正常退款'
-            //'total_fee'     => (int)($payNum['data'] * 100)
-        ];
+        $alipay = new Alipay($parameter);
 
-        $response = $gateway->refund($options)->send();
+        $result = $alipay->buildRequestHttp($parameter);
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($response));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
     }
 
 }
