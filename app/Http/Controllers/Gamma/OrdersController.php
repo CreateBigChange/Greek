@@ -227,6 +227,7 @@ class OrdersController extends ApiController
     }
 
     public function _aliPayRefund($orderNo , $refundNo , $payTotal){
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111111111111));
         //构造要请求的参数数组，无需改动
         $parameter = array(
             "service" => trim(Config::get('alipay.service')),
@@ -240,10 +241,15 @@ class OrdersController extends ApiController
             "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
 
         );
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($parameter);
+
 
         $alipay = new Alipay($parameter);
 
         $result = $alipay->buildRequestHttp($parameter);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222));
+
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
     }
