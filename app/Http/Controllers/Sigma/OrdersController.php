@@ -345,6 +345,7 @@ class OrdersController extends ApiController
      *      {
      *          out_points  : 328,
      *          trade_type  : JSAPI,
+     *          pay_type    : 4
      *      }
      * @apiUse CODE_200
      *
@@ -370,7 +371,7 @@ class OrdersController extends ApiController
         $payType        = $request->get('pay_type');
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
         if($payNum['code'] != 0000){
             return $payNum;
@@ -502,7 +503,7 @@ class OrdersController extends ApiController
 
         $app = new Application($this->pubOptions);
 
-        return $this->setPayData($app);
+        return $this->setPayData($app , 4);
 
     }
 
@@ -527,11 +528,11 @@ class OrdersController extends ApiController
 
         $app = new Application($this->openOptions);
 
-        return $this->setPayData($app);
+        return $this->setPayData($app , 1);
 
     }
 
-    private function setPayData($app){
+    private function setPayData($app , $payType){
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);
@@ -564,7 +565,7 @@ class OrdersController extends ApiController
             if($successful){
 
                 //更新支付时间和订单状态
-                $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
+                $this->_model->pay($order->id , ($notify->total_fee / 100) , $payType , $notify->time_end);
 
                 $storeModel = new Stores;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));

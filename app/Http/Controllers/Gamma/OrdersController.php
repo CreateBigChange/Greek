@@ -183,20 +183,20 @@ class OrdersController extends ApiController
 
         $options = array();
 
-//        if($type == 1) {
-//            $options = [
-//                'app_id' => Config::get('wechat.open_app_id'),
-//                'secret' => Config::get('wechat.open_secret'),
-//
-//                'payment' => [
-//                    'merchant_id' => Config::get('wechat.open_merchant_id'),
-//                    'key' => Config::get('wechat.open_key'),
-//                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
-//                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
-//                    'fee_type'  => 'CNY'
-//                ],
-//            ];
-//        }else{
+        if($type == 1) {
+            $options = [
+                'app_id' => Config::get('wechat.open_app_id'),
+                'secret' => Config::get('wechat.open_secret'),
+
+                'payment' => [
+                    'merchant_id' => Config::get('wechat.open_merchant_id'),
+                    'key' => Config::get('wechat.open_key'),
+                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                    'fee_type'  => 'CNY'
+                ],
+            ];
+        }else{
             $options      = [
                 'app_id' => Config::get('wechat.app_id'),
                 'secret' => Config::get('wechat.secret'),
@@ -210,7 +210,7 @@ class OrdersController extends ApiController
                     'fee_type' => 'CNY'
                 ],
             ];
-//        }
+        }
 
         $app = new Application($options);
         $payment = $app->payment;
