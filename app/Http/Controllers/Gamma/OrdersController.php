@@ -247,7 +247,7 @@ class OrdersController extends ApiController
 
         $alipay = new Alipay(Config::get('alipay'));
 
-        $result = $alipay->buildRequestHttp($parameter);
+        $result = $alipay->buildRequestParaToString($parameter);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(22222222222222222));
 
