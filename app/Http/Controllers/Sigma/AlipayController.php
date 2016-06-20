@@ -41,6 +41,25 @@ class AlipayController extends ApiController
 
     }
 
+    /**
+     * @api {POST} /sigma/alipay/order/{orderId} 确认订单-支付宝(生成支付宝订单)
+     * @apiName ordersAlipayOrder
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 确认订单-微信
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/alipay/order/1
+     *
+     * @apiParam {int} out_points 使用积分
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/alipay/order/1
+     *      {
+     *          out_points  : 328,
+     *      }
+     * @apiUse CODE_200
+     *
+     */
     public function aliPay($orderId , Request $request)
     {
 
