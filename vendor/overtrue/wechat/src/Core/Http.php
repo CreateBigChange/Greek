@@ -225,7 +225,7 @@ class Http
 
         $options['handler'] = $this->getHandler();
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($options);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(222222222222);
         $response = $this->getClient()->request($method, $url, $options);
 
         Log::debug('API response:', [
