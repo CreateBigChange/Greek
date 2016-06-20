@@ -414,6 +414,8 @@ class API extends AbstractAPI
             'ssl_key' => $this->merchant->get('key_path'),
         ];
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
+
         return $this->request($api, $params, $method, $options);
     }
 

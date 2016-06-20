@@ -139,7 +139,6 @@ class OrdersController extends ApiController
         if($status == Config::get('orderstatus.refunded')['status']){
 
             $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($orderInfo));
             if(!isset($orderInfo[0])){
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
