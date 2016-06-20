@@ -142,9 +142,11 @@ class OrdersController extends ApiController
             $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($orderInfo));
             if(!isset($orderInfo[0])){
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('#########'));
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
             if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode('************'));
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
             $refundNo = time() . $this->getSalt(6 , 1);
