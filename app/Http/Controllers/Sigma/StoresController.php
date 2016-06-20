@@ -113,7 +113,12 @@ class StoresController extends ApiController
         }
         $ids = $request->get('ids');
 
-        $cid = $request->get('cid');
+        $search = array('ids'=>$ids );
+
+        if($request->has('cid')) {
+            $search['cid'] = $request->get('cid');
+
+        }
 
         $totalNum = count(explode(',', $ids));
 
@@ -121,7 +126,7 @@ class StoresController extends ApiController
 
         $response['pageData'] = $this->getPageData($page , $this->_length , $totalNum);
 
-        $response['storeList'] = $this->_model->getStoreList(array('ids'=>$ids , 'cid'=>$cid) , $this->_length , $response['pageData']->offset);
+        $response['storeList'] = $this->_model->getStoreList( $search , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
