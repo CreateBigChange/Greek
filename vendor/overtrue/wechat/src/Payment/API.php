@@ -192,7 +192,6 @@ class API extends AbstractAPI
         $opUserId = null,
         $type = self::OUT_TRADE_NO
         ) {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(123456789));
         $params = [
             $type => $orderNo,
             'out_refund_no' => $refundNo,
@@ -201,6 +200,8 @@ class API extends AbstractAPI
             'refund_fee_type' => $this->merchant->fee_type,
             'op_user_id' => $opUserId ?: $this->merchant->merchant_id,
         ];
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
 
         return $this->safeRequest(self::API_REFUND, $params);
     }
