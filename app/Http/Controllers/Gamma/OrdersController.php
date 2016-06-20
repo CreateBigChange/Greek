@@ -224,7 +224,7 @@ class OrdersController extends ApiController
         }
     }
 
-    public function _aliPayRefund($orderNo , $refundNo , $payTotal , $type=1){
+    public function _aliPayRefund($orderNo , $refundNo , $payTotal){
         $gateway = Omnipay::create('Alipay_MobileExpress');
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
