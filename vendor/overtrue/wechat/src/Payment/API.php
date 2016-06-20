@@ -201,8 +201,6 @@ class API extends AbstractAPI
             'op_user_id' => $opUserId ?: $this->merchant->merchant_id,
         ];
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
-
         return $this->safeRequest(self::API_REFUND, $params);
     }
 
@@ -415,6 +413,8 @@ class API extends AbstractAPI
             'cert' => $this->merchant->get('cert_path'),
             'ssl_key' => $this->merchant->get('key_path'),
         ];
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
+
 
         return $this->request($api, $params, $method, $options);
     }
