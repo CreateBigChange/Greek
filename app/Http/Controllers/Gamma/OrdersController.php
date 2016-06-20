@@ -166,7 +166,7 @@ class OrdersController extends ApiController
                     }
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
-                $this->_aliPayRefund($orderNo, $refundNo, $payTotal)
+                $this->_aliPayRefund($orderNo, $refundNo, $payTotal);
             }
 
         }else {
