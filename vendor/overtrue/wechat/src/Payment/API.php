@@ -393,6 +393,9 @@ class API extends AbstractAPI
             'body' => XML::build($params),
         ], $options);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
+
+
         $response = $this->getHttp()->request($api, $method, $options);
 
         return $returnResponse ? $response : $this->parseResponse($response);
@@ -413,8 +416,6 @@ class API extends AbstractAPI
             'cert' => $this->merchant->get('cert_path'),
             'ssl_key' => $this->merchant->get('key_path'),
         ];
-
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
 
         return $this->request($api, $params, $method, $options);
     }
