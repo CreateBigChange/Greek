@@ -353,6 +353,7 @@ class OrdersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'trade_type'            => 'required',
+            'pay_type'              => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -365,7 +366,8 @@ class OrdersController extends ApiController
         }else{
             $outPoints  = $request->get('out_points');
         }
-        $tradeType    = $request->get('trade_type');
+        $tradeType      = $request->get('trade_type');
+        $payType        = $request->get('pay_type');
 
         //更新订单
         $payNum = $this->_model->confirmOrder( $userId , $orderId , 1 , $outPoints);

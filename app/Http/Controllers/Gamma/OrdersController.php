@@ -153,9 +153,12 @@ class OrdersController extends ApiController
             $payTotal   = 0.01;
             $orderNo    = $orderInfo[0]->out_trade_no;
 
-            if($orderInfo[0]->pay_type_id == 1) {
-                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100)) {
-                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(4444444444444444444444444444));
+            if($orderInfo[0]->pay_type_id == 1 || $orderInfo[0]->pay_type_id == 4) {
+                $type = 1;
+                if($orderInfo[0]->pay_type_id == 4){
+                    $type = 2;
+                }
+                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
                     if ($this->_model->refund($orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
@@ -176,27 +179,45 @@ class OrdersController extends ApiController
         }
     }
 
-    public function _wechatRefund($orderNo , $refundNo , $payTotal ){
-        $openOptions      = [
-            'app_id' => Config::get('wechat.open_app_id'),
-            'secret' => Config::get('wechat.open_secret'),
+    public function _wechatRefund($orderNo , $refundNo , $payTotal , $type=1){
 
-            'payment' => [
-                'merchant_id'        => Config::get('wechat.open_merchant_id'),
-                'key'                => Config::get('wechat.open_key'),
-                'cert_path'          => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
-                'key_path'           => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
-                'notify_url'         => Config::get('wechat.open_notify_url'),       // 你也可以在下单时单独设置来想覆盖它
-                'fee_type'           => 'CNY'
-            ],
-        ];
+        $options = array();
 
-        $app = new Application($openOptions);
+//        if($type == 1) {
+            $options = [
+                'app_id' => Config::get('wechat.open_app_id'),
+                'secret' => Config::get('wechat.open_secret'),
+
+                'payment' => [
+                    'merchant_id' => Config::get('wechat.open_merchant_id'),
+                    'key' => Config::get('wechat.open_key'),
+                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                    'fee_type'  => 'CNY'
+                ],
+            ];
+//        }else{
+//            $options      = [
+//                'app_id' => Config::get('wechat.app_id'),
+//                'secret' => Config::get('wechat.secret'),
+//                'token'  => Config::get('wechat.token'),
+//
+//                'payment' => [
+//                    'merchant_id'        => Config::get('wechat.merchant_id'),
+//                    'key'                => Config::get('wechat.key'),
+//                    'cert_path'          => public_path() . Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
+//                    'key_path'           => public_path() . Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+//                    'fee_type' => 'CNY'
+//                ],
+//            ];
+//        }
+
+        $app = new Application($options);
         $payment = $app->payment;
 
         $result = $payment->refund($orderNo, $refundNo, $payTotal);
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
-        if($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'OK') {
+        if($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'OK' && $result['result_code'] == 'SUCCESS') {
             return true;
         }else{
             return false;
