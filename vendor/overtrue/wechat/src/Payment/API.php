@@ -380,6 +380,8 @@ class API extends AbstractAPI
      */
     protected function request($api, array $params, $method = 'post', array $options = [], $returnResponse = false)
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($params));
+
         $params = array_merge($params, $this->merchant->only(['sub_appid', 'sub_mch_id']));
 
         $params['appid'] = $this->merchant->app_id;
@@ -413,8 +415,6 @@ class API extends AbstractAPI
             'cert' => $this->merchant->get('cert_path'),
             'ssl_key' => $this->merchant->get('key_path'),
         ];
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($options));
-
 
         return $this->request($api, $params, $method, $options);
     }
