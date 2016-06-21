@@ -785,7 +785,7 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $visitingNumber = $this->_model->financeCountByDay($storeId, date('Y' , time()) , date('m' , time()) . date('d' , time()));
+        $visitingNumber = $this->_model->financeCountByDay($storeId, date('Y' , time()) , date('m' , time()) , date('d' , time()));
 
         var_dump($visitingNumber);
 
