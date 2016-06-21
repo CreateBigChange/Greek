@@ -256,6 +256,7 @@ class Stores extends Model
         $d = date('d' , time());
         $h = date('H' , time());
 
+        var_dump($h);die;
         if(DB::table($this->_store_date_counts_table)
             ->where('store_id' , $storeId)
             ->where('year' , $y)

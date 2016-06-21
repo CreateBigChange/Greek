@@ -52,8 +52,6 @@ class StoresController extends ApiController
         //添加访问量
         $this->_model->addStoreCount($storeId);
 
-        var_dump($this->_model->addStoreCount($storeId));die;
-
         return response()->json(Message::setResponseInfo('SUCCESS' , $storeInfo));
     }
 
