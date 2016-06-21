@@ -153,7 +153,12 @@ function Month(){
 }
 
 	$(function(){
-		Today();
+
+		$.post('/store/count/finance' , {} , function ($data) {
+			console.log(data);
+			Today(data);
+		})
+
 	})
 	//菜单切换
 	$("#time li").click(function(){

@@ -839,7 +839,7 @@ class StoresController extends ApiController
         )));
     }
 
-    public function financeCount(){
+    public function ajaxFinanceCount(){
         $year   = date('Y');
         $month  = date('m');
         $day    = date('d');
@@ -864,8 +864,8 @@ class StoresController extends ApiController
         }
 
         $todayData = array(
-            'time'      => json_encode($todayTime),
-            'turnover'  => json_encode($todayTurnover)
+            'time'      => $todayTime,
+            'turnover'  => $todayTurnover
         );
 
 
@@ -905,8 +905,8 @@ class StoresController extends ApiController
         }
 
         $weekData = array(
-            'time'      => json_encode($weekTime),
-            'turnover'  => json_encode($weekTurnover)
+            'time'      => $weekTime,
+            'turnover'  => $weekTurnover
         );
 
 
@@ -926,8 +926,8 @@ class StoresController extends ApiController
         }
 
         $monthData = array(
-            'time'          => json_encode($monthTime),
-            'turnover'      => json_encode($monthTurnover)
+            'time'          => $monthTime,
+            'turnover'      => $monthTurnover
         );
 
         $response = array(
@@ -936,6 +936,11 @@ class StoresController extends ApiController
             'month'         => $monthData
         );
 
-        return view('count' , $response);
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
+
+    }
+
+    public function financeCount(){
+        return view('count');
     }
 }
