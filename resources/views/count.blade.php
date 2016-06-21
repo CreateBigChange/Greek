@@ -42,7 +42,7 @@
 var myChart = echarts.init(document.getElementById('main'));
 
 //今日数据
-function Today(){
+function Today(data){
 	var option = {
 	    tooltip : {
 	        trigger: 'axis'
@@ -57,7 +57,7 @@ function Today(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data :[]
+	            data :data.time
 	        }
 	    ],
 	    yAxis : [
@@ -71,7 +71,7 @@ function Today(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[]
+	            data:data.turnover
 	        }
 	    ]
 		};
@@ -156,7 +156,7 @@ function Month(){
 
 		$.post('/gamma/store/count/finance' , {} , function (data , status) {
 			console.log(data);
-			Today();
+			Today(data.data.today);
 		})
 
 	})
