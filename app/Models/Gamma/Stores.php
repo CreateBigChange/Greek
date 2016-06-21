@@ -408,7 +408,7 @@ class Stores extends Model
      */
     public function getTodayStoreCount($storeId , $date ){
 
-        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->get();
+        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' ,'like' , $date.'%')->get();
 
     }
 
