@@ -131,7 +131,7 @@ function Month(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : print_r(<?php $month['time']) ?>
+	            data : <?php print_r($month['time']) ?>
 	        }
 	    ],
 	    yAxis : [
