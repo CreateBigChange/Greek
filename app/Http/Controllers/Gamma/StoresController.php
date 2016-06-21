@@ -791,22 +791,12 @@ class StoresController extends ApiController
         foreach ($visitingNumber as $v){
             $visitingNumberData += $v->visiting_number;
         }
-        var_dump($visitingNumberData);die;
-
-
-        if(!$visitingNumber){
-            $visitingNumber = 0;
-        }elseif(!$visitingNumber->visiting_number){
-            $visitingNumber = 0;
-        }else{
-            $visitingNumber = $visitingNumber->visiting_number;
-        }
 
         $orderModel = new Orders;
         $orderCount = $orderModel->getOrderTodayCounts($storeId , $date);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
-            'visiting_number'       => $visitingNumber,
+            'visiting_number'       => $visitingNumberData,
             'order_num'             => $orderCount[0]->order_num ? $orderCount[0]->order_num : 0,
             'turnover'              => $orderCount[0]->turnover ? $orderCount[0]->turnover : 0
         )));
@@ -957,6 +947,8 @@ class StoresController extends ApiController
     }
 
     public function financeCount(){
+        $orderModel = new Orders;
+        $orderCount = $orderModel->getOrderCounts($this->storeId);
         return view('count');
     }
 }

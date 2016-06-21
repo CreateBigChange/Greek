@@ -158,6 +158,28 @@ class Orders extends Model
     }
 
     /**
+     * 获取订单统计数据
+     */
+    public function getOrderCounts($storeId){
+        $sql = "SELECT 
+                    count(`id`) as order_num , 
+                    sum(`total`) as turnover
+                FROM $this->_orders_table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+
+        $user = DB::table($this->_orders_table)->select('count(user) as user')->where('store_id' , $storeId)->whereNotIn('status' , array(
+            Config::get('orderstatus.no_pay')['status'],
+            Config::get('orderstatus.cancel')['status']
+        ))->groupBy('user')->get();
+
+        var_dump($user);die;
+
+        return DB::select($sql);
+
+    }
+
+    /**
      * 获取本月收入的积分和使用的积分
      */
     public function getOrderMonthPoint($storeId , $date=0){
