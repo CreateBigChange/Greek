@@ -42,10 +42,12 @@ class Kernel extends ConsoleKernel
                     ->where('hour' , $hour)
                     ->first();
 
-                $order = DB::table('orders')->whereNotIn('status' , array(
-                    Config::get('orderstatus.no_pay')['status'],
-                    Config::get('orderstatus.cancel')['status']
-                ))->get();
+                $order = DB::table('orders')
+                    ->whereNotIn('status' , array(
+                        Config::get('orderstatus.no_pay')['status'],
+                        Config::get('orderstatus.cancel')['status']
+                    ))
+                    ->where('created_at' , 'like' , $year.'-'.$month.'-'.$day.' '.$hour .'%')->get();
 
                 print_r($order);
 //                if(!$count){
