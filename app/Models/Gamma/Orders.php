@@ -153,6 +153,7 @@ class Orders extends Model
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " GROUP BY user";
 
         return DB::select($sql);
 
