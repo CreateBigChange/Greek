@@ -408,7 +408,7 @@ class Stores extends Model
      */
     public function getTodayStoreCount($storeId , $date ){
 
-        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
+        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->get();
 
     }
 
@@ -488,6 +488,7 @@ class Stores extends Model
                     `total` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
+                    `visiting_number` as visiting_number
                     `hour`                    
                FROM orders";
         $sql .= " WHERE store_id = " . $storeId;

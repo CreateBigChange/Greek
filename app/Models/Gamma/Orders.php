@@ -146,14 +146,12 @@ class Orders extends Model
      */
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
-                    count(`user`) as user_num,
                     count(`id`) as order_num , 
                     sum(`total`) as turnover
                 FROM $this->_orders_table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
-        $sql .= " GROUP BY user";
 
         return DB::select($sql);
 

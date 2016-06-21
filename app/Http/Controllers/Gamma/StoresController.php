@@ -785,7 +785,9 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
+        $visitingNumber = $this->_model->financeCountByDay($storeId, date('Y' , time()) , date('m' , time()) . date('d' , time()));
+
+        var_dump($visitingNumber);
 
 
         if(!$visitingNumber){
@@ -802,8 +804,7 @@ class StoresController extends ApiController
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
             'visiting_number'       => $visitingNumber,
             'order_num'             => $orderCount[0]->order_num ? $orderCount[0]->order_num : 0,
-            'turnover'              => $orderCount[0]->turnover ? $orderCount[0]->turnover : 0,
-            'user'                  => $orderCount[0]->user_num ? $orderCount[0]->user_num : 0
+            'turnover'              => $orderCount[0]->turnover ? $orderCount[0]->turnover : 0
         )));
     }
 
