@@ -840,12 +840,95 @@ class StoresController extends ApiController
     }
 
     public function financeCount(){
-        var_dump(date("w"));
-        $weekarray = array("周一","周二","周三","周四","周五","周六","周日");
+        $year   = date('Y');
+        $month  = date('m');
+        $day    = date('d');
+        $hour   = date('H');
 
-        $today = date('Y-m-d' , time());
+        //本天
+        $today  = $this->_model->financeCountByDay($this->storeId, $year, $month, $day);
+
+        $todayTime = array(
+            '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'
+        );
+
+        $todayTurnover = array();
+
+        for ($i = 0; $i < count($todayTime); $i++) {
+            $todayTurnover[$i] = 0;
+            foreach ($today as $t) {
+                if($t->hour == $todayTime[$i]){
+                    $todayTurnover[$i] = $t->turnover;
+                }
+            }
+        }
+
+        $todayData = array(
+            'time'      => $todayTime,
+            'turnover'  => $todayTurnover
+        );
 
 
+        //获取本周日期
+        $sdefaultDate = date("Y-m-d");
+        $first=1;
+        $w=date('w',strtotime($sdefaultDate));
+
+        $day = array();
+        $weekTime = array(
+            '周一',
+            '周二',
+            '周三',
+            '周四',
+            '周五',
+            '周六',
+            '周日',
+        );
+        $week_start=date('Y-m-d',strtotime("$sdefaultDate -".($w ? $w - $first : 6).' days'));
+
+        $day[] = explode('-', $week_start)[2];
+
+        for ($i = 1 ; $i < 7 ; $i++){
+            $weektemp=date('Y-m-d',strtotime("$week_start + $i days"));
+            $day[] = explode('-', $weektemp)[2];
+        }
+
+        $week  = $this->_model->financeCountByWeek($this->storeId, $year, $month, implode(',', $day));
+        $weekTurnover = array();
+        for ($i =0 ; $i < count($weekTime) ; $i++){
+            $weekTurnover[$i] = 0;
+            foreach ($week as $w){
+                if($w->day == $day[$i]){
+                    $weekTurnover[$i] = $w->turnover;
+                }
+            }
+        }
+
+        $weekData = array(
+            'time'      => $weekTime,
+            'turnover'  => $weekTurnover
+        );
+
+
+
+        $dayTimes=date('j',mktime(0,0,1,($month==12?1:$month+1),1,($month==12?$year+1:$year))-24*3600);
+
+        $month   = $this->_model->financeCountByMonth($this->storeId, $year, $month);
+        $monthTurnover = array();
+        for ($i = 1,$j=0 ; $i <= $dayTimes ,$j<=$dayTimes; $i ++ , $j++){
+            $monthTime[] = $i;
+            $monthTurnover[$j] = 0;
+            foreach ($month as $m){
+                if($i == $m->day){
+                    $monthTurnover[$j] = $m->turnover;
+                }
+            }
+        }
+
+        $monthData = array(
+            'time'          => $monthTime,
+            'turnover'      => $monthTurnover
+        );
 
         return view('count');
     }

@@ -436,4 +436,69 @@ class Stores extends Model
         }
     }
 
+    /**
+     * 店铺统计数据(本月)
+     */
+    public function financeCountByMonth($storeId , $year , $month){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM orders";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " GROUP BY day ORDER BY day ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本周)
+     */
+    public function financeCountByWeek($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM orders ";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= "  GROUP BY day ORDER BY day ASC";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本天)
+     */
+    public function financeCountByDay($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    `total` as turnover,
+                    `out_points` as outPoint,
+                    `in_points` as inPoint,
+                    `hour`                    
+               FROM orders";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " ORDER BY hour ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
 }

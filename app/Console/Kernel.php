@@ -33,61 +33,30 @@ class Kernel extends ConsoleKernel
         echo '11111';
 
             $schedule->call(function(){
-                $year   = date('Y');
-                $month  = date('m');
-                $day    = date('d');
-                $hour   = date('H');
 
 
-                $order = DB::table('orders')
-                    ->whereNotIn('status' , array(
-                        Config::get('orderstatus.no_pay')['status'],
-                        Config::get('orderstatus.cancel')['status']
-                    ))
-                    ->where('created_at' , 'like' , $year.'-'.$month.'-'.$day.' '.$hour .'%')->get();
+                $order = DB::table('orders')->get();
 
                 foreach ($order as $o){
-                    $count = DB::table('store_date_counts')
-                        ->where('year' , $year)
-                        ->where('month' , $month)
-                        ->where('day' , $day)
-                        ->where('hour' , $hour)
-                        ->where('store_id' , $o->store_id)
-                        ->first();
-                    if(!$count){
-                        DB::table('store_date_counts')->insert(array(
-                            'date'                  => date('Y-m-d H:i:s' , time()),
-                            'year'                  => $year,
-                            'month'                 => $month,
-                            'day'                   => $day,
-                            'hour'                  => $hour,
-                            'store_id'              => $o->store_id,
-                            'buy_number'            => 1,
-                            'turnover'              => $o->total,
-                            'order_num'             => 1,
-                            'out_point'             => $o->out_points,
-                            'in_point'             => $o->in_points
-                        ));
-                    }else{
-                        DB::table('store_date_counts')
-                            ->where('year' , $year)
-                            ->where('month' , $month)
-                            ->where('day' , $day)
-                            ->where('hour' , $hour)
-                            ->where('store_id' , $o->store_id)
-                            ->update(array(
-                                'buy_number'    => $count->buy_number + 1,
-                                'turnover'      => $count->turnover + $o->total,
-                                'order_num'     => $count->order_num + 1,
-                                'out_point'     => $count->out_point + $o->out_points,
-                                'in_point'     => $count->in_point + $o->in_points
-                            ));
-                    }
+                    $time = explode(' ', $o->created_at);
+                    $date = $time[0];
+                    $time = $time[1];
+
+                    $data = array(
+                        'year'      => explode('-', $date)[0],
+                        'month'     => explode('-', $date)[1],
+                        'day'       => explode('-', $date)[2],
+                        'hour'      => explode(':', $time)[0],
+                        'minutes'   => explode(':', $time)[1],
+                        'second'    => explode(':', $time)[2],
+                    );
+
+                    DB::table('orders')->where($o->id)->update($data);
                 }
 
 
 
 
-            })->hourly()->appendOutputTo(storage_path().'/logs/store_count.log');
+            })->everyMinute()->appendOutputTo(storage_path().'/logs/store_count.log');
     }
 }
