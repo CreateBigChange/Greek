@@ -838,4 +838,15 @@ class StoresController extends ApiController
             'in_points'              => $orderCount[0]->in_points ? $orderCount[0]->in_points : 0
         )));
     }
+
+    public function financeCount(){
+        var_dump(date("w"));
+        $weekarray = array("周一","周二","周三","周四","周五","周六","周日");
+
+        $today = date('Y-m-d' , time());
+
+
+
+        return view('count');
+    }
 }

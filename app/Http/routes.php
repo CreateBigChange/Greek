@@ -161,6 +161,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/count/today', 'StoresController@getStoreTodayCount');
 		Route::post('/store/month/points', 'StoresController@getStoreMonthPoint');
 
+		Route::get('/store/count/finance', 'StoresController@financeCount');
+
 	});
 
 	Route::post('/store/areas', 'StoresController@areas');
