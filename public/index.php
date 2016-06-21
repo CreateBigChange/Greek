@@ -19,8 +19,6 @@
 |
 */
 
-date_default_timezone_set('Asia/Shanghai');
-
 require __DIR__.'/../bootstrap/autoload.php';
 
 /*
