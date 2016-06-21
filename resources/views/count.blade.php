@@ -154,9 +154,9 @@ function Month(){
 
 	$(function(){
 
-		$.post('/gamma/store/count/finance' , {} , function ($data) {
+		$.post('/gamma/store/count/finance' , {} , function (data , status) {
 			console.log(data);
-			Today(data);
+			Today();
 		})
 
 	})
