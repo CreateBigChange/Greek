@@ -787,7 +787,11 @@ class StoresController extends ApiController
 
         $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
 
-        var_dump($visitingNumber);die;
+        $visitingNumberData = 0;
+        foreach ($visitingNumber as $v){
+            $visitingNumberData += $v->visiting_number;
+        }
+        var_dump($visitingNumberData);die;
 
 
         if(!$visitingNumber){
