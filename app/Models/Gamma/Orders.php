@@ -177,7 +177,7 @@ class Orders extends Model
 
         $count =  DB::select($sql);
 
-        var_dump(count($count));die;
+        var_dump($count);die;
 
     }
 
