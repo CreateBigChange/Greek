@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
 //            $schedule->command('inspire')
 //                ->dailyAt('14:37');
 
+        echo '11111';
+
             $schedule->call(function(){
                 $year   = date('Y');
                 $month  = date('m');
