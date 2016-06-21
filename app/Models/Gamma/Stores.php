@@ -7,7 +7,7 @@
  */
 namespace App\Models\Gamma;
 
-use DB;
+use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Gamma\StoreUsers;
 use Overtrue\Socialite\Config;
@@ -447,6 +447,7 @@ class Stores extends Model
                     `day`
                FROM orders";
         $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " GROUP BY day ORDER BY day ASC ";
@@ -468,6 +469,7 @@ class Stores extends Model
                     `day`
                FROM orders ";
         $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " AND day IN (" . $day .")";
@@ -490,6 +492,7 @@ class Stores extends Model
                     `hour`                    
                FROM orders";
         $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " AND day IN (" . $day .")";
