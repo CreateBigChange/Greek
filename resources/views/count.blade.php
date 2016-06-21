@@ -108,7 +108,7 @@ function Week(data){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:data:data.turnover
+	            data:data.turnover
 	        }
 	    ]
 		};
@@ -145,7 +145,7 @@ function Month(data){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:data:data.turnover
+	            data:data.turnover
 	        }
 	    ]
 		};
