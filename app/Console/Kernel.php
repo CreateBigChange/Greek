@@ -79,8 +79,8 @@ class Kernel extends ConsoleKernel
                                 'buy_number'    => $count->buy_number + 1,
                                 'turnover'      => $count->turnover + $o->total,
                                 'order_num'     => $count->order_num + 1,
-                                'out_point'     => $count->out_points + $o->out_points,
-                                'in_point'     => $count->in_points + $o->in_points
+                                'out_point'     => $count->out_point + $o->out_points,
+                                'in_point'     => $count->in_point + $o->in_points
                             ));
                     }
                 }
