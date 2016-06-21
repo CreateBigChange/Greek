@@ -35,12 +35,7 @@ class Kernel extends ConsoleKernel
                 $day    = date('d');
                 $hour   = date('H');
 
-                $count = DB::table('store_date_counts')
-                    ->where('year' , $year)
-                    ->where('month' , $month)
-                    ->where('day' , $day)
-                    ->where('hour' , $hour)
-                    ->first();
+
 
                 $order = DB::table('orders')
                     ->whereNotIn('status' , array(
@@ -49,18 +44,45 @@ class Kernel extends ConsoleKernel
                     ))
                     ->where('created_at' , 'like' , $year.'-'.$month.'-'.$day.' '.$hour .'%')->get();
 
-                print_r($order);
-//                if(!$count){
-//                    DB::table($this->_store_date_counts_table)->insert(array(
-//                        'date'                  => date('Y-m-d H:i:s' , time()),
-//                        'year'                  => $year,
-//                        'month'                 => $month,
-//                        'day'                   => $day,
-//                        'hour'                  => $hour,
-//                        'store_id'              => $storeId,
-//                        'visiting_number'       => 1
-//                    ));
-//                }
+                foreach ($order as $o){
+                    $count = DB::table('store_date_counts')
+                        ->where('year' , $year)
+                        ->where('month' , $month)
+                        ->where('day' , $day)
+                        ->where('hour' , $hour)
+                        ->where('store_id' , $o->store_id)
+                        ->first();
+                    if(!$count){
+                        DB::table($this->_store_date_counts_table)->insert(array(
+                            'date'                  => date('Y-m-d H:i:s' , time()),
+                            'year'                  => $year,
+                            'month'                 => $month,
+                            'day'                   => $day,
+                            'hour'                  => $hour,
+                            'store_id'              => $o->store_id,
+                            'buy_number'            => 1,
+                            'turnover'              => $o->total,
+                            'order_num'             => 1,
+                            'out_point'             => $o->out_point,
+                            'in_points'             => $o->in_pointss
+                        ));
+                    }else{
+                        DB::table($this->_store_date_counts_table)
+                            ->where('year' , $year)
+                            ->where('month' , $month)
+                            ->where('day' , $day)
+                            ->where('hour' , $hour)
+                            ->where('store_id' , $o->store_id)
+                            ->update(array(
+                                'buy_number'    => $count->buy_number + 1,
+                                'turnover'      => $count->turnover + $o->total,
+                                'order_num'     => $count->order_num + 1,
+                                'out_point'     => $count->out_point + $o->out_point,
+                                'in_points'     => $count->in_points + $o->in_points
+                            ));
+                    }
+                }
+
 
 
 
