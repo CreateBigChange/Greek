@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
                     ))
                     ->where('created_at' , 'like' , $year.'-'.$month.'-'.$day.' '.$hour .'%')->get();
 
-                print_r($order);
+                print_r($year.'-'.$month.'-'.$day.' '.$hour .'%');
 //                if(!$count){
 //                    DB::table($this->_store_date_counts_table)->insert(array(
 //                        'date'                  => date('Y-m-d H:i:s' , time()),
