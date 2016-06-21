@@ -27,6 +27,6 @@ class StoreCount extends Command
      */
     public function handle()
     {
-        $this->comment('sssssssss');
+        
     }
 }
