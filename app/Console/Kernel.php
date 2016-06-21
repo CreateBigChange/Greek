@@ -65,7 +65,7 @@ class Kernel extends ConsoleKernel
                             'buy_number'            => 1,
                             'turnover'              => $o->total,
                             'order_num'             => 1,
-                            'out_point'             => $o->out_point,
+                            'out_point'             => $o->out_points,
                             'in_points'             => $o->in_pointss
                         ));
                     }else{
@@ -79,7 +79,7 @@ class Kernel extends ConsoleKernel
                                 'buy_number'    => $count->buy_number + 1,
                                 'turnover'      => $count->turnover + $o->total,
                                 'order_num'     => $count->order_num + 1,
-                                'out_point'     => $count->out_point + $o->out_point,
+                                'out_point'     => $count->out_points + $o->out_points,
                                 'in_points'     => $count->in_points + $o->in_points
                             ));
                     }
