@@ -57,7 +57,7 @@ function Today(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : <?php print_r($today['time']) ?>
+	            data : {{ $today['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -71,7 +71,7 @@ function Today(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data: <?php print_r($today['turnover']) ?>
+	            data: {{ $today['turnover'] }}
 	        }
 	    ]
 		};
@@ -94,7 +94,7 @@ function Week(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : <?php print_r($week['time']) ?>
+	            data : {{ $week['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -108,7 +108,7 @@ function Week(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data: <?php print_r($week['turnover']) ?>
+	            data:{{ $week['turnover'] }}
 	        }
 	    ]
 		};
@@ -131,7 +131,7 @@ function Month(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : <?php print_r($month['time']) ?>
+	            data : {{ $month['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -145,7 +145,7 @@ function Month(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:<?php print_r($month['turnover']) ?>
+	            data:{{ $month['turnover'] }}
 	        }
 	    ]
 		};
