@@ -954,6 +954,6 @@ class StoresController extends ApiController
 
         $orderCount->cash = $storeInfo->money;
 
-        return view('count' , $orderCount);
+        return view('count' , (Array)$orderCount);
     }
 }
