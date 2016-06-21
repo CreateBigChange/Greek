@@ -86,6 +86,6 @@ class Kernel extends ConsoleKernel
 
 
 
-            })->everyMinute();
+            })->everyMinute()->appendOutputTo(storage_path().'/log/store_count.log');
     }
 }
