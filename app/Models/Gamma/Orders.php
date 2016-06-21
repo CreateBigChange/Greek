@@ -177,8 +177,11 @@ class Orders extends Model
 
         $count =  DB::select($sql);
 
-        var_dump($count);die;
+        $count = $count[0];
+        $count->user = count($user);
+        $count->turnover_user = round($count->turnover / $count->user , 2);
 
+        return $count;
     }
 
     /**

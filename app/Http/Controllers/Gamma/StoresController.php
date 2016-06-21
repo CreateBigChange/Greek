@@ -949,6 +949,8 @@ class StoresController extends ApiController
     public function financeCount(){
         $orderModel = new Orders;
         $orderCount = $orderModel->getOrderCounts($this->storeId);
+
+        var_dump($orderCount);die;
         return view('count');
     }
 }
