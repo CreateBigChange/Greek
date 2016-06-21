@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel
 //            $schedule->command('inspire')
 //                ->dailyAt('14:37');
 
-            $schedule->command('storeCount')
-                ->dailyAt('14:48');
+            $schedule->call(function(){
+              echo '11111111';
+            })->dailyAt('14:48');
     }
 }
