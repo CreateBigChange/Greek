@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
                     ->where('month' , $month)
                     ->where('day' , $day)
                     ->where('hour' , $hour)
-                    ->frist();
+                    ->first();
 
                 $order = DB::table('orders')->whereNotIn('status' , array(
                     Config::get('orderstatus.no_pay')['status'],
