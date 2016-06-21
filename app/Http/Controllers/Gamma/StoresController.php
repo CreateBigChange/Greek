@@ -950,7 +950,10 @@ class StoresController extends ApiController
         $orderModel = new Orders;
         $orderCount = $orderModel->getOrderCounts($this->storeId);
 
-        var_dump($orderCount);die;
-        return view('count');
+        $storeInfo = $this->_model->getStoreInfo($this->storeId);
+
+        $orderCount->cash = $storeInfo->money;
+
+        return view('count' , $orderCount);
     }
 }
