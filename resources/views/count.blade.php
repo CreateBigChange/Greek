@@ -57,7 +57,7 @@ function Today(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : ['0','3','6','9','12','15','18','21','24']
+	            data : {{ $today['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -71,7 +71,7 @@ function Today(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[120, 132, 101, 134, 90, 230, 210,220,300]
+	            data: {{ $today['turnover'] }}
 	        }
 	    ]
 		};
@@ -94,7 +94,7 @@ function Week(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : ['周一','周二','周三','周四','周五','周六','周日']
+	            data : {{ $week['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -108,7 +108,7 @@ function Week(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[420, 332, 601, 534, 900, 730, 810]
+	            data:{{ $week['turnover'] }}
 	        }
 	    ]
 		};
@@ -131,7 +131,7 @@ function Month(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
+	            data : {{ $month['time'] }}
 	        }
 	    ],
 	    yAxis : [
@@ -145,7 +145,7 @@ function Month(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[1420, 1332, 1601, 1534, 1900, 1730, 1810 , 1420, 1332, 1601, 1534, 1900, 1730, 1810 , 1420, 1332, 1601, 1534, 1900, 1730, 1810 , 1420, 1332, 1601, 1534, 1900, 1730, 1810 , 1730, 1810]
+	            data:{{ $month['turnover'] }}
 	        }
 	    ]
 		};

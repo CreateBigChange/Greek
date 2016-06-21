@@ -935,9 +935,7 @@ class StoresController extends ApiController
             'week'          => $weekData,
             'month'         => $monthData
         );
-        
-        dd($response);
 
-        return view('count');
+        return view('count' , $response);
     }
 }
