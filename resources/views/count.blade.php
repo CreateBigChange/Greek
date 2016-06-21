@@ -154,7 +154,7 @@ function Month(){
 
 	$(function(){
 
-		$.post('/store/count/finance' , {} , function ($data) {
+		$.post('/gamma/store/count/finance' , {} , function ($data) {
 			console.log(data);
 			Today(data);
 		})
