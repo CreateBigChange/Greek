@@ -930,6 +930,14 @@ class StoresController extends ApiController
             'turnover'      => $monthTurnover
         );
 
+        $response = array(
+            'today'         => $todayData,
+            'week'          => $weekData,
+            'month'         => $monthData
+        );
+        
+        dd($response);
+
         return view('count');
     }
 }
