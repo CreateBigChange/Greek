@@ -308,6 +308,13 @@ class OrdersController extends ApiController
             }
         }
 
+        $order = $this->_model->getOrderList($this->userId , array('id' => $orderId));
+        if(!isset($order[0])){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        $order = $order[0];
+
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytype.money')){
             $userModel = new Users;
@@ -320,9 +327,32 @@ class OrdersController extends ApiController
             if($userInfo->pay_password != $this->encrypt($payPassword , $userInfo->pay_salt)){
                 return response()->json(Message::setResponseInfo('PAY_PASSWORD_ERROR'));
             }
-            return $this->_model->pay($orderId , $payNum['data'] , $payType);
+            if($this->_model->pay($orderId , $payNum['data'] , $payType)){
+                $storeModel = new Stores;
+                $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+
+                if(empty($store)){
+                    return true;
+                }
+
+                $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
+
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "急所需有新订单啦,请及时处理",
+                    "急所需新订单",
+                    array('ios' , 'android'),
+                    "$order->store_id",
+                    array(),
+                    $bell
+                ));
+
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            }else{
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }else{
-            return $payNum;
+            return response()->json(Message::setResponseInfo('SUCCESS' , $payNum));
         }
 
     }
