@@ -79,7 +79,7 @@ function Today(data){
 }
 
 //本周数据
-function Week(){
+function Week(data){
 	var option = {
 	    tooltip : {
 	        trigger: 'axis'
@@ -94,7 +94,7 @@ function Week(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data :[]
+	            data :data.time
 	        }
 	    ],
 	    yAxis : [
@@ -108,7 +108,7 @@ function Week(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[]
+	            data:data:data.turnover
 	        }
 	    ]
 		};
@@ -116,7 +116,7 @@ function Week(){
 }
 
 //本月数据
-function Month(){
+function Month(data){
 	var option = {
 	    tooltip : {
 	        trigger: 'axis'
@@ -131,7 +131,7 @@ function Month(){
 	        {
 	            type : 'category',
 	            boundaryGap : false,
-	            data :[]
+	            data :data.time
 	        }
 	    ],
 	    yAxis : [
@@ -145,7 +145,7 @@ function Month(){
 	            type:'line',
 	            stack: '总量',
 	            areaStyle: {normal: {}},
-	            data:[]
+	            data:data:data.turnover
 	        }
 	    ]
 		};
@@ -154,7 +154,7 @@ function Month(){
 
 	$(function(){
 
-		$.post('/gamma/store/count/finance' , {} , function (data , status) {
+		$.post('/gamma/store/count/finance' , {'type': 1} , function (data , status) {
 			console.log(data);
 			Today(data.data.today);
 		})
@@ -165,11 +165,21 @@ function Month(){
 		$(this).addClass('act').siblings().removeClass('act');
 		var type =$(this).data("type");
 		if(type==1){
-				Today();
+			$.post('/gamma/store/count/finance' , {'type' : 1} , function (data , status) {
+				console.log(data);
+				Today(data.data.today);
+			})
 		}else if (type==2) {
-				Week();
+			$.post('/gamma/store/count/finance' , {'type' : 2} , function (data , status) {
+				console.log(data);
+				Week(data.data.week);
+			})
+
 		}else if (type==3) {
-				Month();
+			$.post('/gamma/store/count/finance' , {'type' : 3} , function (data , status) {
+				console.log(data);
+				Month(data.data.month);
+			})
 		}
 	})
 	</script>
