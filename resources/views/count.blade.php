@@ -24,11 +24,11 @@
 	<div id="main" style="height:400px;"></div>
 	<ul id="data">
 			<li>
-				<span class="data-num">{{ $turnover }}}</span><br/>
+				<span class="data-num">{{ $turnover }}</span><br/>
 				<span class="data-title">总计营收</span>
 			</li>
 			<li>
-				<span class="data-num">{{ $turnover_user }}}</span><br/>
+				<span class="data-num">{{ $turnover_user }}</span><br/>
 				<span class="data-title">平均客单价</span>
 			</li>
 			<li>
