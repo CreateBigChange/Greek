@@ -173,9 +173,11 @@ class Orders extends Model
             Config::get('orderstatus.cancel')['status']
         ))->groupBy('user')->get();
 
-        var_dump($user);die;
 
-        return DB::select($sql);
+
+        $count =  DB::select($sql);
+
+        var_dump(count($count));die;
 
     }
 
