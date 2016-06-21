@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use DB , Config;
+use DB , Config , Log;
+use App\Libs\BLogger;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -36,7 +37,6 @@ class Kernel extends ConsoleKernel
                 $month  = date('m');
                 $day    = date('d');
                 $hour   = date('H');
-
 
 
                 $order = DB::table('orders')
@@ -88,6 +88,6 @@ class Kernel extends ConsoleKernel
 
 
 
-            })->everyMinute()->appendOutputTo(storage_path().'/log/store_count.log');
+            })->everyMinute()->appendOutputTo(storage_path().'/logs/store_count.log');
     }
 }
