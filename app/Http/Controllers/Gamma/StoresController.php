@@ -864,8 +864,8 @@ class StoresController extends ApiController
         }
 
         $todayData = array(
-            'time'      => json_decode($todayTime),
-            'turnover'  => json_decode($todayTurnover)
+            'time'      => json_encode($todayTime),
+            'turnover'  => json_encode($todayTurnover)
         );
 
 
@@ -905,8 +905,8 @@ class StoresController extends ApiController
         }
 
         $weekData = array(
-            'time'      => json_decode($weekTime),
-            'turnover'  => json_decode($weekTurnover)
+            'time'      => json_encode($weekTime),
+            'turnover'  => json_encode($weekTurnover)
         );
 
 
@@ -926,8 +926,8 @@ class StoresController extends ApiController
         }
 
         $monthData = array(
-            'time'          => json_decode($monthTime),
-            'turnover'      => json_decode($monthTurnover)
+            'time'          => json_encode($monthTime),
+            'turnover'      => json_encode($monthTurnover)
         );
 
         $response = array(
