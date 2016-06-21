@@ -66,7 +66,7 @@ class Kernel extends ConsoleKernel
                             'turnover'              => $o->total,
                             'order_num'             => 1,
                             'out_point'             => $o->out_points,
-                            'in_points'             => $o->in_pointss
+                            'in_point'             => $o->in_points
                         ));
                     }else{
                         DB::table('store_date_counts')
@@ -80,7 +80,7 @@ class Kernel extends ConsoleKernel
                                 'turnover'      => $count->turnover + $o->total,
                                 'order_num'     => $count->order_num + 1,
                                 'out_point'     => $count->out_points + $o->out_points,
-                                'in_points'     => $count->in_points + $o->in_points
+                                'in_point'     => $count->in_points + $o->in_points
                             ));
                     }
                 }
