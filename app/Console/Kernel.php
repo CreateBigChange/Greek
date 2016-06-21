@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
                         ->where('store_id' , $o->store_id)
                         ->first();
                     if(!$count){
-                        DB::table($this->_store_date_counts_table)->insert(array(
+                        DB::table('store_date_counts')->insert(array(
                             'date'                  => date('Y-m-d H:i:s' , time()),
                             'year'                  => $year,
                             'month'                 => $month,
@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
                             'in_points'             => $o->in_pointss
                         ));
                     }else{
-                        DB::table($this->_store_date_counts_table)
+                        DB::table('store_date_counts')
                             ->where('year' , $year)
                             ->where('month' , $month)
                             ->where('day' , $day)
