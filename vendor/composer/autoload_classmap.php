@@ -10,6 +10,7 @@ return array(
     'AdminUserRolesSeeder' => $baseDir . '/database/seeds/AdminUserRolesSeeder.php',
     'AdminUserSeeder' => $baseDir . '/database/seeds/AdminUserSeeder.php',
     'App\\Console\\Commands\\Inspire' => $baseDir . '/app/Console/Commands/Inspire.php',
+    'App\\Console\\Commands\\StoreCount' => $baseDir . '/app/Console/Commands/storeCount.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\DBEvent' => $baseDir . '/app/Events/DBEvent.php',
     'App\\Events\\Event' => $baseDir . '/app/Events/Event.php',

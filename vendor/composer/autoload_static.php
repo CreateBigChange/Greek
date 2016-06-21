@@ -471,6 +471,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'AdminUserRolesSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminUserRolesSeeder.php',
         'AdminUserSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminUserSeeder.php',
         'App\\Console\\Commands\\Inspire' => __DIR__ . '/../..' . '/app/Console/Commands/Inspire.php',
+        'App\\Console\\Commands\\StoreCount' => __DIR__ . '/../..' . '/app/Console/Commands/storeCount.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\DBEvent' => __DIR__ . '/../..' . '/app/Events/DBEvent.php',
         'App\\Events\\Event' => __DIR__ . '/../..' . '/app/Events/Event.php',
