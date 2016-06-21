@@ -168,7 +168,7 @@ class Orders extends Model
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
 
-        $user = DB::table($this->_orders_table)->select('count(user) as user')->where('store_id' , $storeId)->whereNotIn('status' , array(
+        $user = DB::table($this->_orders_table)->select("count(`user`) as user")->where('store_id' , $storeId)->whereNotIn('status' , array(
             Config::get('orderstatus.no_pay')['status'],
             Config::get('orderstatus.cancel')['status']
         ))->groupBy('user')->get();
