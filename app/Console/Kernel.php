@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
                         'second'    => explode(':', $time)[2],
                     );
 
-                    DB::table('orders')->where($o->id)->update($data);
+                    DB::table('orders')->where('id' , $o->id)->update($data);
                 }
 
 
