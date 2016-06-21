@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-            Commands\Inspire::class,
+            //Commands\Inspire::class,
             Commands\StoreCount::class,
     ];
 
@@ -25,10 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-            $schedule->command('inspire')
-                ->dailyAt('14:37');
+//            $schedule->command('inspire')
+//                ->dailyAt('14:37');
 
             $schedule->command('storeCount')
-                ->dailyAt('14:42');
+                ->dailyAt('14:48');
     }
 }
