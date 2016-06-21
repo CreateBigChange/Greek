@@ -488,7 +488,7 @@ class Stores extends Model
                     `total` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
-                    `visiting_number` as visiting_number
+                    `visiting_number` as visiting_number,
                     `hour`                    
                FROM orders";
         $sql .= " WHERE store_id = " . $storeId;
