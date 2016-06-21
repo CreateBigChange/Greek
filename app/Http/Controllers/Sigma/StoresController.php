@@ -49,10 +49,10 @@ class StoresController extends ApiController
 
         $storeInfo = $this->_model->getStoreInfo($storeId);
 
-        var_dump($storeInfo);die;
-
         //添加访问量
         $this->_model->addStoreCount($storeId);
+
+        var_dump($this->_model->addStoreCount($storeId));die;
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $storeInfo));
     }
