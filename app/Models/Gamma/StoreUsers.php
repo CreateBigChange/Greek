@@ -213,7 +213,7 @@ class StoreUsers extends Model
             $sql.= " AND sw.created_at LIKE '" . $date ."%'";
         };
 
-        $sql .= "limit $length , $offset";
+        $sql .= "limit $offset , $length ";
 
         $result = DB::select($sql);
         foreach ($result as $r){
