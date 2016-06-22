@@ -107,13 +107,13 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/list?page=1
      *
-     * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
+     * @apiParam {number} type 1为有效订单
      * @apiParam {string} search 搜索条件
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/list?page=1
      *      {
-     *          status : 1
+     *          type : 1
      *      }
      * @apiUse CODE_200
      *
@@ -128,18 +128,19 @@ class OrdersController extends ApiController
         }
 
         $type = 0;
-        if($request->has('status')){
-            $type = $request->get('status');
+        if($request->has('type')){
+            $type = $request->get('type');
         }
 
         if ($type == 1){
-            $search['status'] = array('2');
-        }elseif ($type == 2){
-            $search['status'] = array('3');
-        }elseif ($type == 3){
-            $search['status'] = array('4');
-        }elseif ($type == 4){
-            $search['status'] = array('5' , '6' , '7');
+            $search['status'] = array(
+                Config::get('orderstatus.paid')['status'] ,
+                Config::get('orderstatus.on_the_way')['status'] ,
+                Config::get('orderstatus.accepted')['status'] ,
+                Config::get('orderstatus.completd')['status'] ,
+                Config::get('orderstatus.arrive')['status'] ,
+                Config::get('orderstatus.refunding')['status']
+            );
         }
 
         if($request->has('search')){
