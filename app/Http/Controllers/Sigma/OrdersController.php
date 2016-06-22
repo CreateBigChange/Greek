@@ -148,7 +148,6 @@ class OrdersController extends ApiController
         }
 
         $orderNum   = $this->_model->getOrderTotalNum($this->userId , $search);
-        var_dump($orderNum);die;
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $orderNum);
