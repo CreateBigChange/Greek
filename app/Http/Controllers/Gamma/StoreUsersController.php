@@ -225,7 +225,6 @@ class StoreUsersController extends ApiController
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
         $isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
 
-        $isSend = true;
         if($isSend){
             Session::put("jsx_sms_$account" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
