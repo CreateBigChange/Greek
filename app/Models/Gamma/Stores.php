@@ -37,26 +37,26 @@ class Stores extends Model
      * 所有地区
      */
     public function allAreas(){
-        $parent =  DB::table('areas')->where('deep'  , 1)->get();
+        $parent =  DB::table('amap_city_code')->select('adcode' , 'name')->where('level'  , 'province')->get();
 
-        $son = DB::table('areas')->where('deep' , 2)->get();
+        $son = DB::table('amap_city_code')->select('adcode' , 'name')->where('level' , 'city')->get();
 
-        $grandson = DB::table('areas')->where('deep' , 3)->get();
+        $grandson = DB::table('amap_city_code')->select('adcode' , 'name')->where('level' , 'district')->get();
 
         foreach ($son as $s) {
             $s->son = array();
+
             foreach ($grandson as $g) {
-                if($s->id == $g->parent){
+                if(substr($g->adcode , 0, 2) == substr($s->adcode , 0, 2) && substr($s->adcode , 2 , 2) == substr($g->adcode , 2 , 2)){
                     $s->son[] = $g;
                 }
             }
         }
 
-
         foreach ($parent as $p) {
             $p->son = array();
             foreach ($son as $s){
-                if ($p->id == $s->parent) {
+                if (substr($p->adcode , 0, 2) == substr($s->adcode , 0, 2)) {
                     $p->son[] = $s;
                 }
             }
