@@ -256,7 +256,7 @@ class Orders extends Model
             'day'                   => date('d' , time()),
             'hour'                  => date('H' , time()),
             'minutes'               => date('i' , time()),
-            'seccend'               => date('s' , time()),
+            'second'               => date('s' , time()),
 
         );
 
