@@ -203,7 +203,6 @@ class StoreUsers extends Model
                     sw.status,
                     sw.reason,
                     sw.bank_card_num,
-                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num
                
                FROM store_withdraw_cash_log as sw" ;
 
@@ -223,6 +222,27 @@ class StoreUsers extends Model
             //$r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
         }
 
+        return $result;
+    }
+
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 获取提现总计
+     */
+    public function getWithdrawCashTotal($storeId , $date=''){
+
+        $sql = "SELECT 
+                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num,
+               FROM store_withdraw_cash_log as sw" ;
+
+        $sql .= " WHERE sw.store_id = $storeId";
+        if($date){
+            $sql.= " AND sw.created_at LIKE '" . $date ."%'";
+        };
+
+        $result = DB::select($sql);
 
         return $result;
     }
