@@ -425,12 +425,12 @@ class OrdersController extends ApiController
         $attributes['body']             = $detail;
         $attributes['detail']           = $body;
         $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
-        $attributes['total_fee']        = 1;
+        //$attributes['total_fee']        = 1;
         $attributes['fee_type']         = 1;
         //$attributes['time_start']       = date('YmdHis' , time());
         //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
         $attributes['attach']           = $orderId;
-        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
+        $attributes['total_fee']        = (int)($payNum['data'] * 100);
 
         if($tradeType == 'JSAPI') {
 
