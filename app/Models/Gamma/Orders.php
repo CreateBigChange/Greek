@@ -260,13 +260,17 @@ class Orders extends Model
             $point = $storeInfo->pint + $order->out_points;
             $storeModel->updatePoint($storeId, $point);
 
-            //如果订单状态是已送达和已完成再退款的,需要返还用户积分
+            //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
             if($order->status == Config::get('orderstatus.arrive')['status'] || $order->status == Config::get('orderstatus.completd')['status']){
                 $userInfo = DB::table('users')->where('id' , $order->user)->first();
 
                 $userPoint = $userInfo->points + $order->out_points;
 
                 DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
+                
+                //更新店铺余额
+                $money = $storeInfo->money - $order->pay_total;
+                $storeModel->updateMoney($storeId, $money);
             }
 
             DB::table($this->_orders_table)->where('id', $orderId)->update(array(
