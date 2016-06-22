@@ -330,6 +330,8 @@ class WechatController extends ApiController
      */
 
     public function wechatToken(Request $request){
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(1111);
         $signature      = $_GET['signature'];
         $timestamp      = $_GET['timestamp'];
         $nonce          = $_GET['nonce'];
