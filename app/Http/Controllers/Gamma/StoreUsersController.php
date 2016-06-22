@@ -265,6 +265,8 @@ class StoreUsersController extends ApiController
 
         $total = $this->_model->getWithdrawCashTotal($this->storeId );
 
+        var_dump($total);die;
+
         $response = array(
             'log'                           => $log,
             'pageData'                      => $pageData,
