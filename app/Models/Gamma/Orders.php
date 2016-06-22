@@ -288,14 +288,15 @@ class Orders extends Model
             }
 
             //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
-            if($order->status == Config::get('orderstatus.arrive')['status'] || $order->status == Config::get('orderstatus.completd')['status']){
+            $orderLog = DB::table($this->_order_logs_table)->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
+            if($orderLog){
                 $userInfo = DB::table('users')->where('id' , $order->user)->first();
 
                 $userPoint = $userInfo->points + $order->out_points;
 
                 DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分未'.$userPoint);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为'.$userPoint);
 
                 //更新店铺余额
                 $money = $storeInfo->money - $order->pay_total;
