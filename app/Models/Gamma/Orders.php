@@ -179,7 +179,9 @@ class Orders extends Model
 
         $count = $count[0];
         $count->user = count($user);
-        if($count->turnover == 0){
+
+        if(!$count->turnover){
+            $count->turnover = 0;
             $count->turnover_user = 0;
         }else {
             $count->turnover_user = round($count->turnover / $count->user, 2);
