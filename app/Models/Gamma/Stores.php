@@ -37,18 +37,19 @@ class Stores extends Model
      * 所有地区
      */
     public function allAreas(){
-        $parent =  DB::table('amap_city_code')->select('adcode' , 'name')->where('level'  , 'province')->get();
+        $parent =  DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level'  , 'province')->get();
 
-        $son = DB::table('amap_city_code')->select('adcode' , 'name')->where('level' , 'city')->get();
+        $son = DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level' , 'city')->get();
 
-        $grandson = DB::table('amap_city_code')->select('adcode' , 'name')->where('level' , 'district')->get();
+        $grandson = DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level' , 'district')->get();
 
         foreach ($son as $s) {
             $s->son = array();
-
             foreach ($grandson as $g) {
-                if(substr($g->adcode , 0, 2) == substr($s->adcode , 0, 2) && substr($s->adcode , 2 , 2) == substr($g->adcode , 2 , 2)){
+                if(substr($s->id , 0 , 4) == substr($g->id , 0 , 4)){
+                    $g->parent = $s->id;
                     $s->son[] = $g;
+
                 }
             }
         }
@@ -56,7 +57,8 @@ class Stores extends Model
         foreach ($parent as $p) {
             $p->son = array();
             foreach ($son as $s){
-                if (substr($p->adcode , 0, 2) == substr($s->adcode , 0, 2)) {
+                if (substr($p->id , 0, 2) == substr($s->id , 0, 2)) {
+                    $s->parent = $p->id;
                     $p->son[] = $s;
                 }
             }
