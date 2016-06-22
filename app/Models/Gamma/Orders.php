@@ -292,11 +292,13 @@ class Orders extends Model
             if($orderLog){
                 $userInfo = DB::table('users')->where('id' , $order->user)->first();
 
-                $userPoint = $userInfo->points + $order->out_points;
+                $userPoint = $userInfo->points - $order->out_points + $order->in_points;
 
-                DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
+                if($userPoint != $userInfo->points) {
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为'.$userPoint);
+                    DB::table('users')->where('id', $order->user)->update(array('points' => $userPoint));
+                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为'.$userPoint);
+                }
 
                 //更新店铺余额
                 $money = $storeInfo->money - $order->pay_total;
