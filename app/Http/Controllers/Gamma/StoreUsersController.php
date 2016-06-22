@@ -260,7 +260,7 @@ class StoreUsersController extends ApiController
         }
 
         $totalNum = $this->_model->withdrawCashLogTotalNum($this->storeId);
-        $pageData = $this->getPageData($page , $this->length , $totalNum);
+        $pageData = $this->getPageData($page , $this->_length , $totalNum);
 
         $log = $this->_model->getWithdrawCashLog($this->storeId , $this->_length , $pageData->offset);
 
@@ -328,28 +328,5 @@ class StoreUsersController extends ApiController
 
     }
 
-    /**
-     * @api {POST} /gamma/store/cash/log 提现记录
-     * @apiName cashLog
-     * @apiGroup GAMMA
-     * @apiVersion 1.0.0
-     * @apiDescription just a test
-     * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/gamma/store/cash/log
-     *
-     * @apiParamExample {json} Request Example
-     * POST /gamma/store/cash/log
-     * {
-     * }
-     * @apiUse CODE_200
-     *
-     */
-    public function withdrawCashLog(Request $request){
-
-
-
-        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
-
-    }
 
 }
