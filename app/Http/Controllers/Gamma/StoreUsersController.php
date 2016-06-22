@@ -264,7 +264,12 @@ class StoreUsersController extends ApiController
 
         $log = $this->_model->getWithdrawCashLog($this->storeId , $this->_length , $pageData->offset);
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $log));
+        $response = array(
+            'log'       => $log,
+            'pageData'  => $pageData
+        );
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
     /**
