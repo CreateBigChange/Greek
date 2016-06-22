@@ -194,7 +194,7 @@ class StoreUsers extends Model
      * @return mixed
      * 获取提现记录
      */
-    public function getWithdrawCashLog($storeId , $date=''){
+    public function getWithdrawCashLog($storeId , $length , $offset , $date=''){
 
         $sql = "SELECT 
                     su.real_name,
@@ -213,6 +213,8 @@ class StoreUsers extends Model
             $sql.= " AND sw.created_at LIKE '" . $date ."%'";
         };
 
+        $sql .= "limit $length , $offset";
+
         $result = DB::select($sql);
         foreach ($result as $r){
 
@@ -222,6 +224,10 @@ class StoreUsers extends Model
 
 
         return $result;
+    }
+
+    public function withdrawCashLogTotalNum($storeId){
+        return DB::table('store_withdraw_cash_log')->where('store_id' , $storeId)->count();
     }
 
     /**
@@ -257,5 +263,6 @@ class StoreUsers extends Model
 
         return $data;
     }
+
 
 }
