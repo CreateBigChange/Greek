@@ -265,12 +265,12 @@ class StoreUsersController extends ApiController
 
         $total = $this->_model->getWithdrawCashTotal($this->storeId );
 
-        var_dump($total);die;
+        $withdraw_cash_total_num = isset($total[0]) ? $total[0]->withdraw_cash_total_num : 0;
 
         $response = array(
             'log'                           => $log,
             'pageData'                      => $pageData,
-            'withdraw_cash_total_num'       => $total->withdraw_cash_total_num
+            'withdraw_cash_total_num'       => $withdraw_cash_total_num
         );
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
