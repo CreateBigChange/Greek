@@ -262,7 +262,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 });
 
-Route::get('/wechat/token', 'WechatController@wechatToken');
+Route::get('/wechat/token', 'Wxpay\\WechatController@wechatToken');
 
 
 //Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
