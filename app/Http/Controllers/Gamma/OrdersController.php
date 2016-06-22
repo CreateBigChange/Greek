@@ -161,7 +161,7 @@ class OrdersController extends ApiController
                     $type = 2;
                 }
                 if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
-                    if ($this->_model->refund($orderId, $refundNo)) {
+                    if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
                         return response()->json(Message::setResponseInfo('FAILED'));

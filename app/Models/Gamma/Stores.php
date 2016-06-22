@@ -505,4 +505,18 @@ class Stores extends Model
 
     }
 
+    /**
+     * 更新商铺积分
+     */
+    public function updatePoint($storeId , $point){
+        return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('point'=>$point));
+    }
+
+    /**
+     * 更新商铺余额
+     */
+    public function updateMoney($storeId , $money){
+        return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('money'=>$money));
+    }
+
 }

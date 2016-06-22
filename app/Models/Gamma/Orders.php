@@ -9,6 +9,10 @@ namespace App\Models\Gamma;
 
 use DB , Config;
 use Illuminate\Database\Eloquent\Model;
+use Mockery\CountValidator\Exception;
+
+use App\Models\Gamma\Stores;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class Orders extends Model
 {
@@ -119,24 +123,49 @@ class Orders extends Model
      */
     public function changeStatus($storeId , $userId , $id , $status){
 
-        $isChange = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->update(array('status' => $status));
+        DB::beginTransaction();
+        try {
 
-        if($isChange){
+            DB::table($this->_orders_table)->where('store_id', $storeId)->where('id', $id)->update(array('status' => $status));
+
 
             $log = array(
-                'order_id'      => $id,
-                'user'          => $userId,
-                'identity'      => '商家管理员',
-                'platform'      => '手机端',
-                'log'           => '将订单'. $id . '的状态改为'.$status,
-                'created_at'    => date('Y-m-d H:i:s' , time()),
-                'status'        => $status
+                'order_id' => $id,
+                'user' => $userId,
+                'identity' => '商家管理员',
+                'platform' => '手机端',
+                'log' => '将订单' . $id . '的状态改为' . $status,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'status' => $status
             );
             DB::table($this->_order_logs_table)->insert($log);
+
+            //如果是已送达,才修改店铺的余额
+            if($status == Config::get('orderstatus.arrive')['status']){
+                $orderInfo = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->first();
+                if(!$orderInfo){
+                    return false;
+                }
+
+                $storeModel = new Stores;
+                $storeInfo = $storeModel->getStoreInfo($storeId);
+                if(!$storeInfo){
+                    return false;
+                }
+
+                $money = $storeInfo->money + $orderInfo->pay_total;
+
+                $storeModel->updateMoney($storeId, $money);
+            }
+
+            DB::commit();
             return true;
-        }else{
+        }catch (Exception $e){
+            DB::rollBack();
+
             return false;
         }
+
 
     }
 
@@ -212,27 +241,55 @@ class Orders extends Model
      * @param id        number
      * @param status    number
      */
-    public function refund($orderId , $refundNo){
+    public function refund($storeId , $orderId , $refundNo){
 
-        $isChange = DB::table($this->_orders_table)->where('id' , $orderId)->update(array(
-            'status'    => Config::get('orderstatus.refunded')['status'],
-            'refund_no' => $refundNo
-        ));
+        DB::beginTransaction();
 
-        if($isChange){
+        try {
+            $order = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $orderId)->first();
+            if(!$order){
+                return false;
+            }
+
+            //更新店铺积分
+            $storeModel = new Stores;
+            $storeInfo = $storeModel->getStoreInfo($storeId);
+            if(!$storeInfo){
+                return false;
+            }
+            $point = $storeInfo->pint + $order->out_points;
+            $storeModel->updatePoint($storeId, $point);
+
+            //如果订单状态是已送达和已完成再退款的,需要返还用户积分
+            if($order->status == Config::get('orderstatus.arrive')['status'] || $order->status == Config::get('orderstatus.completd')['status']){
+                $userInfo = DB::table('users')->where('id' , $order->user)->first();
+
+                $userPoint = $userInfo->points + $order->out_points;
+
+                DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
+            }
+
+            DB::table($this->_orders_table)->where('id', $orderId)->update(array(
+                'status' => Config::get('orderstatus.refunded')['status'],
+                'refund_no' => $refundNo
+            ));
 
             $log = array(
-                'order_id'      => $orderId,
-                'user'          => '',
-                'identity'      => '商家管理员',
-                'platform'      => '手机端',
-                'log'           => '将订单'. $orderId . '的状态改为'.Config::get('orderstatus.refunded')['status'],
-                'created_at'    => date('Y-m-d H:i:s' , time()),
-                'status'        => Config::get('orderstatus.refunded')['status']
+                'order_id' => $orderId,
+                'user' => '',
+                'identity' => '商家管理员',
+                'platform' => '手机端',
+                'log' => '将订单' . $orderId . '的状态改为' . Config::get('orderstatus.refunded')['status'],
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'status' => Config::get('orderstatus.refunded')['status']
             );
             DB::table($this->_order_logs_table)->insert($log);
+
+            DB::commit();
             return true;
-        }else{
+        }catch (Exception $e){
+            DB::rollBack();
+
             return false;
         }
 
