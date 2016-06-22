@@ -179,6 +179,8 @@ class Orders extends Model
                 $point = $userInfo->points + $orderInfo->out_points;
 
                 DB::table('users')->where('id' , $orderInfo->user)->update(array('points'=>$point));
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('66666666666');
             }
 
             DB::commit();
