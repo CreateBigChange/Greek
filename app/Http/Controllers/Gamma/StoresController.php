@@ -835,7 +835,7 @@ class StoresController extends ApiController
         )));
     }
 
-    public function ajaxFinanceCount(Request $request){
+    public function ajaxFinanceCount($storeId , Request $request){
 
         $type = $request->get('type' , 1);
 
@@ -846,7 +846,7 @@ class StoresController extends ApiController
 
         if($type == 1) {
             //本天
-            $today = $this->_model->financeCountByDay($this->storeId, $year, $month, $day);
+            $today = $this->_model->financeCountByDay($storeId, $year, $month, $day);
 
             $todayTime = array(
                 '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'
@@ -897,7 +897,7 @@ class StoresController extends ApiController
                 $day[] = explode('-', $weektemp)[2];
             }
 
-            $week = $this->_model->financeCountByWeek($this->storeId, $year, $month, implode(',', $day));
+            $week = $this->_model->financeCountByWeek($storeId, $year, $month, implode(',', $day));
             $weekTurnover = array();
             for ($i = 0; $i < count($weekTime); $i++) {
                 $weekTurnover[$i] = 0;
@@ -920,7 +920,7 @@ class StoresController extends ApiController
 
             $dayTimes = date('j', mktime(0, 0, 1, ($month == 12 ? 1 : $month + 1), 1, ($month == 12 ? $year + 1 : $year)) - 24 * 3600);
 
-            $month = $this->_model->financeCountByMonth($this->storeId, $year, $month);
+            $month = $this->_model->financeCountByMonth($storeId, $year, $month);
             $monthTurnover = array();
             for ($i = 1, $j = 0; $i <= $dayTimes, $j <= $dayTimes; $i++, $j++) {
                 $monthTime[] = $i;
@@ -946,11 +946,11 @@ class StoresController extends ApiController
 
     }
 
-    public function financeCount(){
+    public function financeCount($storeId){
         $orderModel = new Orders;
-        $orderCount = $orderModel->getOrderCounts($this->storeId);
+        $orderCount = $orderModel->getOrderCounts($storeId);
 
-        $storeInfo = $this->_model->getStoreInfo($this->storeId);
+        $storeInfo = $this->_model->getStoreInfo($storeId);
 
         $orderCount->cash = $storeInfo->money;
 
