@@ -31,9 +31,9 @@ class Orders extends Model
      * @param storeId   number
      * @param search    array
      */
-    public function getOrderTotalNum($storeId , $search){
+    public function getOrderTotalNum($userId , $search){
         $sql = DB::table($this->_orders_table)
-            ->where('store_id' , $storeId);
+            ->where('user' , $userId);
         if(isset($search['status'])){
             $sql->whereIn('status' , $search['status']);
         }
