@@ -202,7 +202,7 @@ class StoreUsers extends Model
                     sw.created_at,
                     sw.status,
                     sw.reason,
-                    sw.bank_card_num,
+                    sw.bank_card_num
                
                FROM store_withdraw_cash_log as sw" ;
 
@@ -234,7 +234,7 @@ class StoreUsers extends Model
     public function getWithdrawCashTotal($storeId , $date=''){
 
         $sql = "SELECT 
-                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num,
+                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num
                FROM store_withdraw_cash_log as sw" ;
 
         $sql .= " WHERE sw.store_id = $storeId";
