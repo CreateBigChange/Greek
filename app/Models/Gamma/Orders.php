@@ -280,7 +280,7 @@ class Orders extends Model
             }
 
             if($order->out_points != 0) {
-                $point = $storeInfo->pint + $order->out_points;
+                $point = $storeInfo->point + $order->out_points;
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($point);
                 $storeModel->updatePoint($storeId, $point);
