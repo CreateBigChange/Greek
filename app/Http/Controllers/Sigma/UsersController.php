@@ -1089,7 +1089,7 @@ class UsersController extends ApiController
             'nick_name'		=> $weixinUserInfo->nickname,
             'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
-            'wx_unionid'    => $weixinUserInfo->unionid,
+            'wx_unionid'    => isset($weixinUserInfo->unionid) ? $weixinUserInfo->unionid : '',
             'created_at'    => date( 'Y-m-d H:i:s' , time()),
             'updated_at'    => date('Y-m-d H:i:s' , time()),
             'login_ip'      => $this->getRealIp(),
