@@ -223,7 +223,7 @@ class StoreUsersController extends ApiController
 
         $code = $this->getSalt(6 , 1);
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
-        //$isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
+        $isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
 
         $isSend = true;
         if($isSend){
