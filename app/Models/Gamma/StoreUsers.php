@@ -203,7 +203,7 @@ class StoreUsers extends Model
                     sw.status,
                     sw.reason,
                     sw.bank_card_num,
-                    sum(`sw.withdraw_cash_num`) as withdraw_cash_total_num
+                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num
                
                FROM store_withdraw_cash_log as sw" ;
 
