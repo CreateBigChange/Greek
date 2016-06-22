@@ -148,7 +148,7 @@ class Orders extends Model
 
             //如果是已送达,才修改店铺的余额
             if($status == Config::get('orderstatus.arrive')['status']){
-                
+
                 $orderInfo = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->first();
                 if(!$orderInfo){
                     return false;
@@ -278,9 +278,14 @@ class Orders extends Model
             if(!$storeInfo){
                 return false;
             }
-            $point = $storeInfo->pint + $order->out_points;
-            $storeModel->updatePoint($storeId, $point);
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为'.$point);
+
+            if($order->out_points != 0) {
+                $point = $storeInfo->pint + $order->out_points;
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($point);
+                $storeModel->updatePoint($storeId, $point);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
+            }
 
             //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
             if($order->status == Config::get('orderstatus.arrive')['status'] || $order->status == Config::get('orderstatus.completd')['status']){
@@ -322,6 +327,7 @@ class Orders extends Model
         }catch (Exception $e){
             DB::rollBack();
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
             return false;
         }
 
