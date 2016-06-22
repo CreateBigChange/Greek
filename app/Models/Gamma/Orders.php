@@ -148,10 +148,13 @@ class Orders extends Model
 
             //如果是已送达,才修改店铺的余额
             if($status == Config::get('orderstatus.arrive')['status']){
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('1111111111111');
                 $orderInfo = DB::table($this->_orders_table)->where('store_id' , $storeId)->where('id' , $id)->first();
                 if(!$orderInfo){
                     return false;
                 }
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('2222222222222');
 
                 //更新店铺余额
                 $storeModel = new Stores;
@@ -159,14 +162,20 @@ class Orders extends Model
                 if(!$storeInfo){
                     return false;
                 }
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('33333333333');
                 $money = $storeInfo->money + $orderInfo->pay_total;
                 $storeModel->updateMoney($storeId, $money);
 
                 //发放用户积分
                 $userInfo = DB::table('users')->where('id' , $orderInfo->user)->first();
-                if (!$orderInfo || !$userInfo) {
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('444444444');
+                if (!$userInfo) {
                     return false;
                 }
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('55555555555');
                 $point = $userInfo->points + $orderInfo->out_points;
 
                 DB::tabe('users')->where('id' , $orderInfo->user)->update(array('points'=>$point));
