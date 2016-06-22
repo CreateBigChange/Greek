@@ -9,10 +9,12 @@ namespace App\Models\Gamma;
 
 use DB , Config;
 use Illuminate\Database\Eloquent\Model;
-use Mockery\CountValidator\Exception;
+use Exception;
 
 use App\Models\Gamma\Stores;
 use Symfony\Component\HttpKernel\HttpCache\Store;
+
+use App\Libs\BLogger;
 
 class Orders extends Model
 {
@@ -263,6 +265,8 @@ class Orders extends Model
                 return false;
             }
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('1111111111111111111');
+
             //更新店铺积分
             $storeModel = new Stores;
             $storeInfo = $storeModel->getStoreInfo($storeId);
@@ -271,6 +275,7 @@ class Orders extends Model
             }
             $point = $storeInfo->pint + $order->out_points;
             $storeModel->updatePoint($storeId, $point);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为'.$point);
 
             //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
             if($order->status == Config::get('orderstatus.arrive')['status'] || $order->status == Config::get('orderstatus.completd')['status']){
@@ -280,15 +285,20 @@ class Orders extends Model
 
                 DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
 
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分未'.$userPoint);
+
                 //更新店铺余额
                 $money = $storeInfo->money - $order->pay_total;
                 $storeModel->updateMoney($storeId, $money);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
             }
 
             DB::table($this->_orders_table)->where('id', $orderId)->update(array(
                 'status' => Config::get('orderstatus.refunded')['status'],
                 'refund_no' => $refundNo
             ));
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更改订单状态'.Config::get('orderstatus.refunded')['status']);
 
             $log = array(
                 'order_id' => $orderId,
@@ -302,6 +312,7 @@ class Orders extends Model
             DB::table($this->_order_logs_table)->insert($log);
 
             DB::commit();
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
             return true;
         }catch (Exception $e){
             DB::rollBack();

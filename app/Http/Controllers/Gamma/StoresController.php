@@ -425,6 +425,9 @@ class StoresController extends ApiController
         if( $request->has('out_price') ) {
             $data['out_price'] = trim($request->get('out_price'));
         }
+        if( $request->has('stock') ) {
+            $data['stock'] = trim($request->get('stock'));
+        }
         if( $request->has('desc') ) {
             $data['desc'] = htmlspecialchars(trim($request->get('desc', '')));
         }
