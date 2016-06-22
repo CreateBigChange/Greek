@@ -160,13 +160,13 @@ class OrdersController extends ApiController
                 if($orderInfo[0]->pay_type_id == 4){
                     $type = 2;
                 }
-                //if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
+                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
                     if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
                         return response()->json(Message::setResponseInfo('FAILED'));
                     }
-                //}
+                }
             }elseif($orderInfo[0]->pay_type_id == 2){
                 $this->_aliPayRefund($orderNo, $refundNo, $payTotal);
             }
