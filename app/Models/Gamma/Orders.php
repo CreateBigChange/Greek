@@ -123,6 +123,10 @@ class Orders extends Model
      */
     public function changeStatus($storeId , $userId , $id , $status){
 
+        if($status == Config::get('orderstatus.refunding')['status'] || $status == Config::get('orderstatus.refunded')['status']){
+            return false;
+        }
+
         DB::beginTransaction();
         try {
 
@@ -147,15 +151,23 @@ class Orders extends Model
                     return false;
                 }
 
+                //更新店铺余额
                 $storeModel = new Stores;
                 $storeInfo = $storeModel->getStoreInfo($storeId);
                 if(!$storeInfo){
                     return false;
                 }
-
                 $money = $storeInfo->money + $orderInfo->pay_total;
-
                 $storeModel->updateMoney($storeId, $money);
+
+                //发放用户积分
+                $userInfo = DB::table('users')->where('id' , $orderInfo->user)->first();
+                if (!$orderInfo || !$userInfo) {
+                    return false;
+                }
+                $point = $userInfo->points + $orderInfo->out_points;
+
+                DB::tabe('users')->where('id' , $orderInfo->user)->update(array('points'=>$point));
             }
 
             DB::commit();
@@ -267,7 +279,7 @@ class Orders extends Model
                 $userPoint = $userInfo->points + $order->out_points;
 
                 DB::table('users')->where('id' , $order->user)->update(array('points'=>$userPoint));
-                
+
                 //更新店铺余额
                 $money = $storeInfo->money - $order->pay_total;
                 $storeModel->updateMoney($storeId, $money);
