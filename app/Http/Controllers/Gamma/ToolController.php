@@ -13,11 +13,11 @@ use Validator , Input;
 use Session , Cookie , Config;
 
 use App\Libs\Jpush;
-//use App\Jobs\Jpush;
 
 use App\Http\Controllers\ApiController;
 
 use App\Libs\Message;
+use App\Models\AndroidVersion;
 
 class ToolController extends ApiController
 {
@@ -63,5 +63,33 @@ class ToolController extends ApiController
         $jpush = new Jpush();
         return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '21');
     }
+
+    /**
+     * 检测版本
+     */
+    public function versionIsNew(Request $request){
+        if(!$request->has('version')) {
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        if(!$request->has('type')) {
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $version    = $request->get('version');
+        $type       = $request->get('type');
+
+        $versionModel = new AndroidVersion;
+
+        $result = $versionModel->versionIsNew($version ,$type);
+
+        if($result === true){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }else{
+            return response()->json(Message::setResponseInfo('SUCCESS' , $result));
+        }
+
+    }
+
+
 
 }

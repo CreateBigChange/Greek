@@ -190,6 +190,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
 
+	Route::get('/version/check', 'ToolController@versionIsNew');
+
 });
 
 
