@@ -85,7 +85,7 @@ class Orders extends Model
         $sql .= " AND store_id = $storeId";
 
         $sql .= " GROUP BY o.id";
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY updated_at DESC";
         $sql .= " LIMIT $offset , $length";
 
         $orders = DB::select($sql);
