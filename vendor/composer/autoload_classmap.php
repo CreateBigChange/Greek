@@ -74,6 +74,7 @@ return array(
     'App\\Models\\Alpha\\Orders' => $baseDir . '/app/Models/Alpha/Orders.php',
     'App\\Models\\Alpha\\StoreInfos' => $baseDir . '/app/Models/Alpha/StoreInfos.php',
     'App\\Models\\Alpha\\Users' => $baseDir . '/app/Models/Alpha/Users.php',
+    'App\\Models\\Feedback' => $baseDir . '/app/Models/FeedBack.php',
     'App\\Models\\Gamma\\Orders' => $baseDir . '/app/Models/Gamma/Orders.php',
     'App\\Models\\Gamma\\StoreUsers' => $baseDir . '/app/Models/Gamma/StoreUsers.php',
     'App\\Models\\Gamma\\Stores' => $baseDir . '/app/Models/Gamma/Stores.php',
