@@ -874,8 +874,7 @@ class StoresController extends ApiController
                 'today' => $todayData,
             );
         }elseif($type == 2) {
-
-
+            
             //获取本周日期
             $sdefaultDate = date("Y-m-d");
             $first = 1;

@@ -259,4 +259,146 @@ class OrdersController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
     }
 
+    public function orderCount(){
+
+            return view('order_count');
+    }
+
+    public function ajaxOrderCount(Request $request){
+        $year   = date('Y');
+        $month  = date('m');
+        $day    = date('d');
+
+        $type = $request->get('type');
+
+        $response = array();
+        if($type == 1){
+            $count = $this->_model->orderCountDay($this->storeId, $year, $month, $day);
+            $todayTime = array(
+                '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'
+            );
+
+            $orderNum = 0;
+            $orderCompleteNum = 0;
+            $orderAccidentNum = 0;
+
+            $orderCount = array();
+
+            for ($i = 0; $i < count($todayTime); $i++) {
+                $orderCount[$i] = 0;
+                foreach ($count as $c) {
+                    if ($c->hour == $todayTime[$i]) {
+                        $orderCount[$i] += $c->num;
+                        $orderNum += $c->num;
+                        if($c->status == Config::get('orderstatus.completd')['status']){
+                            $orderCompleteNum += $c->num;
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                            $orderAccidentNum += $c->num;
+                        }
+                    }
+                }
+            }
+
+            $response = array(
+                'time'                  => $todayTime,
+                'orderNum'              => $orderNum,
+                'orderCompleteNum'      => $orderCompleteNum,
+                'orderAccidentNum'      => $orderAccidentNum,
+                'orderCount'            => $orderCount
+            );
+
+        }elseif($type == 2){
+            //获取本周日期
+            $sdefaultDate = date("Y-m-d");
+            $first = 1;
+            $w = date('w', strtotime($sdefaultDate));
+
+            $day = array();
+            $weekTime = array(
+                '周一',
+                '周二',
+                '周三',
+                '周四',
+                '周五',
+                '周六',
+                '周日',
+            );
+            $week_start = date('Y-m-d', strtotime("$sdefaultDate -" . ($w ? $w - $first : 6) . ' days'));
+
+            $day[] = explode('-', $week_start)[2];
+
+            for ($i = 1; $i < 7; $i++) {
+                $weektemp = date('Y-m-d', strtotime("$week_start + $i days"));
+                $day[] = explode('-', $weektemp)[2];
+            }
+
+            $count = $this->_model->orderCountWeek($this->storeId, $year, $month, implode(',', $day));
+
+            $orderNum = 0;
+            $orderCompleteNum = 0;
+            $orderAccidentNum = 0;
+
+            $orderCount = array();
+
+            for ($i = 0; $i < count($weekTime); $i++) {
+                $orderCount[$i] = 0;
+                foreach ($count as $c) {
+                    if ($c->day == $day[$i]) {
+                        $orderCount[$i] += $c->num;
+                        $orderNum += $c->num;
+                        if($c->status == Config::get('orderstatus.completd')['status']){
+                            $orderCompleteNum += $c->num;
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                            $orderAccidentNum += $c->num;
+                        }
+                    }
+                }
+            }
+
+            $response = array(
+                'time'                  => $weekTime,
+                'orderNum'              => $orderNum,
+                'orderCompleteNum'      => $orderCompleteNum,
+                'orderAccidentNum'      => $orderAccidentNum,
+                'orderCount'            => $orderCount
+            );
+
+        }elseif($type == 3) {
+            $dayTimes = date('j', mktime(0, 0, 1, ($month == 12 ? 1 : $month + 1), 1, ($month == 12 ? $year + 1 : $year)) - 24 * 3600);
+
+            $count = $this->_model->orderCountMonth($this->storeId, $year, $month);
+
+            $orderNum = 0;
+            $orderCompleteNum = 0;
+            $orderAccidentNum = 0;
+
+            $orderCount = array();
+
+            for ($i = 1,$j = 0; $i <= $dayTimes , $j <= $dayTimes; $i++ , $j++) {
+                $monthTime[] = $i;
+                $orderCount[$j] = 0;
+                foreach ($count as $c) {
+                    if ($c->day == $i) {
+                        $orderCount[$j] += $c->num;
+                        $orderNum += $c->num;
+                        if ($c->status == Config::get('orderstatus.completd')['status']) {
+                            $orderCompleteNum += $c->num;
+                        } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']) {
+                            $orderAccidentNum += $c->num;
+                        }
+                    }
+                }
+            }
+
+            $response = array(
+                'time' => $monthTime,
+                'orderNum' => $orderNum,
+                'orderCompleteNum' => $orderCompleteNum,
+                'orderAccidentNum' => $orderAccidentNum,
+                'orderCount' => $orderCount
+            );
+        }
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
+    }
+
 }
