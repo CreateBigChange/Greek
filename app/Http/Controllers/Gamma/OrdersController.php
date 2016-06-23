@@ -142,8 +142,8 @@ class OrdersController extends ApiController
         if(!isset($orderInfo[0])){
             return response()->json(Message::setResponseInfo('FAILED'));
         }
-        if($orderInfo[0]->status == Config::get('orderstatus.refunded')['status']){
-            if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
+        if($orderInfo[0]->status == Config::get('orderstatus.refunding')['status']){
+            if($status != Config::get('orderstatus.refunded')['status']){
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
         }
