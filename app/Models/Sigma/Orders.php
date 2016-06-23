@@ -123,7 +123,7 @@ class Orders extends Model
             $o->goods = array();
             $o->goodsNum = 0;
 
-            $o->payTotal            = $o->total + $o->deliver - ($o->in_points / 100);
+            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
             $o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
