@@ -79,7 +79,7 @@ class StoreUsers extends Model
                       sc.bell,
                       sc.point,
                       sc.money,
-                      si.provice,
+                      si.province,
                       si.city,
                       si.county
                 FROM $this->_table AS su";
