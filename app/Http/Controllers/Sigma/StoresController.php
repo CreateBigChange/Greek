@@ -238,7 +238,8 @@ class StoresController extends ApiController
      */
     public function nav($storeId){
 
-        $navList = $this->_model->getNav($storeId);
+        $storeNavModel = new StoreNav;
+        $navList = $storeNavModel->getNav($storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $navList));
     }

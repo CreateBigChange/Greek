@@ -14,4 +14,14 @@ class StoreNav extends Model{
 
     protected $table  = 'store_nav';
 
+    /**
+     *
+     * 获取栏目
+     * @param storeId   number
+     */
+    public function getNav($storeId){
+        return DB::table($this->table)->where('store_id' , $storeId)->where('is_del' , 0)->orderBy('sort','ASC')->orderBy('updated_at','desc')->get();
+    }
+
+
 }

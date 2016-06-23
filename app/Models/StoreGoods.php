@@ -119,4 +119,11 @@ class StoreGoods extends Model{
         return $num[0]->num;
     }
 
+    /**
+     * 更新商品购买数量
+     */
+    public function updateGoodsBuyNum($goodsId , $addNum){
+        return DB::table($this->table)->where('id' , $goodsId)->increment('out_num' , $addNum);
+    }
+
 }
