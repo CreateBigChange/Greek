@@ -458,6 +458,7 @@ class Orders extends Model
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
+        $payNum = round($payNum , 2);
 
         if ($payMoney != $payNum) {
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
