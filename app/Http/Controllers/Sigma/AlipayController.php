@@ -105,7 +105,7 @@ class AlipayController extends ApiController
             'subject'           => $detail,
             //'total_fee'         => '0.01',
             'body'              => $body,
-            'total_fee'     => (int)($payNum['data'] * 100)
+            'total_fee'     => (int)$payNum['data']
         ];
 
         $response = $gateway->purchase($options)->send();
