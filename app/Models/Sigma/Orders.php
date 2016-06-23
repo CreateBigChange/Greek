@@ -397,7 +397,7 @@ class Orders extends Model
             return Message::setResponseInfo('FAILED');
         }
 
-        $update['pay_total']    = $payNum;
+        $update['pay_total']    = round($payNum , 2);
 
         if(DB::table($this->_orders_table)->where('user' , $userId)->where('id' , $orderId)->update($update)){
             return Message::setResponseInfo('SUCCESS' , $payNum);
