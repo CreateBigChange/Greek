@@ -17,6 +17,7 @@ use App\Models\Gamma\StoreUsers;
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
 use App\Libs\BLogger;
+use App\Models\Feedback;
 
 class StoreUsersController extends ApiController
 {
@@ -334,6 +335,62 @@ class StoreUsersController extends ApiController
         $data = $this->_model->withdrawCashConfig($this->storeId , date('Y-m-d' , time()));
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $data));
+
+    }
+
+    /**
+     * @api {POST} /gamma/feedback 意见反馈
+     * @apiName feedBack
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/feedback
+     *
+     * @apiParamExample {json} Request Example
+     * POST /gamma/feedback
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function feedback(Request $request){
+
+        $data = array();
+        if(!$request->has('content')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        if(!$request->has('type')){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+
+        $feedbackModel = new Feedback;
+
+        $feedbackModel->content    = $request->get('content');
+        $feedbackModel->type       = $request->get('type');
+
+        if($request->has('qq')){
+            $feedbackModel->qq = $request->get('qq');
+        }
+        if($request->has('name')){
+            $feedbackModel->name = $request->get('name');
+        }
+        if($request->has('tel')){
+            $feedbackModel->tel = $request->get('tel');
+        }
+        if($request->has('email')){
+            $feedbackModel->email = $request->get('email');
+        }
+
+        $feedbackModel->user_id    = $this->userId;
+
+
+        if($feedbackModel->save()) {
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
 
     }
 
