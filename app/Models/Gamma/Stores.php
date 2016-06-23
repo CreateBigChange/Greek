@@ -7,10 +7,9 @@
  */
 namespace App\Models\Gamma;
 
-use DB;
+use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Gamma\StoreUsers;
-use Overtrue\Socialite\Config;
 
 
 class Stores extends Model
@@ -38,26 +37,28 @@ class Stores extends Model
      * 所有地区
      */
     public function allAreas(){
-        $parent =  DB::table('areas')->where('deep'  , 1)->get();
+        $parent =  DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level'  , 'province')->get();
 
-        $son = DB::table('areas')->where('deep' , 2)->get();
+        $son = DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level' , 'city')->get();
 
-        $grandson = DB::table('areas')->where('deep' , 3)->get();
+        $grandson = DB::table('amap_city_code')->select('adcode as id' , 'name')->where('level' , 'district')->get();
 
         foreach ($son as $s) {
             $s->son = array();
             foreach ($grandson as $g) {
-                if($s->id == $g->parent){
+                if(substr($s->id , 0 , 4) == substr($g->id , 0 , 4)){
+                    $g->parent = $s->id;
                     $s->son[] = $g;
+
                 }
             }
         }
 
-
         foreach ($parent as $p) {
             $p->son = array();
             foreach ($son as $s){
-                if ($p->id == $s->parent) {
+                if (substr($p->id , 0, 2) == substr($s->id , 0, 2)) {
+                    $s->parent = $p->id;
                     $p->son[] = $s;
                 }
             }
@@ -409,7 +410,7 @@ class Stores extends Model
      */
     public function getTodayStoreCount($storeId , $date ){
 
-        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' , $date)->first();
+        return DB::table($this->_store_date_counts_table)->where('store_id' , $storeId)->where('date' ,'like' , $date.'%')->get();
 
     }
 
@@ -434,6 +435,88 @@ class Stores extends Model
         }else{
             return false;
         }
+    }
+
+    /**
+     * 店铺统计数据(本月)
+     */
+    public function financeCountByMonth($storeId , $year , $month){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM orders";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " GROUP BY day ORDER BY day ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本周)
+     */
+    public function financeCountByWeek($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM orders ";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= "  GROUP BY day ORDER BY day ASC";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本天)
+     */
+    public function financeCountByDay($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    `total` as turnover,
+                    `out_points` as outPoint,
+                    `in_points` as inPoint,
+                    `hour`                    
+               FROM orders";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " ORDER BY hour ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 更新商铺积分
+     */
+    public function updatePoint($storeId , $point){
+        return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('point'=>$point));
+    }
+
+    /**
+     * 更新商铺余额
+     */
+    public function updateMoney($storeId , $money){
+        return DB::table($this->_store_configs_table)->where('store_id' , $storeId)->update(array('money'=>$money));
     }
 
 }

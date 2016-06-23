@@ -10,12 +10,17 @@ namespace App\Http\Controllers\Gamma;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input;
-use Session , Cookie , Config;
+use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
 
 use App\Models\Gamma\Orders;
 use App\Libs\Message;
+use App\Libs\BLogger;
+
+use EasyWeChat\Foundation\Application;
+
+use App\Libs\Alipay\Alipay;
 
 class OrdersController extends ApiController
 {
@@ -123,8 +128,7 @@ class OrdersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function changeStatus($id , Request $request){
-
+    public function changeStatus($orderId , Request $request){
         $validation = Validator::make($request->all(), [
             'status'          => 'required',
         ]);
@@ -132,12 +136,127 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
         $status = $request->get('status');
-        
-        if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
-            return response()->json(Message::setResponseInfo('SUCCESS'));
-        }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+
+        //确认退款
+        if($status == Config::get('orderstatus.refunded')['status']){
+
+            $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
+            if(!isset($orderInfo[0])){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+            if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+
+
+            $refundNo = time() . $this->getSalt(6 , 1);
+
+            $payTotal   = $orderInfo[0]->pay_total;
+            //$payTotal   = 0.01;
+            $orderNo    = $orderInfo[0]->out_trade_no;
+
+            if($orderInfo[0]->pay_type_id == 1 || $orderInfo[0]->pay_type_id == 4) {
+                $type = 1;
+                if($orderInfo[0]->pay_type_id == 4){
+                    $type = 2;
+                }
+                if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
+                    if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
+                        return response()->json(Message::setResponseInfo('SUCCESS'));
+                    } else {
+                        return response()->json(Message::setResponseInfo('FAILED'));
+                    }
+                }
+            }elseif($orderInfo[0]->pay_type_id == 2){
+                $this->_aliPayRefund($orderNo, $refundNo, $payTotal);
+            }
+
+        }else {
+
+            if ($this->_model->changeStatus($this->storeId, $this->userId, $orderId, $status)) {
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            } else {
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }
+    }
+
+    public function _wechatRefund($orderNo , $refundNo , $payTotal , $type=1){
+
+        $options = array();
+
+        if($type == 1) {
+            $options = [
+                'app_id' => Config::get('wechat.open_app_id'),
+                'secret' => Config::get('wechat.open_secret'),
+
+                'payment' => [
+                    'merchant_id' => Config::get('wechat.open_merchant_id'),
+                    'key' => Config::get('wechat.open_key'),
+                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
+                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                    'fee_type'  => 'CNY'
+                ],
+            ];
+        }else{
+            $options      = [
+                'app_id' => Config::get('wechat.app_id'),
+                'secret' => Config::get('wechat.secret'),
+                'token'  => Config::get('wechat.token'),
+
+                'payment' => [
+                    'merchant_id'        => Config::get('wechat.merchant_id'),
+                    'key'                => Config::get('wechat.key'),
+                    'cert_path'          => public_path() . Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
+                    'key_path'           => public_path() . Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+                    'fee_type' => 'CNY'
+                ],
+            ];
+        }
+
+        $app = new Application($options);
+        $payment = $app->payment;
+
+        $result = $payment->refund($orderNo, $refundNo, $payTotal);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($result));
+        if($result['return_code'] == 'SUCCESS' && $result['return_msg'] == 'OK' && $result['result_code'] == 'SUCCESS') {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function _aliPayRefund($orderNo , $refundNo , $payTotal){
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111111111111));
+        //构造要请求的参数数组，无需改动
+        $parameter = array(
+//            "service" => trim(Config::get('alipay.service')),
+//            "partner" => trim(Config::get('alipay.partner')),
+//            "notify_url"	=> trim(Config::get('alipay.notify_url')),
+//            "seller_user_id"	=> trim(Config::get('alipay.seller_user_id')),
+//            "refund_date"	=> trim(Config::get('alipay.refund_date')),
+//            "batch_no"	=> date('YmdHis' , time()) . $this->getSalt(4, 1),
+//            "batch_num"	=> 1,
+//            "detail_data"	=> '2016062021001004120267447870'.'^'.$payTotal.'^'.'正常退款',
+//            "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
+            "service"           => trim(Config::get('alipay.service')),
+            "partner"           => trim(Config::get('alipay.partner')),
+            "charset"	        => trim(Config::get('alipay.input_charset')),
+            "timestamp"         => date('Y-m-d H:i:s' , time()),
+            "version"           => "1.0",
+            "out_trade_no"      => $orderNo,
+            "refund_amount"     => $payTotal,
+            "refund_reason"     => "正常退款"
+        );
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($parameter);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(Config::get('alipay'));
+
+
+        $alipay = new Alipay(Config::get('alipay'));
+
+        $result = $alipay->buildRequestHttp($parameter);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
     }
 
 }

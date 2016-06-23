@@ -20,6 +20,7 @@
  */
 namespace EasyWeChat\Payment;
 
+use Log;
 use EasyWeChat\Core\AbstractAPI;
 use EasyWeChat\Support\Collection;
 use EasyWeChat\Support\XML;

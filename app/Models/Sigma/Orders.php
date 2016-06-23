@@ -31,9 +31,9 @@ class Orders extends Model
      * @param storeId   number
      * @param search    array
      */
-    public function getOrderTotalNum($storeId , $search){
+    public function getOrderTotalNum($userId , $search){
         $sql = DB::table($this->_orders_table)
-            ->where('store_id' , $storeId);
+            ->where('user' , $userId);
         if(isset($search['status'])){
             $sql->whereIn('status' , $search['status']);
         }
@@ -250,7 +250,13 @@ class Orders extends Model
             'status'                => Config::get('orderstatus.no_pay')['status'],
             'out_points'            => $outPoints,
             'updated_at'            => date('Y-m-d H:i:s' , time()),
-            'created_at'            => date('Y-m-d H:i:s' , time())
+            'created_at'            => date('Y-m-d H:i:s' , time()),
+            'year'                  => date('Y' , time()),
+            'month'                 => date('m' , time()),
+            'day'                   => date('d' , time()),
+            'hour'                  => date('H' , time()),
+            'minutes'               => date('i' , time()),
+            'second'               => date('s' , time()),
 
         );
 
@@ -440,10 +446,10 @@ class Orders extends Model
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
 
-//        if ($payMoney != $payNum) {
-//            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
-//            return Message::setResponseInfo('MONEY_NOT_EQUAL');
-//        }
+        if ($payMoney != $payNum) {
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+        }
 
         //如果是余额支付
         if($payType->id == Config::get('paytype.money')) {

@@ -1,0 +1,17 @@
+*{margin: 0;padding: 0;}
+li{list-style-type: none;}
+a{text-decoration: none;}
+body{font-family: "microsoft yahei";background: #fff;}
+.mt5{margin-top: 5px;}
+.mt10{margin-top: 10px;}
+.ml10{margin-left: 10px;}
+.fs12{font-size: 12px;}
+.fs14{font-size: 14px;}
+.fr{float: right;}
+#main,#time {min-width: 320px;max-width: 640px;overflow: hidden;margin: 0 auto;    background: #fff;}
+#time li{display: inline-block;width: 33%;height: 50px;line-height: 50px;text-align: center;float:left;}
+#data{margin-top: 30px;overflow: hidden;}
+#data li{display: inline-block;width: 33%;height: 50px;text-align: center;float:left;}
+.data-title{font-size: 12px;}
+.data-num{color: #f66}
+.act{color: #00E5FF;border-bottom: 2px solid;}

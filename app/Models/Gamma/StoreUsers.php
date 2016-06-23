@@ -77,19 +77,15 @@ class StoreUsers extends Model
                       sc.business_time,
                       sc.is_close,
                       sc.bell,
-                      ap.id as province_id,
-                      ap.name as province,
-                      aci.id as city_id,
-                      aci.name as city,
-                      aco.id as county_id,
-                      aco.name as county
+                      sc.point,
+                      sc.money,
+                      si.province,
+                      si.city,
+                      si.county
                 FROM $this->_table AS su";
         $sql .= " LEFT JOIN store_infos as si ON su.store_id = si.id";
         $sql .= " LEFT JOIN store_configs as sc ON su.store_id = sc.store_id";
         $sql .= " LEFT JOIN store_categories as sca ON si.c_id = sca.id";
-        $sql .= " LEFT JOIN areas as ap ON ap.id = si.province";
-        $sql .= " LEFT JOIN areas as aci ON aci.id = si.city";
-        $sql .= " LEFT JOIN areas as aco ON aco.id = si.county";
 
         $sql .= " WHERE account='" . $account . "' AND password='". $password . "' AND su.is_del=0";
         /*
@@ -194,7 +190,7 @@ class StoreUsers extends Model
      * @return mixed
      * 获取提现记录
      */
-    public function getWithdrawCashLog($storeId , $date=''){
+    public function getWithdrawCashLog($storeId , $length , $offset , $date=''){
 
         $sql = "SELECT 
                     su.real_name,
@@ -213,6 +209,8 @@ class StoreUsers extends Model
             $sql.= " AND sw.created_at LIKE '" . $date ."%'";
         };
 
+        $sql .= " LIMIT $offset , $length ";
+
         $result = DB::select($sql);
         foreach ($result as $r){
 
@@ -220,8 +218,33 @@ class StoreUsers extends Model
             //$r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
         }
 
+        return $result;
+    }
+
+    /**
+     * @param $account
+     * @param $password
+     * @return mixed
+     * 获取提现总计
+     */
+    public function getWithdrawCashTotal($storeId , $date=''){
+
+        $sql = "SELECT 
+                    sum(sw.withdraw_cash_num) as withdraw_cash_total_num
+               FROM store_withdraw_cash_log as sw" ;
+
+        $sql .= " WHERE sw.store_id = $storeId";
+        if($date){
+            $sql.= " AND sw.created_at LIKE '" . $date ."%'";
+        };
+
+        $result = DB::select($sql);
 
         return $result;
+    }
+
+    public function withdrawCashLogTotalNum($storeId){
+        return DB::table('store_withdraw_cash_log')->where('store_id' , $storeId)->count();
     }
 
     /**
@@ -250,12 +273,16 @@ class StoreUsers extends Model
 
     public function withdrawCashConfig($storeId , $date=''){
         $data = array();
-        $data['used_times']     = $this->getWithdrawCashTimes($storeId , $date);
-        $data['times']          = Config::get('withdrawcash.times');
-        $data['total']          = Config::get('withdrawcash.total');
-        $data['using_times']    = $data['times'] - $data['used_times'];
+        $data['used_times']             = $this->getWithdrawCashTimes($storeId , $date);
+        $data['times']                  = Config::get('withdrawcash.times');
+        $data['total']                  = Config::get('withdrawcash.total');
+        $data['using_times']            = $data['times'] - $data['used_times'];
+        $storeConfig                    = DB::table('store_configs')->where('store_id' , $storeId)->first();
+
+        $data['can_withdraw_cash']      = $storeConfig->money;
 
         return $data;
     }
+
 
 }

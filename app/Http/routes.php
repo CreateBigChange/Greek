@@ -150,7 +150,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 		//订单
 		Route::post('/store/orders', 'OrdersController@getOrderList');
-		Route::post('/store/orders/change/status/{id}', 'OrdersController@changeStatus');
+		Route::post('/store/orders/change/status/{orderId}', 'OrdersController@changeStatus');
 
 		//提现
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');
@@ -161,7 +161,13 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/count/today', 'StoresController@getStoreTodayCount');
 		Route::post('/store/month/points', 'StoresController@getStoreMonthPoint');
 
+		Route::get('/store/count/finance', 'StoresController@financeCount');
+		Route::post('/store/count/finance', 'StoresController@ajaxFinanceCount');
+
 	});
+
+//	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
+//	Route::post('/store/count/finance/{storeId}', 'StoresController@ajaxFinanceCount');
 
 	Route::post('/store/areas', 'StoresController@areas');
 	Route::post('/store/settling', 'StoresController@settling');
@@ -255,6 +261,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::any('/alipay/notify' , 'AlipayController@notify');
 
 });
+
+Route::get('/wechat/token', 'Wxpay\\WechatController@wechatToken');
+
 
 //Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
 //	Route::get('wechat/view' , 'WechatController@view');

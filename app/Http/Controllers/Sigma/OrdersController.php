@@ -107,13 +107,13 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/list?page=1
      *
-     * @apiParam {number} status 订单类型 1获取新订单 2获取配送中的订单 3获取完成的订单 4获取意外订单
+     * @apiParam {number} type 1为有效订单
      * @apiParam {string} search 搜索条件
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/list?page=1
      *      {
-     *          status : 1
+     *          type : 1
      *      }
      * @apiUse CODE_200
      *
@@ -128,18 +128,19 @@ class OrdersController extends ApiController
         }
 
         $type = 0;
-        if($request->has('status')){
-            $type = $request->get('status');
+        if($request->has('type')){
+            $type = $request->get('type');
         }
 
         if ($type == 1){
-            $search['status'] = array('2');
-        }elseif ($type == 2){
-            $search['status'] = array('3');
-        }elseif ($type == 3){
-            $search['status'] = array('4');
-        }elseif ($type == 4){
-            $search['status'] = array('5' , '6' , '7');
+            $search['status'] = array(
+                Config::get('orderstatus.paid')['status'] ,
+                Config::get('orderstatus.on_the_way')['status'] ,
+                Config::get('orderstatus.accepted')['status'] ,
+                Config::get('orderstatus.completd')['status'] ,
+                Config::get('orderstatus.arrive')['status'] ,
+                Config::get('orderstatus.refunding')['status']
+            );
         }
 
         if($request->has('search')){
@@ -308,6 +309,13 @@ class OrdersController extends ApiController
             }
         }
 
+        $order = $this->_model->getOrderList($this->userId , array('id' => $orderId));
+        if(!isset($order[0])){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        $order = $order[0];
+
         //如果是余额支付,直接进入支付环节
         if($payType == Config::get('paytype.money')){
             $userModel = new Users;
@@ -320,9 +328,32 @@ class OrdersController extends ApiController
             if($userInfo->pay_password != $this->encrypt($payPassword , $userInfo->pay_salt)){
                 return response()->json(Message::setResponseInfo('PAY_PASSWORD_ERROR'));
             }
-            return $this->_model->pay($orderId , $payNum['data'] , $payType);
+            if($this->_model->pay($orderId , $payNum['data'] , $payType)){
+                $storeModel = new Stores;
+                $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+
+                if(empty($store)){
+                    return true;
+                }
+
+                $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
+
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "急所需有新订单啦,请及时处理",
+                    "急所需新订单",
+                    array('ios' , 'android'),
+                    "$order->store_id",
+                    array(),
+                    $bell
+                ));
+
+                return response()->json(Message::setResponseInfo('SUCCESS'));
+            }else{
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
         }else{
-            return $payNum;
+            return response()->json(Message::setResponseInfo('SUCCESS' , $payNum));
         }
 
     }
@@ -345,6 +376,7 @@ class OrdersController extends ApiController
      *      {
      *          out_points  : 328,
      *          trade_type  : JSAPI,
+     *          pay_type    : 4
      *      }
      * @apiUse CODE_200
      *
@@ -353,6 +385,7 @@ class OrdersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'trade_type'            => 'required',
+            'pay_type'              => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -365,10 +398,11 @@ class OrdersController extends ApiController
         }else{
             $outPoints  = $request->get('out_points');
         }
-        $tradeType    = $request->get('trade_type');
+        $tradeType      = $request->get('trade_type');
+        $payType        = $request->get('pay_type');
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , 3 , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
 
         if($payNum['code'] != 0000){
             return $payNum;
@@ -392,12 +426,12 @@ class OrdersController extends ApiController
         $attributes['body']             = $detail;
         $attributes['detail']           = $body;
         $attributes['out_trade_no']     = time() . $info[0]->id . $this->getSalt(8 , 1);
-        $attributes['total_fee']        = 1;
+        //$attributes['total_fee']        = 1;
         $attributes['fee_type']         = 1;
         //$attributes['time_start']       = date('YmdHis' , time());
         //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
         $attributes['attach']           = $orderId;
-        //$attributes['total_fee']        = (int)($payNum['data'] * 100);
+        $attributes['total_fee']        = (int)($payNum['data'] * 100);
 
         if($tradeType == 'JSAPI') {
 
@@ -516,7 +550,7 @@ class OrdersController extends ApiController
 
         $app = new Application($this->pubOptions);
 
-        return $this->setPayData($app);
+        return $this->setPayData($app , 4);
 
     }
 
@@ -541,11 +575,12 @@ class OrdersController extends ApiController
 
         $app = new Application($this->openOptions);
 
-        return $this->setPayData($app);
+        return $this->setPayData($app , 1);
 
     }
 
-    private function setPayData($app){
+    private function setPayData($app , $payType){
+
         $response = $app->payment->handleNotify(function($notify, $successful){
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($notify);

@@ -223,9 +223,8 @@ class StoreUsersController extends ApiController
 
         $code = $this->getSalt(6 , 1);
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
-        //$isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
+        $isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
 
-        $isSend = true;
         if($isSend){
             Session::put("jsx_sms_$account" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -251,10 +250,30 @@ class StoreUsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function getWithdrawCashLog(){
-        $log = $this->_model->getWithdrawCashLog($this->storeId , date('Y-m-d' , time()));
+    public function getWithdrawCashLog(Request $request){
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $log));
+        $page = 1;
+
+        if($request->has('page')){
+            $page = $request->get('page');
+        }
+
+        $totalNum = $this->_model->withdrawCashLogTotalNum($this->storeId);
+        $pageData = $this->getPageData($page , $this->_length , $totalNum);
+
+        $log = $this->_model->getWithdrawCashLog($this->storeId , $this->_length , $pageData->offset);
+
+        $total = $this->_model->getWithdrawCashTotal($this->storeId );
+
+        $withdraw_cash_total_num = isset($total[0]) ? $total[0]->withdraw_cash_total_num : 0;
+
+        $response = array(
+            'log'                           => $log,
+            'pageData'                      => $pageData,
+            'withdraw_cash_total_num'       => $withdraw_cash_total_num
+        );
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
     /**
@@ -317,5 +336,6 @@ class StoreUsersController extends ApiController
         return response()->json(Message::setResponseInfo('SUCCESS' , $data));
 
     }
+
 
 }

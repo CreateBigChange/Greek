@@ -324,5 +324,26 @@ class WechatController extends ApiController
     }
 
 
+    /**
+     *
+     * 微信验证token
+     */
+
+    public function wechatToken(Request $request){
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(1111);
+        $signature      = $_GET['signature'];
+        $timestamp      = $_GET['timestamp'];
+        $nonce          = $_GET['nonce'];
+        $token          = "03fc1d5aa549c36";
+        $tmpArr = array($token , $timestamp , $nonce);
+        sort($tmpArr);
+
+        if(sha1(implode($tmpArr)) == $signature){
+            echo $_GET['echostr'];exit;
+        }else{
+            return false;
+        }
+    }
 
 }
