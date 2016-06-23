@@ -78,7 +78,7 @@ class StoreUsers extends Model
                       sc.is_close,
                       sc.bell,
                       sc.point,
-                      sc.money,
+                      sc.money
                 FROM $this->_table AS su";
         $sql .= " LEFT JOIN store_infos as si ON su.store_id = si.id";
         $sql .= " LEFT JOIN store_configs as sc ON su.store_id = sc.store_id";
