@@ -14,6 +14,24 @@ class User extends Model{
 
     protected $table = 'users';
 
+    protected $field = [
+        'id' ,
+        'account' ,
+        'nick_name' ,
+        'true_name',
+        'mobile',
+        'avatar',
+        'email',
+        'created_at',
+        'points',
+        'money',
+        'sex',
+        'pay_password',
+        'wx_openid',
+        'wx_unionid',
+
+    ];
+
     /**
      * @param $tel
      * @return mixed
@@ -32,54 +50,14 @@ class User extends Model{
 
     public function getUserInfoByAP( $account , $password ){
         $userInfo =  DB::table($this->table)
-            ->select(
-                'id' ,
-                'account' ,
-                'nick_name' ,
-                'true_name' ,
-                'mobile' ,
-                'avatar' ,
-                'email' ,
-                'created_at',
-                'points',
-                'money',
-                'sex',
-                'pay_password',
-                'wx_openid',
-                'wx_unionid',
-                'qq_openid',
-                'qq_unionid'
-            )
+            ->select($this->field)
             ->where('is_del' , 0)
             ->where('account' , $account)
             ->where('password', $password)
             ->first();
 
         if($userInfo) {
-            $userInfo->is_set_pay_password = 0;
-            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
-                $userInfo->is_set_pay_password = 0;
-            }else{
-                $userInfo->is_set_pay_password = 1;
-            }
-
-            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
-                $userInfo->is_bind_wx = 0;
-            }else{
-                $userInfo->is_bind_wx = 1;
-            }
-
-            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
-                $userInfo->is_bind_qq = 0;
-            }else{
-                $userInfo->is_bind_qq = 1;
-            }
-
-            unset($userInfo->pay_password);
-            unset($userInfo->wx_openid);
-            unset($userInfo->wx_unionid);
-            unset($userInfo->qq_openid);
-            unset($userInfo->qq_unionid);
+            $userInfo = $this->__checkUserInfo($userInfo);
             return $userInfo;
         }else{
             return false;
@@ -128,52 +106,13 @@ class User extends Model{
      */
     public function getUserInfoByOpenID($openid){
         $userInfo = DB::table($this->table)
-            ->select(
-                'id' ,
-                'account' ,
-                'nick_name' ,
-                'true_name' ,
-                'mobile' ,
-                'avatar' ,
-                'email' ,
-                'created_at',
-                'points',
-                'money',
-                'sex',
-                'pay_password',
-                'wx_openid',
-                'wx_unionid',
-                'qq_openid',
-                'qq_unionid'
-            )
+            ->select($this->field)
             ->where('is_del' , 0)
             ->where('wx_openid' , $openid)
             ->first();
 
         if($userInfo) {
-            $userInfo->is_set_pay_password = 0;
-            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
-                $userInfo->is_set_pay_password = 0;
-            }else{
-                $userInfo->is_set_pay_password = 1;
-            }
-
-            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
-                $userInfo->is_bind_wx = 0;
-            }else{
-                $userInfo->is_bind_wx = 1;
-            }
-
-            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
-                $userInfo->is_bind_qq = 0;
-            }else{
-                $userInfo->is_bind_qq = 1;
-            }
-
-            unset($userInfo->pay_password);
-            unset($userInfo->wx_unionid);
-            unset($userInfo->qq_openid);
-            unset($userInfo->qq_unionid);
+            $userInfo = $this->__checkUserInfo($userInfo);
             return $userInfo;
         }else{
             return false;
@@ -191,53 +130,13 @@ class User extends Model{
      */
     public function getUserInfoById($id){
         $userInfo =  DB::table($this->table)
-            ->select(
-                'id' ,
-                'account' ,
-                'nick_name' ,
-                'true_name' ,
-                'mobile' ,
-                'avatar' ,
-                'email' ,
-                'created_at',
-                'points',
-                'money',
-                'sex',
-                'pay_password',
-                'wx_openid',
-                'wx_unionid',
-                'qq_openid',
-                'qq_unionid'
-            )
+            ->select($this->field)
             ->where('is_del' , 0)
             ->where('id' , $id)
             ->first();
 
         if($userInfo) {
-            $userInfo->is_set_pay_password = 0;
-            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
-                $userInfo->is_set_pay_password = 0;
-            }else{
-                $userInfo->is_set_pay_password = 1;
-            }
-
-            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
-                $userInfo->is_bind_wx = 0;
-            }else{
-                $userInfo->is_bind_wx = 1;
-            }
-
-            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
-                $userInfo->is_bind_qq = 0;
-            }else{
-                $userInfo->is_bind_qq = 1;
-            }
-
-            unset($userInfo->pay_password);
-            unset($userInfo->wx_openid);
-            unset($userInfo->wx_unionid);
-            unset($userInfo->qq_openid);
-            unset($userInfo->qq_unionid);
+            $userInfo = $this->__checkUserInfo($userInfo);
             return $userInfo;
         }else{
             return false;
@@ -251,53 +150,13 @@ class User extends Model{
      */
     public function getUserInfoByAccount($account){
         $userInfo = DB::table($this->table)
-            ->select(
-                'id' ,
-                'account' ,
-                'nick_name' ,
-                'true_name' ,
-                'mobile' ,
-                'avatar' ,
-                'email' ,
-                'created_at',
-                'points',
-                'money',
-                'sex',
-                'pay_password',
-                'wx_openid',
-                'wx_unionid',
-                'qq_openid',
-                'qq_unionid'
-            )
+            ->select($this->field)
             ->where('is_del' , 0)
             ->where('account' , $account)
             ->first();
 
         if($userInfo) {
-            $userInfo->is_set_pay_password = 0;
-            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
-                $userInfo->is_set_pay_password = 0;
-            }else{
-                $userInfo->is_set_pay_password = 1;
-            }
-
-            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
-                $userInfo->is_bind_wx = 0;
-            }else{
-                $userInfo->is_bind_wx = 1;
-            }
-
-            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
-                $userInfo->is_bind_qq = 0;
-            }else{
-                $userInfo->is_bind_qq = 1;
-            }
-
-            unset($userInfo->pay_password);
-            unset($userInfo->wx_openid);
-            unset($userInfo->wx_unionid);
-            unset($userInfo->qq_openid);
-            unset($userInfo->qq_unionid);
+            $userInfo = $this->__checkUserInfo($userInfo);
             return $userInfo;
         }else{
             return false;
@@ -311,57 +170,46 @@ class User extends Model{
      */
     public function getUserInfoByMobile($mobile){
         $userInfo =  DB::table($this->table)
-            ->select(
-                'id' ,
-                'account' ,
-                'nick_name' ,
-                'true_name' ,
-                'mobile' ,
-                'avatar' ,
-                'email' ,
-                'created_at',
-                'points',
-                'money',
-                'sex',
-                'pay_password',
-                'wx_openid',
-                'wx_unionid',
-                'qq_openid',
-                'qq_unionid'
-            )
+            ->select($this->field)
             ->where('is_del' , 0)
             ->where('mobile' , $mobile)
             ->first();
 
         if($userInfo) {
-            $userInfo->is_set_pay_password = 0;
-            if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
-                $userInfo->is_set_pay_password = 0;
-            }else{
-                $userInfo->is_set_pay_password = 1;
-            }
-
-            if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
-                $userInfo->is_bind_wx = 0;
-            }else{
-                $userInfo->is_bind_wx = 1;
-            }
-
-            if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
-                $userInfo->is_bind_qq = 0;
-            }else{
-                $userInfo->is_bind_qq = 1;
-            }
-
-            unset($userInfo->pay_password);
-            unset($userInfo->wx_openid);
-            unset($userInfo->wx_unionid);
-            unset($userInfo->qq_openid);
-            unset($userInfo->qq_unionid);
+            $userInfo = $this->__checkUserInfo($userInfo);
             return $userInfo;
         }else{
             return false;
         }
+    }
+
+    private function __checkUserInfo($userInfo){
+        $userInfo->is_set_pay_password = 0;
+        if ($userInfo->pay_password == null || $userInfo->pay_password == '') {
+            $userInfo->is_set_pay_password = 0;
+        }else{
+            $userInfo->is_set_pay_password = 1;
+        }
+
+        if(empty($userInfo->wx_openid) && empty($userInfo->wx_unionid)){
+            $userInfo->is_bind_wx = 0;
+        }else{
+            $userInfo->is_bind_wx = 1;
+        }
+
+        if(empty($userInfo->qq_openid) && empty($userInfo->qq_unionid)){
+            $userInfo->is_bind_qq = 0;
+        }else{
+            $userInfo->is_bind_qq = 1;
+        }
+
+        unset($userInfo->pay_password);
+        unset($userInfo->wx_openid);
+        unset($userInfo->wx_unionid);
+        unset($userInfo->qq_openid);
+        unset($userInfo->qq_unionid);
+
+        return $userInfo;
     }
 
     /**
@@ -418,20 +266,5 @@ class User extends Model{
     public function updateMoney($userId , $money){
         return DB::table($this->table)->where('id' , $userId)->update(['money'=>$money]);
     }
-
-    /**
-     * @param $userId
-     * @param $point
-     * @return mixed
-     *
-     */
-    public function addSmsErrorLog($mobile , $errorCode){
-        return DB::table('sms_error_log')->insert(
-            array(
-                'mobile'        => $mobile,
-                'error_code'    => $errorCode,
-                'created_at'    => date('Y-m-d H:i:s' , time())
-            )
-        );
-    }
+    
 }

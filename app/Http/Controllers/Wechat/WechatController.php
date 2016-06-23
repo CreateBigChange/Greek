@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Wxpay;
+namespace App\Http\Controllers\Wechat;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -8,8 +8,8 @@ use App\Http\Controllers\ApiController;
 
 use Session , Cookie , Config , Log;
 
-use App\Models\Sigma\Orders;
-use App\Models\Sigma\Stores;
+use App\Models\Order;
+use App\Models\StoreInfo;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
@@ -25,7 +25,7 @@ class WechatController extends ApiController
     public function __construct(){
         parent::__construct();
 
-        $this->_model = new Orders;
+        $this->_model = new Order;
 
         $this->pubOptions      = [
             'app_id' => Config::get('wechat.app_id'),
@@ -292,7 +292,7 @@ class WechatController extends ApiController
                 //更新支付时间和订单状态
                 $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
 
-                $storeModel = new Stores;
+                $storeModel = new StoreInfo;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
                 if(empty($store)){
@@ -329,9 +329,8 @@ class WechatController extends ApiController
      * 微信验证token
      */
 
-    public function wechatToken(Request $request){
+    public function wechatToken(){
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(1111);
         $signature      = $_GET['signature'];
         $timestamp      = $_GET['timestamp'];
         $nonce          = $_GET['nonce'];

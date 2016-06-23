@@ -24,6 +24,9 @@ class Order extends Model{
 
     protected $table = 'orders';
 
+    static function getTable(){
+        return self::table;
+    }
     /**
      * 获取订单总数
      * @param storeId   number
@@ -174,15 +177,7 @@ class Order extends Model{
             $orderLog->identity     = '商家管理员';
             $orderLog->platform     = '手机端';
             $orderLog->log          = '将订单' . $orderId . '的状态改为' . $status;
-//            $log = array(
-//                'order_id' => $orderId,
-//                'user' => $userId,
-//                'identity' => '商家管理员',
-//                'platform' => '手机端',
-//                'log' => '将订单' . $orderId . '的状态改为' . $status,
-//                'created_at' => date('Y-m-d H:i:s', time())
-//            );
-            //DB::table($this->_order_logs_table)->insert($log);
+
             $orderLog->save();
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
@@ -451,10 +446,10 @@ class Order extends Model{
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
 
-//        if ($payMoney != $payNum) {
-//            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
-//            return Message::setResponseInfo('MONEY_NOT_EQUAL');
-//        }
+        if ($payMoney != $payNum) {
+            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+        }
 
         //如果是余额支付
         if($payType->id == Config::get('paytype.money')) {

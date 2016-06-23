@@ -12,5 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model{
 
+    protected $table = 'logs';
+
+    public function addActionLog($data){
+        return DB::table($this->table)->insert($data);
+    }
 
 }

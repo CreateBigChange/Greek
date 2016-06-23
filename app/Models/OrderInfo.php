@@ -18,4 +18,8 @@ class OrderInfo extends Model{
 
     protected $table = 'order_infos';
 
+    static function getTable(){
+        return self::table;
+    }
+
 }

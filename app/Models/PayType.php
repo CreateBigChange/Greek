@@ -14,4 +14,7 @@ class PayType extends Model{
 
     protected $table = 'pay_type';
 
+    static function getTable(){
+        return self::table;
+    }
 }

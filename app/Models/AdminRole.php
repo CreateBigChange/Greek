@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminRole extends Model{
 
+    protected $table = 'admin_roles';
 
+    public function getRoleList(){
+        return DB::table($this->table)->get();
+    }
 
 }

@@ -15,7 +15,7 @@ use Session , Cookie , Config;
 
 use App\Libs\Message;
 
-use App\Models\Sigma\Stores;
+use App\Models\StoreInfo;
 
 class StoresController extends ApiController
 {
@@ -24,7 +24,7 @@ class StoresController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model       = new Stores;
+        $this->_model       = new StoreInfo;
         $this->_length		= 20;
     }
 

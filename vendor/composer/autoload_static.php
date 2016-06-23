@@ -500,7 +500,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Http\\Controllers\\Sigma\\StoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/StoresController.php',
         'App\\Http\\Controllers\\Sigma\\UploadController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/UploadController.php',
         'App\\Http\\Controllers\\Sigma\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Sigma/UsersController.php',
-        'App\\Http\\Controllers\\Wxpay\\WechatController' => __DIR__ . '/../..' . '/app/Http/Controllers/Wxpay/WechatController.php',
+        'App\\Http\\Controllers\\Wxpay\\WechatController' => __DIR__ . '/../..',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckAuth' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckAuth.php',

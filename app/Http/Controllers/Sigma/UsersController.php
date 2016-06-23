@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
-use Session , Cookie , Config , Redis;
+use Session , Cookie , Config;
 use Validator , Input;
 
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
-use App\Jobs\SendSms;
 use App\Libs\BLogger;
 
 use App\Models\User;
@@ -90,7 +89,7 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
 
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('PASSWORD_ERROR'));
         }
     }
 
@@ -143,7 +142,7 @@ class UsersController extends ApiController
     public function register(Request $request){
         $validation = Validator::make($request->all(), [
             'account'                => 'required',
-            'password'               => 'required',
+            'password'               => 'required|alpha_dash',
 //            'repassword'             => 'required',
             'code'                   => 'required',
         ]);
@@ -599,7 +598,7 @@ class UsersController extends ApiController
 
         $validation = Validator::make($request->all(), [
             'old_password'                => 'required',
-            'new_password'                => 'required'
+            'new_password'                => 'required|alpha_dash'
 
         ]);
         if($validation->fails()){
@@ -647,19 +646,15 @@ class UsersController extends ApiController
      *
      */
 
-    public function bindMobilSms(Request $request){
+    public function bindMobilSms(){
 
-        $userModel = new Users;
-        $userInfo  =  $userModel->getUserInfoById($this->userId);
+        $userInfo  =  $this->_model->getUserInfoById($this->userId);
 
         if(!$userInfo->mobile){
             return response()->json(Message::setResponseInfo('NO_PHONE'));
         }
 
         $mobile = $userInfo->mobile;
-//        if(! preg_match("/^13[\d]{9}$|^14[5,7]{1}\d{8}$|^15[^4]{1}\d{8}$|^17[0,6,7,8]{1}\d{8}$|^18[\d]{9}$/" , $mobile)){
-//            return response()->json(Message::setResponseInfo('NO_PHONE'));
-//        }
 
         $sms = new Sms;
 
@@ -668,9 +663,6 @@ class UsersController extends ApiController
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
         $isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
 
-        //$this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
-
-        //return response()->json(Message::setResponseInfo('SUCCESS'));
         if($isSend){
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -702,7 +694,7 @@ class UsersController extends ApiController
     public function setPayPassword(Request $request){
 
         $validation = Validator::make($request->all(), [
-            'pay_password'                => 'required'
+            'pay_password'                => 'required|size:6|numeric'
 
         ]);
         if($validation->fails()){
@@ -712,11 +704,9 @@ class UsersController extends ApiController
         $data = array();
 
         $payPassword = $request->get('pay_password');
-
         $code   = $request->get('code');
 
-        $userModel = new Users;
-        $userInfo  =  $userModel->getUserInfoById($this->userId);
+        $userInfo  =  $this->_model->getUserInfoById($this->userId);
 
         if(!$userInfo->mobile){
             return response()->json(Message::setResponseInfo('NO_PHONE'));
@@ -725,7 +715,6 @@ class UsersController extends ApiController
         $mobile = $userInfo->mobile;
 
         $checkCode  = session::get("jsx_sms_$mobile");
-
         if($code != $checkCode){
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
@@ -765,7 +754,7 @@ class UsersController extends ApiController
     public function updatePayPassword(Request $request){
 
         $validation = Validator::make($request->all(), [
-            'pay_password'                => 'required',
+            'pay_password'                => 'required|size:6|numeric',
             'old_pay_password'             => 'required'
 
         ]);
@@ -778,8 +767,7 @@ class UsersController extends ApiController
         $payPassword = $request->get('pay_password');
         $oldPayPassword  = $request->get('old_pay_password');
 
-        $userModel = new Users;
-        $userInfo  =  $userModel->getUserPayPassword($this->userId);
+        $userInfo  =  $this->_model->getUserPayPassword($this->userId);
 
         if($userInfo->pay_password != $this->encrypt($oldPayPassword , $userInfo->pay_salt)){
             return response()->json(Message::setResponseInfo('OLD_PASSWORD_ERROR'));
@@ -787,7 +775,7 @@ class UsersController extends ApiController
 
         $data['pay_salt']               = $this->getSalt(8);
         $data['pay_password']           = $this->encrypt($payPassword , $data['pay_salt']);
-        $data['updated_at'] =date('Y-m-d H:i:s' , time());
+        $data['updated_at']             = date('Y-m-d H:i:s' , time());
 
         if($this->_model->updateUser($this->userId , $data)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -945,7 +933,7 @@ class UsersController extends ApiController
         $validation = Validator::make($request->all(), [
             'mobile'                => 'required',
             'code'                  => 'required',
-            'password'              => 'required'
+            'password'              => 'required|alpha_dash'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -1037,160 +1025,5 @@ class UsersController extends ApiController
 
     }
 
-    /**
-     * @api {POST} /sigma/weixin/login?code='sadsae2342dadaxxs'&state='app' 微信登录回调
-     * @apiName weixinCallback
-     * @apiGroup SIGMA
-     * @apiVersion 1.0.0
-     * @apiDescription just a test
-     * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/weixin/login?code='sadsae2342dadaxxs'&state='app'
-     *
-     *
-     * @apiParamExample {json} Request Example
-     * POST /sigma/weixin/login
-     * {
-     * }
-     * @apiUse CODE_200
-     *
-     */
-    public function weixinLogin(){
-        if(!isset($_GET['code'])){
-            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-        }
 
-        if(isset($_GET['state']) && $_GET['state'] == 'app') {
-            $appid = Config::get('weixin.app_appid');
-            $secret = Config::get('weixin.app_secret');
-        }elseif(isset($_GET['state']) && $_GET['state'] == 'pub'){
-            $appid = Config::get('weixin.pub_appid');
-            $secret = Config::get('weixin.pub_secret');
-        }else{
-            $appid = Config::get('weixin.web_appid');
-            $secret = Config::get('weixin.web_secret');
-        }
-
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
-
-        $data = $this->curlGet($url);
-        $data	= json_decode($data);
-
-        if(isset($data->errcode)){
-            return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
-        }
-
-        $token		= $data->access_token;
-        $openid		= $data->openid;
-
-
-        $getUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=".$token."&openid=".$openid;
-
-        $weixinUserInfo = $this->curlGet($getUserInfoUrl);
-        $weixinUserInfo = json_decode($weixinUserInfo);
-
-        $sqlDta = array(
-            'wx_openid'		=> $weixinUserInfo->openid,
-            'nick_name'		=> $weixinUserInfo->nickname,
-            'avatar'		=> $weixinUserInfo->headimgurl,
-            'login_type'	=> 'weixin',
-            'wx_unionid'    => isset($weixinUserInfo->unionid) ? $weixinUserInfo->unionid : '',
-            'created_at'    => date( 'Y-m-d H:i:s' , time()),
-            'updated_at'    => date('Y-m-d H:i:s' , time()),
-            'login_ip'      => $this->getRealIp(),
-        );
-
-        if($weixinUserInfo->sex == 1){
-            $sqlDta['sex'] = "男";
-        }else{
-            $sqlDta['sex'] = "女";
-        }
-
-        //判断该微信是否之前有过登录,有登录直接返回用户信息
-        $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
-
-        if(!$userInfo){
-            if($this->_model->addUser($sqlDta)){
-                $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
-                //获取登录用户的权限
-
-                if($userInfo) {
-                    $sessionKey = $this->getSalt(16);
-
-                    Session::put($sessionKey, $userInfo);
-
-                    $cookie = Cookie::make(Config::get('session.sigma_login_cookie'), $sessionKey, Config::get('session.sigma_lifetime'));
-
-                    $userInfo->token = $sessionKey;
-
-                    return response()->json(Message::setResponseInfo('SUCCESS', $userInfo))->withCookie($cookie);
-                }else{
-                    return response()->json(Message::setResponseInfo('FAILED'));
-                }
-
-            }else{
-                return response()->json(Message::setResponseInfo('FAILED'));
-            }
-
-        }else{
-            $sessionKey = $this->getSalt(16);
-
-            Session::put($sessionKey, $userInfo);
-
-            $cookie = Cookie::make(Config::get('session.sigma_login_cookie'), $sessionKey, Config::get('session.sigma_lifetime'));
-
-            $userInfo->token = $sessionKey;
-
-            return response()->json(Message::setResponseInfo('SUCCESS', $userInfo))->withCookie($cookie);
-        }
-
-    }
-
-
-    /**
-     * @api {POST} /sigma/weixin/openid?code='sadsae2342dadaxxs'&state='app' 微信登录回调
-     * @apiName weixinOpenid
-     * @apiGroup SIGMA
-     * @apiVersion 1.0.0
-     * @apiDescription just a test
-     * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/weixin/openid?code='sadsae2342dadaxxs'&state='app'
-     *
-     *
-     * @apiParamExample {json} Request Example
-     * POST /sigma/weixin/openid
-     * {
-     * }
-     * @apiUse CODE_200
-     *
-     */
-    public function weixinOpenId(){
-
-        if(!isset($_GET['code'])){
-            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-        }
-
-        if(isset($_GET['state']) && $_GET['state'] == 'app') {
-            $appid = Config::get('weixin.app_appid');
-            $secret = Config::get('weixin.app_secret');
-        }elseif(isset($_GET['state']) && $_GET['state'] == 'pub'){
-            $appid = Config::get('weixin.pub_appid');
-            $secret = Config::get('weixin.pub_secret');
-        }else{
-            $appid = Config::get('weixin.web_appid');
-            $secret = Config::get('weixin.web_secret');
-        }
-
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$appid."&secret=".$secret."&code=".$_GET['code']."&grant_type=authorization_code";
-
-        $data = $this->curlGet($url);
-        $data	= json_decode($data);
-
-        if(isset($data->errcode)){
-            return response()->json(Message::setResponseInfo('WX_TOKEN_FAILED'));
-        }
-
-        $openid		= $data->openid;
-
-        return response()->json(Message::setResponseInfo('SUCCESS', $openid));
-    }
 }
