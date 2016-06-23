@@ -117,7 +117,7 @@ class Order extends Model{
             $o->goods = array();
             $o->goodsNum = 0;
 
-            $o->payTotal            = $o->total + $o->deliver - ($o->in_points / 100);
+            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
             $o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
@@ -382,6 +382,8 @@ class Order extends Model{
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($inPoints / 100);
 
+        $payNum = round($payNum , 2);
+
         if($payNum < 0){
             return Message::setResponseInfo('FAILED');
         }
@@ -445,6 +447,7 @@ class Order extends Model{
 
         //计算需要支付的数量
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
+        $payNum = round($payNum , 2);
 
         if ($payMoney != $payNum) {
             $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
@@ -595,6 +598,85 @@ class Order extends Model{
      */
     public function getOrderById($userId , $orderId){
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->first();
+    }
+
+
+
+    /**
+     * 订单统计
+     */
+    /**
+     * 订单统计数据(本天)
+     */
+    public function orderCountDay($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    count('id') as num ,
+                    `hour` ,
+                    `status`
+               FROM $this->table";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] . ')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " GROUP BY hour , status";
+        $sql .= " ORDER BY hour ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 订单统计
+     */
+    /**
+     * 订单统计数据(本周)
+     */
+    public function orderCountWeek($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    count('id') as num ,
+                    `day` ,
+                    `status`
+               FROM $this->table";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] . ')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " GROUP BY day , status";
+        $sql .= " ORDER BY day ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 订单统计
+     */
+    /**
+     * 订单统计数据(本月)
+     */
+    public function orderCountMonth($storeId , $year , $month){
+        $sql = "SELECT 
+                    count('id') as num ,
+                    `day` ,
+                    `status`
+               FROM $this->table";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] . ')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " GROUP BY month , status";
+        $sql .= " ORDER BY month ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
     }
 
 }

@@ -164,6 +164,12 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::get('/store/count/finance', 'StoresController@financeCount');
 		Route::post('/store/count/finance', 'StoresController@ajaxFinanceCount');
 
+		Route::get('/order/count', 'OrdersController@orderCount');
+		Route::post('/order/count', 'OrdersController@ajaxOrderCount');
+
+		//意见反馈
+		Route::post('/feedback', 'StoreUsersController@feedback');
+
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
@@ -183,6 +189,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::post('/reset/password', 'StoreUsersController@resetPassword');
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
+
+	Route::get('/version/check', 'ToolController@versionIsNew');
 
 });
 
