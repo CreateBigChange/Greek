@@ -95,7 +95,7 @@ class StoreGoods extends Model{
     public function getStoreGoodsTotalNum( $search = array()){
         $sql = "SELECT 
                     count(*) as num
-                FROM $this->_store_goods_table AS sg ";
+                FROM $this->table AS sg ";
 
         $sql .= " LEFT JOIN goods_categories as gc ON gc.id = sg.c_id";
         $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";

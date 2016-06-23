@@ -16,6 +16,10 @@ use Session , Cookie , Config;
 use App\Libs\Message;
 
 use App\Models\StoreInfo;
+use App\Models\StoreDateCount;
+use App\Models\StoreGoods;
+use App\Models\StoreNav;
+use App\Models\StoreCategory;
 
 class StoresController extends ApiController
 {
@@ -49,8 +53,10 @@ class StoresController extends ApiController
 
         $storeInfo = $this->_model->getStoreInfo($storeId);
 
+        $storeDateCountModel = new StoreDateCount;
+
         //添加访问量
-        $this->_model->addStoreCount($storeId);
+        $storeDateCountModel->addStoreCount($storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $storeInfo));
     }
@@ -172,11 +178,12 @@ class StoresController extends ApiController
         $search['store_id'] = $storeId;
 
 
-        $goodsNum   = $this->_model->getStoreGoodsTotalNum($search);
+        $storeGoodsModel = new StoreGoods;
+        $goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $goodsNum);
-        $response['goodsList']  = $this->_model->getStoreGoodsList($search , $this->_length , $response['pageData']->offset);
+        $response['goodsList']  = $storeGoodsModel->getStoreGoodsList($search , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
 
@@ -202,7 +209,8 @@ class StoresController extends ApiController
      */
     public function getStoreGoodsInfo($goodsId){
 
-        $info = $this->_model->getStoreGoodsList( array('id' => $goodsId) , $this->_length , 0);
+        $storeGoodsModel = new StoreGoods;
+        $info = $storeGoodsModel->getStoreGoodsList( array('id' => $goodsId) , $this->_length , 0);
 
         if(count($info) == 0){
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -253,7 +261,8 @@ class StoresController extends ApiController
      */
     public function storeCategory(){
 
-        $categoryList = $this->_model->getStoreCategory();
+        $storeCategoryModel = new StoreCategory;
+        $categoryList = $storeCategoryModel->getStoreCategory();
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $categoryList));
     }
