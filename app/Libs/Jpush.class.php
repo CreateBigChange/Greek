@@ -36,9 +36,9 @@ class Jpush
             $push->addTag($tag);
         }
 
-        $content = icovn('gbk','utf-8',$content);
-        $title = icovn('gbk','utf-8', $title);
-        $sound = icovn('gbk','utf-8', $sound);
+//        $content = icovn('gbk','utf-8',$content);
+//        $title = icovn('gbk','utf-8', $title);
+//        $sound = icovn('gbk','utf-8', $sound);
 
         $push->setNotificationAlert(icovn('gbk','utf-8','急所需商家版'))
             //->addAllAudience()
