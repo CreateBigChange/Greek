@@ -137,13 +137,20 @@ class OrdersController extends ApiController
         }
         $status = $request->get('status');
 
+        $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
+
+        if(!isset($orderInfo[0])){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+        if($orderInfo[0]->status == Config::get('orderstatus.refunded')['status']){
+            if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+        }
+
         //确认退款
         if($status == Config::get('orderstatus.refunded')['status']){
 
-            $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
-            if(!isset($orderInfo[0])){
-                return response()->json(Message::setResponseInfo('FAILED'));
-            }
             if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
