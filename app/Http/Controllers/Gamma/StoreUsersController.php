@@ -356,7 +356,6 @@ class StoreUsersController extends ApiController
      */
     public function feedback(Request $request){
 
-        $data = array();
         if(!$request->has('content')){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }

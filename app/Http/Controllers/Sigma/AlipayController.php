@@ -171,7 +171,7 @@ class AlipayController extends ApiController
 //        if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS'){
 
             //更新支付时间和订单状态
-            $this->_model->pay($order->id , ($_POST['total_fee'] / 100) , 2 , $_POST['gmt_payment']);
+            $this->_model->pay($order->id , $_POST['total_fee']  , 2 , $_POST['gmt_payment']);
 
             $storeModel = new Stores;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
