@@ -105,7 +105,7 @@ class AlipayController extends ApiController
             'subject'           => $detail,
             //'total_fee'         => '0.01',
             'body'              => $body,
-            'total_fee'         => (int)$payNum['data']
+            'total_fee'         => $payNum['data']
         ];
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($options);
