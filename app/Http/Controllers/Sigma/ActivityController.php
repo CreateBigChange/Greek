@@ -15,7 +15,7 @@ use Session , Cookie , Config;
 
 use App\Libs\Message;
 
-use App\Models\Sigma\Activity;
+use App\Models\Banner;
 
 class ActivityController extends ApiController
 {
@@ -24,7 +24,7 @@ class ActivityController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model       = new Activity;
+        $this->_model       = new Banner;
         $this->_length		= 20;
     }
 

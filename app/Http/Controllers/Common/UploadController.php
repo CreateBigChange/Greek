@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sigma;
+namespace App\Http\Controllers\Common;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

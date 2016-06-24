@@ -5,7 +5,7 @@
  * Date: 16/3/15
  * Time: 下午5:10
  */
-namespace App\Http\Controllers\Sigma;
+namespace App\Http\Controllers\Alipay;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,19 +13,18 @@ use Mockery\CountValidator\Exception;
 use Validator , Input;
 use Session , Cookie , Config , Log;
 
-use App\Models\Sigma\Users;
-use App\Models\Sigma\WechatPayLog;
-
 use App\Http\Controllers\ApiController;
 
-use App\Models\Sigma\Orders;
-use App\Models\Sigma\Stores;
+use App\Models\User;
+use App\Models\WechatPayLog;
+use App\Models\Order;
+use App\Models\StoreInfo;
+
+
 use App\Libs\Message;
 use App\Libs\BLogger;
 
 use Omnipay\Omnipay;
-
-//use App\Libs\Jpush;
 
 use App\Jobs\Jpush;
 
@@ -36,7 +35,7 @@ class AlipayController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new Orders;
+        $this->_model = new Order;
         $this->_length		= 20;
 
     }

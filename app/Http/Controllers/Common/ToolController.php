@@ -5,7 +5,7 @@
  * Date: 16/3/15
  * Time: 下午5:10
  */
-namespace App\Http\Controllers\Gamma;
+namespace App\Http\Controllers\Common;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -48,21 +48,10 @@ class ToolController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function push(){
-
-//        //消息推送队列
-//        $this->dispatch(new Jpush(
-//            "急所需有新订单啦,请及时处理",
-//            "急所需新订单",
-//            array('ios' , 'android'),
-//            "21",
-//            array(),
-//            "default"
-//        ));
-
-        $jpush = new Jpush();
-        return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '21');
-    }
+//    public function push(){
+//        $jpush = new Jpush();
+//        return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '21');
+//    }
 
     /**
      * 检测版本

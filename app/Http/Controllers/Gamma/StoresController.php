@@ -14,8 +14,8 @@ use Session , Cookie , Config;
 
 use App\Http\Controllers\ApiController;
 
-use App\Models\Gamma\Stores;
-use App\Models\Gamma\Orders;
+use App\Models\StoreInfo;
+use App\Models\Order;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -25,7 +25,7 @@ class StoresController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new Stores;
+        $this->_model = new StoreInfo;
         $this->_length		= 20;
     }
 

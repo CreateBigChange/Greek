@@ -14,7 +14,7 @@ use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
 
-use App\Models\Gamma\Orders;
+use App\Models\Order;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
@@ -29,7 +29,7 @@ class OrdersController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new Orders;
+        $this->_model = new Order;
         $this->_length		= 10;
     }
 
@@ -189,8 +189,6 @@ class OrdersController extends ApiController
     }
 
     public function _wechatRefund($orderNo , $refundNo , $payTotal , $type=1){
-
-        $options = array();
 
         if($type == 1) {
             $options = [
