@@ -97,10 +97,10 @@ class Order extends Model{
         $sql .= " WHERE 1 = 1";
 
         if(isset($search['user'])){
-            $sql .= " AND user = ".$search['user'];
+            $sql .= " AND o.user = ".$search['user'];
         }
         if(isset($search['store'])){
-            $sql .= " AND store_id = ".$search['store'];
+            $sql .= " AND o.store_id = ".$search['store'];
         }
 
         if(isset($search['status'])){
