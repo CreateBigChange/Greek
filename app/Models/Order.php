@@ -178,6 +178,8 @@ class Order extends Model{
                 $point = $userInfo->points + $orderInfo->out_points;
                 $userModel->updatePoint($userId, $point);
 
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
+
             }
 
             $orderLog = new OrderLog;
@@ -190,7 +192,6 @@ class Order extends Model{
 
             $orderLog->save();
 
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
             DB::commit();
             return true;
         }catch (Exception $e){
