@@ -75,7 +75,7 @@ class AlipayController extends ApiController
             return $payNum;
         }
 
-        $info = $this->_model->getOrderList($this->userId, array('id' => $orderId), 1, 0);
+        $info = $this->_model->getOrderList(array('user' => $this->userId , 'id' => $orderId), 1, 0);
 
         if (count($info) == 0) {
             return response()->json(Message::setResponseInfo('FAILED'));
