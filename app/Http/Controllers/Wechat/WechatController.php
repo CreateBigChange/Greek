@@ -129,7 +129,7 @@ class WechatController extends ApiController
         //$attributes['time_start']       = date('YmdHis' , time());
         //$attributes['time_expire']      = date('YmdHis' , time() + 30 * 60);
         $attributes['attach']           = $orderId;
-        //$attributes['total_fee']        = $payNum['data'] * 100;
+        $attributes['total_fee']        = $payNum['data'] * 100;
 
         if($tradeType == 'JSAPI') {
 
