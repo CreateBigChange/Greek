@@ -279,7 +279,7 @@ class OrdersController extends ApiController
             }
         }
 
-        $order = $this->_model->getOrderList($this->userId , array('id' => $orderId));
+        $order = $this->_model->getOrderList(array('store' => $this->userId  , 'id' => $orderId));
         if(!isset($order[0])){
             return response()->json(Message::setResponseInfo('FAILED'));
         }
