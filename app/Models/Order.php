@@ -455,10 +455,10 @@ class Order extends Model{
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
         $payNum = round($payNum , 2);
 
-        if ($payMoney != $payNum) {
-            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
-            return Message::setResponseInfo('MONEY_NOT_EQUAL');
-        }
+//        if ($payMoney != $payNum) {
+//            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+//            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+//        }
 
         //如果是余额支付
         if($payType->id == Config::get('paytype.money')) {
