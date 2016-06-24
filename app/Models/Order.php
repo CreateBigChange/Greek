@@ -317,7 +317,8 @@ class Order extends Model{
             //DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
 
-            OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay')['status']);
+            $orderLogMode = new OrderLog();
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '创建订单' , Config::get('orderstatus.no_pay')['status']);
             return $orderId;
         }catch(Exception $e){
 
@@ -413,10 +414,11 @@ class Order extends Model{
     public function pay($orderId , $payMoney=0 , $payType=1 , $payTime=0){
 
         $payType = PayType::where('id' , $payType)->first();
+        $orderLogMode = new OrderLog();
 
         if(!$payType){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付订单失败-支付方式不对');
-            OrderLog::createOrderLog($orderId, 0 , '普通用户', '用户端APP', '支付订单失败-支付方式不对');
+            $orderLogMode->createOrderLog($orderId, 0 , '普通用户', '用户端APP', '支付订单失败-支付方式不对');
             return Message::setResponseInfo('FAILED');
         }
 
@@ -445,7 +447,7 @@ class Order extends Model{
 
         if($isAmplePoint === false){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
-            OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
 
@@ -454,7 +456,7 @@ class Order extends Model{
         $payNum = round($payNum , 2);
 
         if ($payMoney != $payNum) {
-            $this->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
             return Message::setResponseInfo('MONEY_NOT_EQUAL');
         }
 
@@ -464,7 +466,7 @@ class Order extends Model{
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户余额不足');
-                OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
+                $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-余额不足');
                 return Message::setResponseInfo('MONEY_NOT_AMPLE');
             }
         }
@@ -510,7 +512,7 @@ class Order extends Model{
             //更新订单状态
             DB::table($this->table)->where('user', $userId)->where('id', $orderId)->update($update);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付成功' );
-            OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
 
             DB::commit();
 
@@ -521,7 +523,7 @@ class Order extends Model{
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付失败');
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
-            OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败');
             return Message::setResponseInfo('FAILED');
         }
 
@@ -566,7 +568,7 @@ class Order extends Model{
      * 退款原因
      */
     public function refund($userId , $orderId , $content ){
-        OrderLog::createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
+        $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update(
             array(
                 'refund_reason' => $content,

@@ -23,7 +23,7 @@ class OrderLog extends Model{
      * @return bool
      * 创建订单log
      */
-    static function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0 ){
+    public function createOrderLog($orderId , $userId , $identity , $platform , $log , $status = 0 ){
 
         //$statusChangeLog = Config::get('orderstatus.no_pay');
         $statusChangeLog['updated_at']      = date('Y-m-d H:i:s' , time());
@@ -38,7 +38,7 @@ class OrderLog extends Model{
             $statusChangeLog['status'] = $status;
         }
 
-        if(DB::table(self::$table)->insert($statusChangeLog)){
+        if(DB::table($this->table)->insert($statusChangeLog)){
 
             return true;
         }else{
@@ -53,9 +53,9 @@ class OrderLog extends Model{
      *
      * 获取订单log
      */
-    static function getOrderLog( $orderId ){
+    public function getOrderLog( $orderId ){
 
-        $logs = DB::table(self::table)->where('order_id' , $orderId)->orderBy('created_at' , 'asc')->get();
+        $logs = DB::table($this->table)->where('order_id' , $orderId)->orderBy('created_at' , 'asc')->get();
 
         return $logs;
 
