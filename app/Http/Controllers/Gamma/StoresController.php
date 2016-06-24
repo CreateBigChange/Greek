@@ -18,6 +18,8 @@ use App\Models\StoreInfo;
 use App\Models\Order;
 use App\Models\AmapCityCode;
 use App\Models\StoreSettlings;
+use App\Models\StoreConfig;
+use App\Models\StoreGoods;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -198,7 +200,9 @@ class StoresController extends ApiController
         $config = (array) json_decode($request->get('config'));
         $config['updated_at'] = date('Y-m-d H:i:s');
 
-        if($this->_model->config($this->storeId , $config)){
+        $storeConfigModel = new StoreConfig;
+
+        if($storeConfigModel->config($this->storeId , $config)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -273,7 +277,8 @@ class StoresController extends ApiController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->addGoods($data)){
+        $storeGoodsModel = new StoreGoods;
+        if($storeGoodsModel->addGoods($data)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

@@ -14,7 +14,6 @@ class StoreConfig extends Model{
 
     protected $table  = 'store_configs';
 
-
     /**
      * 更新商铺积分
      */
@@ -22,5 +21,35 @@ class StoreConfig extends Model{
         return DB::table($this->table)->where('store_id' , $storeId)->update(array('point'=>$point));
     }
 
+    /**
+     * 更新商铺余额
+     */
+    public function updateMoney($storeId , $money){
+        return DB::table($this->table)->where('store_id' , $storeId)->update(array('money'=>$money));
+    }
+
+    /**
+     *
+     * 配置店铺
+     * @param storeId   number
+     * @param config    array
+     */
+    public function config($storeId , $config){
+        return DB::table($this->table)->where('store_id' , $storeId)->update($config);
+    }
+
+    /**
+     * 判断余额是否充足
+     */
+    public function isAmpleStoreMoney($storeId , $money){
+        $storeMoney = DB::table($this->table)->select('money')->where('store_id' , $storeId)->first();
+
+        $temMoney = $storeMoney->money - $money;
+        if($temMoney >= 0) {
+            return $temMoney;
+        }else{
+            return false;
+        }
+    }
     
 }
