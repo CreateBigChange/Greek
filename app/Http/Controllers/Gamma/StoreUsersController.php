@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Gamma;
 
+use App\Models\StoreWithdrawCashLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
@@ -259,12 +260,14 @@ class StoreUsersController extends ApiController
             $page = $request->get('page');
         }
 
-        $totalNum = $this->_model->withdrawCashLogTotalNum($this->storeId);
+        $cashModel = new StoreWithdrawCashLog;
+
+        $totalNum = $cashModel->withdrawCashLogTotalNum($this->storeId);
         $pageData = $this->getPageData($page , $this->_length , $totalNum);
 
-        $log = $this->_model->getWithdrawCashLog($this->storeId , $this->_length , $pageData->offset);
+        $log = $cashModel->getWithdrawCashLog($this->storeId , $this->_length , $pageData->offset);
 
-        $total = $this->_model->getWithdrawCashTotal($this->storeId );
+        $total = $cashModel->getWithdrawCashTotal($this->storeId );
 
         $withdraw_cash_total_num = isset($total[0]) ? $total[0]->withdraw_cash_total_num : 0;
 
@@ -308,7 +311,8 @@ class StoreUsersController extends ApiController
         $data['status']                     = 1;
         $data['created_at']                 = date('Y-m-d H:i:s' , time());
 
-        $result = $this->_model->withdrawCash($data);
+        $cashModel = new StoreWithdrawCashLog;
+        $result = $cashModel->withdrawCash($data);
 
         return $result;
 
@@ -332,7 +336,8 @@ class StoreUsersController extends ApiController
      */
     public function withdrawCashConfig(Request $request){
 
-        $data = $this->_model->withdrawCashConfig($this->storeId , date('Y-m-d' , time()));
+        $cashModel = new StoreWithdrawCashLog;
+        $data = $cashModel->withdrawCashConfig($this->storeId , date('Y-m-d' , time()));
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $data));
 

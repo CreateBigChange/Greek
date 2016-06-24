@@ -13,7 +13,7 @@ use App\Http\Controllers\AdminController;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\AdminPermissions;
+use App\Models\AdminPermission;
 
 class AdminPermissionController extends AdminController
 {
@@ -31,7 +31,7 @@ class AdminPermissionController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$permissionModel = new AdminPermissions;
+		$permissionModel = new AdminPermission;
 
 		$permissionList = $permissionModel->getPermissionsList();
 
@@ -47,7 +47,7 @@ class AdminPermissionController extends AdminController
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
-		$permissionModel = new AdminPermissions;
+		$permissionModel = new AdminPermission;
 
 		$permissionList = $permissionModel->getPermissionsList();
 
@@ -70,7 +70,7 @@ class AdminPermissionController extends AdminController
             return view('errors.503');
         }
 
-        $permissions						= new AdminPermissions;
+        $permissions						= new AdminPermission;
         //$permissions->display_name          = $request->get('display_name');
         $permissions->fid					= $request->get('fid');
 
@@ -109,7 +109,7 @@ class AdminPermissionController extends AdminController
      */
     public function delPermission($id){
 
-        AdminPermissions::where('id' , $id)->delete();
+        AdminPermission::where('id' , $id)->delete();
         return redirect('alpha/permissions');
 
     }
@@ -119,7 +119,7 @@ class AdminPermissionController extends AdminController
      */
     public function getPermissionInfo($id){
 
-        $permissionModel	= new AdminPermissions;
+        $permissionModel	= new AdminPermission;
 
 		$info				= $permissionModel->getPermissionInfo($id);
 
@@ -170,7 +170,7 @@ class AdminPermissionController extends AdminController
 			}
         }
 
-        AdminPermissions::where('id' , $id)->update($update);
+        AdminPermission::where('id' , $id)->update($update);
         return redirect('alpha/permissions');
     }
 
@@ -178,7 +178,7 @@ class AdminPermissionController extends AdminController
 	 * 获取层级节点
 	 */
 	public function getLevelPermission($level){
-		return AdminPermissions::where('level' , $level)->get();
+		return AdminPermission::where('level' , $level)->get();
 	}
 
 }

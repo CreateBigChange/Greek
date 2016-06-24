@@ -51,8 +51,8 @@ class StoreWithdrawCashLog extends Model
             return Message::setResponseInfo('EXCEED_MONEY_LIMIT');
         }
 
-        $storeInfoModel             = new StoreInfo;
-        $isAmple = $storeInfoModel->isAmpleStoreMoney($data['store_id'], $data['withdraw_cash_num']);
+        $storeConfigModel             = new StoreConfig;
+        $isAmple = $storeConfigModel->isAmpleStoreMoney($data['store_id'], $data['withdraw_cash_num']);
         if($isAmple === false){
             return Message::setResponseInfo('MONEY_NOT_AMPLE');
         }
@@ -61,7 +61,7 @@ class StoreWithdrawCashLog extends Model
 
         try{
 
-            $storeModel->config($data['store_id'] , array('money' => $isAmple));
+            $storeConfigModel->config($data['store_id'] , array('money' => $isAmple));
 
             DB::table($this->table)->insert($data);
             DB::commit();
@@ -92,7 +92,7 @@ class StoreWithdrawCashLog extends Model
                     sw.reason,
                     sw.bank_card_num
                
-               FROM store_withdraw_cash_log as sw" ;
+               FROM $this->table as sw" ;
 
         $sql .= " LEFT JOIN store_users as su on su.id = sw.user_id";
 
@@ -123,7 +123,7 @@ class StoreWithdrawCashLog extends Model
 
         $sql = "SELECT 
                     sum(sw.withdraw_cash_num) as withdraw_cash_total_num
-               FROM store_withdraw_cash_log as sw" ;
+               FROM $this->table as sw" ;
 
         $sql .= " WHERE sw.store_id = $storeId";
         if($date){
@@ -136,7 +136,7 @@ class StoreWithdrawCashLog extends Model
     }
 
     public function withdrawCashLogTotalNum($storeId){
-        return DB::table('store_withdraw_cash_log')->where('store_id' , $storeId)->count();
+        return DB::table($this->table)->where('store_id' , $storeId)->count();
     }
 
     /**
@@ -150,7 +150,7 @@ class StoreWithdrawCashLog extends Model
         $sql = "SELECT 
                     count(*) as num
                
-               FROM store_withdraw_cash_log as sw" ;
+               FROM $this->table as sw" ;
 
         $sql .= " WHERE sw.store_id = $storeId";
         if($date){

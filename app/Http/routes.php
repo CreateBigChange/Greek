@@ -190,8 +190,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
 
-	Route::get('/version/check', 'ToolController@versionIsNew');
-
 });
 
 
@@ -214,10 +212,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
-		//Route::group(['middleware' => ['wechat.oauth']] , function() {
-			Route::any('/wechat/order/{orderId}', 'OrdersController@wechatPay');
-		//});
-
 		Route::post('/user/address' , 'UsersController@getConsigneeAddressByUserId');
 		Route::post('/user/address/add' , 'UsersController@addConsigneeAddress');
 		Route::post('/user/address/update/{addressId}' , 'UsersController@updateConsigneeAddress');
@@ -236,8 +230,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 		Route::post('/user/info' , 'UsersController@userInfo');
 
-		Route::post('/alipay/order/{orderId}' , 'AlipayController@aliPay');
-
 	});
 
 	Route::post('/store/list' , 'StoresController@getStoreList');
@@ -254,23 +246,54 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/login' , 'UsersController@login');
 	Route::post('/register' , 'UsersController@register');
 	Route::post('/reset/password', 'UsersController@resetPassword');
-	Route::get('/weixin/login', 'UsersController@weixinLogin');
-	Route::get('/weixin/openid', 'UsersController@weixinOpenId');
-
-	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
 
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
 
-	Route::any('/wechat/notify/pub', 'OrdersController@notifyPub');
-	Route::any('/wechat/notify/open', 'OrdersController@notifyOpen');
-
-	Route::any('/alipay/notify' , 'AlipayController@notify');
-
 });
 
-Route::get('/wechat/token', 'Wxpay\\WechatController@wechatToken');
+/**
+ * ##############################################################################
+ * 							通用方法控制器
+ * ##############################################################################
+ */
+Route::group(['middleware' => ['api'] , 'namespace' => 'Common' ], function () {
+	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
+	Route::get('/version/check', 'ToolController@versionIsNew');
+});
+
+
+/**
+ * ##############################################################################
+ * 							微信相关控制器
+ * ##############################################################################
+ */
+Route::group(['middleware' => ['api'] , 'namespace' => 'Wechat' ], function () {
+	Route::group(['middleware' => ['UserClientCheckLogin']] , function() {
+		Route::any('/wechat/order/{orderId}', 'WechatController@wechatPay');
+	});
+	Route::get('/wechat/token', 'WechatController@wechatToken');
+	Route::any('/wechat/notify/pub', 'WechatController@notifyPub');
+	Route::any('/wechat/notify/open', 'WechatController@notifyOpen');
+
+	Route::get('/weixin/login', 'WechatLoginController@weixinLogin');
+	Route::get('/weixin/openid', 'WechatLoginController@weixinOpenId');
+});
+
+
+/**
+ * ##############################################################################
+ * 							支付宝相关控制器
+ * ##############################################################################
+ */
+Route::group(['middleware' => ['api'] , 'namespace' => 'Alipay' ], function () {
+	Route::group(['middleware' => ['UserClientCheckLogin']] , function() {
+		Route::post('/alipay/order/{orderId}' , 'AlipayController@aliPay');
+	});
+
+	Route::any('/alipay/notify', 'AlipayController@notify');
+});
 
 
 //Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {

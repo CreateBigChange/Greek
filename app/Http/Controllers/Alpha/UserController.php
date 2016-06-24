@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 
-use App\Models\Alpha\Users;
+use App\Models\User;
 use App\Libs\Message;
 
 class UserController extends AdminController
@@ -22,7 +22,7 @@ class UserController extends AdminController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new Users();
+        $this->_model = new User();
         $this->response['title']		= '用户管理';
         $this->length = 10;
     }

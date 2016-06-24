@@ -13,7 +13,7 @@ use App\Http\Controllers\AdminController;
 
 use Config;
 
-use App\Models\Alpha\StoreInfos;
+use App\Models\StoreInfo;
 use App\Libs\Message;
 use App\Libs\Curl;
 
@@ -32,7 +32,7 @@ class StoresController extends AdminController
 	 */
 	public function getStoreInfoList(){
 		
-		$storeModel = new StoreInfos;
+		$storeModel = new StoreInfo;
 
 		$page = isset($_GET['page']) ? $_GET['page'] : 1;
 

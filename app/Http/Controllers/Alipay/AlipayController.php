@@ -15,7 +15,6 @@ use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
 
-use App\Models\User;
 use App\Models\WechatPayLog;
 use App\Models\Order;
 use App\Models\StoreInfo;
@@ -94,7 +93,7 @@ class AlipayController extends ApiController
         $gateway->setPartner('2088121058783821');
         $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
         $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setNotifyUrl('http://preview.jisxu.com/sigma/alipay/notify');
+        $gateway->setNotifyUrl('http://preview.jisxu.com/alipay/notify');
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
@@ -174,7 +173,7 @@ class AlipayController extends ApiController
             //更新支付时间和订单状态
             $this->_model->pay($order->id , $_POST['total_fee']  , 2 , $_POST['gmt_payment']);
 
-            $storeModel = new Stores;
+            $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
             if(empty($store)){

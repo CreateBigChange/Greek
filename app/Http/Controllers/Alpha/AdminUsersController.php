@@ -13,7 +13,7 @@ use App\Http\Controllers\AdminController;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\AdminUsers;
+use App\Models\AdminUser;
 
 class AdminUsersController extends AdminController
 {
@@ -22,7 +22,7 @@ class AdminUsersController extends AdminController
 
     public function __construct(){
         parent::__construct();
-		$this->_model = new AdminUsers;
+		$this->_model = new AdminUser;
 		$this->_length		= 20;
         $this->response['title']		= '登录';
         $this->response['menuactive']	= 'dl';
@@ -44,7 +44,7 @@ class AdminUsersController extends AdminController
             return view('errors.503');
         }
 
-        $adminUserModel     = new AdminUsers;
+        $adminUserModel     = new AdminUser;
 
         $account            = $request->get('account');
         $password           = $request->get('password');
@@ -116,7 +116,7 @@ class AdminUsersController extends AdminController
 	 * 删除管理用户
 	 */
 	public function delAdminUser($id){
-		AdminUsers::where('id' , $id)->update(['is_del' => 1]);
+		AdminUser::where('id' , $id)->update(['is_del' => 1]);
 		return redirect('alpha/admin/users');
 	}
 
@@ -124,7 +124,7 @@ class AdminUsersController extends AdminController
 	 * 获取管理用户信息
 	 */
 	public function getAdminUserInfo($id){
-		$info = AdminUsers::where('id' , $id)->get();
+		$info = AdminUser::where('id' , $id)->get();
 		if(!empty($info)){
 			$this->response['info'] = $info[0];
 			$this->response['code'] = '0000';

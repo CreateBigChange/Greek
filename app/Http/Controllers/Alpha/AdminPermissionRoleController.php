@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 
-use App\Models\Alpha\AdminPermissionRole;
+use App\Models\AdminPermissionRole;
 
 class AdminPermissionRoleController extends AdminController
 {

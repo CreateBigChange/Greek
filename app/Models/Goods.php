@@ -10,6 +10,10 @@ namespace App\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
+
+use App\Models\GoodsBrand;
+use App\Models\GoodsCategory;
+
 class Goods extends Model{
 
     protected $table       	                    = 'goods';
@@ -21,6 +25,10 @@ class Goods extends Model{
      * 获取商品
      */
     public function getGoodsList($length = 20 , $offset = 0 , $search = array()){
+
+        $goodsBrandModel    = new GoodsBrand;
+        $goodsCategoryModel = new GoodsCategory;
+
         $sql = "SELECT 
                     g.id,
                     g.name,
@@ -44,10 +52,10 @@ class Goods extends Model{
                     gb.name AS bname
                     FROM $this->table AS g";
 
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gc ON gc.id = g.c_id";
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gcc ON gcc.id = gc.p_id";
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gccc ON gccc.id = gcc.p_id";
-        $sql .= " LEFT JOIN $this->_goods_brand_table AS gb ON gb.id = g.b_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gc ON gc.id = g.c_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gcc ON gcc.id = gc.p_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gccc ON gccc.id = gcc.p_id";
+        $sql .= " LEFT JOIN ".$goodsBrandModel->getTable() ." AS gb ON gb.id = g.b_id";
         $sql .= " WHERE g.is_del = 0";
 
         if(isset($search['ids'])){
@@ -87,14 +95,16 @@ class Goods extends Model{
      * 获取商品总数
      */
     public function getGoodsTotalNum($search = array()){
+        $goodsBrandModel    = new GoodsBrand;
+        $goodsCategoryModel = new GoodsCategory;
         $sql = "SELECT 
                     count(*) as num
                     FROM $this->table AS g";
 
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gc ON gc.id = g.c_id";
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gcc ON gcc.id = gc.p_id";
-        $sql .= " LEFT JOIN $this->_goods_categories_table AS gccc ON gccc.id = gcc.p_id";
-        $sql .= " LEFT JOIN $this->_goods_brand_table AS gb ON gb.id = g.b_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gc ON gc.id = g.c_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gcc ON gcc.id = gc.p_id";
+        $sql .= " LEFT JOIN ".$goodsCategoryModel->getTable() ." AS gccc ON gccc.id = gcc.p_id";
+        $sql .= " LEFT JOIN ".$goodsBrandModel->getTable() ." AS gb ON gb.id = g.b_id";
 
         $sql .= " WHERE g.is_del = 0";
 

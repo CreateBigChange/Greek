@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 
-use App\Models\Alpha\Goods;
+use App\Models\Goods;
+use App\Models\GoodsCategory;
+use App\Models\GoodsBrand;
 use App\Libs\Message;
 
 class GoodsController extends AdminController
@@ -186,8 +188,8 @@ class GoodsController extends AdminController
      * ajax获取商品分类
      */
     public function ajaxGoodsCategoryByPid($pid){
-        $goodsModel = new Goods;
-        $this->response['category'] = $goodsModel->getGoodsCategoryByPid($pid);
+        $goodsCategoryModel = new GoodsCategory;
+        $this->response['category'] = $goodsCategoryModel->getGoodsCategoryByPid($pid);
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->response));
     }
 
@@ -195,8 +197,8 @@ class GoodsController extends AdminController
      * 获取商品分类
      */
     public function getGoodsCategory(){
-        $goodsModel = new Goods;
-        $this->response['category'] = $goodsModel->getGoodsCategoryByPid(0);
+        $goodsCategoryModel = new GoodsCategory;
+        $this->response['category'] = $goodsCategoryModel->getGoodsCategoryByPid(0);
         return view('alpha.goods.category_list' , $this->response);
     }
 
@@ -204,8 +206,8 @@ class GoodsController extends AdminController
      * 获取单个商品分类
      */
     public function getGoodsCategoryById($id){
-        $goodsModel = new Goods;
-        $this->response['category'] = $goodsModel->getGoodsCategoryById($id);
+        $goodsCategoryModel = new GoodsCategory;
+        $this->response['category'] = $goodsCategoryModel->getGoodsCategoryById($id);
         return $this->response;
     }
 
@@ -213,7 +215,6 @@ class GoodsController extends AdminController
      * 更新商品分类
      */
     public function updateGoodsCategory(Request $request){
-        $goodsModel = new Goods;
 
         if(!$request->has('id')){
             return view('errors.503');
@@ -229,7 +230,9 @@ class GoodsController extends AdminController
         $data['name']       = $request->get('name');
         $data['updated_at'] = $request->get('updated_at');
 
-        if($goodsModel->updateGoodsCategory($id , $data)) {
+        $goodsCategoryModel = new GoodsCategory;
+
+        if($goodsCategoryModel->updateGoodsCategory($id , $data)) {
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -240,8 +243,8 @@ class GoodsController extends AdminController
      * 获取单个商品品牌
      */
     public function getGoodsBrandById($id){
-        $goodsModel = new Goods;
-        $this->response['brand'] = $goodsModel->getGoodsBrandById($id);
+        $goodsBrandModel = new GoodsBrand;
+        $this->response['brand'] = $goodsBrandModel->getGoodsBrandById($id);
         return $this->response;
     }
 
@@ -249,7 +252,6 @@ class GoodsController extends AdminController
      * 更新商品品牌
      */
     public function updateGoodsBrand(Request $request){
-        $goodsModel = new Goods;
 
         if(!$request->has('id')){
             return view('errors.503');
@@ -265,7 +267,9 @@ class GoodsController extends AdminController
         $data['name']       = $request->get('name');
         $data['updated_at'] = $request->get('updated_at');
 
-        if($goodsModel->updateGoodsBrand($id , $data)) {
+        $goodsBrandModel = new GoodsBrand;
+
+        if($goodsBrandModel->updateGoodsBrand($id , $data)) {
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -276,8 +280,8 @@ class GoodsController extends AdminController
      * ajax获取商品分类
      */
     public function ajaxGoodsCategoryByLevel($level){
-        $goodsModel = new Goods;
-        $this->response['category'] = $goodsModel->getGoodsCategoryByLevel($level);
+        $goodsCategoryModel = new GoodsCategory;
+        $this->response['category'] = $goodsCategoryModel->getGoodsCategoryByLevel($level);
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->response));
     }
 
@@ -297,8 +301,8 @@ class GoodsController extends AdminController
      * ajax获取商品品牌
      */
     public function ajaxGoodsBrandByCid($cid){
-        $goodsModel = new Goods;
-        $this->response['brand'] = $goodsModel->getGoodsBrandByCid($cid);
+        $goodsBrandModel = new GoodsBrand;
+        $this->response['brand'] = $goodsBrandModel->getGoodsBrandByCid($cid);
         return response()->json(Message::setResponseInfo('SUCCESS' , $this->response));
     }
 
@@ -323,9 +327,9 @@ class GoodsController extends AdminController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        $goodsModel = new Goods;
+        $goodsCategoryModel = new GoodsCategory;
 
-        $id = $goodsModel->addCategory($data);
+        $id = $goodsCategoryModel->addCategory($data);
 
         if($id){
             return response()->json(Message::setResponseInfo('SUCCESS' , $id));
@@ -354,9 +358,9 @@ class GoodsController extends AdminController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        $goodsModel = new Goods;
+        $goodsBrandModel = new GoodsBrand;
 
-        $id = $goodsModel->addBrand($data);
+        $id = $goodsBrandModel->addBrand($data);
 
         if($id){
             return response()->json(Message::setResponseInfo('SUCCESS' , $id));
@@ -371,8 +375,8 @@ class GoodsController extends AdminController
      * 删除分类
      */
     public function delCategory($id){
-        $goodsModel = new Goods;
-        if($goodsModel->delCategory($id)){
+        $goodsCategoryModel = new GoodsCategory;
+        if($goodsCategoryModel->delCategory($id)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -385,8 +389,8 @@ class GoodsController extends AdminController
      * 删除品牌
      */
     public function delBrand($id){
-        $goodsModel = new Goods;
-        if($goodsModel->delBrand($id)){
+        $goodsBrandModel = new GoodsBrand;
+        if($goodsBrandModel->delBrand($id)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

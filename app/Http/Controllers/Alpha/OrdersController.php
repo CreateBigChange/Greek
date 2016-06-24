@@ -14,7 +14,7 @@ use Session , Cookie , Config;
 
 use App\Http\Controllers\AdminController;
 
-use App\Models\Alpha\Orders;
+use App\Models\Order;
 use App\Libs\Message;
 
 class OrdersController extends AdminController
@@ -24,7 +24,7 @@ class OrdersController extends AdminController
 
     public function __construct(){
         parent::__construct();
-        $this->_model = new Orders;
+        $this->_model = new Order;
         $this->response['title']		= '订单管理';
         $this->length = 10;
     }

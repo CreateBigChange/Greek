@@ -14,6 +14,7 @@ class GoodsBrand extends Model{
 
     protected $table       	    = 'goods_brand';
 
+  
     /**
      *
      * 删除商品品牌
