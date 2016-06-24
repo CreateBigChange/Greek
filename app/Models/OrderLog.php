@@ -38,7 +38,7 @@ class OrderLog extends Model{
             $statusChangeLog['status'] = $status;
         }
 
-        if(DB::table(self::table)->insert($statusChangeLog)){
+        if(DB::table(self::$table)->insert($statusChangeLog)){
 
             return true;
         }else{
