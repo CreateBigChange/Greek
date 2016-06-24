@@ -80,6 +80,7 @@ class Order extends Model{
                     u.points,
                     u.money,
                     o.is_evaluate,
+                    o.pay_total,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
