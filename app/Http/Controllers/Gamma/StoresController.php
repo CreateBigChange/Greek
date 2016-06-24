@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Gamma;
 
+use App\Models\StoreDateCount;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input;
@@ -820,7 +821,8 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $visitingNumber = $this->_model->getTodayStoreCount($storeId, $date);
+        $storeDateCountModel  = new StoreDateCount;
+        $visitingNumber = $storeDateCountModel->getTodayStoreCount($storeId, $date);
 
         $visitingNumberData = 0;
         foreach ($visitingNumber as $v){
@@ -860,7 +862,7 @@ class StoresController extends ApiController
 
         $storeInfo = $this->_model->getStoreInfo($storeId);
 
-        $orderModel = new Orders;
+        $orderModel = new Order;
         $orderCount = $orderModel->getOrderMonthPoint($storeId , $date);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(

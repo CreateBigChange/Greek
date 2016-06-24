@@ -679,4 +679,20 @@ class Order extends Model{
 
     }
 
+    /**
+     * 获取今日订单营业额统计
+     */
+    public function getOrderTodayCounts($storeId , $date=0){
+        $sql = "SELECT 
+                    count(`id`) as order_num , 
+                    sum(`total`) as turnover
+                FROM $this->_orders_table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND `created_at` LIKE '" .$date . "%'";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+
+        return DB::select($sql);
+
+    }
+
 }
