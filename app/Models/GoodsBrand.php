@@ -55,4 +55,14 @@ class GoodsBrand extends Model{
         return DB::table($this->table)->where('id' , $id)->update($data);
     }
 
+    /**
+     *
+     * 获取商品品牌
+     * @param cid     number
+     */
+    public function getGoodsBrand(){
+
+        return DB::table('goods_brand')->get();
+    }
+
 }

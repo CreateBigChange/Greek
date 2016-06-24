@@ -20,6 +20,9 @@ use App\Models\AmapCityCode;
 use App\Models\StoreSettlings;
 use App\Models\StoreConfig;
 use App\Models\StoreGoods;
+use App\Models\GoodsCategory;
+use App\Models\GoodsBrand;
+use App\Models\StoreNav;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -563,8 +566,9 @@ class StoresController extends ApiController
      */
     public function getGoodsCategories($pid){
 
-        $storeGoodsModel = new StoreGoods;
-        $categoriesList = $storeGoodsModel->getGoodsCategories($pid);
+        $goodsCategoryModel = new GoodsCategory;
+
+        $categoriesList = $goodsCategoryModel->getGoodsCategoryByPid($pid);
         return response()->json(Message::setResponseInfo('SUCCESS' , $categoriesList));
     }
 
@@ -587,7 +591,9 @@ class StoresController extends ApiController
      */
     public function getGoodsBrand(){
 
-        $brandList = $this->_model->getGoodsBrand();
+        $goodsBrandModel = new GoodsBrand;
+
+        $brandList = $goodsBrandModel->getGoodsBrand();
         return response()->json(Message::setResponseInfo('SUCCESS' , $brandList));
     }
 
@@ -696,7 +702,8 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $navList = $this->_model->getNav($storeId);
+        $storeNavModel = new StoreNav;
+        $navList = $storeNavModel->getNav($storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $navList));
     }
@@ -721,7 +728,9 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        if($this->_model->delNavGoods($navId , $storeId)){
+        $storeGoodsModel = new StoreGoods;
+
+        if($storeGoodsModel->delNavGoods($navId , $storeId)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAIED'));
