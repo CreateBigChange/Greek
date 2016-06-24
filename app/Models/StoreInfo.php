@@ -81,7 +81,8 @@ class StoreInfo extends Model{
                       sc.is_close,
                       sc.bell,
                       sc.notice,
-                      sc.point
+                      sc.point,
+                      sc.money
                   FROM $this->table as si";
 
         $sql .= " LEFT JOIN store_configs as sc ON si.id = sc.store_id";
