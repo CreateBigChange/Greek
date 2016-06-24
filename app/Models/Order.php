@@ -19,14 +19,14 @@ use App\Libs\Message;
 use App\Models\OrderInfo;
 use App\Models\OrderLog;
 use App\Models\PayType;
+use App\Models\StoreInfo;
+use App\Models\StoreGoods;
+use App\Models\ConsigneeAddress;
 
 class Order extends Model{
 
     protected $table = 'orders';
 
-    static function getTable(){
-        return self::table;
-    }
     /**
      * 获取订单总数
      * @param storeId   number
@@ -158,7 +158,7 @@ class Order extends Model{
             if ($status == Config::get('orderstatus.arrive')['status']) {
 
                 //发放用户积分
-                $userModel = new Users;
+                $userModel = new User;
                 $userInfo = $userModel->getUserInfoById($userId);
                 $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
@@ -217,10 +217,11 @@ class Order extends Model{
             }
         }
 
-        $storeModel = new Stores;
+        $storeGoodsModel = new StoreGoods();
+        $storeInfoModel = new StoreInfo();
 
-        $goodsList  = $storeModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
-        $storeInfo  = $storeModel->getStoreInfo($storeId);
+        $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
+        $storeInfo  = $storeInfoModel->getStoreInfo($storeId);
 
 
         //店铺是否休息
@@ -242,7 +243,7 @@ class Order extends Model{
             return false;
         }
 
-        $userModel = new Users;
+        $consigneeAddressModel  = new ConsigneeAddress();
 
         //生成订单基本信息的数据
         $order = array(
@@ -262,7 +263,7 @@ class Order extends Model{
          * 地址要根据距离来算
          *
          */
-        $address = $userModel->getConsigneeAddressByUserId($userId);
+        $address = $consigneeAddressModel->getConsigneeAddressByUserId($userId);
 
         if(!empty($address)){
             $order['consignee']             = $address[0]->consignee;
@@ -343,7 +344,7 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
-        $userModel = new Users;
+        $userModel = new User;
 
         /**
          * 判断用户余额是否充足
@@ -365,7 +366,7 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
-        $storeModel = new Stores;
+        $storeModel = new StoreInfo;
         $storeInfo  = $storeModel->getStoreInfo($order->store_id);
         //店铺积分是否充足
         if($storeInfo->point < $order->out_points){
@@ -434,7 +435,7 @@ class Order extends Model{
 
         $userId = $order->user;
 
-        $userModel = new Users;
+        $userModel = new User;
 
         //用户积分是否充足
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
@@ -465,7 +466,7 @@ class Order extends Model{
             }
         }
 
-        $storeModel = new Stores;
+        $storeModel = new StoreInfo;
         $storeInfo = $storeModel->getStoreInfo($order->store_id);
 
         //店铺积分是否充足
@@ -532,8 +533,8 @@ class Order extends Model{
      * 更新订单地址
      */
     public function updateOrderAddress($userId , $orderId , $addressId){
-        $userModel = new Users;
-        $address = $userModel->getConsigneeAddressById($addressId);
+        $consigneeAddressModel  = new ConsigneeAddress();
+        $address = $consigneeAddressModel->getConsigneeAddressById($addressId);
 
         if(!$address){
             return false;
