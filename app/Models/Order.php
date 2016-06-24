@@ -471,7 +471,8 @@ class Order extends Model{
             }
         }
 
-        $storeModel = new StoreInfo;
+        $storeModel = new StoreInfo();
+        $storeConfigModel = new StoreConfig();
         $storeInfo = $storeModel->getStoreInfo($order->store_id);
 
         //店铺积分是否充足
@@ -491,7 +492,7 @@ class Order extends Model{
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除用户'.$userId.'积分成功,当前积分为' . $isAmplePoint);
 
             //更新店铺积分
-            $storeModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
+            $storeConfigModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除店铺'.$order->store_id.'积分成功,当前积分为' . ($storeInfo->point - $order->out_points));
 
             //如果是余额支付
@@ -568,6 +569,7 @@ class Order extends Model{
      * 退款原因
      */
     public function refund($userId , $orderId , $content ){
+        $consigneeAddressModel  = new ConsigneeAddress();
         $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update(
             array(
