@@ -126,4 +126,54 @@ class StoreGoods extends Model{
         return DB::table($this->table)->where('id' , $goodsId)->increment('out_num' , $addNum);
     }
 
+
+    /**
+     * 添加商品
+     * @param data   array
+     */
+    public function addGoods($data){
+        return DB::table($this->table)->insert($data);
+    }
+
+    /**
+     * 修改商品
+     * @param storeId   number
+     * @param id   number
+     * @param data   array
+     */
+    public function updateGoods($storeId , $id , $data){
+        return DB::table($this->table)->where('id' , $id)->where('store_id' , $storeId)->update($data);
+    }
+
+    /**
+     * 批量修改商品状态
+     * @param storeId   number
+     * @param ids   array
+     * @param data   array
+     */
+    public function updateUtatus($storeId , $ids , $data){
+        return DB::table($this->table)->whereIn('id' , $ids)->where('store_id' , $storeId)->update($data);
+    }
+
+    /**
+     *
+     * 删除栏目下的商品
+     * @param navId     number
+     * @param storeId   number
+     */
+    public function delNavGoods($navId , $storeId){
+        return DB::table($this->table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_del' => 1));
+
+    }
+
+    /**
+     *
+     * 下架栏目下的所以商品
+     * @param navId     number
+     * @param storeId   number
+     */
+    public function xiaJiaNavGoods($navId , $storeId){
+        return DB::table($this->table)->where('nav_id' , $navId)->where('store_id' , $storeId)->update(array('is_open' => 0));
+
+    }
 }

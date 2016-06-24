@@ -334,11 +334,14 @@ class StoresController extends ApiController
             $search['sort_stock'] = trim($request->get('sort_stock'));
         }
 
-        $goodsNum   = $this->_model->getGoodsTotalNum($this->storeId , $search);
+        $search['store_id'] = $this->storeId;
+
+        $storeGoodsModel = new StoreGoods;
+        $goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $goodsNum);
-        $response['goodsList']  = $this->_model->getGoodsList($this->storeId , $search , $this->_length , $response['pageData']->offset);
+        $response['goodsList']  = $storeGoodsModel->getStoreGoodsList($search , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
 
@@ -363,7 +366,8 @@ class StoresController extends ApiController
      */
     public function getGoodsInfo($id){
 
-        $info = $this->_model->getGoodsList($this->storeId , array('id' => $id) , $this->_length , 0);
+        $storeGoodsModel = new StoreGoods;
+        $info = $storeGoodsModel->getStoreGoodsList(array('id' => $id , 'store_id' => $this->storeId) , $this->_length , 0);
 
         if(count($info) == 0){
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -453,7 +457,8 @@ class StoresController extends ApiController
 
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->updateGoods($this->storeId,  $id , $data )){
+        $storeGoodsModel = new StoreGoods;
+        if($storeGoodsModel->updateGoods($this->storeId,  $id , $data )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -491,7 +496,8 @@ class StoresController extends ApiController
         $data['is_open']        = $request->get('is_open');
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->updateUtatus($this->storeId,  $ids , $data )){
+        $storeGoodsModel = new StoreGoods;
+        if($storeGoodsModel->updateUtatus($this->storeId,  $ids , $data )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -527,7 +533,8 @@ class StoresController extends ApiController
         $data['is_del']        = 1;
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->updateUtatus($this->storeId,  $ids , $data )){
+        $storeGoodsModel = new StoreGoods;
+        if($storeGoodsModel->updateUtatus($this->storeId,  $ids , $data )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -556,7 +563,8 @@ class StoresController extends ApiController
      */
     public function getGoodsCategories($pid){
 
-        $categoriesList = $this->_model->getGoodsCategories($pid);
+        $storeGoodsModel = new StoreGoods;
+        $categoriesList = $storeGoodsModel->getGoodsCategories($pid);
         return response()->json(Message::setResponseInfo('SUCCESS' , $categoriesList));
     }
 
