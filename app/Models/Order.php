@@ -569,7 +569,7 @@ class Order extends Model{
      * 退款原因
      */
     public function refund($userId , $orderId , $content ){
-        $consigneeAddressModel  = new ConsigneeAddress();
+        $orderLogMode = new OrderLog();
         $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update(
             array(
