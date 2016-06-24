@@ -77,6 +77,7 @@ class WechatController extends ApiController
      *      {
      *          out_points  : 328,
      *          trade_type  : JSAPI,
+     *          type        : 4
      *      }
      * @apiUse CODE_200
      *
@@ -98,6 +99,7 @@ class WechatController extends ApiController
             $outPoints  = $request->get('out_points');
         }
         $tradeType    = $request->get('trade_type');
+        $type         = $request->get('type');
 
         //更新订单
         $payNum = $this->_model->confirmOrder( $userId , $orderId , 3 , $outPoints);
