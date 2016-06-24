@@ -310,9 +310,8 @@ class Order extends Model{
                 $i++;
             }
 
-            $orderInfoMode = new OrderInfo();
-
-            $orderInfoMode->create($orderInfo);
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderInfo);
+            OrderInfo::create($orderInfo);
             //DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
 
