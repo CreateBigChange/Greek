@@ -10,6 +10,8 @@ use Session , Cookie , Config , Log , Validator;
 
 use App\Models\Order;
 use App\Models\StoreInfo;
+use App\Models\WechatPayLog;
+
 use App\Libs\Message;
 use App\Libs\BLogger;
 
