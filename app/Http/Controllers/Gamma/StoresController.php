@@ -23,6 +23,7 @@ use App\Models\StoreGoods;
 use App\Models\GoodsCategory;
 use App\Models\GoodsBrand;
 use App\Models\StoreNav;
+use App\Models\StoreBankCard;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -631,7 +632,8 @@ class StoresController extends ApiController
         $data['created_at']     = date('Y-m-d H:i:s' , time());
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        $navId = $this->_model->addNav($data);
+        $storeNavModel = new StoreNav;
+        $navId = $storeNavModel->addNav($data);
 
         if($navId){
             return response()->json(Message::setResponseInfo('SUCCESS' , $navId));
@@ -675,7 +677,8 @@ class StoresController extends ApiController
 
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->updateNav($navId , $storeId , $data)){
+        $storeNavModel = new StoreNav;
+        if($storeNavModel->updateNav($navId , $storeId , $data)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -759,7 +762,8 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $isDel = $this->_model->delNav($navId , $storeId);
+        $storeNavModel = new StoreNav;
+        $isDel = $storeNavModel->delNav($navId , $storeId);
         if($isDel == '-1'){
             return response()->json(Message::setResponseInfo('NOT_DELETE'));
         }else if($isDel){
@@ -789,7 +793,8 @@ class StoresController extends ApiController
 
         $storeId = $this->storeId;
 
-        $info = $this->_model->getNavInfo($navId , $storeId);
+        $storeNavModel = new StoreNav;
+        $info = $storeNavModel->getNavInfo($navId , $storeId);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $info));
     }
@@ -822,7 +827,7 @@ class StoresController extends ApiController
             $visitingNumberData += $v->visiting_number;
         }
 
-        $orderModel = new Orders;
+        $orderModel = new Order;
         $orderCount = $orderModel->getOrderTodayCounts($storeId , $date);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
