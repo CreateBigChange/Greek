@@ -13,11 +13,11 @@ use App\Http\Controllers\ApiController;
 
 use Session , Cookie , Config;
 
-use App\Models\Gamma\StoreUsers;
+use App\Models\StoreUser;
+use App\Models\Feedback;
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
 use App\Libs\BLogger;
-use App\Models\Feedback;
 
 class StoreUsersController extends ApiController
 {
@@ -26,7 +26,7 @@ class StoreUsersController extends ApiController
 
     public function __construct(){
         parent::__construct();
-        $this->_model       = new StoreUsers;
+        $this->_model       = new StoreUser;
         $this->_length		= 20;
     }
 

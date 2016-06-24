@@ -24,7 +24,6 @@ use App\Models\StoreGoods;
 use App\Models\GoodsCategory;
 use App\Models\GoodsBrand;
 use App\Models\StoreNav;
-use App\Models\StoreBankCard;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -879,11 +878,12 @@ class StoresController extends ApiController
         $year   = date('Y');
         $month  = date('m');
         $day    = date('d');
-        $hour   = date('H');
+
+        $orderModel = new Order;
 
         if($type == 1) {
             //本天
-            $today = $this->_model->financeCountByDay($this->storeId, $year, $month, $day);
+            $today = $orderModel->financeCountByDay($this->storeId, $year, $month, $day);
 
             $todayTime = array(
                 '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'
@@ -933,7 +933,7 @@ class StoresController extends ApiController
                 $day[] = explode('-', $weektemp)[2];
             }
 
-            $week = $this->_model->financeCountByWeek($this->storeId, $year, $month, implode(',', $day));
+            $week = $orderModel->financeCountByWeek($this->storeId, $year, $month, implode(',', $day));
             $weekTurnover = array();
             for ($i = 0; $i < count($weekTime); $i++) {
                 $weekTurnover[$i] = 0;
@@ -956,7 +956,7 @@ class StoresController extends ApiController
 
             $dayTimes = date('j', mktime(0, 0, 1, ($month == 12 ? 1 : $month + 1), 1, ($month == 12 ? $year + 1 : $year)) - 24 * 3600);
 
-            $month = $this->_model->financeCountByMonth($this->storeId, $year, $month);
+            $month = $orderModel->financeCountByMonth($this->storeId, $year, $month);
             $monthTurnover = array();
             for ($i = 1, $j = 0; $i <= $dayTimes, $j <= $dayTimes; $i++, $j++) {
                 $monthTime[] = $i;
@@ -983,7 +983,7 @@ class StoresController extends ApiController
     }
 
     public function financeCount(){
-        $orderModel = new Orders;
+        $orderModel = new Order;
         $orderCount = $orderModel->getOrderCounts($this->storeId);
 
         $storeInfo = $this->_model->getStoreInfo($this->storeId);

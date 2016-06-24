@@ -686,12 +686,129 @@ class Order extends Model{
         $sql = "SELECT 
                     count(`id`) as order_num , 
                     sum(`total`) as turnover
-                FROM $this->_orders_table ";
+                FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
 
         return DB::select($sql);
+
+    }
+
+    /**
+     * 获取订单统计数据
+     */
+    public function getOrderCounts($storeId){
+        $sql = "SELECT 
+                    count(`id`) as order_num , 
+                    sum(`total`) as turnover
+                FROM $this->table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+
+        $user = DB::table($this->table)->select("user")->where('store_id' , $storeId)->whereNotIn('status' , array(
+            Config::get('orderstatus.no_pay')['status'],
+            Config::get('orderstatus.cancel')['status']
+        ))->groupBy('user')->get();
+
+
+
+        $count =  DB::select($sql);
+
+        $count = $count[0];
+        $count->user = count($user);
+
+        if(!$count->turnover){
+            $count->turnover = 0;
+            $count->turnover_user = 0;
+        }else {
+            $count->turnover_user = round($count->turnover / $count->user, 2);
+        }
+
+        return $count;
+    }
+
+    /**
+     * 获取本月收入的积分和使用的积分
+     */
+    public function getOrderMonthPoint($storeId , $date=0){
+        $sql = "SELECT 
+                    sum(`out_points`) as out_points , 
+                    sum(`in_points`) as in_points
+                FROM $this->table ";
+        $sql .= " WHERE `store_id` = $storeId";
+        $sql .= " AND `created_at` LIKE '" .$date . "%'";
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
+
+        return DB::select($sql);
+
+    }
+
+    /**
+     * 店铺统计数据(本月)
+     */
+    public function financeCountByMonth($storeId , $year , $month){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM $this->table";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " GROUP BY day ORDER BY day ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本周)
+     */
+    public function financeCountByWeek($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    sum(`total`) as turnover,
+                    sum(`out_points`) as outPoint,
+                    sum(`in_points`) as inPoint,
+                    `day`
+               FROM $this->table ";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= "  GROUP BY day ORDER BY day ASC";
+
+        $count = DB::select($sql);
+
+        return $count;
+
+    }
+
+    /**
+     * 店铺统计数据(本天)
+     */
+    public function financeCountByDay($storeId , $year , $month , $day){
+        $sql = "SELECT 
+                    `total` as turnover,
+                    `out_points` as outPoint,
+                    `in_points` as inPoint,
+                    `hour`                    
+               FROM $this->table";
+        $sql .= " WHERE store_id = " . $storeId;
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " ORDER BY hour ASC ";
+
+        $count = DB::select($sql);
+
+        return $count;
 
     }
 
