@@ -15,7 +15,6 @@ use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
 
-use App\Models\WechatPayLog;
 use App\Models\Order;
 use App\Models\StoreInfo;
 
@@ -118,7 +117,6 @@ class AlipayController extends ApiController
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($aliOrderString);
 
-        //$wechatPayLogModel = new WechatPayLog();
         if($aliOrderString) {
             if ($this->_model->updateOrderOutTradeNo($orderId, $options['out_trade_no'])) {
                 return response()->json(Message::setResponseInfo('SUCCESS', $aliOrderString));

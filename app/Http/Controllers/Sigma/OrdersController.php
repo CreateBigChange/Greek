@@ -56,7 +56,7 @@ class OrdersController extends ApiController
      */
     public function getOrderInfo($orderId){
 
-        $info   = $this->_model->getOrderList($this->userId , array('id' => $orderId) , 1 , 0);
+        $info   = $this->_model->getOrderList( array('user' => $this->userId  , 'id' => $orderId) , 1 , 0);
 
         if(isset($info[0])) {
             return response()->json(Message::setResponseInfo('SUCCESS' , $info[0]));
@@ -115,11 +115,13 @@ class OrdersController extends ApiController
             $search['search'] = trim($request->get('search'));
         }
 
-        $orderNum   = $this->_model->getOrderTotalNum($this->userId , $search);
+        $search['user'] = $this->userId;
+
+        $orderNum   = $this->_model->getOrderTotalNum( $search);
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $orderNum);
-        $response['orders']   = $this->_model->getOrderList($this->userId , $search , $this->_length , $response['pageData']->offset);
+        $response['orders']   = $this->_model->getOrderList($search , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }

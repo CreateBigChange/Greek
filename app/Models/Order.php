@@ -32,9 +32,14 @@ class Order extends Model{
      * @param storeId   number
      * @param search    array
      */
-    public function getOrderTotalNum($storeId , $search){
-        $sql = DB::table($this->table)
-            ->where('store_id' , $storeId);
+    public function getOrderTotalNum($search){
+        $sql = DB::table($this->table);
+        if(isset($search['user'])){
+            $sql->where('user' , $search['user']);
+        }
+        if(isset($search['store'])){
+            $sql->where('store_id' , $search['store']);
+        }
         if(isset($search['status'])){
             $sql->whereIn('status' , $search['status']);
         }
@@ -48,7 +53,7 @@ class Order extends Model{
      * @param length    number
      * @param offset    number
      */
-    public function getOrderList($userId , $search = array() , $length = 20 , $offset = 0){
+    public function getOrderList( $search = array() , $length = 20 , $offset = 0){
         $sql = "SELECT
                     o.id,
                     o.order_num,
@@ -89,7 +94,14 @@ class Order extends Model{
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
-        $sql .= " WHERE user = $userId";
+        $sql .= " WHERE 1 = 1";
+
+        if(isset($search['user'])){
+            $sql .= " AND user = ".$search['user'];
+        }
+        if(isset($search['store'])){
+            $sql .= " AND store_id = ".$search['store'];
+        }
 
         if(isset($search['status'])){
             $sql .= " AND o.status IN (".implode(',' , $search['status']).")";
@@ -108,8 +120,6 @@ class Order extends Model{
         foreach ($orders as $o){
             $orderIds[] = $o->id;
         }
-
-        //$goods = DB::table($this->_order_infos_table)->whereIn('order_id' , $orderIds)->get();
 
         $goods = OrderInfo::whereIn('order_id' , $orderIds)->get();
 

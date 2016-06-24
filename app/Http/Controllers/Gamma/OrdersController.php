@@ -100,11 +100,13 @@ class OrdersController extends ApiController
             $search['search'] = trim($request->get('search'));
         }
 
-        $orderNum   = $this->_model->getOrderTotalNum($this->storeId , $search);
+        $search['store'] = $this->storeId;
+
+        $orderNum   = $this->_model->getOrderTotalNum($search);
 
         $response = array();
         $response['pageData']   = $this->getPageData($page , $this->_length , $orderNum);
-        $response['orders']   = $this->_model->getOrderList($this->storeId , $search , $this->_length , $response['pageData']->offset);
+        $response['orders']   = $this->_model->getOrderList($search , $this->_length , $response['pageData']->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
