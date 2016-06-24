@@ -81,6 +81,7 @@ class Order extends Model{
                     u.money,
                     o.is_evaluate,
                     o.pay_total,
+                    o.out_trade_no,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
