@@ -311,7 +311,9 @@ class Order extends Model{
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderInfo);
-            OrderInfo::create($orderInfo);
+            $orderInfoMode = new OrderInfo();
+            DB::table($orderInfoMode->getTable())->insert($orderInfo);
+            //OrderInfo::create($orderInfo);
             //DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
 
