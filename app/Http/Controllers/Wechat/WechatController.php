@@ -294,7 +294,7 @@ class WechatController extends ApiController
             if($successful){
 
                 //更新支付时间和订单状态
-                $payResult = $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end)
+                $payResult = $this->_model->pay($order->id , ($notify->total_fee / 100) , 1 , $notify->time_end);
                 if($payResult['code'] != '0000'){
                     return '服务器处理失败';
                 }
