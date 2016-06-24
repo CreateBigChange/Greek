@@ -16,6 +16,7 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\StoreInfo;
 use App\Models\Order;
+use App\Models\AmapCityCode;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -78,12 +79,14 @@ class StoresController extends ApiController
      */
     public function areas(Request $request) {
 
+        $amapCityCodeModel = new AmapCityCode;
+
         if($request->has('pid')){
             $pid = $request->get('pid');
-            $areas = $this->_model->areas($pid);
+            $areas = $amapCityCodeModel->areas($pid);
 
         }else{
-            $areas = $this->_model->allAreas();
+            $areas = $amapCityCodeModel->allAreas();
         }
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $areas));
