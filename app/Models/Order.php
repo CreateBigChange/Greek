@@ -22,6 +22,7 @@ use App\Models\PayType;
 use App\Models\StoreInfo;
 use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
+use App\Models\User;
 
 class Order extends Model{
 
@@ -582,7 +583,7 @@ class Order extends Model{
      * @return mixed
      * 退款原因
      */
-    public function refund($userId , $orderId , $content ){
+    public function refundReson($userId , $orderId , $content ){
         $orderLogMode = new OrderLog();
         $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '订单申请退款' , Config::get('orderstatus.refunding')['status']);
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update(
@@ -593,6 +594,92 @@ class Order extends Model{
             )
         );
     }
+
+    /**
+     * 退款
+     * @param storeId   number
+     * @param id        number
+     * @param status    number
+     */
+    public function refund($storeId , $orderId , $refundNo){
+
+        $orderLogModel = new OrderLog();
+
+        DB::beginTransaction();
+
+        try {
+            $order = DB::table($this->table)->where('store_id' , $storeId)->where('id' , $orderId)->first();
+            if(!$order){
+                return false;
+            }
+
+            //更新店铺积分
+            $storeModel         = new StoreInfo();
+            $storeConfigModel   = new StoreConfig();
+            $storeInfo = $storeModel->getStoreInfo($storeId);
+            if(!$storeInfo){
+                return false;
+            }
+
+            if($order->out_points != 0) {
+                $point = $storeInfo->point + $order->out_points;
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($point);
+                $storeConfigModel->updatePoint($storeId, $point);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
+            }
+
+            //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
+
+            $orderLog = DB::table($orderLogModel->getTable())->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
+            if($orderLog){
+                $userInfo = DB::table('users')->where('id' , $order->user)->first();
+
+                $userPoint = $userInfo->points - $order->out_points + $order->in_points;
+
+                if($userPoint != $userInfo->points) {
+                    $userModel = new User();
+                    DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
+                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为'.$userPoint);
+                }
+
+                //更新店铺余额
+                $money = $storeInfo->money - $order->pay_total;
+                $storeConfigModel->updateMoney($storeId, $money);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
+            }
+
+            DB::table($this->table)->where('id', $orderId)->update(array(
+                'status' => Config::get('orderstatus.refunded')['status'],
+                'refund_no' => $refundNo
+            ));
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更改订单状态'.Config::get('orderstatus.refunded')['status']);
+
+            $log = array(
+                'order_id' => $orderId,
+                'user' => '',
+                'identity' => '商家管理员',
+                'platform' => '手机端',
+                'log' => '将订单' . $orderId . '的状态改为' . Config::get('orderstatus.refunded')['status'],
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'status' => Config::get('orderstatus.refunded')['status']
+            );
+            DB::table($orderLogModel->getTable())->insert($log);
+
+            DB::commit();
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
+            return true;
+        }catch (Exception $e){
+            DB::rollBack();
+
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($e);
+            return false;
+        }
+
+    }
+
+
 
     /**
      * @param $orderId

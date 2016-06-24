@@ -438,7 +438,7 @@ class OrdersController extends ApiController
 
         $content    = $request->get('content');
 
-        if($this->_model->refund( $userId , $orderId , $content )){
+        if($this->_model->refundReson( $userId , $orderId , $content )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
