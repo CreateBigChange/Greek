@@ -139,7 +139,7 @@ class OrdersController extends ApiController
         }
         $status = $request->get('status');
 
-        $orderInfo = $this->_model->getOrderList($this->storeId , array('id'=>$orderId));
+        $orderInfo = $this->_model->getOrderList(array('store' => $this->storeId , 'id'=>$orderId));
 
         if(!isset($orderInfo[0])){
             return response()->json(Message::setResponseInfo('FAILED'));
