@@ -312,7 +312,7 @@ class Order extends Model{
 
             $orderInfoMode = new OrderInfo();
 
-            $orderInfoMode->save($orderInfo);
+            $orderInfoMode->create($orderInfo);
             //DB::table($this->_order_infos_table)->insert($orderInfo);
             DB::commit();
 
