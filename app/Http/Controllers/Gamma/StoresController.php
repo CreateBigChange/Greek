@@ -17,6 +17,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\StoreInfo;
 use App\Models\Order;
 use App\Models\AmapCityCode;
+use App\Models\StoreSettlings;
 use App\Libs\Message;
 
 class StoresController extends ApiController
@@ -148,7 +149,8 @@ class StoresController extends ApiController
         $data['created_at'] = date('Y-m-d H:i:s' , time());
         $data['updated_at'] = date('Y-m-d H:i:s' , time());
 
-        if($this->_model->setting($data)){
+        $storeSettlingModel = new StoreSettlings;
+        if($storeSettlingModel->setting($data)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
