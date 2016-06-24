@@ -204,10 +204,10 @@ class User extends Model{
         }
 
         unset($userInfo->pay_password);
-        unset($userInfo->wx_openid);
-        unset($userInfo->wx_unionid);
-        unset($userInfo->qq_openid);
-        unset($userInfo->qq_unionid);
+//        unset($userInfo->wx_openid);
+//        unset($userInfo->wx_unionid);
+//        unset($userInfo->qq_openid);
+//        unset($userInfo->qq_unionid);
 
         return $userInfo;
     }
