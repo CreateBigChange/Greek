@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
-use Session , Cookie , Config , Log;
+use Session , Cookie , Config , Log , Validator;
 
 use App\Models\Order;
 use App\Models\StoreInfo;
