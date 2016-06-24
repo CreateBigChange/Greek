@@ -18,6 +18,8 @@ use App\Libs\BLogger;
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order as WechatOrder;
 
+use App\Jobs\Jpush;
+
 class WechatController extends ApiController
 {
 
