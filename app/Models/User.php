@@ -119,6 +119,26 @@ class User extends Model{
         }
     }
 
+    /**
+     * @param $openid
+     * @return mixed
+     * 根据openID获取用户信息
+     */
+    public function getUserInfoByUnionid($unionid){
+        $userInfo = DB::table($this->table)
+            ->select($this->field)
+            ->where('is_del' , 0)
+            ->where('wx_unionid' , $unionid)
+            ->first();
+
+        if($userInfo) {
+            $userInfo = $this->__checkUserInfo($userInfo);
+            return $userInfo;
+        }else{
+            return false;
+        }
+    }
+
     public function addUser($data){
         return DB::table($this->table)->insertGetId($data);
     }

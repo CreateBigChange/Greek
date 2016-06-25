@@ -95,12 +95,12 @@ class WechatLoginController extends ApiController
         }
 
         //判断该微信是否之前有过登录,有登录直接返回用户信息
-        $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
+        $userInfo = $this->_model->getUserInfoByUnionid($sqlDta['wx_unionid']);
 
         if(!$userInfo){
             if($this->_model->addUser($sqlDta)){
 
-                $userInfo = $this->_model->getUserInfoByOpenID($sqlDta['wx_openid']);
+                $userInfo = $this->_model->getUserInfoByUnionid($sqlDta['wx_unionid']);
                 if($userInfo) {
                     $sessionKey = $this->getSalt(16);
 
