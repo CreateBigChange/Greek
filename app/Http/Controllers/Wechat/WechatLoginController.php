@@ -122,6 +122,16 @@ class WechatLoginController extends ApiController
             }
 
         }else{
+
+            $updateData = array();
+            if($_GET['state'] == 'app' && !$userInfo->wx_app_openid){
+                $updateData['wx_app_openid']		= $weixinUserInfo->openid;
+            }elseif($_GET['state'] == 'pub' && !$userInfo->wx_pub_openid){
+                $updateData['wx_pub_openid']		= $weixinUserInfo->openid;
+            }
+
+            $this->_model->updateUser($userInfo->id , $updateData);
+
             $sessionKey = $this->getSalt(16);
 
             Session::put($sessionKey, $userInfo);
