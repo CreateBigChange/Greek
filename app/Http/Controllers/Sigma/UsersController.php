@@ -754,7 +754,7 @@ class UsersController extends ApiController
     public function updatePayPassword(Request $request){
 
         $validation = Validator::make($request->all(), [
-            'pay_password'                => 'required|size:6|numeric',
+            'pay_password'                => 'required|size:6',
             'old_pay_password'             => 'required'
 
         ]);
@@ -766,6 +766,10 @@ class UsersController extends ApiController
 
         $payPassword = $request->get('pay_password');
         $oldPayPassword  = $request->get('old_pay_password');
+
+        if(!preg_match('/^\d{6}$/' , $payPassword)){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
 
         $userInfo  =  $this->_model->getUserPayPassword($this->userId);
 
