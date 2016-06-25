@@ -109,9 +109,13 @@ class UsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function userInfo(Request $request) {
+    public function userInfo() {
 
         $userInfo           = $this->_model->getUserInfoById($this->userId);
+
+        if(!$userInfo){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
     }
