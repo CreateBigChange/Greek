@@ -439,7 +439,7 @@ class OrdersController extends ApiController
         $content    = $request->get('content');
 
         $request = $this->_model->refundReson( $userId , $orderId , $content );
-        
+
         if($request){
             $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
             if(!isset($order[0])){
@@ -458,8 +458,8 @@ class OrdersController extends ApiController
 
             //消息推送队列
             $this->dispatch(new Jpush(
-                "急所需有新订单啦,请及时处理",
-                "急所需新订单",
+                "急所需有退款订单,请及时处理",
+                "急所需意外订单",
                 array('ios' , 'android'),
                 "$order->store_id",
                 array(),
