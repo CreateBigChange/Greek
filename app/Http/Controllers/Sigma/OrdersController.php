@@ -438,7 +438,28 @@ class OrdersController extends ApiController
 
         $content    = $request->get('content');
 
-        if($this->_model->refundReson( $userId , $orderId , $content )){
+        $request = $this->_model->refundReson( $userId , $orderId , $content );
+        if($request){
+            $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
+
+            $storeModel = new StoreInfo;
+            $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
+
+            if(empty($store)){
+                return true;
+            }
+
+            $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
+            
+            //消息推送队列
+            $this->dispatch(new Jpush(
+                "急所需有新订单啦,请及时处理",
+                "急所需新订单",
+                array('ios' , 'android'),
+                "$order->store_id",
+                array(),
+                $bell
+            ));
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
