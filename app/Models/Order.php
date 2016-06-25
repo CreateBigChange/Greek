@@ -167,6 +167,11 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($storeId);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($userId);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($status);
+
         DB::beginTransaction();
         try {
             //更新订单状态
@@ -198,8 +203,6 @@ class Order extends Model{
             $orderLog->platform     = '手机端';
             $orderLog->log          = '将订单' . $orderId . '的状态改为' . $status;
             $orderLog->status       = $status;
-
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderLog);
 
             $orderLog->save();
 
