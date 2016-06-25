@@ -110,7 +110,7 @@ class StoreInfo extends Model{
      * 获取店铺信息
      */
     public function getStoreInfo($id){
-        $info = $this->getStoreList(array('ids'=>array($id)) , 1  , 0 );
+        $info = $this->getStoreList(array('ids'=>$id) , 1  , 0 );
 
         if(isset($info[0])){
             return $info[0];
