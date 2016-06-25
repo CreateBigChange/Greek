@@ -90,7 +90,7 @@ class Order extends Model{
                     o.pay_type_id,
                     o.pay_type_name,
                     o.trade_no,
-                    o.transaction
+                    o.transaction,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
