@@ -264,7 +264,7 @@ class OrdersController extends ApiController
 
         $result = $alipay->buildRequestHttp($parameter);
 
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         $doc->loadXML($result);
 
         if( ! empty($doc->getElementsByTagName( "alipay" )->item(0)->nodeValue) ) {
