@@ -14,6 +14,9 @@ use App\Http\Controllers\AdminController;
 use Config;
 
 use App\Models\StoreInfo;
+use App\Models\StoreCategory;
+use App\Models\StoreSettlings;
+use App\Models\StoreUser;
 use App\Libs\Message;
 use App\Libs\Curl;
 
@@ -323,8 +326,8 @@ class StoresController extends AdminController
 	 * 获取申请入驻的列表
 	 */
 	public function getSettlings(){
-		$storeModel = new StoreInfos;
-		$this->response['settlings'] = $storeModel->getSettlings();
+		$storeSettlingsModel = new StoreSettlings();
+		$this->response['settlings'] = $storeSettlingsModel->getSettlings();
 		return view('alpha.store.info.settling' , $this->response);
 	}
 
@@ -332,8 +335,8 @@ class StoresController extends AdminController
 	 * 完成入驻
 	 */
 	public function delSettlings($id){
-		$storeModel = new StoreInfos;
-		if($storeModel->delSettlings($id)){
+		$storeSettlingsModel = new StoreSettlings();
+		if($storeSettlingsModel->delSettlings($id)){
 			return redirect('/alpha/stores/settlings');
 		}
 	}
@@ -342,14 +345,14 @@ class StoresController extends AdminController
 	 * 获取店铺用户
 	 */
 	public function getStoreUserList(Request $request){
-		$storeModel = new StoreInfos;
+		$storeUserModel = new StoreUser();
 
 		$storeId = 0;
 		if(isset($_GET['store_id'])){
 			$storeId = $_GET['store_id'];
 		}
 
-		$this->response['userList'] = $storeModel->getStoreUserList($storeId);
+		$this->response['userList'] = $storeUserModel->getStoreUserList($storeId);
 
 		return view('alpha.store.user.list' , $this->response);
 	}
@@ -359,9 +362,9 @@ class StoresController extends AdminController
 	 */
 	public function getStoreCategoriesList(){
 
-		$storeModel = new StoreInfos;
+		$storeCategoryModel = new StoreCategory();
 
-		$storeCategories = $storeModel->getStoreCategoriesList();
+		$storeCategories = $storeCategoryModel->getStoreCategory();
 
 		$this->response['storeCategories'] = $storeCategories;
 
@@ -373,7 +376,7 @@ class StoresController extends AdminController
 	 */
 	public function addStoreCategory(Request $request){
 
-		$storeModel = new StoreInfos;
+		$storeCategoryModel = new StoreCategory();
 
 		$data = array();
 
@@ -383,7 +386,7 @@ class StoresController extends AdminController
 
 		$data['name'] = $request->get('name');
 
-		if($storeModel->addStoreCategory($data)){
+		if($storeCategoryModel->addStoreCategory($data)){
 			return redirect('/alpha/stores/categories/list');
 		}
 
@@ -394,7 +397,7 @@ class StoresController extends AdminController
 	 */
 	public function updateStoreCategory(Request $request){
 
-		$storeModel = new StoreInfos;
+		$storeCategoryModel = new StoreCategory();
 
 		$data = array();
 
@@ -407,7 +410,7 @@ class StoresController extends AdminController
 			$data['name'] = $request->get('name');
 		}
 
-		if($storeModel->updateStoreCategory($id , $data)){
+		if($storeCategoryModel->updateStoreCategory($id , $data)){
 			return redirect('/alpha/stores/categories/list');
 		}
 
@@ -418,9 +421,9 @@ class StoresController extends AdminController
 	 */
 	public function getStoreCategoryById($id){
 
-		$storeModel = new StoreInfos;
+		$storeCategoryModel = new StoreCategory();
 
-		$this->response['category'] = $storeModel->getStoreCategoryById($id);
+		$this->response['category'] = $storeCategoryModel->getStoreCategoryById($id);
 
 		return $this->response;
 

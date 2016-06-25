@@ -24,4 +24,37 @@ class StoreSettlings extends Model
         return DB::table($this->table)->insert($data);
     }
 
+    /**
+     * 完成入驻
+     */
+    public function delSettlings($id){
+        return DB::table($this->table)->where('id' , $id)->delete();
+    }
+
+    /**
+     * 申请入驻列表
+     */
+    public function getSettlings(){
+        return DB::table($this->table)
+            ->select(
+                'store_settlings.id',
+                'store_settlings.name',
+                'store_settlings.contact',
+                'store_settlings.address',
+                'store_settlings.status',
+                'store_settlings.created_at',
+                'p.id AS province_id',
+                'p.name AS province',
+                'ci.id AS city_id',
+                'ci.name AS city',
+                'co.id AS county_id',
+                'co.name AS county'
+            )
+//            ->leftJoin('areas as p' , 'p.id' , '=' , 'store_settlings.province')
+//            ->leftJoin('areas as ci' , 'ci.id' , '=' , 'store_settlings.city')
+//            ->leftJoin('areas as co' , 'co.id' , '=' , 'store_settlings.county')
+            ->orderBy('status' , 'ASC')
+            ->orderBy('created_at' , 'DESC')
+            ->get();
+    }
 }

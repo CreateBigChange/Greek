@@ -36,10 +36,10 @@
 									@foreach ($storeInfos as $si)
 										<tr>
 											<td>{{ $si->id }}</td>
-											<td>{{ $si->name }}</td>
+											<td>{{ $si->store_name }}</td>
 											<td>{{ $si->category_name }}</td>
-											<td><img style="width:50px;height:50px;" src="{{ $si->id_card_img }}" alt="{{ $si->id_card_img }}" title="{{ $si->name }}" /></td>
-											<td><img style="width:50px;height:50px;" src="{{ $si->business_license }}" alt="{{ $si->business_license }}" title="{{ $si->name }}" /></td>
+											<td><img style="width:50px;height:50px;" src="{{ $si->id_card_img }}" alt="{{ $si->id_card_img }}" title="{{ $si->store_name }}" /></td>
+											<td><img style="width:50px;height:50px;" src="{{ $si->business_license }}" alt="{{ $si->business_license }}" title="{{ $si->store_name }}" /></td>
 											<td>{{ $si->contacts }}</td>
 											<td>{{ $si->contact_phone }}</td>
 											<td>{{ $si->contact_email }}</td>

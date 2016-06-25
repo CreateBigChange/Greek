@@ -9,6 +9,7 @@ namespace App\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\StoreInfo;
 
 class StoreUser extends Model{
 
@@ -26,6 +27,7 @@ class StoreUser extends Model{
      * 获取店铺用户
      */
     public function getStoreUserList($storeId = 0){
+        $storeInfoModel = new StoreInfo();
         $sql = DB::table($this->table)
             ->select(
                 'store_users.id',
@@ -36,7 +38,7 @@ class StoreUser extends Model{
                 'si.name as sname',
                 'si.id as sid'
             )
-            ->leftJoin("$this->_store_infostable as si", 'si.id' , '=' , 'store_users.store_id');
+            ->leftJoin( $storeInfoModel->getTable()." as si", 'si.id' , '=' , 'store_users.store_id');
         if($storeId != 0){
             $sql->where('store_id' , $storeId);
         }
