@@ -81,14 +81,14 @@ class StoresController extends AdminController
 			$param .= 'is_checked=' . $search['is_checked'] . '&';
 		}
 
-		$totalNum = $storeModel->getStoreInfoTotalNum($search);
+		$totalNum = $storeModel->getStoreTotalNum($search);
 
 		$pageData = $this->getPageData($page  , $this->length, $totalNum);
 
 		$this->response['page']         = $pageData->page;
 		$this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/stores/infos?' . $param);
 
-		$storeInfos = $storeModel->getStoreInfoList($this->length , $pageData->offset , $search);
+		$storeInfos = $storeModel->getStoreList($search  , $this->length , $pageData->offset );
 
 		$this->response['storeInfos'] = $storeInfos;
 
@@ -100,7 +100,7 @@ class StoresController extends AdminController
 	 */
 	public function ajaxStoreInfo($id){
 
-		$storeModel = new StoreInfos;
+		$storeModel = new StoreInfo;
 		$storeInfo = $storeModel->getStoreInfo($id);
 
 		return response()->json( Message::setResponseInfo( 'SUCCESS' , $storeInfo ) );
@@ -170,7 +170,7 @@ class StoresController extends AdminController
 
 		$data['updated_at']			= date('Y-m-d H:i:s' , time());
 
-		$storeModel = new StoreInfos;
+		$storeModel = new StoreInfo;
 
 		if($storeModel->updateStore($id , $data)){
 			return redirect('/alpha/stores/infos');

@@ -20,7 +20,7 @@ use App\Libs\Message;
 class OrdersController extends AdminController
 {
     private $_model;
-    private $_length;
+    private $length;
 
     public function __construct(){
         parent::__construct();

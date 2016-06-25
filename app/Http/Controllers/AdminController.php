@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Session , Cookie , Config;
 
-use App\Models\Alpha\AdminPermissions;
-use App\Models\Alpha\Logs;
+use App\Models\AdminPermission;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -34,7 +34,7 @@ class AdminController extends Controller
 	//获取菜单
 	private function _getMenu($userId){
 	
-		$permissionModel = new AdminPermissions;
+		$permissionModel = new AdminPermission;
 
 		$request = new Request();
 
@@ -59,7 +59,7 @@ class AdminController extends Controller
 	}
 
 	protected function _writeLogForSql($actionInfo){
-		$log	= new Logs;
+		$log	= new Log;
 		$data	= array(
 			'admin_user_id'		=> $this->userInfo->id,
 			'account'			=> $this->userInfo->account,
