@@ -204,6 +204,8 @@ class AlipayController extends ApiController
     public function refundNotify(){
         $AlipayNotify = new AlipayNotify(Config::get('alipay'));
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
+
         if($AlipayNotify->verifyNotify()){
             $trade_no = $_POST['trade_no'];
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
