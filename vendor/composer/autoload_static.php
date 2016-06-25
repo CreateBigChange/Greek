@@ -514,6 +514,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Jobs\\SendSms' => __DIR__ . '/../..' . '/app/Jobs/SendSms.php',
         'App\\Libs\\Alipay\\Alipay' => __DIR__ . '/../..' . '/app/Libs/Alipay/Alipay.class.php',
         'App\\Libs\\Alipay\\AlipayCore' => __DIR__ . '/../..' . '/app/Libs/Alipay/AlipayCore.class.php',
+        'App\\Libs\\Alipay\\AlipayNotify' => __DIR__ . '/../..' . '/app/Libs/Alipay/AlipayNotify.class.php',
         'App\\Libs\\Alipay\\AlipayRsa' => __DIR__ . '/../..' . '/app/Libs/Alipay/AlipayRsa.class.php',
         'App\\Libs\\BLogger' => __DIR__ . '/../..' . '/app/Libs/BLogger.class.php',
         'App\\Libs\\Curl' => __DIR__ . '/../..' . '/app/Libs/Curl.class.php',

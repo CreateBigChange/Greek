@@ -53,6 +53,7 @@ return array(
     'App\\Jobs\\SendSms' => $baseDir . '/app/Jobs/SendSms.php',
     'App\\Libs\\Alipay\\Alipay' => $baseDir . '/app/Libs/Alipay/Alipay.class.php',
     'App\\Libs\\Alipay\\AlipayCore' => $baseDir . '/app/Libs/Alipay/AlipayCore.class.php',
+    'App\\Libs\\Alipay\\AlipayNotify' => $baseDir . '/app/Libs/Alipay/AlipayNotify.class.php',
     'App\\Libs\\Alipay\\AlipayRsa' => $baseDir . '/app/Libs/Alipay/AlipayRsa.class.php',
     'App\\Libs\\BLogger' => $baseDir . '/app/Libs/BLogger.class.php',
     'App\\Libs\\Curl' => $baseDir . '/app/Libs/Curl.class.php',
