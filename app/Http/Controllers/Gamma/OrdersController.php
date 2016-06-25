@@ -264,6 +264,15 @@ class OrdersController extends ApiController
 
         $result = $alipay->buildRequestHttp($parameter);
 
+        $doc = new DOMDocument();
+        $doc->loadXML($result);
+
+        if( ! empty($doc->getElementsByTagName( "alipay" )->item(0)->nodeValue) ) {
+            $alipay = $doc->getElementsByTagName( "alipay" )->item(0)->nodeValue;
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($alipay);
+            //echo $alipay;
+        }
+
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
     }
 
