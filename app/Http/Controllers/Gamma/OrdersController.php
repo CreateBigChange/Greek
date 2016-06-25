@@ -263,6 +263,8 @@ class OrdersController extends ApiController
 
         $result = $alipay->buildRequestHttp($parameter);
 
+        $result = $alipay->buildRequestParaToString($parameter);
+
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
 
         $doc = new \DOMDocument();
