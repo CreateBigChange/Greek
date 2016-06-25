@@ -109,6 +109,8 @@ class AlipayController extends ApiController
 
         $response = $gateway->purchase($options)->send();
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->getParamsToSign());
+
         if ($response->isSuccessful()) {
             $aliOrderString = $response->getOrderString();
         }else{

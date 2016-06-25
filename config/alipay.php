@@ -8,8 +8,8 @@ return [
     'notify_url'            => 'http://preview.jisxu.com/sigma/alipay/notify',
     'sign_type'             => strtoupper('RSA'),
     'refund_date'           => date("Y-m-d H:i:s",time()),
-    'service'               => 'alipay.trade.refund',
     'input_charset'         => strtolower('utf-8'),
     'cacert'                => public_path().'/alipay/cacert.pem',
-    'transport'             => 'http'
+    'transport'             => 'http',
+    'refund_service'        => 'alipay.trade.refund'
 ];
