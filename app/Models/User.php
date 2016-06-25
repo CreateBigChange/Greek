@@ -266,5 +266,27 @@ class User extends Model{
     public function updateMoney($userId , $money){
         return DB::table($this->table)->where('id' , $userId)->update(['money'=>$money]);
     }
-    
+
+    /**
+     * @return mixed
+     *
+     * 获取用户列表
+     */
+    public function getUserList(){
+        return DB::table($this->table)
+            ->select(
+                'id',
+                'account',
+                'nick_name',
+                'true_name',
+                'sex',
+                'mobile',
+                'avatar',
+                'points',
+                'money',
+                'login_type',
+                'created_at'
+            )
+            ->where('is_del' , 0)->get();
+    }
 }
