@@ -235,6 +235,7 @@ class OrdersController extends ApiController
 
     public function _aliPayRefund($orderNo , $refundNo , $payTotal){
         //构造要请求的参数数组，无需改动
+        header("Content-type:text/html;charset=utf-8");
         $parameter = array(
             "service"           => trim(Config::get('alipay.refund_service')),
             "partner"           => trim(Config::get('alipay.partner')),
