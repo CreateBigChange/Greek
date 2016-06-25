@@ -178,6 +178,7 @@ class OrdersController extends ApiController
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
                 $this->_aliPayRefund($orderInfo[0]->trade_no, $refundNo, $payTotal);
+                return response()->json(Message::setResponseInfo('SUCCESS'));
             }
 
         }else {
@@ -261,7 +262,7 @@ class OrdersController extends ApiController
 
         $alipay = new Alipay(Config::get('alipay'));
 
-        $result = $alipay->buildRequestHttpGET($parameter);
+        $result = $alipay->buildRequestHttp($parameter);
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
 
@@ -271,7 +272,9 @@ class OrdersController extends ApiController
         if( ! empty($doc->getElementsByTagName( "alipay" )->item(0)->nodeValue) ) {
             $alipay = $doc->getElementsByTagName( "alipay" )->item(0)->nodeValue;
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($alipay);
-            //echo $alipay;
+            if($alipay == 'T'){
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice("退款成功");
+            }
         }
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);

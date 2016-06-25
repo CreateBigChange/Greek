@@ -26,6 +26,8 @@ use Omnipay\Omnipay;
 
 use App\Jobs\Jpush;
 
+use App\Libs\Alipay\AlipayNotify;
+
 class AlipayController extends ApiController
 {
     private $_model;
@@ -198,5 +200,19 @@ class AlipayController extends ApiController
         }
     }
 
+
+    public function refundNotify(){
+        $AlipayNotify = new AlipayNotify(Config::get('alipay'));
+
+        if($AlipayNotify->verifyNotify()){
+            $trade_no = $_POST['trade_no'];
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
+//            if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
+//                return response()->json(Message::setResponseInfo('SUCCESS'));
+//            } else {
+//                return response()->json(Message::setResponseInfo('FAILED'));
+//            }
+        }
+    }
 
 }

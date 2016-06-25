@@ -293,6 +293,7 @@ Route::group(['middleware' => ['api'] , 'namespace' => 'Alipay' ], function () {
 	});
 
 	Route::any('/alipay/notify', 'AlipayController@notify');
+	Route::any('/alipay/notify/refund', 'AlipayController@refundNotify');
 });
 
 
