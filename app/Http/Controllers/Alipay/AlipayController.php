@@ -214,7 +214,7 @@ class AlipayController extends ApiController
                 die('success');
             }
 
-            if ($this->_model->refund($orderInfo->store_id, $orderInfo->id, $_POST['batch_no'])) {
+            if ($_POST['success_num'] && $this->_model->refund($orderInfo->store_id, $orderInfo->id, $_POST['batch_no'])) {
                 die('success');
             } else {
                 die('fail');
