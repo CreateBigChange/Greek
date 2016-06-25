@@ -136,6 +136,24 @@ class Alipay
     }
 
     /**
+     * 建立请求，以模拟远程HTTP的GET请求方式构造并获取支付宝的处理结果
+     * @param $para_temp 请求参数数组
+     * @return 支付宝处理结果
+     */
+    public function buildRequestHttpGET($para_temp) {
+
+        //待请求参数数组字符串
+        $request_data = $this->buildRequestParaToString($para_temp);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($request_data);
+        //远程获取数据
+        $sResult = $this->core->getHttpResponseGET($this->alipay_gateway_new . $request_data, $this->alipay_config['cacert']);
+
+        return $sResult;
+    }
+
+
+    /**
      * 建立请求，以模拟远程HTTP的POST请求方式构造并获取支付宝的处理结果，带文件上传功能
      * @param $para_temp 请求参数数组
      * @param $file_para_name 文件类型的参数名
