@@ -266,6 +266,10 @@ class OrdersController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
     }
 
+
+
+
+
     public function orderCount(){
 
             return view('order_count');

@@ -753,6 +753,8 @@ class Order extends Model{
 
         $count = DB::select($sql);
 
+        dd($count);
+
         return $count;
 
     }
