@@ -20,6 +20,7 @@ use App\Models\OrderInfo;
 use App\Models\OrderLog;
 use App\Models\PayType;
 use App\Models\StoreInfo;
+use App\Models\StoreConfig;
 use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
 use App\Models\User;
@@ -178,14 +179,15 @@ class Order extends Model{
                 $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
                 //更新店铺余额
-                $storeModel = new Stores;
+                $storeModel         = new StoreInfo();
+                $storeConfigModel   = new StoreConfig();
                 $storeInfo = $storeModel->getStoreInfo($storeId);
                 if(!$storeInfo){
                     return false;
                 }
 
                 $money = $storeInfo->money + $orderInfo->pay_total;
-                $storeModel->updateMoney($storeId, $money);
+                $storeConfigModel->updateMoney($storeId, $money);
 
                 //发放用户积分
                 $userModel = new User;
