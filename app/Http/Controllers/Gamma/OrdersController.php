@@ -237,10 +237,10 @@ class OrdersController extends ApiController
         //构造要请求的参数数组，无需改动
         header("Content-type:text/html;charset=utf-8");
         $parameter = array(
-            "service"           => trim(Config::get('alipay.refund_service')),
+            "service"           => 'refund_fastpay_by_platform_nopwd',
             "partner"           => trim(Config::get('alipay.partner')),
-            "notify_url"	    => trim(Config::get('alipay.notify_url')),
-            "refund_date"	    => trim(Config::get('alipay.refund_date')),
+            "notify_url"	    => 'http://preview.jisxu.com',
+            "refund_date"	    => date('Y-m-d H:i:s' , time()),
             "batch_no"	        => date('YmdHis' , time()) . $this->getSalt(4, 1),
             "batch_num"	        => 1,
             "detail_data"	    => $orderNo.'^'.$payTotal.'^'.'正常退款',
