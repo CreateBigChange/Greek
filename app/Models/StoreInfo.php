@@ -48,6 +48,8 @@ class StoreInfo extends Model{
                       sc.business_time,
                       sc.is_close,
                       sc.bell,
+                      sc.point,
+                      sc.money,
                       si.is_del,
                       si.created_at,
                       si.updated_at,
