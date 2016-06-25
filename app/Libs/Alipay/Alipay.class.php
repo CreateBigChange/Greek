@@ -123,7 +123,6 @@ class Alipay
      * @return 支付宝处理结果
      */
     public function buildRequestHttp($para_temp) {
-        $sResult = '';
 
         //待请求参数数组字符串
         $request_data = $this->buildRequestPara($para_temp);
