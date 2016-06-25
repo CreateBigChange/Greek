@@ -182,7 +182,7 @@ class OrdersController extends ApiController
 
         }else {
 
-            if ($this->_model->changeStatus($this->storeId, $this->userId, $orderId, $status)) {
+            if ($this->_model->changeStatus($this->storeId, $orderInfo[0]->user, $orderId, $status)) {
                 return response()->json(Message::setResponseInfo('SUCCESS'));
             } else {
                 return response()->json(Message::setResponseInfo('FAILED'));

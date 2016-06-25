@@ -168,15 +168,17 @@ class Order extends Model{
     public function changeStatus($storeId , $userId , $orderId , $status){
 
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($storeId);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($userId);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($status);
+
 
         DB::beginTransaction();
         try {
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($userId);
+
             //更新订单状态
             DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update(array('status' => $status));
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId);
+            
             //将订单改为已到达的状态时发放赠送的积分
             if ($status == Config::get('orderstatus.arrive')['status']) {
 
