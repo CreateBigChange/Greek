@@ -78,7 +78,6 @@ class WechatLoginController extends ApiController
         $weixinUserInfo = json_decode($weixinUserInfo);
 
         $sqlDta = array(
-            'wx_openid'		=> $weixinUserInfo->openid,
             'nick_name'		=> $weixinUserInfo->nickname,
             'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
@@ -87,6 +86,12 @@ class WechatLoginController extends ApiController
             'updated_at'    => date('Y-m-d H:i:s' , time()),
             'login_ip'      => $this->getRealIp(),
         );
+
+        if($_GET['state'] == 'app'){
+            $sqlDta['wx_app_openid']		= $weixinUserInfo->openid;
+        }elseif($_GET['state'] == 'pub'){
+            $sqlDta['wx_pub_openid']		= $weixinUserInfo->openid;
+        }
 
         if($weixinUserInfo->sex == 1){
             $sqlDta['sex'] = "男";
