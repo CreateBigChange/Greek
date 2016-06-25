@@ -2,8 +2,9 @@
 
 return [
     'partner'               => '2088121058783821',
-    'seller_user_id'        => '2088121058783821',
     'key'                   => 's5zbht2t95j0hbjxctsy69yoyfiki7n5',
+    'seller_user_id'        => '2088121058783821',
+
     'private_key_path'      => public_path() . '/alipay/rsa_private_key.pem',
     'ali_public_key_path'   => public_path().'/alipay/alipay_public_key.pem',
     'notify_url'            => 'http://preview.jisxu.com/sigma/alipay/notify',
@@ -11,6 +12,6 @@ return [
     'refund_date'           => date("Y-m-d H:i:s",time()),
     'input_charset'         => strtolower('utf-8'),
     'cacert'                => public_path().'/alipay/cacert.pem',
-    'transport'             => 'http',
+    'transport'             => 'https',
     'service'               => 'refund_fastpay_by_platform_nopwd'
 ];
