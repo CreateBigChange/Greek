@@ -158,7 +158,7 @@ class OrdersController extends ApiController
             }
 
 
-            $refundNo = time() . $this->getSalt(6 , 1);
+            $refundNo = date('YmdHis' , time()) . $this->getSalt(4 , 1);
 
             $payTotal   = $orderInfo[0]->pay_total;
             //$payTotal   = 0.01;
