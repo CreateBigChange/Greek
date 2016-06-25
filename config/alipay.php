@@ -11,5 +11,5 @@ return [
     'input_charset'         => strtolower('utf-8'),
     'cacert'                => public_path().'/alipay/cacert.pem',
     'transport'             => 'http',
-    'refund_service'        => 'alipay.trade.refund'
+    'refund_service'        => 'refund_fastpay_by_platform_nopwd'
 ];
