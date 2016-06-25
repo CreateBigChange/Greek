@@ -27,7 +27,8 @@ class User extends Model{
         'money',
         'sex',
         'pay_password',
-        'wx_openid',
+        'wx_app_openid',
+        'wx_pub_openid',
         'wx_unionid',
 
     ];
