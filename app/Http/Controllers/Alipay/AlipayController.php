@@ -109,8 +109,6 @@ class AlipayController extends ApiController
 
         $response = $gateway->purchase($options)->send();
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($response->getRedirectData());
-
         if ($response->isSuccessful()) {
             $aliOrderString = $response->getOrderString();
         }else{
@@ -171,7 +169,7 @@ class AlipayController extends ApiController
 //        if($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS'){
 
             //更新支付时间和订单状态
-            $this->_model->pay($order->id , $_POST['total_fee']  , 2 , $_POST['gmt_payment']);
+            $this->_model->pay($order->id , $_POST['total_fee']  , 2 , $_POST['gmt_payment'] , '' , $options['trade_no']);
 
             $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));

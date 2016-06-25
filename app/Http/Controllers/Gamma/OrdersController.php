@@ -177,7 +177,7 @@ class OrdersController extends ApiController
                     }
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
-                $this->_aliPayRefund($orderNo, $refundNo, $payTotal);
+                $this->_aliPayRefund($orderInfo[0]->trade_no, $refundNo, $payTotal);
             }
 
         }else {
@@ -234,7 +234,6 @@ class OrdersController extends ApiController
     }
 
     public function _aliPayRefund($orderNo , $refundNo , $payTotal){
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(111111111111111111));
         //构造要请求的参数数组，无需改动
         $parameter = array(
             "service"           => trim(Config::get('alipay.refund_service')),
@@ -244,7 +243,7 @@ class OrdersController extends ApiController
             "refund_date"	    => trim(Config::get('alipay.refund_date')),
             "batch_no"	        => date('YmdHis' , time()) . $this->getSalt(4, 1),
             "batch_num"	        => 1,
-            "detail_data"	    => '2016062021001004120267447870'.'^'.$payTotal.'^'.'正常退款',
+            "detail_data"	    => $orderNo.'^'.$payTotal.'^'.'正常退款',
             "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
 //            "service"           => trim(Config::get('alipay.service')),
 //            "partner"           => trim(Config::get('alipay.partner')),

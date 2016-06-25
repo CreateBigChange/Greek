@@ -452,7 +452,7 @@ class Order extends Model{
      * @return array|bool|mixed
      * 支付
      */
-    public function pay($orderId , $payMoney=0 , $payType=1 , $payTime=0){
+    public function pay($orderId , $payMoney=0 , $payType=1 , $payTime=0 , $wechatPayNum='' ,  $alipayOrderNum=''){
 
         $payType = PayType::where('id' , $payType)->first();
         $orderLogMode = new OrderLog();
@@ -546,9 +546,11 @@ class Order extends Model{
 
             //需要更新的订单信息
             $update = array(
-                'status'        => Config::get('orderstatus.paid')['status'],
-                'updated_at'    => date('Y-m-d H:i:s' , time()),
-                'pay_time'      => $payTime
+                'status'            => Config::get('orderstatus.paid')['status'],
+                'updated_at'        => date('Y-m-d H:i:s' , time()),
+                'pay_time'          => $payTime,
+                'transaction_id'    => $wechatPayNum,
+                'trade_no'          => $alipayOrderNum
             );
 
             //更新订单状态
