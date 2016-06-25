@@ -450,7 +450,7 @@ class OrdersController extends ApiController
             }
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
-            
+
             //消息推送队列
             $this->dispatch(new Jpush(
                 "急所需有新订单啦,请及时处理",
@@ -460,6 +460,7 @@ class OrdersController extends ApiController
                 array(),
                 $bell
             ));
+
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));

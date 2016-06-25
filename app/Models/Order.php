@@ -189,6 +189,8 @@ class Order extends Model{
                 $money = $storeInfo->money + $orderInfo->pay_total;
                 $storeConfigModel->updateMoney($storeId, $money);
 
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$money);
+
                 //发放用户积分
                 $userModel = new User;
                 $userInfo = $userModel->getUserInfoById($userId);
