@@ -8,6 +8,7 @@
 
 namespace App\Libs\Alipay;
 
+use App\Libs\BLogger;
 //
 //require_once("alipay_core.function.php");
 //require_once("alipay_rsa.function.php");
@@ -127,6 +128,7 @@ class Alipay
         //待请求参数数组字符串
         $request_data = $this->buildRequestPara($para_temp);
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($para_temp);
         //远程获取数据
         $sResult = $this->core->getHttpResponsePOST($this->alipay_gateway_new, $this->alipay_config['cacert'],$request_data,trim(strtolower($this->alipay_config['input_charset'])));
 
