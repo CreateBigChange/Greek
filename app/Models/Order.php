@@ -175,10 +175,21 @@ class Order extends Model{
             //将订单改为已到达的状态时发放赠送的积分
             if ($status == Config::get('orderstatus.arrive')['status']) {
 
+                $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
+
+                //更新店铺余额
+                $storeModel = new Stores;
+                $storeInfo = $storeModel->getStoreInfo($storeId);
+                if(!$storeInfo){
+                    return false;
+                }
+
+                $money = $storeInfo->money + $orderInfo->pay_total;
+                $storeModel->updateMoney($storeId, $money);
+
                 //发放用户积分
                 $userModel = new User;
                 $userInfo = $userModel->getUserInfoById($userId);
-                $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
                 if (!$orderInfo || !$userInfo) {
                     return false;
