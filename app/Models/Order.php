@@ -199,6 +199,8 @@ class Order extends Model{
             $orderLog->log          = '将订单' . $orderId . '的状态改为' . $status;
             $orderLog->status       = $status;
 
+            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderLog);
+
             $orderLog->save();
 
             DB::commit();
