@@ -197,6 +197,7 @@ class Order extends Model{
             $orderLog->identity     = '商家管理员';
             $orderLog->platform     = '手机端';
             $orderLog->log          = '将订单' . $orderId . '的状态改为' . $status;
+            $orderLog->status       = $status;
 
             $orderLog->save();
 
