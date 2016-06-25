@@ -290,7 +290,13 @@ class Order extends Model{
             'status'                => Config::get('orderstatus.no_pay')['status'],
             'out_points'            => $outPoints,
             'updated_at'            => date('Y-m-d H:i:s' , time()),
-            'created_at'            => date('Y-m-d H:i:s' , time())
+            'created_at'            => date('Y-m-d H:i:s' , time()),
+            'year'                  => date('Y' , time()),
+            'month'                 => date('m' , time()),
+            'day'                   => date('d' , time()),
+            'hour'                  => date('H' , time()),
+            'minutes'               => date('i' , time()),
+            'second'                => date('s' , time())
 
         );
 
@@ -752,8 +758,6 @@ class Order extends Model{
         $sql .= " ORDER BY hour ASC ";
 
         $count = DB::select($sql);
-
-        dd($count);
 
         return $count;
 
