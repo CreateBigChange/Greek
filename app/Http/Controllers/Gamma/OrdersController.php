@@ -237,7 +237,7 @@ class OrdersController extends ApiController
         //构造要请求的参数数组，无需改动
         header("Content-type:text/html;charset=utf-8");
         $parameter = array(
-            "service"           => trim(Config::get('alipay.refund_service')),
+            "service"           => trim(Config::get('alipay.service')),
             "partner"           => trim(Config::get('alipay.partner')),
             "notify_url"	    => trim(Config::get('alipay.notify_url')),
             "refund_date"	    => trim(Config::get('alipay.refund_date')),
