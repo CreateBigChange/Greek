@@ -240,7 +240,6 @@ class OrdersController extends ApiController
             "service"           => trim(Config::get('alipay.refund_service')),
             "partner"           => trim(Config::get('alipay.partner')),
             "notify_url"	    => trim(Config::get('alipay.notify_url')),
-            "seller_user_id"	=> trim(Config::get('alipay.seller_user_id')),
             "refund_date"	    => trim(Config::get('alipay.refund_date')),
             "batch_no"	        => date('YmdHis' , time()) . $this->getSalt(4, 1),
             "batch_num"	        => 1,
@@ -263,6 +262,8 @@ class OrdersController extends ApiController
         $alipay = new Alipay(Config::get('alipay'));
 
         $result = $alipay->buildRequestHttp($parameter);
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($result);
 
         $doc = new \DOMDocument();
         $doc->loadXML($result);
