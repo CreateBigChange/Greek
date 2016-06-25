@@ -439,14 +439,19 @@ class OrdersController extends ApiController
         $content    = $request->get('content');
 
         $request = $this->_model->refundReson( $userId , $orderId , $content );
+        
         if($request){
             $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
+            if(!isset($order[0])){
+                return response()->json(Message::setResponseInfo('FAILED'));
+            }
+            $order = $order[0];
 
             $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
             if(empty($store)){
-                return true;
+                return response()->json(Message::setResponseInfo('FAILED'));
             }
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
