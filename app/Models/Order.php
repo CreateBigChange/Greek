@@ -739,6 +739,15 @@ class Order extends Model{
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->first();
     }
 
+    /**
+     * @param $outTradeNo
+     * @return mixed
+     * 根据订单ID获取订单信息
+     */
+    public function getOrderByTradeNo($tradeNo){
+        return DB::table($this->table)->where('trade_no' , $tradeNo)->first();
+    }
+
 
 
     /**

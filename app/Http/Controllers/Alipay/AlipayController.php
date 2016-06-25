@@ -207,13 +207,18 @@ class AlipayController extends ApiController
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
 
         if($AlipayNotify->verifyNotify()){
-            $trade_no = $_POST['trade_no'];
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_POST);
-//            if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
-//                return response()->json(Message::setResponseInfo('SUCCESS'));
-//            } else {
-//                return response()->json(Message::setResponseInfo('FAILED'));
-//            }
+            $trade_no = explode('^' , $_POST['result_details'])[0];
+
+            $orderInfo = $this->_model->getOrderByTradeNo($trade_no);
+            if(!$orderInfo){
+                die('success');
+            }
+
+            if ($this->_model->refund($orderInfo->store_id, $orderInfo->id, $_POST['batch_no'])) {
+                die('success');
+            } else {
+                die('fail');
+            }
         }
     }
 
