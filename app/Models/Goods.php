@@ -17,8 +17,6 @@ use App\Models\GoodsCategory;
 class Goods extends Model{
 
     protected $table       	                    = 'goods';
-    protected $_goods_categories_table       	= 'goods_categories';
-    protected $_goods_brand_table       	    = 'goods_brand';
 
     /**
      *
