@@ -333,7 +333,7 @@
 		});
 
 		var img = new Dropzone("#edit_img", {
-		    url: "/alpha/upload/qiniu",
+		    url: "/upload/qiniu",
 		    addRemoveLinks: true,
 		    maxFiles: 1,
 		    paramName:'img',
@@ -525,7 +525,7 @@ $('.add').bind('click' , function(){
 	});
 
 	var img = new Dropzone("#img", {
-		url: "/alpha/upload/qiniu",
+		url: "/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',
