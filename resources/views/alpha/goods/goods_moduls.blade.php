@@ -315,6 +315,7 @@
                                         $.get('/alpha/goods/brand/' + data.data.info.c_id , function(brand){
                                             if(brand.code == '0000'){
                                                 brand.data.select = data.data.info.b_id;
+                                                console.log(brand.data.select);
                                                 if(data.code == '0000'){
                                                     var bt = baidu.template;
                                                     var html = '<option value="0">选择</option>' + bt('edit_brandTep' , brand.data);
@@ -342,8 +343,8 @@
 
 	    img.on('success' , function(file , data){
 		    if(data.code == '0000'){
-			    $('#img').val(data.data.host + '/' + data.data.key);
-			    $('#img_pre').attr('src' , data.data.host + '/' + data.data.key);
+			    $('#edit_img').val(data.data.host + '/' + data.data.key);
+			    $('#edit_img_pre').attr('src' , data.data.host + '/' + data.data.key);
 		    }
 	    });
 
