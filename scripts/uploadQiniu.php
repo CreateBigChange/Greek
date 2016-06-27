@@ -30,13 +30,13 @@ while ($row = $goodsResult->fetch_object()) {
     $imgName  = $row->img;
     echo $imgName;
     if(file_exists('/tmp/goods_img/'.$imgName.'.jpg')){
-        $exten = ".jpg";
+        $exten = "jpg";
         $path = '/tmp/goods_img/'.$imgName.'.jpg';
     }elseif(file_exists('/tmp/goods_img/'.$imgName.'.jpeg')){
-        $exten = ".jpeg";
+        $exten = "jpeg";
         $path = '/tmp/goods_img/'.$imgName.'.jpeg';
     }elseif(file_exists('/tmp/goods_img/'.$imgName.'.JPG')){
-        $exten = ".jpg";
+        $exten = "jpg";
         $path = '/tmp/goods_img/'.$imgName.'.JPG';
     }
 
@@ -52,7 +52,8 @@ while ($row = $goodsResult->fetch_object()) {
     if ($err !== null) {
         return response()->json( Message::setResponseInfo( 'FAILED' ) );
     } else {
-       var_dump($ret);die;
+        $sql = "UPDATE goods SET `img`=" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . " WHERE `id` = " . $row->id;
+        $mysqli->query($sql);
     }
 }
 
