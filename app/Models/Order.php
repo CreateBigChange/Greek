@@ -129,6 +129,8 @@ class Order extends Model{
 
         $orderIds = array();
         foreach ($orders as $o){
+            //不算积分需要支付的钱数
+            $o->total = $o->total + $o->deliver;
             $orderIds[] = $o->id;
         }
 
