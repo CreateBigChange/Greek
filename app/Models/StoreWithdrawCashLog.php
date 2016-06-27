@@ -11,6 +11,7 @@ use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\StoreInfo;
 use App\Models\StoreBankCard;
+use App\Libs\Message;
 
 class StoreWithdrawCashLog extends Model
 {
