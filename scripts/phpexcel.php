@@ -61,7 +61,7 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     $goodsNum ++ ;
 }
 
-$mysqli = new mysqli('localhost' , 'root' , '123456' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
