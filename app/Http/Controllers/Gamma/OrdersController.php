@@ -341,7 +341,7 @@ class OrdersController extends ApiController
                     if ($c->hour == $todayTime[$i]) {
                         $orderCount[$i] += $c->num;
                         $orderNum += $c->num;
-                        if($c->status == Config::get('orderstatus.completd')['status']){
+                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
                         }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
@@ -397,7 +397,7 @@ class OrdersController extends ApiController
                     if ($c->day == $day[$i]) {
                         $orderCount[$i] += $c->num;
                         $orderNum += $c->num;
-                        if($c->status == Config::get('orderstatus.completd')['status']){
+                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
                         }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
@@ -432,7 +432,7 @@ class OrdersController extends ApiController
                     if ($c->day == $i) {
                         $orderCount[$j] += $c->num;
                         $orderNum += $c->num;
-                        if ($c->status == Config::get('orderstatus.completd')['status']) {
+                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
                         } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']) {
                             $orderAccidentNum += $c->num;
