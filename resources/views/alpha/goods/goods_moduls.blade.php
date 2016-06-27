@@ -331,6 +331,22 @@
 			}
 		});
 
+		var img = new Dropzone("#edit_img", {
+		    url: "/alpha/upload/qiniu",
+		    addRemoveLinks: true,
+		    maxFiles: 1,
+		    paramName:'img',
+		    maxFilesize: 5120,
+		    acceptedFiles: ".jpg , .png"
+	    });
+
+	    img.on('success' , function(file , data){
+		    if(data.code == '0000'){
+			    $('#img').val(data.data.host + '/' + data.data.key);
+			    $('#img_pre').attr('src' , data.data.host + '/' + data.data.key);
+		    }
+	    });
+
 		$('#edit_c_one').bind('change' , function(){
             $.get('/alpha/goods/category/pid/'+$(this).val() , function(data){
                 if(data.code == '0000'){
