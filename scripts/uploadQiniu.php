@@ -6,7 +6,8 @@ use Qiniu\Storage\UploadManager;
 
 
 
-$mysqli = new mysqli('localhost' , 'root' , '123456' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
