@@ -50,9 +50,9 @@ while ($row = $goodsResult->fetch_object()) {
     list($ret, $err) = $uploadMgr->putFile($token, $key, $path);
 
     if ($err !== null) {
-        return response()->json( Message::setResponseInfo( 'FAILED' ) );
+        echo "上传七牛失败,商品名称:".$row->name;
     } else {
-        $sql = "UPDATE goods SET `img`=`" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "` WHERE `id` = " . $row->id;
+        $sql = "UPDATE goods SET `img`='" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "' WHERE `id` = " . $row->id;
         if($mysqli->query($sql)){
             echo "成功更新一条,商品名称:".$row->name;
         }else{
