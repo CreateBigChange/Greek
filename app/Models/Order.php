@@ -129,8 +129,6 @@ class Order extends Model{
 
         $orderIds = array();
         foreach ($orders as $o){
-            //不算积分需要支付的钱数
-            $o->total = $o->total + $o->deliver;
             $orderIds[] = $o->id;
         }
 
@@ -140,7 +138,12 @@ class Order extends Model{
             $o->goods = array();
             $o->goodsNum = 0;
 
+            //实际需要支付的数目
             $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
+
+            //不算积分需要支付的数目
+            $o->total               = $o->total + $o->deliver;
+
             $o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
