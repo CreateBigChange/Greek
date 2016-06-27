@@ -186,6 +186,12 @@ class OrdersController extends ApiController
                 }
 
                 return response()->json(Message::setResponseInfo('SUCCESS'));
+            }elseif($orderInfo[0]->pay_type_id == 2){
+                if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
+                    return response()->json(Message::setResponseInfo('SUCCESS'));
+                } else {
+                    return response()->json(Message::setResponseInfo('FAILED'));
+                }
             }
 
         }else {
