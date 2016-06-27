@@ -69,12 +69,10 @@ class Order extends Model{
                     o.consignee,
                     o.consignee_id,
                     o.consignee_tel,
-                    ap.id as province_id,
-                    ap.name as province,
-                    aci.id as city_id,
-                    aci.name as city,
-                    aco.id as county_id,
-                    aco.name as county,
+                    o.consignee_province as province ,
+                    o.consignee_city as city,
+                    o.consignee_county as county,
+                    o.consignee_street as street,
                     o.consignee_address,
                     o.remark,
                     o.refund_reason,
@@ -98,9 +96,9 @@ class Order extends Model{
                     
                 FROM $this->table AS o";
 
-        $sql .= " LEFT JOIN areas as ap ON ap.id = o.consignee_province";
-        $sql .= " LEFT JOIN areas as aci ON aci.id = o.consignee_city";
-        $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
+//        $sql .= " LEFT JOIN areas as ap ON ap.id = o.consignee_province";
+//        $sql .= " LEFT JOIN areas as aci ON aci.id = o.consignee_city";
+//        $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
         $sql .= " LEFT JOIN store_infos as si ON si.id = o.store_id";
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
@@ -320,6 +318,7 @@ class Order extends Model{
             $order['consignee_province']    = $address[0]->province;
             $order['consignee_city']        = $address[0]->city;
             $order['consignee_county']      = $address[0]->county;
+            $order['consignee_street']      = $address[0]->street;
             $order['consignee_address']     = $address[0]->address;
             $order['consignee_street']      = $address[0]->street;
             $order['pay_total']             = $total + $storeInfo->deliver;
