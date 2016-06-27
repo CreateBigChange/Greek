@@ -698,7 +698,7 @@ class UsersController extends ApiController
     public function setPayPassword(Request $request){
 
         $validation = Validator::make($request->all(), [
-            'pay_password'                => 'required|size:6|numeric'
+            'pay_password'                => 'required|size:6'
 
         ]);
         if($validation->fails()){
@@ -709,6 +709,10 @@ class UsersController extends ApiController
 
         $payPassword = $request->get('pay_password');
         $code   = $request->get('code');
+
+        if(!preg_match('/^\d{6}$/' , $payPassword)){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
 
         $userInfo  =  $this->_model->getUserInfoById($this->userId);
 
