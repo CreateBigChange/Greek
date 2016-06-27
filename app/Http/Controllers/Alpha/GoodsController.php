@@ -159,6 +159,7 @@ class GoodsController extends AdminController
 
         $data['updated_at'] = date('Y-m-d H:i:s' , time());
 
+        var_dump($id);
         dd($data);
         $goodsModel = new Goods;
 
