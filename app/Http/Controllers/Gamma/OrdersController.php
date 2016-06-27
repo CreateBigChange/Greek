@@ -164,6 +164,8 @@ class OrdersController extends ApiController
             //$payTotal   = 0.01;
             $orderNo    = $orderInfo[0]->out_trade_no;
 
+
+
             if($orderInfo[0]->pay_type_id == 1 || $orderInfo[0]->pay_type_id == 4) {
                 $type = 1;
                 if($orderInfo[0]->pay_type_id == 4){
@@ -186,7 +188,7 @@ class OrdersController extends ApiController
                 }
 
                 return response()->json(Message::setResponseInfo('SUCCESS'));
-            }elseif($orderInfo[0]->pay_type_id == 2){
+            }elseif($orderInfo[0]->pay_type_id == 3){
                 if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                     return response()->json(Message::setResponseInfo('SUCCESS'));
                 } else {
