@@ -46,14 +46,14 @@
 <script src="{{ URL::asset('/') }}assets/dropzone/dropzone.js"></script>
 
 
-<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/ueditor.all.min.js"> </script>
+{{--<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/ueditor.config.js"></script>--}}
+{{--<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/ueditor.all.min.js"> </script>--}}
 <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
 <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/lang/zh-cn/zh-cn.js"></script>
+{{--<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/lang/zh-cn/zh-cn.js"></script>--}}
 
  <!--script for this page-->
-<script src="{{ URL::asset('/') }}js/form-component.js"></script>
+{{--<script src="{{ URL::asset('/') }}js/form-component.js"></script>--}}
 
 <!-- 拖拽排序-->
 <script type="text/javascript" src="{{ URL::asset('/') }}js/dragsort-0.5.2/jquery.dragsort-0.5.2.min.js"></script>
