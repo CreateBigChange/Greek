@@ -53,13 +53,15 @@ while ($row = $goodsResult->fetch_object()) {
         return response()->json( Message::setResponseInfo( 'FAILED' ) );
     } else {
         $sql = "UPDATE goods SET `img`=" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . " WHERE `id` = " . $row->id;
+        var_dump($sql);die;
         $mysqli->query($sql);
+
+        die;
     }
+
 }
 
 
-
-die;
 
 
 
