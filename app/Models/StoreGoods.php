@@ -56,7 +56,7 @@ class StoreGoods extends Model{
         $sql .= " LEFT JOIN store_nav as sn ON sn.id = sg.nav_id";
 
 
-        $sql .= " WHERE sg.is_open = 1";
+      //  $sql .= " WHERE sg.is_open = 1";
 
         if(isset($search['is_open'])){
             $sql .= " WHERE sg.is_open = ".$search['is_open'];
