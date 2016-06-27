@@ -34,28 +34,28 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     $goods[$goodsNum] = array();
     for ($column = 'A'; $column <= $highestColumm; $column++) {//列数是以A列开始
         if($column == 'A'){
-            $goods[$goodsNum]['name']           = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['name']           = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'B'){
-            $goods[$goodsNum]['category']       = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['category']       = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'C'){
-            $goods[$goodsNum]['brand']          = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['brand']          = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'D'){
-            $goods[$goodsNum]['img']            = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['img']            = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'E'){
-            $goods[$goodsNum]['in_price']       = $sheet->getCell($column.$row)->getValue() == NULL ? 0 : $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['in_price']       = $sheet->getCell($column.$row)->getValue() == NULL ? 0 : trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'F'){
-            $goods[$goodsNum]['out_price']      = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['out_price']      = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'G'){
-            $goods[$goodsNum]['spec']           = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['spec']           = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'H'){
-            $goods[$goodsNum]['desc']           = $sheet->getCell($column.$row)->getValue();
+            $goods[$goodsNum]['desc']           = trim($sheet->getCell($column.$row)->getValue());
         }
     }
     $goodsNum ++ ;
@@ -102,6 +102,12 @@ foreach ($goods as $g) {
 
     $insertGoods = "INSERT INTO goods(`c_id` , `b_id` , `name` , `img` , `in_price` , `out_price` , `spec` , `created_at` , `updated_at`) VALUES (". $g['c_id'] ."," . $g['b_id'].", '". $g['name'] ."' ,'" . $g['img'] . "',".$g['in_price'].",".$g['out_price'] .",'".$g['spec'] ."','" . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
 
+    $result    = $mysqli->query($insertGoods);
+    if($result){
+        echo "成功插入一条,商品名称:".$g['name'];
+    }else{
+        echo "失败一条,商品名称:" . $g['name'];
+    }
 
     $results->free();
 
