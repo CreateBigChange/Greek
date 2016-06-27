@@ -59,6 +59,8 @@ class Message {
 				'NO_TIMES'						=> array('code'=>'5009' , 'msg'=>'提现次数超过限制了'),
 				'EXCEED_MONEY_LIMIT'			=> array('code'=>'5009' , 'msg'=>'超过金额限制了'),
 
+				'REFUND_POINT_NOT_AMPLE'		=> array('code'=>'5004' , 'msg'=>'账户积分不足,退款失败'),
+
 			);
 
 			if(isset($error[strtoupper($errorkey)])){

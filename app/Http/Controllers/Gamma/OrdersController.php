@@ -15,6 +15,7 @@ use Session , Cookie , Config , Log;
 use App\Http\Controllers\ApiController;
 
 use App\Models\Order;
+use App\Models\User;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
@@ -150,6 +151,14 @@ class OrdersController extends ApiController
             }
         }
 
+        $userModel = new User();
+        $userInfo =$userModel->getUserInfoById($orderInfo[0]->user);
+
+        //积分不足不能退款
+        if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
+            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+        }
+
         //确认退款
         if($status == Config::get('orderstatus.refunded')['status']){
 
@@ -163,7 +172,6 @@ class OrdersController extends ApiController
             $payTotal   = $orderInfo[0]->pay_total;
             //$payTotal   = 0.01;
             $orderNo    = $orderInfo[0]->out_trade_no;
-
 
 
             if($orderInfo[0]->pay_type_id == 1 || $orderInfo[0]->pay_type_id == 4) {

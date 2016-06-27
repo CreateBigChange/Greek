@@ -434,19 +434,28 @@ class OrdersController extends ApiController
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
+
+        $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
+        if(!isset($order[0])){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+        $order = $order[0];
+
         $userId     = $this->userId;
+
+        $userModel = new User();
+        $userInfo =$userModel->getUserInfoById($userId);
+
+        //积分不足不能退款
+        if($userInfo->points < $order->in_points - $order->out_points){
+            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+        }
 
         $content    = $request->get('content');
 
         $request = $this->_model->refundReson( $userId , $orderId , $content );
 
         if($request){
-            $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
-            if(!isset($order[0])){
-                return response()->json(Message::setResponseInfo('FAILED'));
-            }
-            $order = $order[0];
-
             $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
