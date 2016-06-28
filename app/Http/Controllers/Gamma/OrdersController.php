@@ -151,16 +151,25 @@ class OrdersController extends ApiController
             }
         }
 
-        $userModel = new User();
-        $userInfo =$userModel->getUserInfoById($orderInfo[0]->user);
 
-        //积分不足不能退款
-        if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
-            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
-        }
-
-        //确认退款
+        /**
+         * **************************************
+         * 退款
+         * **************************************
+         */
         if($status == Config::get('orderstatus.refunded')['status']){
+
+            /**
+             * **************************************
+             * 积分不足不能退款
+             * **************************************
+             */
+            $userModel = new User();
+            $userInfo =$userModel->getUserInfoById($orderInfo[0]->user);
+
+            if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
+                return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+            }
 
             if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
                 return response()->json(Message::setResponseInfo('FAILED'));
@@ -177,6 +186,9 @@ class OrdersController extends ApiController
                 if($orderInfo[0]->pay_type_id == 4){
                     $type = 2;
                 }
+                /**
+                 * 微信退款
+                 */
                 if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
                     if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -185,6 +197,9 @@ class OrdersController extends ApiController
                     }
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
+                /**
+                 * 支付宝退款
+                 */
                 if($this->_aliPayRefund($orderInfo[0]->trade_no, $refundNo, $payTotal)){
                     if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                         return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -195,6 +210,9 @@ class OrdersController extends ApiController
 
                 return response()->json(Message::setResponseInfo('SUCCESS'));
             }elseif($orderInfo[0]->pay_type_id == 3){
+                /**
+                 * 积分支付退款
+                 */
                 if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
                     return response()->json(Message::setResponseInfo('SUCCESS'));
                 } else {
@@ -211,6 +229,16 @@ class OrdersController extends ApiController
             }
         }
     }
+
+    /**
+     * @param $orderNo
+     * @param $refundNo
+     * @param $payTotal
+     * @param int $type
+     * @return bool
+     *
+     * 微信退款
+     */
 
     public function _wechatRefund($orderNo , $refundNo , $payTotal , $type=1){
 
@@ -255,6 +283,14 @@ class OrdersController extends ApiController
         }
     }
 
+    /**
+     * @param $orderNo
+     * @param $refundNo
+     * @param $payTotal
+     * @return bool
+     *
+     * 支付宝退款
+     */
     public function _aliPayRefund($orderNo , $refundNo , $payTotal){
         //构造要请求的参数数组，无需改动
         header("Content-type:text/html;charset=utf-8");
@@ -267,14 +303,6 @@ class OrdersController extends ApiController
             "batch_num"	        => 1,
             "detail_data"	    => $orderNo.'^'.$payTotal.'^'.'正常退款',
             "_input_charset"	=> trim(strtolower(Config::get('alipay.input_charset')))
-//            "service"           => trim(Config::get('alipay.service')),
-//            "partner"           => trim(Config::get('alipay.partner')),
-//            "charset"	        => trim(Config::get('alipay.input_charset')),
-//            "timestamp"         => date('Y-m-d H:i:s' , time()),
-//            "version"           => "1.0",
-//            "out_trade_no"      => $orderNo,
-//            "refund_amount"     => $payTotal,
-//            "refund_reason"     => "正常退款"
         );
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($parameter);
         BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(Config::get('alipay'));
@@ -305,8 +333,11 @@ class OrdersController extends ApiController
     }
 
 
-
-
+    /***
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
+     * 订单统计页面
+     */
 
     public function orderCount(){
 

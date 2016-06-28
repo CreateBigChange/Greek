@@ -178,25 +178,36 @@ class Order extends Model{
             //更新订单状态
             DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update(array('status' => $status));
 
-            //将订单改为已到达的状态时发放赠送的积分
+            /**
+             * ****************************************************
+             * 将订单改为已到达的状态时发放赠送的积分
+             * ****************************************************
+             */
             if ($status == Config::get('orderstatus.arrive')['status']) {
 
                 $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
-                //更新店铺余额
+                /**
+                 * ****************************************************
+                 * 将此订单店铺应得的钱增加到商户账号上
+                 * ****************************************************
+                 */
                 $storeModel         = new StoreInfo();
                 $storeConfigModel   = new StoreConfig();
                 $storeInfo = $storeModel->getStoreInfo($storeId);
                 if(!$storeInfo){
                     return false;
                 }
-
                 $money = $storeInfo->money + $orderInfo->pay_total;
                 $storeConfigModel->updateMoney($storeId, $money);
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$money);
 
-                //发放用户积分
+                /**
+                 * ****************************************************
+                 * 将订单赠送的积分增加到用户账号上
+                 * ****************************************************
+                 */
                 $userModel = new User;
                 $userInfo = $userModel->getUserInfoById($userId);
 
@@ -208,7 +219,9 @@ class Order extends Model{
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
 
-            }
+            }elseif($status == Config::get('orderstatus.refunded')['status']){}
+
+
 
             $orderLog = new OrderLog;
 
