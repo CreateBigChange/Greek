@@ -176,9 +176,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 
 
-		Route::post('/redis', 'OrdersController@getOrderNum');
 
 	});
+	Route::post('/redis', 'OrdersController@getOrderNum');
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
 //	Route::post('/store/count/finance/{storeId}', 'StoresController@ajaxFinanceCount');
