@@ -338,7 +338,9 @@ class OrdersController extends ApiController
 
                 $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
-                $new =  Redis::get("store:$order->store_id:new") == null ? 0 : Redis::get("store:$order->store_id:new");
+                $storeId = $order->store_id;
+
+                $new =  Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
                 $new = $new + 1;
 
                 Redis::set("store:$order->store_id:new"  , $new );
@@ -501,9 +503,11 @@ class OrdersController extends ApiController
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
-            $accident =  Redis::get("store:$order->store_id:accident") == null ? 0 : Redis::get("store:$order->store_id:accident");
+            $storeId = $order->store_id;
+            $accident =  Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
+            $accident = $accident + 1;
 
-            Redis::set("store:$order->store_id:accident"  , $accident++ );
+            Redis::set("store:$storeId:accident"  , $accident );
 
             //消息推送队列
             $this->dispatch(new Jpush(
@@ -640,5 +644,5 @@ class OrdersController extends ApiController
         }
 
     }
-    
+
 }
