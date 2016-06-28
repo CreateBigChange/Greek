@@ -100,6 +100,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		//用户
 		Route::get('/user/list' , 'UserController@getUserList');
+
+		//财务
+		Route::get('/finance/cash' , 'FinanceController@getWithdrawCashLog');
+
 	});
 
 	//登陆
