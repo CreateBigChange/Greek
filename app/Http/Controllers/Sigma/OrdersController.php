@@ -632,9 +632,9 @@ class OrdersController extends ApiController
 
     }
 
-    public function test(){
+    public function test($storeId){
 
-        Redis::set('store'  , 1 );
+        Redis::set("store:$storeId:new"  , 1 );
         return response()->json(Message::setResponseInfo('SUCCESS'));
     }
 }
