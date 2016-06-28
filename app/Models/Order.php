@@ -607,6 +607,18 @@ class Order extends Model{
 
             DB::commit();
 
+            $storeId = $order->store_id;
+
+            /**
+             * **************************
+             * 添加新订单通知的数量
+             * **************************
+             */
+            $new =  Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
+            $new = $new + 1;
+            Redis::set("store:$order->store_id:new"  , $new );
+
+
             return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
 
         }catch (Exception $e){
