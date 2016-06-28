@@ -104,6 +104,42 @@ class StoreInfo extends Model{
 
         $info = DB::select($sql);
 
+
+        //计算店铺是否在营业时间内
+        $today      = date('Y-m-d' , time());
+        $time       = date('H:i' , time());
+
+        $week_tmp   = date('w', strtotime($today));
+
+        $weekTime = array(
+            '星期一',
+            '星期二',
+            '星期三',
+            '星期四',
+            '星期五',
+            '星期六',
+            '星期日',
+        );
+
+        $week = $weekTime[$week_tmp - 1];
+
+        foreach ($info as $si){
+
+            $weeks      = explode( ',' , $si->business_cycle);
+            $starTime   = explode( '-' , $si->business_time)[0];
+            $endTime    = explode( '-' , $si->business_time)[1];
+
+            $si->isDoBusiness = 1;
+            if(!in_array($week, $weeks)){
+                $si->isDoBusiness = 0;
+            }
+
+            if($time <= $starTime || $time >$endTime ){
+                $si->isDoBusiness = 0;
+            }
+
+        }
+
         return $info;
     }
 
