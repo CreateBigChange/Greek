@@ -634,7 +634,8 @@ class OrdersController extends ApiController
 
     public function test(){
 
-        Redis::set('store'  , 1 );
+        $redis = new Redis();
+        $redis->set('store'  , 1 );
         return response()->json(Message::setResponseInfo('SUCCESS'));
     }
 }
