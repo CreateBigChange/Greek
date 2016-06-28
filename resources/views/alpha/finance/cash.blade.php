@@ -36,7 +36,8 @@
                                         <td>{{ $l->withdraw_cash_num }}</td>
                                         <td>@if ($l->status == 1) 提现中 @elseif ($l->status == 2) 审核中 @elseif ($l->status == 3) 未通过 @elseif ($l->status == 0) 完成 @endif</td>
                                         <td>
-                                            <div title="店铺商品" class="btn btn-primary btn-xs"><i class="icon-hdd"></i></div>
+                                            <div title="店铺商品" class="btn btn-primary btn-xs">审核通过</div>
+                                            <div title="店铺商品" class="btn btn-primary btn-xs">审核不通过</div>
                                         </td>
                                     </tr>
                                 @endforeach
