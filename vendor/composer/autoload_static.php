@@ -482,6 +482,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Http\\Controllers\\Alpha\\AdminPermissionRoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/AdminPermissionRoleController.php',
         'App\\Http\\Controllers\\Alpha\\AdminRoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/AdminRoleController.php',
         'App\\Http\\Controllers\\Alpha\\AdminUsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/AdminUsersController.php',
+        'App\\Http\\Controllers\\Alpha\\FinanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/FinanceController.php',
         'App\\Http\\Controllers\\Alpha\\GoodsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/GoodsController.php',
         'App\\Http\\Controllers\\Alpha\\IndexController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/IndexController.php',
         'App\\Http\\Controllers\\Alpha\\OrdersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Alpha/OrdersController.php',

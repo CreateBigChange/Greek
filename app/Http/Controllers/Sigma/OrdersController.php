@@ -9,7 +9,7 @@ namespace App\Http\Controllers\Sigma;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Validator , Input;
+use Validator , Input , Redis;
 use Session , Cookie , Config , Log;
 
 use App\Models\User;

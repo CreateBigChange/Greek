@@ -21,6 +21,7 @@ return array(
     'App\\Http\\Controllers\\Alpha\\AdminPermissionRoleController' => $baseDir . '/app/Http/Controllers/Alpha/AdminPermissionRoleController.php',
     'App\\Http\\Controllers\\Alpha\\AdminRoleController' => $baseDir . '/app/Http/Controllers/Alpha/AdminRoleController.php',
     'App\\Http\\Controllers\\Alpha\\AdminUsersController' => $baseDir . '/app/Http/Controllers/Alpha/AdminUsersController.php',
+    'App\\Http\\Controllers\\Alpha\\FinanceController' => $baseDir . '/app/Http/Controllers/Alpha/FinanceController.php',
     'App\\Http\\Controllers\\Alpha\\GoodsController' => $baseDir . '/app/Http/Controllers/Alpha/GoodsController.php',
     'App\\Http\\Controllers\\Alpha\\IndexController' => $baseDir . '/app/Http/Controllers/Alpha/IndexController.php',
     'App\\Http\\Controllers\\Alpha\\OrdersController' => $baseDir . '/app/Http/Controllers/Alpha/OrdersController.php',
