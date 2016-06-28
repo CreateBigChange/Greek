@@ -10,7 +10,7 @@ namespace App\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-use Config , Log , Redis;
+use Config , Log , RedisClass as Redis;
 
 use Mockery\Exception;
 use App\Libs\BLogger;
