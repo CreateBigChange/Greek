@@ -197,7 +197,20 @@ class OrdersController extends ApiController
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
+        $storeId    = $request->get('store');
+        $goods      = json_decode($request->get('goods'));
         $userId     = $this->userId;
+
+        $storeModel = new StoreInfo();
+        $storeInfo  = $storeModel->getStoreInfo($storeId);
+
+        if(!$storeInfo){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        if($storeInfo->is_close == 1 || $storeInfo->isDoBusiness == 0){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
 
         //判断是否绑定手机
         $userModel = new User;
@@ -207,8 +220,7 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('MOBILE_NO_BIND'));
         }
 
-        $storeId    = $request->get('store');
-        $goods = json_decode($request->get('goods'));
+
 
         $orderId = $this->_model->initOrder($storeId , $userId , $goods);
         if($orderId){
