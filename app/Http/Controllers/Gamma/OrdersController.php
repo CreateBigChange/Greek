@@ -487,7 +487,6 @@ class OrdersController extends ApiController
      * 获取通知的订单数量
      */
     public function getOrderNum(){
-        $redis = new Redis();
-        var_dump($redis->get('store'));die;
+        var_dump(Redis::get('store'));die;
     }
 }
