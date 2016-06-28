@@ -9,7 +9,7 @@ namespace App\Http\Controllers\Gamma;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Validator , Input , Redis;
+use Validator , Input , RedisClass as Redis;
 use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
