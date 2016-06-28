@@ -83,6 +83,7 @@ class StoreUser extends Model{
                       sc.deliver,
                       sc.business_cycle,
                       sc.business_time,
+                      sc.business_license,
                       sc.is_close,
                       sc.bell,
                       sc.point,
