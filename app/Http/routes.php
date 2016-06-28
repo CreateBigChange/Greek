@@ -155,6 +155,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//订单
 		Route::post('/store/orders', 'OrdersController@getOrderList');
 		Route::post('/store/orders/change/status/{orderId}', 'OrdersController@changeStatus');
+		Route::post('/order/notice/num/{storeId}', 'OrdersController@getOrderNum');
 
 		//提现
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');
@@ -175,10 +176,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
 
-
-
 	});
-	Route::post('/redis/{storeId}', 'OrdersController@getOrderNum');
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
 //	Route::post('/store/count/finance/{storeId}', 'StoresController@ajaxFinanceCount');
@@ -258,8 +256,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
-
-	Route::post('/redis/{storeId}', 'OrdersController@test');
 
 });
 

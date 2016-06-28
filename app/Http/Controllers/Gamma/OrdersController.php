@@ -486,7 +486,12 @@ class OrdersController extends ApiController
     /**
      * 获取通知的订单数量
      */
-    public function getOrderNum($storeId){
-        var_dump(Redis::get("store:$storeId:new"));die;
+    public function getOrderNum(){
+        $storeId = $this->storeId;
+        $data = array();
+        $data['new'] = Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
+        $data['accident'] = Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
     }
 }
