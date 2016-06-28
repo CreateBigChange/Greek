@@ -125,6 +125,7 @@ class StoreInfo extends Model{
         $week = $weekTime[$week_tmp - 1];
 
         foreach ($info as $si){
+            $si->isDoBusiness = 0;
 
             if($si->business_cycle == "每天"){
                 $weeks = array(
