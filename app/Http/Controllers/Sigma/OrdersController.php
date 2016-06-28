@@ -104,7 +104,7 @@ class OrdersController extends ApiController
             $search['status'] = array(
                 Config::get('orderstatus.paid')['status'] ,
                 Config::get('orderstatus.on_the_way')['status'] ,
-                Config::get('orderstatus.accepted')['status'] ,
+                //Config::get('orderstatus.accepted')['status'] ,
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
                 Config::get('orderstatus.refunding')['status']
