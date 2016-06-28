@@ -147,8 +147,8 @@ class OrdersController extends ApiController
         }
 
         foreach (Config::get('orderstatus') as $status) {
-            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($status));
             if ($orderInfo[0]->status == $status['status']) {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($status));
                 if (!in_array($status, $status['next'])) {
                     return response()->json(Message::setResponseInfo('FAILED'));
                 }
