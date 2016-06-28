@@ -339,8 +339,9 @@ class OrdersController extends ApiController
                 $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
                 $new =  Redis::get("store:$order->store_id:new") == null ? 0 : Redis::get("store:$order->store_id:new");
+                $new = $new + 1;
 
-                Redis::set("store:$order->store_id:new"  , $new++ );
+                Redis::set("store:$order->store_id:new"  , $new );
 
                 //消息推送队列
                 $this->dispatch(new Jpush(
@@ -639,10 +640,5 @@ class OrdersController extends ApiController
         }
 
     }
-
-    public function test($storeId){
-
-        Redis::set("store:$storeId:new"  , 1 );
-        return response()->json(Message::setResponseInfo('SUCCESS'));
-    }
+    
 }

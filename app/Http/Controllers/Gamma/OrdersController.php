@@ -488,6 +488,8 @@ class OrdersController extends ApiController
      */
     public function getOrderNum(){
         $storeId = $this->storeId;
+
+        var_dump( Redis::get("store:$storeId:new"));
         $data = array();
         $data['new'] = Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
         $data['accident'] = Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
