@@ -180,7 +180,7 @@ class StoresController extends ApiController
      *              铃声       bell<br/>
      *              是否打烊   is_close{0为打烊|1打烊了}<br/>
      *              营业时间   business_time{08:00-20:00}<br/>
-     *              营业周期   business_cycle{星期一,星期二....}<br />
+     *              营业周期   business_cycle{周一,周二....}<br />
      *              公告      notice  
      *
      * @apiParamExample {json} Request Example

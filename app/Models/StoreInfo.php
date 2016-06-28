@@ -119,14 +119,40 @@ class StoreInfo extends Model{
             '四',
             '五',
             '六',
-            '日',
+            '日'
         );
 
         $week = $weekTime[$week_tmp - 1];
 
         foreach ($info as $si){
 
-            $weeks      = explode( ',' , $si->business_cycle);
+            if($si->business_cycle == "每天"){
+                $weeks = array(
+                    '一',
+                    '二',
+                    '三',
+                    '四',
+                    '五',
+                    '六',
+                    '日'
+                );
+            }elseif($si->business_cycle == "工作日") {
+                $weeks = array(
+                    '一',
+                    '二',
+                    '三',
+                    '四',
+                    '五',
+                );
+            }else {
+                $weeks = explode(',', $si->business_cycle);
+            }
+
+            if (!in_array($week, $weeks)) {
+                $si->isDoBusiness = 0;
+            }
+
+            //如果设置了营业时间
             if($si->business_time) {
                 $starTime = explode('-', $si->business_time)[0];
                 $endTime = explode('-', $si->business_time)[1];
@@ -138,12 +164,6 @@ class StoreInfo extends Model{
                 $si->isDoBusiness = 0;
             }
 
-            $si->isDoBusiness = 1;
-            if($si->business_cycle != "每天") {
-                if (!in_array($week, $weeks)) {
-                    $si->isDoBusiness = 0;
-                }
-            }
 
         }
 
