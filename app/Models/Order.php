@@ -173,10 +173,12 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
+        $isUpdateUserPoint  = 0;
+        $isUpdateStoreMoney = 0;
+        $isUpdateStorePoint = 0;
+
         DB::beginTransaction();
         try {
-            //更新订单状态
-            DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update(array('status' => $status));
 
             /**
              * ****************************************************
@@ -201,6 +203,13 @@ class Order extends Model{
                 $money = $storeInfo->money + $orderInfo->pay_total;
                 $storeConfigModel->updateMoney($storeId, $money);
 
+                /**
+                 * ****************************************************
+                 * 将此订单店铺应得的积分增加到商户账号上
+                 * ****************************************************
+                 */
+                $storeConfigModel->updatePoint($storeId, ($storeInfo->point + $orderInfo->in_points));
+
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$money);
 
                 /**
@@ -219,7 +228,25 @@ class Order extends Model{
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
 
+                $isUpdateUserPoint  = 1;
+                $isUpdateStoreMoney = 1;
+                $isUpdateStorePoint = 1;
+
             }
+
+            /**
+             * ****************************************************
+             * 更新订单信息
+             * ****************************************************
+             */
+            DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update(
+                array(
+                    'status'                    => $status,
+                    'is_update_user_point'      => $isUpdateUserPoint,
+                    'is_update_store_money'     => $isUpdateStoreMoney,
+                    'is_update_store_point'     => $isUpdateStorePoint
+                )
+            );
 
 
 
@@ -488,7 +515,11 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
-        //如果订单状态不是未支付状态,就不能再支付了
+        /**
+         * *********************************
+         * 如果订单状态不是未支付状态,就不能再支付了
+         * *********************************
+         */
         if( $order->status != Config::get('orderstatus.no_pay')['status']){
             return Message::setResponseInfo('FAILED');
         }
@@ -502,7 +533,11 @@ class Order extends Model{
 
         $userModel = new User;
 
-        //用户积分是否充足
+        /**
+         * *********************************
+         * 用户积分是否充足
+         * *********************************
+         */
         $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
 
         if($isAmplePoint === false){
@@ -515,10 +550,10 @@ class Order extends Model{
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
         $payNum = round($payNum , 2);
 
-//        if ($payMoney != $payNum) {
-//            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
-//            return Message::setResponseInfo('MONEY_NOT_EQUAL');
-//        }
+        if ($payMoney != $payNum) {
+            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
+            return Message::setResponseInfo('MONEY_NOT_EQUAL');
+        }
 
         /**
          * *********************************
@@ -556,12 +591,9 @@ class Order extends Model{
         DB::beginTransaction();
 
         try {
-            //加上本次订单赠送的积分
-            //$isAmplePoint += $order->out_points;
-
             /**
              * *********************************
-             * 更新用户积分
+             * 扣除用户积分
              * *********************************
              */
             $userModel->updatePoint($userId, $isAmplePoint);
@@ -569,7 +601,7 @@ class Order extends Model{
 
             /**
              * *********************************
-             * 更新店铺积分
+             * 扣除店铺积分
              * *********************************
              */
             $storeConfigModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
@@ -591,7 +623,11 @@ class Order extends Model{
                 $payTime = date('Y-m-d H:i:s' , time());
             }
 
-            //需要更新的订单信息
+            /**
+             * *********************************
+             * 需要更新的订单信息
+             * *********************************
+             */
             $update = array(
                 'status'            => Config::get('orderstatus.paid')['status'],
                 'updated_at'        => date('Y-m-d H:i:s' , time()),
@@ -600,7 +636,11 @@ class Order extends Model{
                 'trade_no'          => $alipayOrderNum
             );
 
-            //更新订单状态
+            /**
+             * *********************************
+             * 更新订单状态
+             * *********************************
+             */
             DB::table($this->table)->where('user', $userId)->where('id', $orderId)->update($update);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付成功' );
             $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
@@ -700,7 +740,11 @@ class Order extends Model{
                 return false;
             }
 
-            //更新店铺积分
+            /**
+             * ***************************************************************************
+             * 更新店铺积分
+             * ***************************************************************************
+             */
             $storeModel         = new StoreInfo();
             $storeConfigModel   = new StoreConfig();
             $storeInfo = $storeModel->getStoreInfo($storeId);
@@ -711,30 +755,52 @@ class Order extends Model{
             if($order->out_points != 0) {
                 $point = $storeInfo->point + $order->out_points;
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($point);
                 $storeConfigModel->updatePoint($storeId, $point);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
             }
 
-            //如果订单状态是已送达和已完成再退款的,需要返还用户积分和店铺的余额
+            /**
+             * ***************************************************************************
+             * 如果订单状态是已送达和已完成再退款的,需要返还用户积分和扣除店铺的余额
+             * ***************************************************************************
+             */
+            //$orderLog = DB::table($orderLogModel->getTable())->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
 
-            $orderLog = DB::table($orderLogModel->getTable())->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
-            if($orderLog){
-                $userInfo = DB::table('users')->where('id' , $order->user)->first();
 
+            if($order->is_update_user_point ) {
+                /**
+                 * ***************************************************************************
+                 * 添加用户积分
+                 * ***************************************************************************
+                 */
+                $userInfo = DB::table('users')->where('id', $order->user)->first();
                 $userPoint = $userInfo->points - $order->out_points + $order->in_points;
-
-                if($userPoint != $userInfo->points) {
+                if ($userPoint != $userInfo->points) {
                     $userModel = new User();
                     DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
-                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为'.$userPoint);
+                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为' . $userPoint);
                 }
-
-                //更新店铺余额
+            }elseif($order->is_update_store_money){
+                /**
+                 * ***************************************************************************
+                 * 扣除店铺余额
+                 * ***************************************************************************
+                 */
                 $money = $storeInfo->money - $order->pay_total;
                 $storeConfigModel->updateMoney($storeId, $money);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
+            }elseif($order->is_update_store_point){
+
+                /**
+                 * ***************************************************************************
+                 * 扣除店铺积分
+                 * ***************************************************************************
+                 */
+                $point = $storeInfo->point - $order->in_opint + $order->out_points;
+                $storeConfigModel->updatePoint($storeId, $point);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$point);
             }
+
 
             DB::table($this->table)->where('id', $orderId)->update(array(
                 'status' => Config::get('orderstatus.refunded')['status'],
