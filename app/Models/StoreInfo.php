@@ -113,13 +113,13 @@ class StoreInfo extends Model{
         $week_tmp   = date('w', strtotime($today));
 
         $weekTime = array(
-            '星期一',
-            '星期二',
-            '星期三',
-            '星期四',
-            '星期五',
-            '星期六',
-            '星期日',
+            '一',
+            '二',
+            '三',
+            '四',
+            '五',
+            '六',
+            '日',
         );
 
         $week = $weekTime[$week_tmp - 1];

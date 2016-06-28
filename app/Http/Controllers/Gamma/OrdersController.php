@@ -166,13 +166,11 @@ class OrdersController extends ApiController
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
 
-
             $refundNo = date('YmdHis' , time()) . $this->getSalt(4 , 1);
 
             $payTotal   = $orderInfo[0]->pay_total;
             //$payTotal   = 0.01;
             $orderNo    = $orderInfo[0]->out_trade_no;
-
 
             if($orderInfo[0]->pay_type_id == 1 || $orderInfo[0]->pay_type_id == 4) {
                 $type = 1;
