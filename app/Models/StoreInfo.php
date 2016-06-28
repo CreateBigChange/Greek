@@ -126,16 +126,22 @@ class StoreInfo extends Model{
         foreach ($info as $si){
 
             $weeks      = explode( ',' , $si->business_cycle);
-            $starTime   = explode( '-' , $si->business_time)[0];
-            $endTime    = explode( '-' , $si->business_time)[1];
+            if($si->business_time) {
+                $starTime = explode('-', $si->business_time)[0];
+                $endTime = explode('-', $si->business_time)[1];
 
-            $si->isDoBusiness = 1;
-            if(!in_array($week, $weeks)){
+                if($time <= $starTime || $time >$endTime ){
+                    $si->isDoBusiness = 0;
+                }
+            }else{
                 $si->isDoBusiness = 0;
             }
 
-            if($time <= $starTime || $time >$endTime ){
-                $si->isDoBusiness = 0;
+            $si->isDoBusiness = 1;
+            if($si->business_cycle != "每天") {
+                if (!in_array($week, $weeks)) {
+                    $si->isDoBusiness = 0;
+                }
             }
 
         }
