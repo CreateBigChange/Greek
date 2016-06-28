@@ -24,7 +24,7 @@ class Jpush
         return json_encode($result);
     }
 
-    public function push( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default'){
+    public function push( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default' , $type="new"){
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
@@ -36,14 +36,10 @@ class Jpush
             $push->addTag($tag);
         }
 
-//        $content = icovn('gbk','utf-8',$content);
-//        $title = icovn('gbk','utf-8', $title);
-//        $sound = icovn('gbk','utf-8', $sound);
-
         $push->setNotificationAlert('急所需商家版')
             //->addAllAudience()
             ->addAndroidNotification($content, $title, 1, array("type"=>"new"))
-            ->addIosNotification($content, $sound, 1 , true, 'iOS ORDER NEW', array("type"=>"new"))
+            ->addIosNotification($content, $sound, 1 , true, 'iOS ORDER NEW', array("type"=>$type))
             ->setMessage($content, $title, 'type', array("type"=>"new"))
             ->setOptions(100000, 3600, null, false);
 

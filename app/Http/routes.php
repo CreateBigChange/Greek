@@ -174,6 +174,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//意见反馈
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
+
+
+		Route::post('/redis', 'OrdersController@getOrderNum');
+
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
@@ -254,6 +258,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
+
+	Route::post('/redis', 'OrdersController@test');
 
 });
 

@@ -160,6 +160,24 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
 
+        $orderInfo = $this->_model->getOrderList(array('store' => $this->storeId , 'id'=>$id , 'user'=>$this->userId));
+        if(!isset($orderInfo[0])){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+        /**
+         * **************************************
+         * 订单状态
+         * **************************************
+         */
+        foreach (Config::get('orderstatus') as $status) {
+            if ($orderInfo[0]->status == $status['status']) {
+                if (!in_array($status, $status['next'])) {
+                    return response()->json(Message::setResponseInfo('FAILED'));
+                }
+            }
+        }
+
         if($this->_model->changeStatus($this->storeId , $this->userId , $id , $status)){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
@@ -327,7 +345,8 @@ class OrdersController extends ApiController
                     array('ios' , 'android'),
                     "$order->store_id",
                     array(),
-                    $bell
+                    $bell,
+                    'new'
                 ));
 
                 return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -484,7 +503,8 @@ class OrdersController extends ApiController
                 array('ios' , 'android'),
                 "$order->store_id",
                 array(),
-                $bell
+                $bell,
+                'accident'
             ));
 
             return response()->json(Message::setResponseInfo('SUCCESS'));
@@ -612,4 +632,9 @@ class OrdersController extends ApiController
 
     }
 
+    public function test(){
+
+        Redis::set('store'  , 1 );
+        return response()->json(Message::setResponseInfo('SUCCESS'));
+    }
 }

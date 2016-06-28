@@ -11,7 +11,7 @@ return [
     'paid' => [
         'status'    => 2,
         'msg'       => "已付款",
-        'next'      => array(4)
+        'next'      => array(4 , 13)
     ] ,
 
 //    'accepted' => [
@@ -23,13 +23,13 @@ return [
     'on_the_way' => [
         'status'    => 4,
         'msg'       => "配送中",
-        'next'      => array(5)
+        'next'      => array(5 , 13)
     ] ,
 
     'arrive' => [
         'status'    => 5,
         'msg'       => "已送达",
-        'next'      => array(1,13)
+        'next'      => array(1 , 13)
     ] ,
 
     'no_pay' => [

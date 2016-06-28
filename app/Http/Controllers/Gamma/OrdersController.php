@@ -9,7 +9,7 @@ namespace App\Http\Controllers\Gamma;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Validator , Input;
+use Validator , Input , Redis;
 use Session , Cookie , Config , Log;
 
 use App\Http\Controllers\ApiController;
@@ -145,12 +145,14 @@ class OrdersController extends ApiController
         if(!isset($orderInfo[0])){
             return response()->json(Message::setResponseInfo('FAILED'));
         }
-        if($orderInfo[0]->status == Config::get('orderstatus.refunding')['status']){
-            if($status != Config::get('orderstatus.refunded')['status']){
-                return response()->json(Message::setResponseInfo('FAILED'));
+
+        foreach (Config::get('orderstatus') as $status) {
+            if ($orderInfo[0]->status == $status['status']) {
+                if (!in_array($status, $status['next'])) {
+                    return response()->json(Message::setResponseInfo('FAILED'));
+                }
             }
         }
-
 
         /**
          * **************************************
@@ -481,4 +483,10 @@ class OrdersController extends ApiController
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
+    /**
+     * 获取通知的订单数量
+     */
+    public function getOrderNum(){
+        var_dump(Redis::get('store'));die;
+    }
 }

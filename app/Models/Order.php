@@ -10,7 +10,7 @@ namespace App\Models;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-use Config , Log;
+use Config , Log , Redis;
 
 use Mockery\Exception;
 use App\Libs\BLogger;
@@ -219,7 +219,7 @@ class Order extends Model{
 
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
 
-            }elseif($status == Config::get('orderstatus.refunded')['status']){}
+            }
 
 
 
@@ -520,9 +520,17 @@ class Order extends Model{
 //            return Message::setResponseInfo('MONEY_NOT_EQUAL');
 //        }
 
-        //如果是余额支付
+        /**
+         * *********************************
+         * 如果是余额支付
+         * *********************************
+         */
         if($payType->id == Config::get('paytype.money')) {
-            //用户余额是否充足
+            /**
+             * *********************************
+             * 用户余额是否充足
+             * *********************************
+             */
             $isAmpleMoney = $userModel->isAmpleMoney($userId, $payNum);
             if ($isAmpleMoney === false) {
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户余额不足');
@@ -535,7 +543,11 @@ class Order extends Model{
         $storeConfigModel = new StoreConfig();
         $storeInfo = $storeModel->getStoreInfo($order->store_id);
 
-        //店铺积分是否充足
+        /**
+         * *********************************
+         * 店铺积分是否充足
+         * *********************************
+         */
         if($storeInfo->point < $order->out_points){
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
             return Message::setResponseInfo('FAILED');
@@ -547,17 +559,33 @@ class Order extends Model{
             //加上本次订单赠送的积分
             //$isAmplePoint += $order->out_points;
 
-            //更新用户积分
+            /**
+             * *********************************
+             * 更新用户积分
+             * *********************************
+             */
             $userModel->updatePoint($userId, $isAmplePoint);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除用户'.$userId.'积分成功,当前积分为' . $isAmplePoint);
 
-            //更新店铺积分
+            /**
+             * *********************************
+             * 更新店铺积分
+             * *********************************
+             */
             $storeConfigModel->updatePoint($order->store_id, ($storeInfo->point - $order->out_points));
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除店铺'.$order->store_id.'积分成功,当前积分为' . ($storeInfo->point - $order->out_points));
 
-            //如果是余额支付
+            /**
+             * *********************************
+             * 如果是余额支付
+             * *********************************
+             */
             if($payType->id == Config::get('paytype.money')) {
-                //更新用户余额
+                /**
+                 * *********************************
+                 * 更新用户余额
+                 * *********************************
+                 */
                 $userModel->updateMoney($userId, $isAmpleMoney);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新用户余额成功,当前余额为' . $isAmpleMoney);
                 $payTime = date('Y-m-d H:i:s' , time());
