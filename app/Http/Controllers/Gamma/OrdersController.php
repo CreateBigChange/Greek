@@ -107,9 +107,10 @@ class OrdersController extends ApiController
                 Redis::set("store:$storeId:accident", 0);
             }
 
-            if ($request->has('search')) {
-                $search['search'] = trim($request->get('search'));
-            }
+        }
+
+        if ($request->has('search')) {
+            $search['search'] = trim($request->get('search'));
         }
 
         $search['store'] = $this->storeId;
