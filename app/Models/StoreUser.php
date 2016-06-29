@@ -140,10 +140,18 @@ class StoreUser extends Model{
      * @return mixed
      */
     public function getShopUserToken($storeId){
-        return DB::table($this->table)
+        $token =  DB::table($this->table)
             ->select('remember_token')
             ->where('store_id' , $storeId)
             ->get();
+
+        $tokenArray = array();
+
+        foreach ($token as $t){
+            $tokenArray[] = $t->remember_token;
+        }
+
+        return $tokenArray;
     }
 
 }
