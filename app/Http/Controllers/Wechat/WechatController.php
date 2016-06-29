@@ -266,11 +266,6 @@ class WechatController extends ApiController
                 $storeModel = new StoreInfo;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
-//                /**
-//                 * 获取推送的别名
-//                 */
-//                $storeUserModel     = new StoreUser();
-//                $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
 
                 if(empty($store)){
                     return true;

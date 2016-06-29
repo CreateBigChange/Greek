@@ -24,13 +24,13 @@ class Jpush
         return json_encode($result);
     }
 
-    public function push( $content , $title ,$platform='all' , $alias=array() , $tag=array() , $sound='default' , $type="new"){
+    public function push( $content , $title ,$platform='all' , $alias='' , $tag=array() , $sound='default' , $type="new"){
         // 完整的推送示例,包含指定Platform,指定Alias,Tag,指定iOS,Android notification,指定Message等
         $push = $this->jpushObj->push();
 
         $push->setPlatform($platform);
 
-        if(!empty($alias)){
+        if('' != ($alias)){
             $push->addAlias($alias);
         }
         if(!empty($tag)){
