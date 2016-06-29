@@ -51,6 +51,7 @@ class OrdersController extends ApiController
      *      {
      *          search : 18401586654
      *          status : 1
+     *          isClearNotice : new
      *      }
      * @apiUse CODE_200
      *
@@ -97,8 +98,18 @@ class OrdersController extends ApiController
             );
         }
 
-        if($request->has('search')){
-            $search['search'] = trim($request->get('search'));
+        $storeId = $this->storeId;
+
+        if($request->has('isClearNotice')) {
+            if ($request->get('isClearNotice') == 'new') {
+                Redis::set("store:$storeId:new", 0);
+            } elseif ($request->get('isClearNotice') == 'accident') {
+                Redis::set("store:$storeId:accident", 0);
+            }
+
+            if ($request->has('search')) {
+                $search['search'] = trim($request->get('search'));
+            }
         }
 
         $search['store'] = $this->storeId;
@@ -503,7 +514,7 @@ class OrdersController extends ApiController
         $storeId = $this->storeId;
 
         Redis::set("store:$storeId:new" , 0);
-       Redis::set("store:$storeId:accident" , 0);
+        Redis::set("store:$storeId:accident" , 0);
 
         return response()->json(Message::setResponseInfo('SUCCESS' ));
     }
