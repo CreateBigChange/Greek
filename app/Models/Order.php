@@ -780,7 +780,8 @@ class Order extends Model{
                     DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
                     BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为' . $userPoint);
                 }
-            }elseif($order->is_update_store_money){
+            }
+            if($order->is_update_store_money){
                 /**
                  * ***************************************************************************
                  * 扣除店铺余额
@@ -789,7 +790,8 @@ class Order extends Model{
                 $money = $storeInfo->money - $order->pay_total;
                 $storeConfigModel->updateMoney($storeId, $money);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
-            }elseif($order->is_update_store_point){
+            }
+            if($order->is_update_store_point){
 
                 /**
                  * ***************************************************************************
