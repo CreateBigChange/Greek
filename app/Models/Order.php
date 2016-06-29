@@ -120,7 +120,7 @@ class Order extends Model{
         }
 
         $sql .= " GROUP BY o.id";
-        $sql .= " ORDER BY created_at DESC";
+        $sql .= " ORDER BY updated_at ASC , created_at DESC";
         $sql .= " LIMIT $offset , $length";
 
         $orders = DB::select($sql);
