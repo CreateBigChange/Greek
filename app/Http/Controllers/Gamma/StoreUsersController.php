@@ -87,6 +87,8 @@ class StoreUsersController extends ApiController
 
             $request->session()->put($sessionKey , $userInfo[0]);
 
+            $userInfo[0]->remember_token = $rememberToken['remember_token'];
+
             $cookie = Cookie::make(Config::get('session.store_app_login_cookie') , $sessionKey , Config::get('session.store_app_lifetime'));
 
             return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo[0]))->withCookie($cookie);

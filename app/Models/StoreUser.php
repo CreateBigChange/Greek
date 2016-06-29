@@ -134,4 +134,16 @@ class StoreUser extends Model{
 
         return $isLogin;
     }
+
+    /**
+     * @param $tel
+     * @return mixed
+     */
+    public function getShopUserToken($storeId){
+        return DB::table($this->table)
+            ->select('remember_token')
+            ->where('store_id' , $storeId)
+            ->get();
+    }
+
 }

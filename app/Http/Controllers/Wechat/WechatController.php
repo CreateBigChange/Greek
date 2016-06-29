@@ -162,29 +162,9 @@ class WechatController extends ApiController
 
             $prepayId = $result->prepay_id;
 
-//            $payLog = array();
-//            $payLog['trade_type']           = $attributes['trade_type'];
-//            $payLog['body']                 = $attributes['body'];
-//            $payLog['detail']               = $attributes['detail'];
-//            $payLog['out_trade_no']         = $attributes['out_trade_no'];
-//            $payLog['trade_type']           = $attributes['trade_type'];
-//            $payLog['body']                 = $attributes['body'];
-//            $payLog['detail']               = $attributes['detail'];
-//            $payLog['out_trade_no']         = $attributes['out_trade_no'];
-//            $payLog['total_fee']            = $attributes['total_fee'];
-//            $payLog['fee_type']             = $attributes['fee_type'];
-//            $payLog['spbill_create_ip']     = $order->spbill_create_ip;
-
             if($tradeType == 'JSAPI') {
                 $json = $payment->configForPayment($prepayId);
                 $json = json_decode($json);
-
-//                $payLog['openid']           = $attributes['openid'];
-//                $payLog['timeStamp']        = $json->timeStamp;
-//                $payLog['nonceStr']         = $json->nonceStr;
-//                $payLog['package']          = $json->package;
-//                $payLog['signType']         = $json->signType;
-//                $payLog['paySign']          = $json->paySign;
 
             }else if($tradeType == 'APP'){
                 $json = $payment->configForAppPayment($prepayId);
@@ -193,19 +173,9 @@ class WechatController extends ApiController
                     $json['packageValue'] = $json['package'];
                 }
 
-//                $payLog['timeStamp']        = $json['timestamp'];
-//                $payLog['nonceStr']         = $json['noncestr'];
-//                $payLog['package']          = $json['package'];
-//                $payLog['signType']         = '';
-//                $payLog['paySign']          = $json['sign'];
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
-
-//            $wechatPayLogModel = new WechatPayLog();
-//            if($wechatPayLogModel->addLog($payLog) && $this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
-//                return response()->json(Message::setResponseInfo('SUCCESS' , $json));
-//            }
             if($this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
             }
@@ -279,18 +249,6 @@ class WechatController extends ApiController
                 return 'Order not exist.';
             }
 
-//            $data = array(
-//                'appid'             => $notify->appid,
-//                'bank_type'         => $notify->bank_type,
-//                'cash_fee'          => $notify->cash_fee,
-//                'mch_id'            => $notify->mch_id,
-//                'result_code'       => $notify->result_code,
-//                'return_code'       => $notify->return_code,
-//                'sign'              => $notify->sign,
-//                'time_end'          => $notify->time_end,
-//                'transaction_id'    => $notify->transaction_id
-//            );
-
             //已经支付了
             if($order->pay_time){
                 return true;
@@ -307,6 +265,14 @@ class WechatController extends ApiController
                 $storeModel = new StoreInfo;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
+                /**
+                 * 获取推送的别名
+                 */
+                $storeUserModel     = new StoreUser();
+                $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
+
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($storeUser));
+
                 if(empty($store)){
                     return true;
                 }
@@ -318,17 +284,12 @@ class WechatController extends ApiController
                     "急所需有新订单啦,请及时处理",
                     "急所需新订单",
                     array('ios' , 'android'),
-                    "$order->store_id",
+                    $storeUser,
                     array(),
                     $bell
                 ));
 
             }
-
-//            //更新微信日志
-//            $wechatPayLogModel = new WechatPayLog();
-//            $wechatPayLogModel->updateWechatLog($outTradeNo , $data);
-
             // 你的逻辑
             return true; // 或者错误消息
         });
