@@ -798,7 +798,7 @@ class Order extends Model{
                  * 扣除店铺积分
                  * ***************************************************************************
                  */
-                $point = $storeInfo->point - $order->in_opint + $order->out_points;
+                $point = $storeInfo->point - $order->in_points + $order->out_points;
                 $storeConfigModel->updatePoint($storeId, $point);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$point);
             }
