@@ -717,7 +717,7 @@ class Order extends Model{
             'consignee_county'              => $address->county,
             'consignee_address'             => $address->address,
             'consignee_street'              => $address->street,
-            'updated_at'            => date('Y-m-d H:i:s' , time())
+            'updated_at'                    => date('Y-m-d H:i:s' , time())
         );
 
         return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data);
