@@ -272,7 +272,7 @@ class WechatController extends ApiController
                 $storeUserModel     = new StoreUser();
                 $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($storeUser));
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($storeUser);
 
                 if(empty($store)){
                     return true;
