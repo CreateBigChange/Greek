@@ -75,7 +75,7 @@ class StoreUsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
-            //$request->session()->getHandler()->destroy($userInfo[0]->remember_token);
+            $request->session()->getHandler()->destroy($userInfo[0]->remember_token);
 
             $sessionKey = $this->getSalt(16);
 
