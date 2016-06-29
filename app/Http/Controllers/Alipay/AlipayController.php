@@ -17,7 +17,6 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\Order;
 use App\Models\StoreInfo;
-use App\Models\StoreUser;
 
 
 use App\Libs\Message;
@@ -177,12 +176,6 @@ class AlipayController extends ApiController
             $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
-            /**
-             * 获取推送的别名
-             */
-            $storeUserModel     = new StoreUser();
-            $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
-
             if(empty($store)){
                 return true;
             }
@@ -194,7 +187,7 @@ class AlipayController extends ApiController
                 "急所需有新订单啦,请及时处理",
                 "急所需新订单",
                 array('ios' , 'android'),
-                $storeUser,
+                "$order->store_id",
                 array(),
                 $bell
             ));

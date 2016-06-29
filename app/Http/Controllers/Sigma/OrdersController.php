@@ -19,7 +19,6 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\Order;
 use App\Models\StoreInfo;
-use App\Models\StoreUser;
 use App\Models\OrderLog;
 use App\Models\OrderComplaint;
 use App\Models\OrderEvaluate;
@@ -332,11 +331,6 @@ class OrdersController extends ApiController
             if($this->_model->pay($orderId , $payNum['data'] , $payType)){
                 $storeModel = new StoreInfo;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
-                /**
-                 * 获取推送的别名
-                 */
-                $storeUserModel     = new StoreUser();
-                $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
 
                 if(empty($store)){
                     return true;
@@ -349,7 +343,7 @@ class OrdersController extends ApiController
                     "急所需有新订单啦,请及时处理",
                     "急所需新订单",
                     array('ios' , 'android'),
-                    $storeUser,
+                    "$order->store_id",
                     array(),
                     $bell,
                     'new'
@@ -496,12 +490,6 @@ class OrdersController extends ApiController
             $storeModel = new StoreInfo;
             $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
-            /**
-             * 获取推送的别名
-             */
-            $storeUserModel     = new StoreUser();
-            $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
-
             if(empty($store)){
                 return response()->json(Message::setResponseInfo('FAILED'));
             }
@@ -519,7 +507,7 @@ class OrdersController extends ApiController
                 "急所需有退款订单,请及时处理",
                 "急所需意外订单",
                 array('ios' , 'android'),
-                $storeUser,
+                "$order->store_id",
                 array(),
                 $bell,
                 'accident'

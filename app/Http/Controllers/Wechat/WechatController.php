@@ -10,7 +10,6 @@ use Session , Cookie , Config , Log , Validator;
 
 use App\Models\Order;
 use App\Models\StoreInfo;
-use App\Models\StoreUser;
 use App\Models\WechatPayLog;
 
 use App\Libs\Message;
@@ -177,6 +176,7 @@ class WechatController extends ApiController
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode($json));
+
             if($this->_model->updateOrderOutTradeNo($orderId, $attributes['out_trade_no'])){
                 return response()->json(Message::setResponseInfo('SUCCESS' , $json));
             }
@@ -266,13 +266,11 @@ class WechatController extends ApiController
                 $storeModel = new StoreInfo;
                 $store = $storeModel->getStoreList(array('ids'=>$order->store_id));
 
-                /**
-                 * 获取推送的别名
-                 */
-                $storeUserModel     = new StoreUser();
-                $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
-
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($storeUser);
+//                /**
+//                 * 获取推送的别名
+//                 */
+//                $storeUserModel     = new StoreUser();
+//                $storeUser          = $storeUserModel->getShopUserToken($order->store_id);
 
                 if(empty($store)){
                     return true;
@@ -285,7 +283,7 @@ class WechatController extends ApiController
                     "急所需有新订单啦,请及时处理",
                     "急所需新订单",
                     array('ios' , 'android'),
-                    $storeUser,
+                    "$order->store_id",
                     array(),
                     $bell
                 ));
