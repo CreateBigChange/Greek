@@ -21,13 +21,14 @@ class Jpush extends Job implements ShouldQueue
     private $content;
     private $title;
     private $sound;
+    private $type;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct( $content , $title , $platform='all' , $alias='' , $tag=array() , $sound='default')
+    public function __construct( $content , $title , $platform='all' , $alias='' , $tag=array() , $sound='default' , $type = 'new')
     {
         $this->platform         = $platform;
         $this->alias            = $alias;
@@ -35,6 +36,7 @@ class Jpush extends Job implements ShouldQueue
         $this->content          = $content;
         $this->title            = $title;
         $this->sound            = $sound;
+        $this->type             = $type;
     }
 
     /**
@@ -46,7 +48,7 @@ class Jpush extends Job implements ShouldQueue
     {
         $jpush = new JpushLib();
 
-        return $jpush->push($this->content , $this->title , $this->platform , $this->alias);
+        return $jpush->push($this->content , $this->title , $this->platform , $this->alias , $this->tag , $this->sound , $this->type);
     }
 
     public function failed(){

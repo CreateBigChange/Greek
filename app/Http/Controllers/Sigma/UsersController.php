@@ -961,17 +961,32 @@ class UsersController extends ApiController
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
         }
 
+        /**
+         * *************************************************
+         * 判断此用户是否有帮定过手机号,如果绑定了需要验证就手机
+         * *************************************************
+         */
+        $user               = $this->_model->getUserInfoById($this->userId);
+        if(!empty($user->mobile)){
+            return response()->json(Message::setResponseInfo('HAVE_MOBILE'));
+        }
+//        else{
+//            /**
+//             * **********************************************************
+//             * 判断此用户是否有帮定过手机号,如果没有绑定手机,则是微信登录的,
+//             * 需要看是否有其他用户绑定过此手机,如果绑定,则将此账户也手机号绑定
+//             * **********************************************************
+//             */
+//
+//        }
+
         //判断是否有其他用户绑定了此手机号
         //使用此接口理论上是没有用户绑定此手机号的
         $user               = $this->_model->getUserInfoByMobile($mobile);
         if($user){
             return response()->json(Message::setResponseInfo('MOBILE_BIND'));
         }
-        //判断此用户是否有帮定过手机号
-        $user               = $this->_model->getUserInfoById($this->userId);
-        if(!empty($user->mobile)){
-            return response()->json(Message::setResponseInfo('HAVE_MOBILE'));
-        }
+
 
 
         $data = array();
