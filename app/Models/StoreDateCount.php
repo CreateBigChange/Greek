@@ -33,7 +33,7 @@ class StoreDateCount extends Model
             ->where('hour' , $h)
             ->first()
         ){
-            return DB::table($this->table)->increment('visiting_number');
+            return DB::table($this->table)->where('store_id' , $storeId)->increment('visiting_number');
         }else{
             return DB::table($this->table)->insert(array(
                 'date'                  => date('Y-m-d H:i:s' , time()),

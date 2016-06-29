@@ -663,6 +663,21 @@ class Order extends Model{
             $new = $new + 1;
             Redis::set("store:$order->store_id:new"  , $new );
 
+            /**
+             * *************************************
+             * 增加商品销售数量以及减少库存
+             * *************************************
+             */
+            $orderInfoModel = new OrderInfo();
+            $orderInfo = DB::table($orderInfoModel->getTable())->where('order_id' , $orderId)->get();
+
+            $storeGoodsModel = new StoreGoods();
+            foreach ($orderInfo as $oi){
+                DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('out_num' , $oi->num);
+                DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('stock' , $oi->num);
+            }
+
+
 
             return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
 
@@ -694,13 +709,14 @@ class Order extends Model{
         }
 
         $data = array(
-            'consignee'             => $address->consignee,
-            'consignee_id'          => $address->id,
-            'consignee_tel'         => $address->mobile,
-            'consignee_province'    => $address->province,
-            'consignee_city'        => $address->city,
-            'consignee_county'      => $address->county,
-            'consignee_address'     => $address->address,
+            'consignee'                     => $address->consignee,
+            'consignee_id'                  => $address->id,
+            'consignee_tel'                 => $address->mobile,
+            'consignee_province'            => $address->province,
+            'consignee_city'                => $address->city,
+            'consignee_county'              => $address->county,
+            'consignee_address'             => $address->address,
+            'consignee_street'              => $address->street,
             'updated_at'            => date('Y-m-d H:i:s' , time())
         );
 
@@ -828,6 +844,22 @@ class Order extends Model{
             DB::table($orderLogModel->getTable())->insert($log);
 
             DB::commit();
+
+            /**
+             * *************************************
+             * 增加减少销售数量以及增加库存
+             * *************************************
+             */
+            $orderInfoModel = new OrderInfo();
+            $orderInfo = DB::table($orderInfoModel->getTable())->where('order_id' , $orderId)->get();
+
+            $storeGoodsModel = new StoreGoods();
+            foreach ($orderInfo as $oi){
+                DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('out_num' , $oi->num);
+                DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('stock' , $oi->num);
+            }
+
+
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
             return true;
         }catch (Exception $e){

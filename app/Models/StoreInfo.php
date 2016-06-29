@@ -158,7 +158,7 @@ class StoreInfo extends Model{
                 $starTime = explode('-', $si->business_time)[0];
                 $endTime = explode('-', $si->business_time)[1];
 
-                if($time <= $starTime || $time >$endTime ){
+                if($time <= $starTime || $time > $endTime ){
                     $si->isDoBusiness = 0;
                 }
             }else{
