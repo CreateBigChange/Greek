@@ -77,6 +77,7 @@ class Order extends Model{
                     o.remark,
                     o.refund_reason,
                     o.created_at,
+                    o.updated_at,
                     u.points,
                     u.money,
                     u.nick_name,
@@ -120,7 +121,7 @@ class Order extends Model{
         }
 
         $sql .= " GROUP BY o.id";
-        $sql .= " ORDER BY updated_at ASC , created_at DESC";
+        $sql .= " ORDER BY o.updated_at ASC , o.created_at DESC";
         $sql .= " LIMIT $offset , $length";
 
         $orders = DB::select($sql);
