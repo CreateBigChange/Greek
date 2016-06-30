@@ -99,6 +99,15 @@ class StoreNav extends Model{
 
     /**
      *
+     * 获取栏目
+     * @param storeId   number
+     */
+    public function getNavLast($storeId){
+        return DB::table($this->table)->where('store_id' , $storeId)->where('is_del' , 0)->orderBy('sort','DESC')->first();
+    }
+
+    /**
+     *
      * 获取单个栏目
      * @param navId     number
      * @param storeId   number

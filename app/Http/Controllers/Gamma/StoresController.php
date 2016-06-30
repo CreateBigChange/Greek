@@ -633,6 +633,13 @@ class StoresController extends ApiController
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
         $storeNavModel = new StoreNav;
+
+        $navLast = $storeNavModel->getNavLast($this->storeId);
+
+        if($navLast) {
+            $data['sort'] = $navLast->sort + 1;
+        }
+
         $navId = $storeNavModel->addNav($data);
 
         if($navId){
