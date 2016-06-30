@@ -7,6 +7,8 @@ use Session , Config , Cookie;
 use App\Libs\Message;
 use Illuminate\Http\Response;
 
+use App\Libs\BLogger;
+
 class UserClientCheckLogin
 {
     /**∑
@@ -28,6 +30,8 @@ class UserClientCheckLogin
         if(!isset($userInfo->id)){
             return response()->json(Message::setResponseInfo('RELOGIN'));
         }
+
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_SERVER);
 
         return $next($request);
     }
