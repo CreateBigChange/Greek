@@ -31,7 +31,7 @@ class CheckLogin
         }
 
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(111);
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_SERVER);
 
         return $next($request);
     }
