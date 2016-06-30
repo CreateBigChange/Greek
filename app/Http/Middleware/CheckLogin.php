@@ -31,7 +31,7 @@ class CheckLogin
         }
 
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(get_headers("http://preview.jisxu.com"));
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(getallheaders());
 
         return $next($request);
     }
