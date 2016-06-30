@@ -161,7 +161,7 @@ class StoreGoods extends Model{
      * @param ids   array
      * @param data   array
      */
-    public function del($storeId , $ids , $data){
+    public function updateUtatus($storeId , $ids , $data){
         return DB::table($this->table)->whereIn('id' , $ids)->where('store_id' , $storeId)->update($data);
     }
 

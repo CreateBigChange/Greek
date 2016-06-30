@@ -501,7 +501,7 @@ class StoresController extends ApiController
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
         $storeGoodsModel = new StoreGoods;
-        if($storeGoodsModel->updateUtatus($this->storeId,  $ids , $data )){
+        if($storeGoodsModel->updateStatus($this->storeId,  $ids , $data )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
@@ -538,7 +538,7 @@ class StoresController extends ApiController
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
         $storeGoodsModel = new StoreGoods;
-        if($storeGoodsModel->del($this->storeId,  $ids , $data )){
+        if($storeGoodsModel->updateStatus($this->storeId,  $ids , $data )){
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
