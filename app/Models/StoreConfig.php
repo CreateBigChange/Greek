@@ -22,10 +22,17 @@ class StoreConfig extends Model{
     }
 
     /**
-     * 更新商铺余额
+     * 更新商铺可提现金额
      */
     public function updateMoney($storeId , $money){
         return DB::table($this->table)->where('store_id' , $storeId)->update(array('money'=>$money));
+    }
+
+    /**
+     * 更新商铺余额
+     */
+    public function updateBalance($storeId , $balance){
+        return DB::table($this->table)->where('store_id' , $storeId)->update(array('balance'=>$balance));
     }
 
     /**

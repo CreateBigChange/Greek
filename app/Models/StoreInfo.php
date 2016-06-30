@@ -51,6 +51,7 @@ class StoreInfo extends Model{
                       sc.bell,
                       sc.point,
                       sc.money,
+                      sc.balance,
                       sc.notice,
                       si.is_del,
                       si.created_at,

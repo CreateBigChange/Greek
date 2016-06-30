@@ -995,7 +995,8 @@ class StoresController extends ApiController
 
         $storeInfo = $this->_model->getStoreInfo($this->storeId);
 
-        $orderCount->cash = $storeInfo->money;
+        $orderCount->cash       = $storeInfo->money;
+        $orderCount->balance    = $storeInfo->balance;
 
         return view('count' , (Array)$orderCount);
     }

@@ -28,8 +28,8 @@
 				<span class="data-title">总计营收</span>
 			</li>
 			<li>
-				<span class="data-num">{{ $turnover_user }}</span><br/>
-				<span class="data-title">平均客单价</span>
+				<span class="data-num">{{ $balance }}</span><br/>
+				<span class="data-title">余额</span>
 			</li>
 			<li>
 				<span class="data-num">{{ $cash }}</span><br/>

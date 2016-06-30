@@ -205,8 +205,8 @@ class Order extends Model{
                 if(!$storeInfo){
                     return false;
                 }
-                $money = $storeInfo->money + $orderInfo->pay_total;
-                $storeConfigModel->updateMoney($storeId, $money);
+                $balance = $storeInfo->balance + $orderInfo->pay_total;
+                $storeConfigModel->updateBalance($storeId, $balance);
 
                 /**
                  * ****************************************************
@@ -215,7 +215,7 @@ class Order extends Model{
                  */
                 $storeConfigModel->updatePoint($storeId, ($storeInfo->point + $orderInfo->in_points));
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$money);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$balance);
 
                 /**
                  * ****************************************************
@@ -551,7 +551,11 @@ class Order extends Model{
             return Message::setResponseInfo('POINT_NOT_AMPLE');
         }
 
-        //计算需要支付的数量
+        /**
+         * *********************************
+         * 计算需要支付的数量
+         * *********************************
+         */
         $payNum = $order->total + $order->deliver - ($order->in_points / 100);
         $payNum = round($payNum , 2);
 
@@ -654,14 +658,14 @@ class Order extends Model{
 
             $storeId = $order->store_id;
 
-            /**
-             * **************************
-             * 添加新订单通知的数量
-             * **************************
-             */
-            $new =  Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
-            $new = $new + 1;
-            Redis::set("store:$order->store_id:new"  , $new );
+//            /**
+//             * **************************
+//             * 添加新订单通知的数量
+//             * **************************
+//             */
+//            $new =  Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
+//            $new = $new + 1;
+//            Redis::set("store:$order->store_id:new"  , $new );
 
             /**
              * *************************************
@@ -808,8 +812,8 @@ class Order extends Model{
                  * 扣除店铺余额
                  * ***************************************************************************
                  */
-                $money = $storeInfo->money - $order->pay_total;
-                $storeConfigModel->updateMoney($storeId, $money);
+                $balance = $storeInfo->balance - $order->pay_total;
+                $storeConfigModel->updateBalance($storeId, $balance);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
             }
             if($order->is_update_store_point){
