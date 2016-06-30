@@ -24,6 +24,7 @@ class StoreActivity extends Model{
             ->where('a.is_del' , 0)
             ->where('a.is_open' , 1)
             ->whereIn('store_id' , $storeIds)
+            ->orderBy('sort' , 'asc')
             ->get();
     }
 
