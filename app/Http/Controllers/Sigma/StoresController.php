@@ -122,7 +122,7 @@ class StoresController extends ApiController
         $search = array('ids'=>$ids );
 
         if($request->has('cid')) {
-            $search['cid'] = $request->get('cid');
+            $search['c_id'] = $request->get('cid');
 
         }
 

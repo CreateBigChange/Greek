@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\StoreConfig;
 use App\Models\StoreCategory;
+use App\Models\StoreActivity;
 
 class StoreInfo extends Model{
 
@@ -105,6 +106,14 @@ class StoreInfo extends Model{
 
         $info = DB::select($sql);
 
+        $ids = array();
+        foreach ($info as $si){
+            $ids[] = $si->id;
+        }
+
+        $storeActivityModel = new StoreActivity();
+
+        $activity = $storeActivityModel->getStoreActivityByStoreIds($ids);
 
         //计算店铺是否在营业时间内
         $today      = date('Y-m-d' , time());
@@ -125,6 +134,14 @@ class StoreInfo extends Model{
         $week = $weekTime[$week_tmp - 1];
 
         foreach ($info as $si){
+
+            $si->activity = array();
+            foreach ($activity as $a){
+                if($si->id == $a->store_id){
+                    $si->activity[] = $a;
+                }
+            }
+
             $si->isDoBusiness = 1;
 
             if($si->business_cycle == "每天"){

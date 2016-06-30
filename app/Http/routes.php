@@ -246,6 +246,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
 	Route::post('/store/nav/{storeId}', 'StoresController@nav');
 	Route::post('/store/category', 'StoresController@storeCategory');
+	Route::post('/store/activity' , 'StoresController@getStoreActivity');
 
 	Route::post('/banner/list', 'ActivityController@getBannerList');
 
