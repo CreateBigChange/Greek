@@ -46,6 +46,9 @@ class Jpush extends Job implements ShouldQueue
      */
     public function handle()
     {
+        if ($this->attempts() > 3) {
+            return true;
+        }
         $jpush = new JpushLib();
 
         return $jpush->push($this->content , $this->title , $this->platform , $this->alias , $this->tag , $this->sound , $this->type);
