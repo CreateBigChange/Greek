@@ -814,7 +814,7 @@ class Order extends Model{
                  */
                 $balance = $storeInfo->balance - $order->pay_total;
                 $storeConfigModel->updateBalance($storeId, $balance);
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$money);
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$balance);
             }
             if($order->is_update_store_point){
 
