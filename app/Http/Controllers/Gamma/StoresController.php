@@ -518,7 +518,7 @@ class StoresController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/gamma/store/goods/dels
      *
-     * @apiParam {array} ids 商品IDS
+     * @apiParam {json} ids 商品IDS
      *
      * @apiParamExample {json} Request Example
      *      POST /gamma/store/goods/dels
@@ -532,9 +532,9 @@ class StoresController extends ApiController
 
         $data = array();
 
-        $ids                    = $request->get('ids');
+        $ids                    = json_decode($request->get('ids'));
 
-        $data['is_del']        = 1;
+        $data['is_del']         = 1;
         $data['updated_at']     = date('Y-m-d H:i:s' , time());
 
         $storeGoodsModel = new StoreGoods;
