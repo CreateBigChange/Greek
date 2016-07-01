@@ -14,10 +14,6 @@ class StoreGoods extends Model{
 
     protected $table       = 'store_goods';
 
-    static function getStoreGoodsTable(){
-        return self::$table;
-    }
-
     /**
      * 获取商品列表
      * @param storeId   number

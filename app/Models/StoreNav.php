@@ -124,8 +124,10 @@ class StoreNav extends Model{
      */
     public function delNav($navId , $storeId){
 
+        $storeGoodsModel = new StoreGoods();
+
         //统计此栏目下是否有售商品
-        $goodsNum = DB::table(StoreGoods::getStoreGoodsTable())->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
+        $goodsNum = DB::table($storeGoodsModel->getTable())->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
         if($goodsNum != 0){
             if($this->xiaJiaNavGoods($navId , $storeId)){
                 return DB::table($this->table)->where('id' , $navId)->update(array('is_del' => 1));

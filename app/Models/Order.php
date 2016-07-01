@@ -800,6 +800,9 @@ class Order extends Model{
                  */
                 $userInfo = DB::table('users')->where('id', $order->user)->first();
                 $userPoint = $userInfo->points - $order->out_points + $order->in_points;
+                if($userPoint < 0){
+                    return false;
+                }
                 if ($userPoint != $userInfo->points) {
                     $userModel = new User();
                     DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
