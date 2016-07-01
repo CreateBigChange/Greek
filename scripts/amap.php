@@ -49,6 +49,8 @@ function amap()
 
             $amap = json_decode(post($url, $param));
 
+            var_dump($amap);die;
+
             if (empty($amap) && $amap->status == '1') {
                 $sign['is_sign'] = 1;
                 $sign['amap_id'] = $amap->_id;
