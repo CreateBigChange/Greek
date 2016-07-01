@@ -791,24 +791,35 @@ class Order extends Model{
              */
             //$orderLog = DB::table($orderLogModel->getTable())->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
 
-
-            if($order->is_update_user_point ) {
-                /**
-                 * ***************************************************************************
-                 * 添加用户积分
-                 * ***************************************************************************
-                 */
-                $userInfo = DB::table('users')->where('id', $order->user)->first();
-                $userPoint = $userInfo->points - $order->out_points + $order->in_points;
-                if($userPoint < 0){
-                    return false;
-                }
-                if ($userPoint != $userInfo->points) {
-                    $userModel = new User();
-                    DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
-                    BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为' . $userPoint);
-                }
+            /**
+             * ***************************************************************************
+             * 添加用户积分
+             * ***************************************************************************
+             */
+            $userInfo = DB::table('users')->where('id', $order->user)->first();
+            /**
+             * 加上用户消耗的积分
+             */
+            $userPoint = $userInfo->points + $order->in_points;
+            if($userPoint < 0){
+                return false;
             }
+
+            /**
+             * ***************************************************************************
+             * 是否给用户发放了积分
+             * ***************************************************************************
+             */
+            if($order->is_update_user_point ) {
+                $userPoint = $userPoint - $order->out_points;
+            }
+            if ($userPoint != $userInfo->points) {
+                $userModel = new User();
+                DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为' . $userPoint);
+            }
+
+
             if($order->is_update_store_money){
                 /**
                  * ***************************************************************************
