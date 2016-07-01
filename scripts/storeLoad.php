@@ -69,8 +69,8 @@ for ($row = 1; $row <= $highestRow; $row++){//行数是以第1行开始
     $storeNum ++ ;
 }
 
-//$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-$mysqli = new mysqli('127.0.0.1' , 'root' , '123456' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+//$mysqli = new mysqli('127.0.0.1' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
