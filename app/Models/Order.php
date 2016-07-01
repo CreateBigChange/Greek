@@ -1017,7 +1017,7 @@ class Order extends Model{
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
-        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
 
         return DB::select($sql);
 
@@ -1032,11 +1032,12 @@ class Order extends Model{
                     sum(`total`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
-        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
 
         $user = DB::table($this->table)->select("user")->where('store_id' , $storeId)->whereNotIn('status' , array(
             Config::get('orderstatus.no_pay')['status'],
-            Config::get('orderstatus.cancel')['status']
+            Config::get('orderstatus.cancel')['status'],
+            Config::get('orderstatus.refunded')['status']
         ))->groupBy('user')->get();
 
 
@@ -1083,7 +1084,7 @@ class Order extends Model{
                     `day`
                FROM $this->table";
         $sql .= " WHERE store_id = " . $storeId;
-        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status']. ',' . Config::get('orderstatus.refunded')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " GROUP BY day ORDER BY day ASC ";
@@ -1105,7 +1106,7 @@ class Order extends Model{
                     `day`
                FROM $this->table ";
         $sql .= " WHERE store_id = " . $storeId;
-        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " AND day IN (" . $day .")";
@@ -1128,7 +1129,7 @@ class Order extends Model{
                     `hour`                    
                FROM $this->table";
         $sql .= " WHERE store_id = " . $storeId;
-        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] .')';
+        $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status']. ',' . Config::get('orderstatus.refunded')['status'] .')';
         $sql .= " AND year = " . $year;
         $sql .= " AND month IN (" . $month .")";
         $sql .= " AND day IN (" . $day .")";
