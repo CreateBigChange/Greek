@@ -55,7 +55,6 @@ function amap()
 
                 $updateStore = "UPDATE store_info SET `is_sign` = 1 , `amap_id` = " . $amap->_id . " WHERE id = " . $storeData['id'];
 
-                echo $updateStore ." \n";die;
                 $mysqli->query($updateStore);
             }
         }
