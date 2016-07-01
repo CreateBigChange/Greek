@@ -509,8 +509,8 @@ class OrdersController extends ApiController
                 array('ios' , 'android'),
                 "$order->store_id",
                 array(),
-                $bell,
-                'accident'
+                "default",
+                "accident"
             ));
 
             return response()->json(Message::setResponseInfo('SUCCESS'));
