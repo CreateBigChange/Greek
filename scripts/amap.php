@@ -5,7 +5,7 @@ function amap()
     $config = [
 
         "key" => "c8149a3da34eaa5a1de69a34e1a42412",
-        "tableid" => "573984757bbf1905ead016e3",
+        "tableid" => "5739ae52305a2a1894e73386",
         "url" => "http://yuntuapi.amap.com/datamanage/data/create",
         "geo_url" => "http://restapi.amap.com/v3/geocode/geo",
         "regeo_url" => "http://restapi.amap.com/v3/geocode/regeo",
@@ -53,7 +53,9 @@ function amap()
                 $sign['is_sign'] = 1;
                 $sign['amap_id'] = $amap->_id;
 
-                $updateStore = "UPDATE store_info SET is_sign = 1 , amap_id = " . $amap->id . " WHERE id = " . $storeData['id'];
+                $updateStore = "UPDATE store_info SET `is_sign` = 1 , `amap_id` = " . $amap->id . " WHERE id = " . $storeData['id'];
+
+                echo $updateStore ." \n";die;
                 $mysqli->query($updateStore);
             }
         }
