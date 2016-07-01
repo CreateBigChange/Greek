@@ -129,7 +129,7 @@ class StoreNav extends Model{
         //统计此栏目下是否有售商品
         $goodsNum = DB::table($storeGoodsModel->getTable())->where('nav_id' , $navId)->where('store_id' , $storeId)->count();
         if($goodsNum != 0){
-            if($this->xiaJiaNavGoods($navId , $storeId)){
+            if($storeGoodsModel->xiaJiaNavGoods($navId , $storeId)){
                 return DB::table($this->table)->where('id' , $navId)->update(array('is_del' => 1));
             }else{
                 return false;
