@@ -76,7 +76,7 @@ if ($mysqli->connect_error) {
 }
 
 
-$storeId = 22;
+$storeId = 25;
 foreach ($store as $s) {
 
     $insertStore = "INSERT INTO store_infos(`id` , `c_id` , `name` , `id_card_img` , `business_license` , `province` , `city` , `county` , `address` , `contacts` , `contact_phone` , `location` , `created_at` , `updated_at`) VALUES ($storeId ,". 1 .",'" . $s['name']."', '". $s['id_card_img'] ."' ,'" . $s['business_license'] . "','".$s['province']."','".$s['city'] ."','".$s['county'] ."','" . $s['address']. "','" . $s['contacts'] . "','" . $s['contact_phone'] . "','" . $s['location'] . "','" . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
