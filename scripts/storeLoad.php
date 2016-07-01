@@ -26,16 +26,17 @@ $highestRow = $sheet->getHighestRow(); // 取得总行数
 $highestColumm = $sheet->getHighestColumn(); // 取得总列数
 
 
-$store = array();
+$store          = array();
 
 /** 循环读取每个单元格的数据 */
 $storeNum = 0;
-for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
-    $store[$storeNum] = array();
+for ($row = 1; $row <= $highestRow; $row++){//行数是以第1行开始
+    $store[$storeNum]           = array();
     for ($column = 'A'; $column <= $highestColumm; $column++) {//列数是以A列开始
 
         if($column == 'A'){
             $store[$storeNum]['name']                   = trim($sheet->getCell($column.$row)->getValue());
+            $store[$storeNum]['contacts']               = trim($sheet->getCell($column.$row)->getValue());
         }
         if($column == 'F'){
             $store[$storeNum]['id_card_img']            = trim($sheet->getCell($column.$row)->getValue());
@@ -61,64 +62,42 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
         if($column == 'P'){
             $store[$storeNum]['location']               = trim($sheet->getCell($column.$row)->getValue());
         }
+        if($column == 'O'){
+            $store[$storeNum]['logo']                   = trim($sheet->getCell($column.$row)->getValue());
+        }
     }
     $storeNum ++ ;
 }
 
-var_dump($store);die;
-
 //$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-//if ($mysqli->connect_error) {
-//    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-//}
-//
-//
-//foreach ($goods as $g) {
-//    $selectCategor  = "SELECT * FROM goods_categories WHERE name = '" . $g['category'] . "' limit 1";
-//    $selectBrand    = "SELECT * FROM goods_brand WHERE name  = '" . $g['brand'] . "' limit 1";
-//
-//    $categoryResult = $mysqli->query($selectCategor);
-//    $brandResult    = $mysqli->query($selectBrand);
-//
-//
-//    $categoryRow = $categoryResult->fetch_object();
-//    if ($categoryRow ) {
-//        unset($g['category']);
-//        $g['c_id'] = $categoryRow->id;
-//    }else{
-//        $g['c_id'] = 74;
-//    }
-//
-//    $brandRow = $brandResult->fetch_object();
-//    if ($brandRow) {
-//        unset($g['brand']);
-//        $g['b_id']  = $brandRow->id;
-//    }else{
-//        $insertBrand = "INSERT INTO goods_brand(`c_id` , `name` , `is_del` , `created_at` , `updated_at`) VALUES (". $g['c_id'] .",'" . $g['brand']."',0 ,'". date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
-//        $mysqli->query($insertBrand);
-//
-//        $selectBrand    = "SELECT * FROM goods_brand WHERE name = '" . $g['brand'] . "' limit 1";
-//
-//        $brandResult    = $mysqli->query($selectBrand);
-//        $brandRow = $brandResult->fetch_object();
-//        $g['b_id'] = $brandRow->id;
-//        unset($g['brand']);
-//
-//    }
-//
-//    $insertGoods = "INSERT INTO goods(`c_id` , `b_id` , `name` , `img` , `in_price` , `out_price` , `spec` , `created_at` , `updated_at`) VALUES (". $g['c_id'] ."," . $g['b_id'].", '". $g['name'] ."' ,'" . $g['img'] . "',".$g['in_price'].",".$g['out_price'] .",'".$g['spec'] ."','" . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
-//
-//    $result    = $mysqli->query($insertGoods);
-//    if($result){
-//        echo "成功插入一条,商品名称:".$g['name'];
-//    }else{
-//        echo "失败一条,商品名称:" . $g['name'];
-//    }
-//
-//    $results->free();
-//
-//}
-//
-//$mysqli->close();
+$mysqli = new mysqli('127.0.0.1' , 'root' , '123456' , 'zxshop');
+if ($mysqli->connect_error) {
+    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+}
+
+
+$storeId = 22;
+foreach ($store as $s) {
+
+    $insertStore = "INSERT INTO store_infos(`id` , `c_id` , `name` , `id_card_img` , `business_license` , `province` , `city` , `county` , `address` , `contacts` , `contact_phone` , `location` , `created_at` , `updated_at`) VALUES ($storeId ,". 1 .",'" . $s['name']."', '". $s['id_card_img'] ."' ,'" . $s['business_license'] . "','".$s['province']."','".$s['city'] ."','".$s['county'] ."','" . $s['address']. "','" . $s['contacts'] . "','" . $s['contact_phone'] . "','" . $s['location'] . "','" . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
+
+    $result    = $mysqli->query($insertStore);
+    if($result){
+
+        $insertStoreConfig  = "INSERT INTO store_configs(`store_id` , `store_logo` , `created_at` , `updated_at`) VALUES ($storeId , '" . $s['logo'] . "','"  . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
+        $insertStoreUser    = "INSERT INTO store_users(`store_id` , `account` , `real_name`  , `tel` , `created_at` , `updated_at`) VALUES ($storeId , '" . $s['contact_phone']. "','"  . $s['name'] . $s['contact_phone'] . "','"  . "','"  . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
+
+        $mysqli->query($insertStoreConfig);
+        $mysqli->query($insertStoreUser);
+
+        $storeId ++;
+        echo "成功插入一条,店铺名称:".$s['name']."\n";
+    }else{
+        echo "失败一条,店铺名称:" . $s['name']."\n";
+    }
+
+}
+
+$mysqli->close();
 
 ?>
