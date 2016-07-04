@@ -299,14 +299,14 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
-        //如果是积分全额支付
-        if($payNum['data'] == 0 && $outPoints != 0){
-            $payType = Config::get('paytype.money');
-
-            if(!$request->has('pay_password')){
-                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-            }
-        }
+//        //如果是积分全额支付
+//        if($payNum['data'] == 0 && $outPoints != 0){
+//            $payType = Config::get('paytype.money');
+//
+//            if(!$request->has('pay_password')){
+//                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+//            }
+//        }
 
         $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
         if(!isset($order[0])){
