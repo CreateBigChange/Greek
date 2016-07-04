@@ -872,9 +872,9 @@ class StoresController extends ApiController
         $orderCount = $orderModel->getOrderMonthPoint($storeId , $date);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array(
-            'usable_points'          => $storeInfo->point ? $storeInfo->point : 0,
-            'out_points'             => $orderCount[0]->out_points ? $orderCount[0]->out_points : 0,
-            'in_points'              => $orderCount[0]->in_points ? $orderCount[0]->in_points : 0
+            //'usable_points'          => $storeInfo->point ? $storeInfo->point : 0,
+            //'out_points'             => $orderCount[0]->out_points ? $orderCount[0]->out_points : 0,
+            //'in_points'              => $orderCount[0]->in_points ? $orderCount[0]->in_points : 0
         )));
     }
 
