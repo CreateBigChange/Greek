@@ -83,7 +83,7 @@ class AlipayController extends ApiController
         }
 
         $body = $info[0]->sname;
-        $detail = '';
+        $detail = $info[0]->sname . $info[0]->order_num;
         foreach ($info[0]->goods as $g) {
             $detail .= $g->name . '/';
         }

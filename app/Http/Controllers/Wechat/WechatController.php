@@ -116,10 +116,10 @@ class WechatController extends ApiController
 
         //微信下单
         $body       = $info[0]->sname;
-        $detail     = '';
-        foreach ($info[0]->goods as $g){
-            $detail .= $g->name . ' ' ;
-        }
+        $detail     = $info[0]->sname . $info[0]->order_num;
+//        foreach ($info[0]->goods as $g){
+//            $detail .= $g->name . ' ' ;
+//        }
 
         $attributes = array();
         $attributes['trade_type']       = $tradeType;
