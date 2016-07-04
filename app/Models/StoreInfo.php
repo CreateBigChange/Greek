@@ -52,6 +52,7 @@ class StoreInfo extends Model{
                       sc.money,
                       sc.balance,
                       sc.notice,
+                      sc.score,
                       si.is_del,
                       si.created_at,
                       si.updated_at,
