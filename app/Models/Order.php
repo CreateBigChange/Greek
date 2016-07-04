@@ -225,7 +225,7 @@ class Order extends Model{
 //                $point = $userInfo->points + $orderInfo->out_points;
 //                $userModel->updatePoint($userId, $point);
 
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
+                //BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
 
 //                $isUpdateUserPoint  = 1;
                 $isUpdateStoreMoney = 1;
