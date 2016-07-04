@@ -61,8 +61,6 @@ class Order extends Model{
                     o.order_num,
                     o.total,
                     o.deliver,
-                    o.in_points,
-                    o.out_points,
                     o.status,
                     o.store_id,
                     o.user,
