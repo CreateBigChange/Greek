@@ -265,7 +265,6 @@ class OrdersController extends ApiController
      *      POST /sigma/order/confirm/1
      *      {
      *          pay_type : 1,
-     *          out_points : 328,
      *          pay_password : 123456,
      *      }
      * @apiUse CODE_200
@@ -282,15 +281,15 @@ class OrdersController extends ApiController
 
         $userId     = $this->userId;
 
-        if(!$request->has('out_points')){
-            $outPoints = 0;
-        }else{
-            $outPoints  = $request->get('out_points');
-        }
+//        if(!$request->has('out_points')){
+//            $outPoints = 0;
+//        }else{
+//            $outPoints  = $request->get('out_points');
+//        }
         $payType    = $request->get('pay_type');
 
         //更新订单状态
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType );
 
         if($payNum['code'] != 0000){
             return $payNum;

@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
             //Commands\Inspire::class,
-            //Commands\StoreCount::class,
+            Commands\StoreCount::class,
+            Commands\OrderComplete::class,
     ];
 
     /**
