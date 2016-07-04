@@ -772,12 +772,12 @@ class Order extends Model{
                 return false;
             }
 
-            if($order->out_points != 0) {
-                $point = $storeInfo->balance_point + $order->out_points;
-
-                $storeConfigModel->updateBalancePoint($storeId, $point);
-                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
-            }
+//            if($order->out_points != 0) {
+//                $point = $storeInfo->balance_point + $order->out_points;
+//
+//                $storeConfigModel->updateBalancePoint($storeId, $point);
+//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
+//            }
 
             /**
              * ***************************************************************************
@@ -791,7 +791,7 @@ class Order extends Model{
              * 添加用户积分
              * ***************************************************************************
              */
-            $userInfo = DB::table('users')->where('id', $order->user)->first();
+//            $userInfo = DB::table('users')->where('id', $order->user)->first();
             /**
              * 加上用户消耗的积分
              */
