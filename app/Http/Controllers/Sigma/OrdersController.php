@@ -477,9 +477,9 @@ class OrdersController extends ApiController
         $userInfo =$userModel->getUserInfoById($userId);
 
         //积分不足不能退款
-        if($userInfo->points < $order->in_points - $order->out_points){
-            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
-        }
+//        if($userInfo->points < $order->in_points - $order->out_points){
+//            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+//        }
 
         $content    = $request->get('content');
 
