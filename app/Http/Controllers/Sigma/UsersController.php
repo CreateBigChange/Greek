@@ -995,6 +995,9 @@ class UsersController extends ApiController
                     /**
                      * 修改登录信息
                      */
+                    $userInfo->wx_unionid       = $data['wx_unionid'];
+                    $userInfo->wx_app_openid    = $data['wx_app_openid'];
+                    $userInfo->wx_pub_openid    = $data['wx_pub_openid'];
                     $sessionKey = $this->getSalt(16);
                     Session::put($sessionKey , $userInfo);
                     $cookie = Cookie::make(Config::get('session.sigma_login_cookie') , $sessionKey , Config::get('session.sigma_lifetime'));
@@ -1022,11 +1025,13 @@ class UsersController extends ApiController
                     /**
                      * 修改登录信息
                      */
+                    $user->mobile       = $mobile;
+                    $user->account      = $mobile;
                     $sessionKey = $this->getSalt(16);
-                    Session::put($sessionKey , $userInfo);
+                    Session::put($sessionKey , $user);
                     $cookie = Cookie::make(Config::get('session.sigma_login_cookie') , $sessionKey , Config::get('session.sigma_lifetime'));
                     $userInfo->token = $sessionKey;
-                    return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo))->withCookie($cookie);
+                    return response()->json(Message::setResponseInfo('SUCCESS' , $user))->withCookie($cookie);
 
                 }else{
                     return response()->json(Message::setResponseInfo('FAILED'));
