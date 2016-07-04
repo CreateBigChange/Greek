@@ -181,9 +181,9 @@ class OrdersController extends ApiController
             $userModel = new User();
             $userInfo =$userModel->getUserInfoById($orderInfo[0]->user);
 
-            if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
-                return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
-            }
+//            if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
+//                return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+//            }
 
             if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
                 return response()->json(Message::setResponseInfo('FAILED'));
