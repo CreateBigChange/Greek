@@ -140,12 +140,13 @@ class Order extends Model{
             $o->goodsNum = 0;
 
             //实际需要支付的数目
-            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
+//            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
+            $o->payTotal            = round($o->total + $o->deliver);
 
             //不算积分需要支付的数目
             $o->total               = $o->total + $o->deliver;
 
-            $o->inPointsToMoney     = $o->in_points / 100;
+            //$o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
@@ -433,7 +434,7 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
-        $userModel = new User;
+//        $userModel = new User;
 
 //        /**
 //         * 判断用户余额是否充足
