@@ -4,12 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use DB , Config;
+use DB , Config , Mail;
 use App\Models\Order;
 use App\Models\StoreConfig;
+use App\Models\StoreInfo;
 use Mockery\CountValidator\Exception;
 
 use App\Libs\BLogger;
+use NoahBuscher\Macaw\Macaw;
 
 class WithdrawMoney extends Command
 {
@@ -34,7 +36,7 @@ class WithdrawMoney extends Command
      */
     public function handle()
     {
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
+
         $orderModel         = new Order();
         $storeConfigModel   = new StoreConfig();
 
@@ -46,11 +48,10 @@ class WithdrawMoney extends Command
             Config::get('orderstatus.completd')['status']
         );
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
         /**
          * 获取几天前的订单
          */
-        //$day  = date("Y-m-d",strtotime("-1 day"));
+        //$day  = date("Y-m-d",strtotime("-3 day"));
         $day  = date("Y-m-d H:i:s", time());
 
         $order = DB::table($orderModel->getTable())
@@ -61,10 +62,18 @@ class WithdrawMoney extends Command
         $orderIds       = array();
         $storeMoney     = array();
         $storeIds       = array();
+        $storeOrderId   = array();
         foreach ($order as $o){
             $orderIds[] = $o->id;
 
             $storeIds[] = $o->store_id;
+
+            if(isset($storeOrderId[$o->store_id])){
+                $storeOrderId[$o->store_id][] = $o->id;
+            }else{
+                $storeOrderId[$o->store_id] = array();
+                $storeOrderId[$o->store_id][] = $o->id;
+            }
             /**
              * 店铺收入
              */
@@ -76,8 +85,11 @@ class WithdrawMoney extends Command
         }
 
         $storeIds = array_unique($storeIds);
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
+
         foreach ($storeIds as $s){
+            $storeInfoModel = new StoreInfo();
+            $storeInfo = DB::table($storeInfoModel->getTable())->where('id' , $s)->first();
+
             DB::beginTransaction();
             try {
 
@@ -90,6 +102,17 @@ class WithdrawMoney extends Command
                 $balanceMoney = bcsub($storeConfig->balance , $storeMoney[$s] , 2);
 
                 if($balanceMoney < 0){
+                    
+                    $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
+                    $email = "wuhui904107775@qq.com";
+                    $name = "吴辉";
+                    $storeName = $storeInfo->name;
+                    $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
+                    Mail::raw($emailContent, function($message) use($data)
+                    {
+                        $message->from('zxhy201510@163.com', "正兴宏业");
+                        $message->to($data['email'], $data['name'])->subject($data['storeName']);
+                    });
                     continue;
                 }
 
@@ -101,7 +124,21 @@ class WithdrawMoney extends Command
                 /**
                  * 更新订单状态
                  */
-                DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $orderIds)->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
+                DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $storeOrderId[$s])->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
+
+
+
+
+                $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
+                $email = "wuhui904107775@qq.com";
+                $name = "吴辉";
+                $storeName = $storeInfo->name;
+                $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
+                Mail::raw($emailContent, function($message) use($data)
+                {
+                    $message->from('zxhy201510@163.com', "正兴宏业");
+                    $message->to($data['email'], $data['name'])->subject($data['storeName']);
+                });
 
                 DB::commit();
 
