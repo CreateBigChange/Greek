@@ -40,7 +40,7 @@ class OrderComplete extends Command
         /**
          * 获取24小时的订单
          */
-        $day  = date("Y-m-d H:i:s", time() - (12 * 3600));
+        $day  = date("Y-m-d H:i:s", time() - (24 * 3600));
 
         $order = DB::table($orderModel->getTable())
             ->where('updated_at' , '<' , $day)
