@@ -99,6 +99,7 @@ class WithdrawMoney extends Command
                 DB::commit();
 
             }catch (Exception $e){
+                var_dump($e);
                 DB::rollBack();
             }
         }
