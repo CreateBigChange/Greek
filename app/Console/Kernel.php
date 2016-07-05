@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('WithdrawMoney')->daily();
-        $schedule->command('OrderComplete')->everyFiveMinutes();
+        $schedule->command('WithdrawMoney')->daily()->appendOutputTo('/tmp/script.log');
+        $schedule->command('OrderComplete')->everyFiveMinutes()->appendOutputTo('/tmp/script.log');
     }
 }
