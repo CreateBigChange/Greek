@@ -62,6 +62,7 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
 }
 
 $mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+//$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
@@ -76,6 +77,7 @@ foreach ($goods as $g) {
 
 
     $categoryRow = $categoryResult->fetch_object();
+
     if ($categoryRow ) {
         unset($g['category']);
         $g['c_id'] = $categoryRow->id;

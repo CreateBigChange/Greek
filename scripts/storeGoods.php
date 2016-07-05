@@ -25,8 +25,8 @@ $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
 $highestRow = $sheet->getHighestRow(); // 取得总行数
 $highestColumm = $sheet->getHighestColumn(); // 取得总列数
 //
-$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-//$mysqli = new mysqli('127.0.0.1' , 'root' , '123456' , 'zxshop');
+//$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
@@ -40,11 +40,14 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     $sname = trim($sheet->getCell('A'.$row)->getValue());
 
 
-    $selectStore    = "SELECT * from store_infos WHERE name ='". $sname ."' limit 1";
+//    $selectStore    = "SELECT * from store_infos WHERE name ='". $sname ."' limit 1";
+    $selectStore    = "SELECT * from store_infos"." limit 1";
     $result         = $mysqli->query($selectStore);
 
     if($result) {
         $resultRow = $result->fetch_object();
+
+        var_dump($resultRow);die;
 
         if($resultRow){
             $storeId = $resultRow->id;
@@ -83,6 +86,8 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     }
 
 }
+
+die;
 
 
 foreach ($storeGoods as $sgK => $sgV) {
