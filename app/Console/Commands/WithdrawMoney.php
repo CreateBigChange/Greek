@@ -71,7 +71,7 @@ class WithdrawMoney extends Command
             }
         }
 
-        var_dump($storeIds);die;
+        $storeIds = array_unique($storeIds);
 
         foreach ($storeIds as $s){
             DB::beginTransaction();
