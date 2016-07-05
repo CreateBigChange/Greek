@@ -92,6 +92,7 @@ class WithdrawMoney extends Command
                 /**
                  * 更新店铺可提现金额
                  */
+                $storeMoney[$s] += $storeConfig->money;
                 DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] , 'balance' => $balanceMoney));
                 /**
                  * 更新订单状态
