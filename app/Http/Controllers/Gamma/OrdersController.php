@@ -388,7 +388,7 @@ class OrdersController extends ApiController
                         $orderNum += $c->num;
                         if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
                         }
                     }
@@ -402,8 +402,6 @@ class OrdersController extends ApiController
                 'orderAccidentNum'      => $orderAccidentNum,
                 'orderCount'            => $orderCount
             );
-
-            var_dump($response);die;
 
         }elseif($type == 2){
             //获取本周日期
@@ -446,7 +444,7 @@ class OrdersController extends ApiController
                         $orderNum += $c->num;
                         if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
                         }
                     }
@@ -481,7 +479,7 @@ class OrdersController extends ApiController
                         $orderNum += $c->num;
                         if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']) {
+                        } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']) {
                             $orderAccidentNum += $c->num;
                         }
                     }
