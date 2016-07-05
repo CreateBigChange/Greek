@@ -18,7 +18,7 @@ class WithdrawMoney extends Command
      *
      * @var string
      */
-    protected $signature = 'WithdrawMoney';
+    protected $signature = 'withdraw-money';
 
     /**
      * The console command description.
