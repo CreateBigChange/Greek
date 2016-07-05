@@ -73,8 +73,6 @@ class WithdrawMoney extends Command
 
         $storeIds = array_unique($storeIds);
 
-        var_dump($storeMoney);die;
-
         foreach ($storeIds as $s){
             DB::beginTransaction();
             try {
@@ -82,7 +80,7 @@ class WithdrawMoney extends Command
                 $storeConfig = DB::table($storeConfigModel->getTable())->where('store_id' , $s)->first();
 
                 if(!$storeConfig){
-                    return false;
+                    continue;
                 }
 
                 $balanceMoney = $storeConfig->balance - $storeMoney[$s];
