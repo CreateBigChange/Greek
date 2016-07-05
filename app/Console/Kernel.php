@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-            Commands\WithdrawMoney::class,
-            Commands\OrderComplete::class,
+        Commands\WithdrawMoney::class,
+        Commands\OrderComplete::class,
     ];
 
     /**
