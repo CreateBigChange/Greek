@@ -196,6 +196,7 @@ class StoreInfo extends Model{
 
         }
 
+        var_dump($restStore);die;
         $info = array_merge($info , $restStore);
 
         return $info;
