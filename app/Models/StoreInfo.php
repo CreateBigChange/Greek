@@ -187,7 +187,7 @@ class StoreInfo extends Model{
                 $si->isDoBusiness = 0;
             }
 
-            if($si->isDoBusiness){
+            if($si->isDoBusiness == 0){
                 $restStore[] = $si;
                 unset($info[$i]);
             }
@@ -196,7 +196,6 @@ class StoreInfo extends Model{
 
         }
 
-        var_dump($restStore);die;
         $info = array_merge($info , $restStore);
 
         return $info;
