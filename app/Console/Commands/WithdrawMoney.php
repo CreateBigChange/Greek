@@ -48,7 +48,7 @@ class WithdrawMoney extends Command
          */
         //$day  = date("Y-m-d",strtotime("-1 day"));
         $day  = date("Y-m-d H:i:s", time() - (12 * 3600));
-        
+
         $order = DB::table($orderModel->getTable())
             ->where('updated_at' , '<' , $day)
             ->whereIn('status' , $status)
@@ -94,7 +94,7 @@ class WithdrawMoney extends Command
                 /**
                  * 更新订单状态
                  */
-                DB::table($orderModel->getTable())->where('store_id', $s)->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
+                DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $orderIds)->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
 
                 DB::commit();
 
