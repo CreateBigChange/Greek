@@ -1,13 +1,22 @@
 <?php
 
+
+error_reporting(E_ALL);
+
+date_default_timezone_set('Asia/ShangHai');
+
+/** PHPExcel_IOFactory */
+require_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+
 //
-//$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+//$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-$selectBrand = "SELECT * FROM goods";
+$selectBrand = "SELECT * FROM goods_brand";
 
 $result = $mysqli->query($selectBrand);
 
