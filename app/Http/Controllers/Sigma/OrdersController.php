@@ -107,7 +107,8 @@ class OrdersController extends ApiController
                 //Config::get('orderstatus.accepted')['status'] ,
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
-                Config::get('orderstatus.refunding')['status']
+                Config::get('orderstatus.refunding')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }
 

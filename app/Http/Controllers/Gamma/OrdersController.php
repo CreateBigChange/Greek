@@ -75,7 +75,7 @@ class OrdersController extends ApiController
         }elseif ($type == 2){
             $search['status'] = array(Config::get('orderstatus.on_the_way')['status']);
         }elseif ($type == 3){
-            $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status']);
+            $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status'] , Config::get('orderstatus.withdrawMoney')['status']);
         }elseif ($type == 4){
             $search['status'] = array(Config::get('orderstatus.refunding')['status'] , Config::get('orderstatus.refunded')['status']);
         }elseif ($type == 5){
@@ -85,7 +85,8 @@ class OrdersController extends ApiController
                 //Config::get('orderstatus.accepted')['status'] ,
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
-                Config::get('orderstatus.refunding')['status']
+                Config::get('orderstatus.refunding')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }else{
             $search['status'] = array(
@@ -94,20 +95,21 @@ class OrdersController extends ApiController
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
                 Config::get('orderstatus.refunding')['status'] ,
-                Config::get('orderstatus.refunded')['status']
+                Config::get('orderstatus.refunded')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }
 
-        $storeId = $this->storeId;
+       // $storeId = $this->storeId;
 
-        if($request->has('isClearNotice')) {
-            if ($request->get('isClearNotice') == 'new') {
-                Redis::set("store:$storeId:new", 0);
-            } elseif ($request->get('isClearNotice') == 'accident') {
-                Redis::set("store:$storeId:accident", 0);
-            }
-
-        }
+//        if($request->has('isClearNotice')) {
+//            if ($request->get('isClearNotice') == 'new') {
+//                Redis::set("store:$storeId:new", 0);
+//            } elseif ($request->get('isClearNotice') == 'accident') {
+//                Redis::set("store:$storeId:accident", 0);
+//            }
+//
+//        }
 
         if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
