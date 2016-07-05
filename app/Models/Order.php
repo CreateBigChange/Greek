@@ -141,7 +141,7 @@ class Order extends Model{
 
             //实际需要支付的数目
 //            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
-            $o->payTotal            = round($o->total + $o->deliver);
+            $o->payTotal            = round($o->total + $o->deliver , 2);
 
             //不算积分需要支付的数目
             $o->total               = $o->total + $o->deliver;

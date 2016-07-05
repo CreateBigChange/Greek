@@ -471,6 +471,10 @@ class OrdersController extends ApiController
         }
         $order = $order[0];
 
+        if($order->status == Config::get('orderstatus.completd')['status']){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
         $userId     = $this->userId;
 
         $userModel = new User();
@@ -495,11 +499,11 @@ class OrdersController extends ApiController
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
-            $storeId = $order->store_id;
-            $accident =  Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
-            $accident = $accident + 1;
+//            $storeId = $order->store_id;
+//            $accident =  Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
+//            $accident = $accident + 1;
 
-            Redis::set("store:$storeId:accident"  , $accident );
+           // Redis::set("store:$storeId:accident"  , $accident );
 
             //消息推送队列
             $this->dispatch(new Jpush(

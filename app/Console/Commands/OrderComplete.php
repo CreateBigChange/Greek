@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 
 use DB , Config;
 use App\Models\Order;
-use App\Models\StoreConfig;
 use Mockery\CountValidator\Exception;
 
 class OrderComplete extends Command
@@ -23,7 +22,7 @@ class OrderComplete extends Command
      *
      * @var string
      */
-    protected $description = '订单完成';
+    protected $description = '将过了24小时的已送达的订单状态置为完成状态';
 
     /**
      * Execute the console command.
@@ -33,84 +32,32 @@ class OrderComplete extends Command
     public function handle()
     {
         $orderModel         = new Order();
-        $storeConfigModel   = new StoreConfig();
+
+        $status = array(
+            Config::get('orderstatus.arrive')['status'],
+        );
 
         /**
-         * 状态为已送达的
+         * 获取24小时的订单
          */
-        $status = Config::get('orderstatus.arrive')['status'];
-
-        /**
-         * 获取几天前的订单
-         */
-        $day  = date("Y-m-d H:i:s",strtotime("-3 day"));
+        $day  = date("Y-m-d H:i:s", time() - (24 * 3600));
 
         $order = DB::table($orderModel->getTable())
             ->where('updated_at' , '<' , $day)
-            ->where('status' , $status)
+            ->whereIn('status' , $status)
             ->get();
 
-        $orderIds       = array();
-        $storeMoney     = array();
-//        $storePoint     = array();
-        $storeIds       = array();
+        $orderIds = array();
         foreach ($order as $o){
             $orderIds[] = $o->id;
-
-            $storeIds[] = $o->store_id;
-            /**
-             * 店铺收入
-             */
-            $storeMoney[$o->store_id] += $o->pay_total;
-//            $storePoint[$o->store_id] += $o->in_point;
         }
 
+        /**
+         * 更新订单状态
+         */
+        DB::table($orderModel->getTable())->whereIn('id', $orderIds)->update(array('status' => Config::get('orderstatus.completd')['status']));
 
-        foreach ($storeIds as $s){
-            DB::beginTransaction();
-            try {
 
-                $storeConfig = DB::table($storeConfigModel->getTable())->where('store_id' , $s)->first();
 
-                if(!$storeConfig){
-                    return false;
-                }
-
-//                /**
-//                 * 计算店铺剩余的积分
-//                 */
-//                $balancePoint = $storeConfig->balance_point - $storePoint[$s];
-//
-//                /**
-//                 * 如果店铺剩余的积分小于0
-//                 */
-//                if($balancePoint < 0){
-//                    $storeMoney[$s] = $storeMoney[$s] + $balancePoint / 100;
-//                    $balancePoint = 0;
-//                }
-
-                $balanceMoney = $storeConfig->balance - $storeMoney[$s];
-
-                if($balanceMoney < 0){
-                    return false;
-                }
-
-                /**
-                 * 更新店铺可提现金额
-                 */
-                DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s]));
-                /**
-                 * 更新订单状态
-                 */
-                DB::table($orderModel->getTable())->where('store_id', $s)->update(array('status' => Config::get('orderstatus.completd')['status']));
-
-                DB::commit();
-
-            }catch (Exception $e){
-                DB::rollBack();
-            }
-        }
-
-        var_dump($order);die;
     }
 }
