@@ -86,6 +86,10 @@ class WithdrawMoney extends Command
                 }
 
                 echo 2222;
+
+                var_dump($storeConfig->balance);
+                var_dump($storeMoney[$s]);
+
                 $balanceMoney = $storeConfig->balance - $storeMoney[$s];
 
                 if($balanceMoney < 0){
