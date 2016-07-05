@@ -77,31 +77,37 @@ class WithdrawMoney extends Command
             DB::beginTransaction();
             try {
 
+                echo 1111;
+
                 $storeConfig = DB::table($storeConfigModel->getTable())->where('store_id' , $s)->first();
 
                 if(!$storeConfig){
                     continue;
                 }
 
+                echo 2222;
                 $balanceMoney = $storeConfig->balance - $storeMoney[$s];
 
                 if($balanceMoney < 0){
-                    return false;
+                    continue;
                 }
+
+                echo 3333;
 
                 /**
                  * 更新店铺可提现金额
                  */
                 DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] , 'balance' => $balanceMoney));
+                echo 4444;
                 /**
                  * 更新订单状态
                  */
                 DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $orderIds)->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
+                echo 5555;
 
                 DB::commit();
 
             }catch (Exception $e){
-                var_dump($e);
                 DB::rollBack();
             }
         }
