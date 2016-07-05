@@ -23,7 +23,7 @@ $result = $mysqli->query($selectBrand);
 while ($row = $result->fetch_object()){
     $selectGoods = "SELECT * FROM store_goods WHERE name like '%". $row->name . "%'";
     $resultGoods = $mysqli->query($selectGoods);
-    while ($rowGoods = $result->fetch_object()){
+    while ($rowGoods = $resultGoods->fetch_object()){
         var_dump($rowGoods);die;
     }
 }
