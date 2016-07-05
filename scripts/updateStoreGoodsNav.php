@@ -21,7 +21,11 @@ $selectBrand = "SELECT * FROM goods_brand";
 $result = $mysqli->query($selectBrand);
 
 while ($row = $result->fetch_object()){
-    var_dump($row->name);
+    $selectGoods = "SELECT * FROM store_goods WHERE name like '%". $row->name . "%'";
+    $resultGoods = $mysqli->query($selectGoods);
+    while ($rowGoods = $result->fetch_object()){
+        var_dump($rowGoods);die;
+    }
 }
 die;
 foreach ($storeGoods as $sgK => $sgV) {
