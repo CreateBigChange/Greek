@@ -15,7 +15,7 @@ class OrderComplete extends Command
      *
      * @var string
      */
-    protected $signature = 'OrderComplete';
+    protected $signature = 'order-complete';
 
     /**
      * The console command description.
