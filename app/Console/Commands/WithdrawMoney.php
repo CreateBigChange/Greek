@@ -47,7 +47,7 @@ class WithdrawMoney extends Command
          * 获取几天前的订单
          */
         //$day  = date("Y-m-d",strtotime("-1 day"));
-        $day  = date("Y-m-d H:i:s", time() - (12 * 3600));
+        $day  = date("Y-m-d H:i:s", time()));
 
         $order = DB::table($orderModel->getTable())
             ->where('updated_at' , '<' , $day)
