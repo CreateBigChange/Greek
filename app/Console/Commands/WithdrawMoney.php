@@ -90,7 +90,7 @@ class WithdrawMoney extends Command
                 var_dump($storeConfig->balance);
                 var_dump($storeMoney[$s]);
 
-                $balanceMoney = $storeConfig->balance - $storeMoney[$s];
+                $balanceMoney = bcsub($storeConfig->balance , $storeMoney[$s] , 2);
 
                 var_dump($balanceMoney);die;
 
