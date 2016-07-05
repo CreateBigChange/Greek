@@ -92,6 +92,8 @@ class WithdrawMoney extends Command
 
                 $balanceMoney = $storeConfig->balance - $storeMoney[$s];
 
+                var_dump($balanceMoney);die;
+
                 if($balanceMoney < 0){
                     continue;
                 }
