@@ -403,6 +403,8 @@ class OrdersController extends ApiController
                 'orderCount'            => $orderCount
             );
 
+            var_dump($response);die;
+
         }elseif($type == 2){
             //获取本周日期
             $sdefaultDate = date("Y-m-d");
