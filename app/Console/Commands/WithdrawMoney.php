@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\StoreConfig;
 use Mockery\CountValidator\Exception;
 
+use App\Libs\BLogger;
+
 class WithdrawMoney extends Command
 {
     /**
@@ -32,6 +34,7 @@ class WithdrawMoney extends Command
      */
     public function handle()
     {
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
         $orderModel         = new Order();
         $storeConfigModel   = new StoreConfig();
 
@@ -43,6 +46,7 @@ class WithdrawMoney extends Command
             Config::get('orderstatus.completd')['status']
         );
 
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
         /**
          * 获取几天前的订单
          */
@@ -72,7 +76,7 @@ class WithdrawMoney extends Command
         }
 
         $storeIds = array_unique($storeIds);
-
+        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice(json_encode(1111));
         foreach ($storeIds as $s){
             DB::beginTransaction();
             try {
