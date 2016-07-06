@@ -31,6 +31,8 @@ if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
+$mysqli->query("set names utf8");
+
 $storeGoods             = array();
 $storeName              = array();
 $storeGoodsNum          = 0;
@@ -40,14 +42,12 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     $sname = trim($sheet->getCell('A'.$row)->getValue());
 
 
-//    $selectStore    = "SELECT * from store_infos WHERE name ='". $sname ."' limit 1";
-    $selectStore    = "SELECT * from store_infos"." limit 1";
+    $selectStore    = "SELECT * from store_infos WHERE name ='". $sname ."' limit 1";
+//    $selectStore    = "SELECT * from store_infos"." limit 1";
     $result         = $mysqli->query($selectStore);
 
     if($result) {
         $resultRow = $result->fetch_object();
-
-        var_dump($resultRow);die;
 
         if($resultRow){
             $storeId = $resultRow->id;
@@ -86,8 +86,6 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     }
 
 }
-
-die;
 
 
 foreach ($storeGoods as $sgK => $sgV) {
