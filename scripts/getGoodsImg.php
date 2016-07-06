@@ -32,14 +32,12 @@ $store = array();
 
 while ($row = $result->fetch_object()){
 
-    $tmpImg = explode('/' , $row->img);
-
-    $tmpName = $tmpImg[count($tmpImg) - 1];
-
-
-    $path = "goods/" . $tmpName;
+    $path = "/tmp" . $row->img;
     $info =  pathinfo( $path );
     $exten = $info['extension'];
+    if(!$exten){
+        $exten = 'jpg';
+    }
 
     $filename	= time() + mt_rand(1000 , 9999);
 
@@ -60,7 +58,6 @@ while ($row = $result->fetch_object()){
         } else {
             $sql = "UPDATE store_goods SET `img`='" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "' WHERE `id` = " . $row->id;
             if ($mysqli->query($sql)) {
-                exec("rm -rf " . $path);
                 echo "成功更新一条,商品名称:" . $row->name;
             } else {
                 echo "更新失败,商品名称:" . $row->name;
