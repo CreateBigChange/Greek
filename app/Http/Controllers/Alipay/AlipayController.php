@@ -54,7 +54,6 @@ class AlipayController extends ApiController
      * @apiParamExample {json} Request Example
      *      POST /sigma/alipay/order/1
      *      {
-     *          out_points  : 328,
      *      }
      * @apiUse CODE_200
      *
@@ -64,14 +63,14 @@ class AlipayController extends ApiController
 
         $userId = $this->userId;
 
-        if (!$request->has('out_points')) {
-            $outPoints = 0;
-        } else {
-            $outPoints = $request->get('out_points');
-        }
+//        if (!$request->has('out_points')) {
+//            $outPoints = 0;
+//        } else {
+//            $outPoints = $request->get('out_points');
+//        }
 
         //更新订单
-        $payNum = $this->_model->confirmOrder($userId, $orderId, 2, $outPoints);
+        $payNum = $this->_model->confirmOrder($userId, $orderId, 2);
 
         if ($payNum['code'] != 0000) {
             return $payNum;
@@ -84,7 +83,7 @@ class AlipayController extends ApiController
         }
 
         $body = $info[0]->sname;
-        $detail = '';
+        $detail = $info[0]->sname . $info[0]->order_num;
         foreach ($info[0]->goods as $g) {
             $detail .= $g->name . '/';
         }

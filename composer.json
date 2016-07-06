@@ -19,7 +19,9 @@
         "jpush/jpush": "v3.3.9",
 
         "ignited/laravel-omnipay": "2.*",
-        "lokielse/omnipay-alipay": "dev-master"
+        "lokielse/omnipay-alipay": "dev-master",
+
+        "guzzlehttp/guzzle": "~5.3|~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

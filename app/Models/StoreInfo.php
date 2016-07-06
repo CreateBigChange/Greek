@@ -49,10 +49,10 @@ class StoreInfo extends Model{
                       sc.business_time,
                       sc.is_close,
                       sc.bell,
-                      sc.point,
                       sc.money,
                       sc.balance,
                       sc.notice,
+                      sc.score,
                       si.is_del,
                       si.created_at,
                       si.updated_at,
@@ -134,6 +134,8 @@ class StoreInfo extends Model{
 
         $week = $weekTime[$week_tmp - 1];
 
+        $restStore = array();
+        $i = 0;
         foreach ($info as $si){
 
             $si->activity = array();
@@ -171,7 +173,9 @@ class StoreInfo extends Model{
                 $si->isDoBusiness = 0;
             }
 
-            //如果设置了营业时间
+            /**
+             * 如果设置了营业时间
+             */
             if($si->business_time) {
                 $starTime = explode('-', $si->business_time)[0];
                 $endTime = explode('-', $si->business_time)[1];
@@ -183,8 +187,16 @@ class StoreInfo extends Model{
                 $si->isDoBusiness = 0;
             }
 
+            if($si->isDoBusiness == 0){
+                $restStore[] = $si;
+                unset($info[$i]);
+            }
+
+            $i++;
 
         }
+
+        $info = array_merge($info , $restStore);
 
         return $info;
     }

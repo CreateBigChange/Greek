@@ -31,8 +31,6 @@ class UserClientCheckLogin
             return response()->json(Message::setResponseInfo('RELOGIN'));
         }
 
-        BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($_SERVER);
-
         return $next($request);
     }
 }

@@ -107,7 +107,8 @@ class OrdersController extends ApiController
                 //Config::get('orderstatus.accepted')['status'] ,
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
-                Config::get('orderstatus.refunding')['status']
+                Config::get('orderstatus.refunding')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }
 
@@ -265,7 +266,6 @@ class OrdersController extends ApiController
      *      POST /sigma/order/confirm/1
      *      {
      *          pay_type : 1,
-     *          out_points : 328,
      *          pay_password : 123456,
      *      }
      * @apiUse CODE_200
@@ -282,15 +282,15 @@ class OrdersController extends ApiController
 
         $userId     = $this->userId;
 
-        if(!$request->has('out_points')){
-            $outPoints = 0;
-        }else{
-            $outPoints  = $request->get('out_points');
-        }
+//        if(!$request->has('out_points')){
+//            $outPoints = 0;
+//        }else{
+//            $outPoints  = $request->get('out_points');
+//        }
         $payType    = $request->get('pay_type');
 
         //更新订单状态
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType );
 
         if($payNum['code'] != 0000){
             return $payNum;
@@ -300,14 +300,14 @@ class OrdersController extends ApiController
             return response()->json(Message::setResponseInfo('FAILED'));
         }
 
-        //如果是积分全额支付
-        if($payNum['data'] == 0 && $outPoints != 0){
-            $payType = Config::get('paytype.money');
-
-            if(!$request->has('pay_password')){
-                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
-            }
-        }
+//        //如果是积分全额支付
+//        if($payNum['data'] == 0 && $outPoints != 0){
+//            $payType = Config::get('paytype.money');
+//
+//            if(!$request->has('pay_password')){
+//                return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+//            }
+//        }
 
         $order = $this->_model->getOrderList(array('user' => $this->userId  , 'id' => $orderId));
         if(!isset($order[0])){
@@ -472,15 +472,19 @@ class OrdersController extends ApiController
         }
         $order = $order[0];
 
+        if($order->status == Config::get('orderstatus.completd')['status']){
+            return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
         $userId     = $this->userId;
 
         $userModel = new User();
         $userInfo =$userModel->getUserInfoById($userId);
 
         //积分不足不能退款
-        if($userInfo->points < $order->in_points - $order->out_points){
-            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
-        }
+//        if($userInfo->points < $order->in_points - $order->out_points){
+//            return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+//        }
 
         $content    = $request->get('content');
 
@@ -496,11 +500,11 @@ class OrdersController extends ApiController
 
             $bell = empty($store[0]->bell) ? 'default' : $store[0]->bell;
 
-            $storeId = $order->store_id;
-            $accident =  Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
-            $accident = $accident + 1;
+//            $storeId = $order->store_id;
+//            $accident =  Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
+//            $accident = $accident + 1;
 
-            Redis::set("store:$storeId:accident"  , $accident );
+           // Redis::set("store:$storeId:accident"  , $accident );
 
             //消息推送队列
             $this->dispatch(new Jpush(
