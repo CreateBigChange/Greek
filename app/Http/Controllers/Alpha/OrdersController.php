@@ -30,6 +30,7 @@ class OrdersController extends AdminController
     }
 
     public function getOrderList(Request $request){
+
         $search = array();
 
         $param = '';
@@ -40,10 +41,11 @@ class OrdersController extends AdminController
             $page = $_GET['page'];
         }
 
-        $type = 0;
+        $type = 0;  
         if(isset($_GET['status'])){
             $type = $_GET['status'];
             $param .= 'status=' . $_GET['status'] . '&';
+           
         }
 
         $status = Config::get('orderstatus');
@@ -66,17 +68,22 @@ class OrdersController extends AdminController
 
         $pageData = $this->getPageData($page  , $this->length, $orderNum);
 
+
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' . $param);
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/list?' . $param);
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
 
+      //     dump( $this->response);
         return view('alpha.order.list' , $this->response);
 
     }
 
     public function getOrderNotDelivery(Request $request){
+
+     
+
         $search = array();
 
         if(!isset($_GET['page'])){
@@ -166,7 +173,6 @@ class OrdersController extends AdminController
         $this->response['status']       = $status;
 
         return view('alpha.order.list' , $this->response);
-
     }
 
 
