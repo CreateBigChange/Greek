@@ -203,7 +203,6 @@
 								<label class="col-sm-2 col-sm-2 control-label">店铺类型</label>
 								<div class="col-sm-10">
 									<select class="form-control m-bot15" name='c_id' id='edit_category'>
-										<option value="0">选择</option>
 									</select>
 								</div>
 							</div>
@@ -344,7 +343,9 @@
 					if(categories){
 						categories.select = categoryId;
 						var bt = baidu.template;
-						var html = bt('edit_categories' , categories);
+						var html = '<option value="0">选择</option>';
+						html += bt('edit_categories' , categories);
+						console.log(html);
 						$('#edit_category').html(html);
 					}
 				});
