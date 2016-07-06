@@ -72,7 +72,7 @@ class StoreInfo extends Model{
         }
 
         if(isset($search['name']) && !empty($search['name'])){
-            $sql .= " AND si.store_name LIKE '%" . $search['name'] . "%'";
+            $sql .= " AND store_name LIKE '%" . $search['name'] . "%'";
         }
         if(isset($search['contacts']) && !empty($search['contacts'])){
             $sql .= " AND si.contacts LIKE '%" . $search['contacts'] . "%'";
