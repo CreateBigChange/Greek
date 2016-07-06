@@ -43,4 +43,5 @@ class StoreCategory extends Model{
     public function getStoreCategoryById($id){
         return DB::table($this->table)->where('id' , $id)->first();
     }
+    
 }

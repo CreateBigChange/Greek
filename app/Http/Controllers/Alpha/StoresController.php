@@ -319,9 +319,9 @@ class StoresController extends AdminController
 	 */
 	public function ajaxStoreCategoriesList(){
 
-		$storeModel = new StoreInfos;
+		$storeModel = new StoreCategory;
 
-		$storeCategories = $storeModel->getStoreCategoriesList();
+		$storeCategories = $storeModel->getStoreCategory();
 
 		$this->response['storeCategories'] = $storeCategories;
 
