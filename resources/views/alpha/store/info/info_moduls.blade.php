@@ -345,7 +345,7 @@
 						categories.select = categoryId;
 						var bt = baidu.template;
 						var html = bt('edit_categories' , categories);
-						$('#edit_category').append(html);
+						$('#edit_category').html(html);
 					}
 				});
 
