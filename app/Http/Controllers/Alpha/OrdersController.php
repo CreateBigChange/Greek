@@ -75,7 +75,7 @@ class OrdersController extends AdminController
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
 
-      //     dump( $this->response);
+        
         return view('alpha.order.list' , $this->response);
 
     }
