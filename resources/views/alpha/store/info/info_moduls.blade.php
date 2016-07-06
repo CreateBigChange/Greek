@@ -329,7 +329,7 @@
 				var county 		= data.data.county_id;
 
 				$('#edit_id').val(data.data.id);
-				$('#edit_name').val(data.data.name);
+				$('#edit_name').val(data.data.store_name);
 				$('#edit_business_license').val(data.data.business_license);
 				$('#edit_business_license_pre').attr('src' , data.data.business_license);
 				$('#edit_contact_email').val(data.data.contact_email);
