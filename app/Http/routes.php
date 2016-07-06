@@ -86,7 +86,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/goods/brand/del/{id}' , 'GoodsController@delBrand');
 
 		//地区
-		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');
+		Route::post('/areas' , 'StoresController@ajaxAreas');
 
 		Route::post( '/upload' , 'UploadController@uploadImg' );
 		Route::post( '/upload/qiniu' , 'UploadController@uploadQiniu' );

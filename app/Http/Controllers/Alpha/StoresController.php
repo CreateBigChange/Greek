@@ -20,6 +20,8 @@ use App\Models\StoreUser;
 use App\Libs\Message;
 use App\Libs\Curl;
 
+use App\Models\AmapCityCode;
+
 class StoresController extends AdminController
 {
 
@@ -61,14 +63,32 @@ class StoresController extends AdminController
 		}
 		if(isset($_GET['province']) && $_GET['province'] != 0){
 			$search['province'] = trim($_GET['province']);
+			$amapCodeModel = new AmapCityCode();
+
+			$area = $amapCodeModel->getAreas($search['province']);
+			if($area){
+				$search['province'] = $area->name;
+			}
 			$param .= 'province=' . $search['province'] . '&';
 		}
 		if(isset($_GET['city']) && $_GET['city'] != 0){
 			$search['city'] = trim($_GET['city']);
+			$amapCodeModel = new AmapCityCode();
+
+			$area = $amapCodeModel->getAreas($search['city']);
+			if($area){
+				$search['city'] = $area->name;
+			}
 			$param .= 'city=' . $search['city'] . '&';
 		}
 		if(isset($_GET['county']) && $_GET['county'] != 0){
 			$search['county'] = trim($_GET['county']);
+			$amapCodeModel = new AmapCityCode();
+
+			$area = $amapCodeModel->getAreas($search['county']);
+			if($area){
+				$search['county'] = $area->name;
+			}
 			$param .= 'county=' . $search['county'] . '&';
 		}
 		if(isset($_GET['address']) && !empty($_GET['address'])){
@@ -311,11 +331,25 @@ class StoresController extends AdminController
 	/**
 	 * 获取地区
 	 */
-	public function ajaxAreas($pid){
+	public function ajaxAreas(Request $request){
 
-		$storeModel = new StoreInfos;
+		$level = 'province';
 
-		$areas = $storeModel->getAreas($pid);
+		if($request->has('level')) {
+			$level = $request->get('level');
+		}
+
+		$amapCodeModel = new AmapCityCode();
+
+		if($level == 'province'){
+			$areas = $amapCodeModel->getAreasProvince();
+		}elseif($level == 'city'){
+			$pid = $request->get('pid');
+			$areas = $amapCodeModel->getAreasCity($pid);
+		}elseif($level == 'district'){
+			$cid = $request->get('cid');
+			$areas = $amapCodeModel->getAreasDistrict($cid);
+		}
 
 		$this->response['areas'] = $areas;
 
