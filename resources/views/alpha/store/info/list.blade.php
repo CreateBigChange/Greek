@@ -51,7 +51,7 @@
 												{{--<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
 												<div p_id="{{ $si->id }}" location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
 												<a title="店员" href="/alpha/store/user?store_id={{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-user"></i></a>
-												<div title="店铺商品" class="btn btn-primary btn-xs"><i class="icon-hdd"></i></div>
+												<a title="店铺商品" href="/alpha/store/goods/{{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-hdd"></i></a>
 											</td>
 										</tr>
 									@endforeach

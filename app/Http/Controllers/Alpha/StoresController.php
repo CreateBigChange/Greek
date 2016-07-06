@@ -20,6 +20,8 @@ use App\Models\StoreUser;
 use App\Libs\Message;
 use App\Libs\Curl;
 
+use App\Models\StoreGoods;
+
 use App\Models\AmapCityCode;
 
 class StoresController extends AdminController
@@ -460,6 +462,121 @@ class StoresController extends AdminController
 		$this->response['category'] = $storeCategoryModel->getStoreCategoryById($id);
 
 		return $this->response;
+
+	}
+
+
+	public function getStoreGoodsList($storeId , Request $request){
+		$search = array();
+
+		$param = '';
+		if(!isset($_GET['page'])){
+			$page = 1;
+		}else{
+			$page = $_GET['page'];
+		}
+
+		$search['is_open'] = $request->input('is_open');
+		if($search['is_open'] == ''){
+			$search['is_open'] = 1;
+		}
+		$param .= 'is_open=' . $search['is_open'] . '&';
+
+		if($request->has('name')){
+			$search['name'] = htmlspecialchars($request->get('name'));
+
+			$param .= 'name=' . $search['name'] . '&';
+
+		}
+		if($request->has('nav_id') && !$request->get('nav_id') == 0 ){
+			$search['nav_id'] = trim($request->get('nav_id'));
+			$param .= 'nav_id=' . $search['nav_id'] . '&';
+		}
+
+		if($request->has('sort_stock') && !empty($request->get('sort_stock'))){
+			$search['sort_stock'] = trim($request->get('sort_stock'));
+			$search['sort_stock'] = trim($request->get('sort_stock'));
+		}
+
+		$search['store_id'] = $storeId;
+
+		$storeGoodsModel = new StoreGoods;
+		$goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
+
+		$this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
+		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/'.$storeId.'?' . $param);
+		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
+
+		return view('alpha.store.goods.list' , $this->response);
+
+	}
+
+	public function getStoreGoodsInfo($goodsId){
+
+		$storeGoodsModel = new StoreGoods;
+		$info = $storeGoodsModel->getStoreGoodsList(array('id' => $goodsId ) , $this->length , 0);
+
+		if(count($info) == 0){
+			return response()->json(Message::setResponseInfo('SUCCESS'));
+		}else{
+			return response()->json(Message::setResponseInfo('SUCCESS' , $info[0]));
+		}
+
+
+	}
+
+	public function updateStoreGoods(Request $request){
+
+		$data = array();
+
+		$id 		= $request->get('id');
+		$storeId 	= $request->get('store_id');
+
+		if( $request->has('nav_id') ) {
+			$data['nav_id'] = trim($request->get('nav_id'));
+		}
+//        if( $request->has('c_id') ){
+//            $data['c_id'] = trim($request->get('c_id'));
+//        }
+		if( $request->has('b_id') ) {
+			$data['b_id'] = trim($request->get('b_id'));
+		}
+		if( $request->has('name') ) {
+			$data['name'] = htmlspecialchars(trim($request->get('name')));
+		}
+		if( $request->has('img') ) {
+			$data['img'] = trim($request->get('img'));
+		}
+		if( $request->has('spec') ) {
+			$data['spec'] = trim($request->get('spec'));
+		}
+		if( $request->has('out_price') ) {
+			$data['out_price'] = trim($request->get('out_price'));
+		}
+		if( $request->has('stock') ) {
+			$data['stock'] = trim($request->get('stock'));
+		}
+		if( $request->has('desc') ) {
+			$data['desc'] = htmlspecialchars(trim($request->get('desc', '')));
+		}
+		if( $request->has('is_open') ) {
+			$data['is_open'] = htmlspecialchars(trim($request->get('is_open')));
+		}
+		if( $request->has('is_del') ) {
+			$data['is_del'] = htmlspecialchars(trim($request->get('is_del')));
+		}
+		if( $request->has('give_points') ) {
+			$data['give_points'] = htmlspecialchars(trim($request->get('give_points')));
+		}
+
+		$data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+		$storeGoodsModel = new StoreGoods;
+		if($storeGoodsModel->updateStoreGoods($id , $data )){
+			return redirect('/alpha/store/goods/' . $storeId);
+		}else{
+			return redirect('/alpha/store/goods/' . $storeId);
+		}
 
 	}
 

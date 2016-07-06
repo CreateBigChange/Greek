@@ -61,6 +61,11 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/stores/settlings' , 'StoresController@getSettlings');
 		Route::get('/stores/settlings/del/{id}' , 'StoresController@delSettlings');
 
+		//店铺商品
+		Route::get('/store/goods/{storeId}' , 'StoresController@getStoreGoodsList');
+		Route::get('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
+		Route::post('/store/goods/update' , 'StoresController@updateStoreGoods');
+
 		//店员
 		Route::get('/store/user' , 'StoresController@getStoreUserList');
 

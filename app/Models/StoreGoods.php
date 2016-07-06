@@ -152,6 +152,16 @@ class StoreGoods extends Model{
     }
 
     /**
+     * 修改店铺商品
+     * @param storeId   number
+     * @param id   number
+     * @param data   array
+     */
+    public function updateStoreGoods( $id , $data){
+        return DB::table($this->table)->where('id' , $id)->update($data);
+    }
+
+    /**
      * 批量修改商品状态
      * @param storeId   number
      * @param ids   array
