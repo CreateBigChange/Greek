@@ -125,6 +125,8 @@ class StoresController extends ApiController
             $search['c_id'] = $request->get('cid');
 
         }
+        $search['is_open'] = 1;
+        $search['is_checked'] = 1;
 
         $totalNum = count(explode(',', $ids));
 

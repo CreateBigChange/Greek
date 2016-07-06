@@ -228,8 +228,6 @@ class StoreInfo extends Model{
         $sql .= " WHERE si.is_del = 0";
         if(isset($search['is_open'])){
             $sql .= " AND si.is_open = " . $search['is_open'];
-        }else{
-            $sql .= " AND si.is_open = 1";
         }
 
         if(isset($search['ids'])){
@@ -262,8 +260,6 @@ class StoreInfo extends Model{
         }
         if(isset($search['is_checked'])){
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
-        }else{
-            $sql .= " AND si.is_checked = 1" ;
         }
 
         $num = DB::select($sql);
