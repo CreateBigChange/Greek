@@ -75,7 +75,7 @@ class OrdersController extends ApiController
         }elseif ($type == 2){
             $search['status'] = array(Config::get('orderstatus.on_the_way')['status']);
         }elseif ($type == 3){
-            $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status']);
+            $search['status'] = array(Config::get('orderstatus.completd')['status'] , Config::get('orderstatus.arrive')['status'] , Config::get('orderstatus.withdrawMoney')['status']);
         }elseif ($type == 4){
             $search['status'] = array(Config::get('orderstatus.refunding')['status'] , Config::get('orderstatus.refunded')['status']);
         }elseif ($type == 5){
@@ -85,7 +85,8 @@ class OrdersController extends ApiController
                 //Config::get('orderstatus.accepted')['status'] ,
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
-                Config::get('orderstatus.refunding')['status']
+                Config::get('orderstatus.refunding')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }else{
             $search['status'] = array(
@@ -94,20 +95,21 @@ class OrdersController extends ApiController
                 Config::get('orderstatus.completd')['status'] ,
                 Config::get('orderstatus.arrive')['status'] ,
                 Config::get('orderstatus.refunding')['status'] ,
-                Config::get('orderstatus.refunded')['status']
+                Config::get('orderstatus.refunded')['status'],
+                Config::get('orderstatus.withdrawMoney')['status']
             );
         }
 
-        $storeId = $this->storeId;
+       // $storeId = $this->storeId;
 
-        if($request->has('isClearNotice')) {
-            if ($request->get('isClearNotice') == 'new') {
-                Redis::set("store:$storeId:new", 0);
-            } elseif ($request->get('isClearNotice') == 'accident') {
-                Redis::set("store:$storeId:accident", 0);
-            }
-
-        }
+//        if($request->has('isClearNotice')) {
+//            if ($request->get('isClearNotice') == 'new') {
+//                Redis::set("store:$storeId:new", 0);
+//            } elseif ($request->get('isClearNotice') == 'accident') {
+//                Redis::set("store:$storeId:accident", 0);
+//            }
+//
+//        }
 
         if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
@@ -181,9 +183,9 @@ class OrdersController extends ApiController
             $userModel = new User();
             $userInfo =$userModel->getUserInfoById($orderInfo[0]->user);
 
-            if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
-                return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
-            }
+//            if($userInfo->points < $orderInfo[0]->in_points - $orderInfo[0]->out_points){
+//                return response()->json(Message::setResponseInfo('REFUND_POINT_NOT_AMPLE'));
+//            }
 
             if($orderInfo[0]->status != Config::get('orderstatus.refunding')['status']){
                 return response()->json(Message::setResponseInfo('FAILED'));
@@ -384,9 +386,9 @@ class OrdersController extends ApiController
                     if ($c->hour == $todayTime[$i]) {
                         $orderCount[$i] += $c->num;
                         $orderNum += $c->num;
-                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
+                        if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || $c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
                         }
                     }
@@ -440,9 +442,9 @@ class OrdersController extends ApiController
                     if ($c->day == $day[$i]) {
                         $orderCount[$i] += $c->num;
                         $orderNum += $c->num;
-                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
+                        if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || $c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']){
+                        }elseif($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']){
                             $orderAccidentNum += $c->num;
                         }
                     }
@@ -475,9 +477,9 @@ class OrdersController extends ApiController
                     if ($c->day == $i) {
                         $orderCount[$j] += $c->num;
                         $orderNum += $c->num;
-                        if($c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
+                        if($c->status == Config::get('orderstatus.withdrawMoney')['status'] || $c->status == Config::get('orderstatus.completd')['status'] || $c->status == Config::get('orderstatus.arrive')['status'] || $c->status == Config::get('orderstatus.on_the_way')['status']  || $c->status == Config::get('orderstatus.paid')['status']){
                             $orderCompleteNum += $c->num;
-                        } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status = Config::get('orderstatus.refunding')['status'] || $c->status = Config::get('orderstatus.refunded')['status']) {
+                        } elseif ($c->status == Config::get('orderstatus.cancel')['status'] || $c->status == Config::get('orderstatus.refunding')['status'] || $c->status == Config::get('orderstatus.refunded')['status']) {
                             $orderAccidentNum += $c->num;
                         }
                     }
@@ -495,28 +497,28 @@ class OrdersController extends ApiController
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
-    /**
-     * 获取通知的订单数量
-     */
-    public function getOrderNum(){
-        $storeId = $this->storeId;
-
-        $data = array();
-        $data['new'] = Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
-        $data['accident'] = Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
-
-        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
-    }
-
-    /**
-     * 清空通知的订单数量
-     */
-    public function clearOrderNum(){
-        $storeId = $this->storeId;
-
-        Redis::set("store:$storeId:new" , 0);
-        Redis::set("store:$storeId:accident" , 0);
-
-        return response()->json(Message::setResponseInfo('SUCCESS' ));
-    }
+//    /**
+//     * 获取通知的订单数量
+//     */
+//    public function getOrderNum(){
+//        $storeId = $this->storeId;
+//
+//        $data = array();
+//        $data['new'] = Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
+//        $data['accident'] = Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
+//
+//        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
+//    }
+//
+//    /**
+//     * 清空通知的订单数量
+//     */
+//    public function clearOrderNum(){
+//        $storeId = $this->storeId;
+//
+//        Redis::set("store:$storeId:new" , 0);
+//        Redis::set("store:$storeId:accident" , 0);
+//
+//        return response()->json(Message::setResponseInfo('SUCCESS' ));
+//    }
 }

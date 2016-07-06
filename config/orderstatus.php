@@ -2,10 +2,16 @@
 
 return [
 
+    'withdrawMoney' => [
+        'status'    => 0,
+        'msg'       => "已提款",
+        'next'      => array()
+    ] ,
+
     'completd' => [
         'status'    => 1,
         'msg'       => "已完成",
-        'next'      => array()
+        'next'      => array(0)
     ],
 
     'paid' => [
@@ -55,5 +61,6 @@ return [
         'msg'       => "已退款",
         'next'      => array()
     ] ,
+
 
 ];

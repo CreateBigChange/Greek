@@ -93,16 +93,16 @@ class WechatController extends ApiController
 
         $userId     = $this->userId;
 
-        if(!$request->has('out_points')){
-            $outPoints = 0;
-        }else{
-            $outPoints  = $request->get('out_points');
-        }
+//        if(!$request->has('out_points')){
+//            $outPoints = 0;
+//        }else{
+//            $outPoints  = $request->get('out_points');
+//        }
         $tradeType      = $request->get('trade_type');
         $payType        = $request->get('pay_type');
 
         //更新订单
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $outPoints);
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType );
 
         if($payNum['code'] != 0000){
             return $payNum;
@@ -116,10 +116,10 @@ class WechatController extends ApiController
 
         //微信下单
         $body       = $info[0]->sname;
-        $detail     = '';
-        foreach ($info[0]->goods as $g){
-            $detail .= $g->name . ' ' ;
-        }
+        $detail     = $info[0]->sname . $info[0]->order_num;
+//        foreach ($info[0]->goods as $g){
+//            $detail .= $g->name . ' ' ;
+//        }
 
         $attributes = array();
         $attributes['trade_type']       = $tradeType;

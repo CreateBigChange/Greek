@@ -956,6 +956,7 @@ class UsersController extends ApiController
         $password               = $request->get('password');
 
         $checkCode  = session::get("jsx_sms_$mobile");
+        session::forget("jsx_sms_$mobile");
 
         if($code != $checkCode){
             return response()->json(Message::setResponseInfo('VERTIFY_CODE_ERROR'));
@@ -969,40 +970,75 @@ class UsersController extends ApiController
         $user               = $this->_model->getUserInfoById($this->userId);
         if(!empty($user->mobile)){
             return response()->json(Message::setResponseInfo('HAVE_MOBILE'));
-        }
-//        else{
-//            /**
-//             * **********************************************************
-//             * 判断此用户是否有帮定过手机号,如果没有绑定手机,则是微信登录的,
-//             * 需要看是否有其他用户绑定过此手机,如果绑定,则将此账户也手机号绑定
-//             * **********************************************************
-//             */
-//
-//        }
-
-        //判断是否有其他用户绑定了此手机号
-        //使用此接口理论上是没有用户绑定此手机号的
-        $user               = $this->_model->getUserInfoByMobile($mobile);
-        if($user){
-            return response()->json(Message::setResponseInfo('MOBILE_BIND'));
-        }
-
-
-
-        $data = array();
-        $data['mobile']             = $mobile;
-        $data['account']            = $mobile;
-        $data['salt']               = $this->getSalt(8);
-        $data['password']           = $this->encrypt($password, $data['salt']);
-        $data['updated_at']         = date('Y-m-d H:i:s' , time());
-
-        if($this->_model->updateUser($this->userId , $data)){
-            session::forget("jsx_sms_$mobile");
-
-            return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            /**
+             * **********************************************************
+             * 判断此用户是否有帮定过手机号,如果没有绑定手机,则是微信登录的,
+             * 需要看是否有其他用户绑定过此手机,如果绑定,则将此账户也手机号绑定
+             * **********************************************************
+             */
+            $userInfo               = $this->_model->getUserInfoByMobile($mobile);
+            /**
+             * 如果这个手机号用户存在并且没有绑定微信,这将这个微信绑定到这个手机号帐号上
+             */
+            if($userInfo && !$userInfo->wx_unionid){
+                $data['wx_unionid']     = $user->wx_unionid;
+                $data['wx_app_openid']  = $user->wx_app_openid;
+                $data['wx_pub_openid']  = $user->wx_pub_openid;
+                if($this->_model->updateUser($userInfo->id , $data)){
+                    /**
+                     * 删除当前用户
+                     */
+                    $this->_model->updateUser($this->userId , array('is_del' => 1));
+
+
+                    /**
+                     * 修改登录信息
+                     */
+                    $userInfo->wx_unionid       = $data['wx_unionid'];
+                    $userInfo->wx_app_openid    = $data['wx_app_openid'];
+                    $userInfo->wx_pub_openid    = $data['wx_pub_openid'];
+                    $sessionKey = cookie::get(config::get('session.sigma_login_cookie'));
+                    Session::put($sessionKey , $userInfo);
+                    //$cookie = Cookie::make(Config::get('session.sigma_login_cookie') , $sessionKey , Config::get('session.sigma_lifetime'));
+                    //$userInfo->token = $sessionKey;
+                    return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
+                }
+            }elseif($userInfo->wx_unionid){
+                /**
+                 * 如果这个手机号用户存在并且有绑定微信,则提示手机号已绑定
+                 */
+                return response()->json(Message::setResponseInfo('MOBILE_BIND'));
+            }else{
+                /**
+                 * 如果没有这个手机号用户,则绑定
+                 */
+                $data = array();
+                $data['mobile']             = $mobile;
+                $data['account']            = $mobile;
+                $data['salt']               = $this->getSalt(8);
+                $data['password']           = $this->encrypt($password, $data['salt']);
+                $data['updated_at']         = date('Y-m-d H:i:s' , time());
+
+                if($this->_model->updateUser($this->userId , $data)){
+
+                    /**
+                     * 修改登录信息
+                     */
+                    $user->mobile       = $mobile;
+                    $user->account      = $mobile;
+                    $sessionKey = cookie::get(config::get('session.sigma_login_cookie'));
+                    Session::put($sessionKey , $user);
+                    return response()->json(Message::setResponseInfo('SUCCESS' , $user));
+
+                }else{
+                    return response()->json(Message::setResponseInfo('FAILED'));
+                }
+            }
+
         }
+
+
 
     }
 
