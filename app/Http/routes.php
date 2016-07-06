@@ -62,6 +62,11 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/stores/settlings/del/{id}' , 'StoresController@delSettlings');
 		Route::get('/stores/goodsmanager','StoresController@managergoods');
 
+		//店铺商品
+		Route::get('/store/goods/{storeId}' , 'StoresController@getStoreGoodsList');
+		Route::get('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
+		Route::post('/store/goods/update' , 'StoresController@updateStoreGoods');
+
 		//店员
 		Route::get('/store/user' , 'StoresController@getStoreUserList');
 
@@ -87,7 +92,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/goods/brand/del/{id}' , 'GoodsController@delBrand');
 
 		//地区
-		Route::get('/areas/{pid}' , 'StoresController@ajaxAreas');
+		Route::post('/areas' , 'StoresController@ajaxAreas');
 
 		Route::post( '/upload' , 'UploadController@uploadImg' );
 		Route::post( '/upload/qiniu' , 'UploadController@uploadQiniu' );

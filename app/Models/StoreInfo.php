@@ -65,8 +65,6 @@ class StoreInfo extends Model{
         $sql .= " WHERE si.is_del = 0";
         if(isset($search['is_open'])){
             $sql .= " AND si.is_open = " . $search['is_open'];
-        }else{
-            $sql .= " AND si.is_open = 1";
         }
 
         if(isset($search['ids'])){
@@ -74,7 +72,7 @@ class StoreInfo extends Model{
         }
 
         if(isset($search['name']) && !empty($search['name'])){
-            $sql .= " AND si.store_name LIKE '%" . $search['name'] . "%'";
+            $sql .= " AND si.name LIKE '%" . $search['name'] . "%'";
         }
         if(isset($search['contacts']) && !empty($search['contacts'])){
             $sql .= " AND si.contacts LIKE '%" . $search['contacts'] . "%'";
@@ -86,21 +84,19 @@ class StoreInfo extends Model{
             $sql .= " AND si.c_id = " . $search['c_id'] ;
         }
         if(isset($search['province']) && !empty($search['province'])){
-            $sql .= " AND si.province = " . $search['province'] ;
+            $sql .= " AND si.province = '" . $search['province']  ."'";
         }
         if(isset($search['city']) && !empty($search['city'])){
-            $sql .= " AND si.city = " . $search['city'] ;
+            $sql .= " AND si.city = '" . $search['city'] ."'";
         }
         if(isset($search['county']) && !empty($search['county'])){
-            $sql .= " AND si.county = " . $search['county'] ;
+            $sql .= " AND si.county = '" . $search['county']  ."'";
         }
         if(isset($search['address']) && !empty($search['address'])){
             $sql .= " AND si.address LIKE '%" . $search['address'] . "%'";
         }
         if(isset($search['is_checked'])){
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
-        }else{
-            $sql .= " AND si.is_checked = 1" ;
         }
 
         $sql .= " LIMIT $offset , $length ";
@@ -232,8 +228,6 @@ class StoreInfo extends Model{
         $sql .= " WHERE si.is_del = 0";
         if(isset($search['is_open'])){
             $sql .= " AND si.is_open = " . $search['is_open'];
-        }else{
-            $sql .= " AND si.is_open = 1";
         }
 
         if(isset($search['ids'])){
@@ -253,21 +247,19 @@ class StoreInfo extends Model{
             $sql .= " AND si.c_id = " . $search['c_id'] ;
         }
         if(isset($search['province']) && !empty($search['province'])){
-            $sql .= " AND si.province = " . $search['province'] ;
+            $sql .= " AND si.province = '" . $search['province']  ."'";
         }
         if(isset($search['city']) && !empty($search['city'])){
-            $sql .= " AND si.city = " . $search['city'] ;
+            $sql .= " AND si.city = '" . $search['city']  ."'";
         }
         if(isset($search['county']) && !empty($search['county'])){
-            $sql .= " AND si.county = " . $search['county'] ;
+            $sql .= " AND si.county = '" . $search['county'] ."'";
         }
         if(isset($search['address']) && !empty($search['address'])){
             $sql .= " AND si.address LIKE '%" . $search['address'] . "%'";
         }
         if(isset($search['is_checked'])){
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
-        }else{
-            $sql .= " AND si.is_checked = 1" ;
         }
 
         $num = DB::select($sql);

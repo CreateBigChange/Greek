@@ -125,7 +125,7 @@
 
 <script>
 	$('.searchDiaLog').bind('click' , function() {
-		$.get('/alpha/areas/0' , function(data) {
+		$.post('/alpha/areas' , {level : 'province'} , function(data) {
 			if(data){
 				var bt = baidu.template;
 				var html = '<option value="0">选择</option>' + bt('search_areas' , data);
@@ -143,7 +143,14 @@
 	});
 
 	$('#search_province').bind('change' , function(){
-		$.get('/alpha/areas/'+$(this).val() , function(data){
+
+		$pid = $(this).val();
+		var postData = {
+			'level' : 'city',
+			'pid'	: $pid
+		}
+<!--		$.get('/alpha/areas/'+ $(this).val() , function(data){-->
+		$.post('/alpha/areas' , postData , function(data) {
 			if(data){
 				var bt = baidu.template;
 				var html = '<option value="0">选择</option>' + bt('areas' , data);
@@ -151,10 +158,16 @@
 				$('#search_county').html('<option value="0">选择</option>');
 			}
 		});
+
 	});
 
 	$('#search_city').bind('change' , function(){
-		$.get('/alpha/areas/'+ $(this).val() , function(data){
+		$cid = $(this).val();
+		var postData = {
+			'level' : 'district',
+			'cid'	: $cid
+		}
+		$.post('/alpha/areas' , postData , function(data){
 			if(data){
 				var bt = baidu.template;
 				var html = '<option value="0">选择</option>' + bt('areas' , data);
@@ -379,7 +392,7 @@
 		});
 		
 		var edit_business = new Dropzone("#edit_business_license", {
-			url: "/alpha/upload",
+			url: "/upload/qiniu",
 			addRemoveLinks: true,
 			maxFiles: 1,
 			paramName:'img',
@@ -389,13 +402,13 @@
 
 		edit_business.on('success' , function(file , data){
 			if(data.code == '0000'){
-				$('#edit_business_license').val(data.data);
-				$('#edit_business_license_pre').attr('src' , data.data);
+				$('#edit_business_license').val(data.data.host + '/' + data.data.key);
+				$('#edit_business_license_pre').attr('src' , data.data.host + '/' + data.data.key);
 			}
 		});
 
 		var edit_idCard = new Dropzone("#edit_id_card_img", {
-			url: "/alpha/upload",
+			url: "/upload/qiniu",
 			addRemoveLinks: true,
 			maxFiles: 1,
 			paramName:'img',
@@ -405,8 +418,8 @@
 
 		edit_idCard.on('success' , function(file , data){
 			if(data.code == '0000'){
-				$('#edit_id_card_img').val(data.data);
-				$('#edit_id_card_img_pre').attr('src' , data.data);
+				$('#edit_id_card_img').val(data.data.host + '/' + data.data.key);
+				$('#edit_id_card_img_pre').attr('src' , data.data.host + '/' + data.data.key);
 			}
 		});
 
@@ -668,7 +681,7 @@ $('.add').bind('click' , function(){
 	});
 
 	var business = new Dropzone("#business_license", {
-		url: "/alpha/upload/qiniu",
+		url: "/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',
@@ -685,7 +698,7 @@ $('.add').bind('click' , function(){
 	});
 
 	var idCard = new Dropzone("#id_card_img", {
-		url: "/alpha/upload/qiniu",
+		url: "/upload/qiniu",
 		addRemoveLinks: true,
 		maxFiles: 1,
 		paramName:'img',

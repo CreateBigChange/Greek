@@ -19,8 +19,31 @@ class AmapCityCode extends Model{
      * 地区
      * @param pid  number
      */
-    public function areas($pid){
-        return DB::table('areas')->where('parent' , $pid)->get();
+    public function getAreasProvince(){
+        $parent =  DB::table($this->table)->select('adcode as id' , 'name')->where('level'  , 'province')->get();
+        return $parent;
+    }
+
+    /**
+     *
+     * 地区
+     * @param pid  number
+     */
+    public function getAreasCity($pid){
+        $pid = substr($pid , 0 , 2);
+        $parent =  DB::table($this->table)->select('adcode as id' , 'name')->where('adcode' , 'like' , $pid."%")->where('level'  , 'city')->get();
+        return $parent;
+    }
+
+    /**
+     *
+     * 地区
+     * @param pid  number
+     */
+    public function getAreasDistrict($cid){
+        $cid = substr($cid , 0 , 4);
+        $parent =  DB::table($this->table)->select('adcode as id' , 'name')->where('adcode' , 'like' , $cid."%")->where('level'  , 'district')->get();
+        return $parent;
     }
 
     /**
@@ -57,5 +80,16 @@ class AmapCityCode extends Model{
 
         return $parent;
     }
+
+    /**
+     *
+     * 地区
+     * @param pid  number
+     */
+    public function getAreas($code){
+        $area =  DB::table($this->table)->select('adcode as id' , 'name')->where('adcode'  , $code)->first();
+        return $area;
+    }
+
 
 }
