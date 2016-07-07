@@ -401,20 +401,14 @@ class StoreUsersController extends ApiController
 
 
 
-    public function appDown(Request $request){
+    public function appDown(){
 
         if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
-            echo 'systerm is IOS';
+            $type = 'ios';
         }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
-            echo 'systerm is Android';
+            $type = 'android';
         }else{
-            echo 'systerm is other';
-        }
-        die;
-
-        $type = 'android';
-        if($request->has('type')) {
-            $type = $request->get('type');
+            return;
         }
 
         if($type == 'android') {
