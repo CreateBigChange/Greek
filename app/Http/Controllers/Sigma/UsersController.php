@@ -1004,7 +1004,7 @@ class UsersController extends ApiController
                     //$userInfo->token = $sessionKey;
                     return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
                 }
-            }elseif($userInfo->wx_unionid){
+            }elseif($userInfo && $userInfo->wx_unionid){
                 /**
                  * 如果这个手机号用户存在并且有绑定微信,则提示手机号已绑定
                  */

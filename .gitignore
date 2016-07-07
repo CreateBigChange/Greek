@@ -13,3 +13,4 @@ composer.lock
 log.txt
 Makefile
 /public/jpush.log
+dump.rdb
