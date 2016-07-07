@@ -19,7 +19,7 @@
                       <th>收货人</th>
                       <th>收货电话</th>
                       <th>收货地址</th>
-                      <th>昵称</th>
+                      <th>店铺</th>
                       <th>真实姓名</th>
                       <th>电话</th>
                       <th>支付类型</th>
@@ -33,9 +33,9 @@
                          <td>{{$order->consignee}}</td>
                          <td>{{$order->consignee_tel }}</td>
                          <td>{{$order->consignee_address}}</td>
-                         <td>{{$order->nick_name}}</td>
+                         <td>{{$order->sname}}</td>
                          <td>{{$order->true_name}}</td>
-                         <td>{{$order->mobile}}</td>
+                         <td>{{$order->smobile}}</td>
                          <td>{{$order->pay_type_name }}</td>
                          <td>{{$order->deliver}}</td>
                          <td>{{$order->total}}</td>
