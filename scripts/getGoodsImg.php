@@ -24,7 +24,7 @@ if ($mysqli->connect_error) {
 
 $mysqli->query("set names utf8");
 
-$selectBrand = "SELECT * FROM store_goods";
+$selectBrand = "SELECT * FROM zxshop.store_goods where img not like 'http://7xt4zt.com%'";
 
 $result = $mysqli->query($selectBrand);
 

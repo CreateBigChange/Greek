@@ -401,4 +401,25 @@ class StoreUsersController extends ApiController
 
 
 
+    public function appDown(Request $request){
+
+        $type = 'android';
+        if($request->has('type')) {
+            $type = $request->get('type');
+        }
+
+        if($type == 'android') {
+            $filename = public_path() . '/apk/jisxu_1.0.apk';
+
+            Header("Content-type:  application/octet-stream ");
+            Header("Accept-Ranges: bytes ");
+            Header("Accept-Length: " . filesize($filename));
+            header("Content-Disposition:  attachment;  filename=jisxu_1.0.apk");
+            //echo file_get_contents($filename);
+            readfile($filename);
+        }
+    }
+
+
+
 }

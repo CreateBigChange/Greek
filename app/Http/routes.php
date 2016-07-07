@@ -181,7 +181,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//意见反馈
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
-
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
@@ -201,6 +200,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::post('/reset/password', 'StoreUsersController@resetPassword');
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
+
+
+	//下载
+	Route::get('/app/down', 'StoreUsersController@appDown');
 
 });
 
