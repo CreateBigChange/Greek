@@ -266,8 +266,8 @@ class OrdersController extends ApiController
                 'payment' => [
                     'merchant_id' => Config::get('wechat.open_merchant_id'),
                     'key' => Config::get('wechat.open_key'),
-                    'cert_path' => public_path() . Config::get('wechat.open_cert_path'), // XXX: 绝对路径！！！！
-                    'key_path'  => public_path() . Config::get('wechat.open_key_path'),      // XXX: 绝对路径！！！！
+                    'cert_path' => realpath(Config::get('wechat.open_cert_path')), // XXX: 绝对路径！！！！
+                    'key_path'  => realpath(Config::get('wechat.open_key_path')),      // XXX: 绝对路径！！！！
                     'fee_type'  => 'CNY'
                 ],
             ];
@@ -280,8 +280,8 @@ class OrdersController extends ApiController
                 'payment' => [
                     'merchant_id'        => Config::get('wechat.merchant_id'),
                     'key'                => Config::get('wechat.key'),
-                    'cert_path'          => public_path() . Config::get('wechat.cert_path'), // XXX: 绝对路径！！！！
-                    'key_path'           => public_path() . Config::get('wechat.key_path'),      // XXX: 绝对路径！！！！
+                    'cert_path'          => realpath(Config::get('wechat.cert_path')), // XXX: 绝对路径！！！！
+                    'key_path'           => realpath(Config::get('wechat.key_path')),      // XXX: 绝对路径！！！！
                     'fee_type' => 'CNY'
                 ],
             ];
