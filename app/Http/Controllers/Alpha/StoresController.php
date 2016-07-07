@@ -112,9 +112,7 @@ class StoresController extends AdminController
 
 		$this->response['page']         = $pageData->page;
 		$this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/stores/infos?' . $param);
-
 		$storeInfos = $storeModel->getStoreList($search  , $this->length , $pageData->offset );
-
 		$this->response['storeInfos'] = $storeInfos;
 
         return view('alpha.store.info.list' , $this->response);
@@ -406,7 +404,8 @@ class StoresController extends AdminController
 
 		$this->response['storeCategories'] = $storeCategories;
 
-		return view('alpha.store.category.list' , $this->response);
+
+;		return view('alpha.store.category.list' , $this->response);
 	}
 
 	/**
@@ -462,7 +461,7 @@ class StoresController extends AdminController
 		$storeCategoryModel = new StoreCategory();
 
 		$this->response['category'] = $storeCategoryModel->getStoreCategoryById($id);
-
+ 	
 		return $this->response;
 
 	}

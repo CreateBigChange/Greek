@@ -60,6 +60,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/stores/category/info/{id}' , 'StoresController@getStoreCategoryById');
 		Route::get('/stores/settlings' , 'StoresController@getSettlings');
 		Route::get('/stores/settlings/del/{id}' , 'StoresController@delSettlings');
+		Route::get('/stores/goodsmanager','StoresController@managergoods');
 
 		//店铺商品
 		Route::get('/store/goods/{storeId}' , 'StoresController@getStoreGoodsList');
