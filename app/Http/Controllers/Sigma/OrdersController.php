@@ -34,7 +34,7 @@ class OrdersController extends ApiController
     public function __construct(){
         parent::__construct();
         $this->_model = new Order;
-        $this->_length		= 20;
+        $this->_length		= 10;
 
     }
 
