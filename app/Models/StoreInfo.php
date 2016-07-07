@@ -42,6 +42,7 @@ class StoreInfo extends Model{
                       si.contact_email,
                       si.location,
                       sca.name as category_name,
+                      sca.id as c_id,
                       sc.store_logo,
                       sc.start_price,
                       sc.deliver,

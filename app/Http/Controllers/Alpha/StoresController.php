@@ -138,6 +138,8 @@ class StoresController extends AdminController
 
 		$id = $request->get('id');
 
+		$page = $request->get('page' , 1);
+
 		$data					= array();
 
 		if($request->has('c_id')) {
@@ -196,7 +198,7 @@ class StoresController extends AdminController
 		$storeModel = new StoreInfo;
 
 		if($storeModel->updateStore($id , $data)){
-			return redirect('/alpha/stores/infos');
+			return redirect('/alpha/stores/infos?page=' .$page );
 		}
 	}
 

@@ -251,8 +251,11 @@
 <script>
 	$('.update').bind('click' , function(){
 		var goodsId = $(this).attr('p_id');
+
+
 		$.get('/alpha/store/goods/info/' + goodsId , function(data){
 			if(data.code == '0000'){
+			    $('#edit_page').val(page);
 			    $('#edit_id').val(goodsId);
                 $('#edit_name').val(data.data.name);
                 $('#edit_img').val(data.data.img);

@@ -186,6 +186,7 @@
 		<div class="modal-content">
 			<form class="form-horizontal tasi-form" method="post" action='/alpha/stores/update'>
 				<input type='hidden' name='id' id='edit_id' value="" />
+				<input type='hidden' name='page' id='edit_page' value="" />
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title">修改店铺</h4>
@@ -203,7 +204,6 @@
 								<label class="col-sm-2 col-sm-2 control-label">店铺类型</label>
 								<div class="col-sm-10">
 									<select class="form-control m-bot15" name='c_id' id='edit_category'>
-										<option value="0">选择</option>
 									</select>
 								</div>
 							</div>
@@ -321,6 +321,8 @@
 		var storeId = $(this).attr('p_id');
 		var location = $(this).attr('location').split(',');
 
+		var page = $(this).attr('page');
+
 		$.get('/alpha/stores/info/' + storeId , function(data){
 			if(data.code == '0000'){
 				var categoryId 	= data.data.c_id;
@@ -329,7 +331,8 @@
 				var county 		= data.data.county_id;
 
 				$('#edit_id').val(data.data.id);
-				$('#edit_name').val(data.data.name);
+				$('#edit_page').val(page);
+				$('#edit_name').val(data.data.store_name);
 				$('#edit_business_license').val(data.data.business_license);
 				$('#edit_business_license_pre').attr('src' , data.data.business_license);
 				$('#edit_contact_email').val(data.data.contact_email);
@@ -344,8 +347,10 @@
 					if(categories){
 						categories.select = categoryId;
 						var bt = baidu.template;
-						var html = bt('edit_categories' , categories);
-						$('#edit_category').append(html);
+						var html = '<option value="0">选择</option>';
+						html += bt('edit_categories' , categories);
+						console.log(html);
+						$('#edit_category').html(html);
 					}
 				});
 

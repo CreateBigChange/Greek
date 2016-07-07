@@ -49,7 +49,7 @@
 											<td>@if ($si->is_open == 1) 开启 @else 关闭 @endif</td>
 											<td>
 												{{--<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
-												<div p_id="{{ $si->id }}" location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+												<div p_id="{{ $si->id }}" page="{{ $page }}"  location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
 												<a title="店员" href="/alpha/store/user?store_id={{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-user"></i></a>
 												<a title="店铺商品" href="/alpha/store/goods/{{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-hdd"></i></a>
 											</td>
