@@ -415,13 +415,12 @@ class StoreUsersController extends ApiController
         $versionModel = new AndroidVersion();
         $version = (Array)$versionModel->getNew($type);
 
-        if(!empty($version)) {
-            $version = array();
+        if(empty($version)) {
             $version['download'] = '';
         }
+
         $version['title'] = "急所需商户版APP下载";
         $version['type']  = $type;
-
 
         return view("app.download" , $version);
 
