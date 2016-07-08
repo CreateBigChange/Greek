@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
+use Illuminate\Support\Arr;
 use Session , Cookie , Config;
 
 use App\Models\StoreUser;
@@ -409,27 +410,16 @@ class StoreUsersController extends ApiController
         }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
             $type = 'android';
         }else{
-            return;
         }
+        $type = 'android';
 
-        if($type == 'android') {
+        $versionModel = new AndroidVersion();
+        $version = (Array)$versionModel->getNew($type);
 
-            $versionModel = new AndroidVersion();
-            $version = $versionModel->getNew($type);
-            if($version) {
-                $filename = $version->download;
 
-                header('Location: '.$filename);
-//                Header("Content-type:  application/octet-stream ");
-//                Header("Accept-Ranges: bytes ");
-//                Header("Accept-Length: " . filesize($filename));
-//                header("Content-Disposition:  attachment;  filename=jisxu_1.0.1.apk");
-//                //echo file_get_contents($filename);
-//                readfile($filename);
-            }
-        }else{
-            return;
-        }
+        $version['title'] = "急所需商家版APP下载";
+
+        return view('app.download' , $version);
     }
 
 
