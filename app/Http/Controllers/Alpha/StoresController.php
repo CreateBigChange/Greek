@@ -14,6 +14,8 @@ use App\Http\Controllers\AdminController;
 use Config;
 
 use App\Models\StoreInfo;
+use App\Models\StoreConfig;
+use App\Models\StoreBankCard;
 use App\Models\StoreCategory;
 use App\Models\StoreSettlings;
 use App\Models\StoreUser;
@@ -197,9 +199,32 @@ class StoresController extends AdminController
 
 		$storeModel = new StoreInfo;
 
-		if($storeModel->updateStore($id , $data)){
-			return redirect('/alpha/stores/infos?page=' .$page );
+		$storeModel->updateStore($id , $data);
+
+		$config = array();
+		if($request->has('store_logo')) {
+			$config['store_logo'] = $request->get('store_logo');
 		}
+		if($request->has('construction_money')) {
+			$config['construction_money'] = $request->get('construction_money');
+		}
+		if($request->has('security_deposit')) {
+			$config['security_deposit'] = $request->get('security_deposit');
+		}
+
+		$storeConfigModel = new StoreConfig();
+
+		if(!empty($config)) {
+			$storeConfigModel->config($id, $config);
+		}
+
+		if($request->has('bank_card')) {
+			$bankCard = $request->get('bank_card');
+			$storeBankModel = new StoreBankCard();
+			$storeBankModel->updateBankCard($id , array('bank_card_num'=>$bankCard));
+		}
+
+		return redirect('/alpha/stores/infos?page=' .$page );
 	}
 
 	/**
@@ -254,14 +279,14 @@ class StoresController extends AdminController
 		$data['created_at']			= date('Y-m-d H:i:s' , time());
 		$data['updated_at']			= date('Y-m-d H:i:s' , time());
 
-		$curl = new Curl();
 
-		$storeModel = new StoreInfos;
+		$storeModel = new StoreInfo;
 
 		$storeId = $storeModel->addStore($data);
 
 		if($storeId){
 
+//			$curl = new Curl();
 //			/*
 //			 *
 //			 * 在高德地图上标注店铺
@@ -310,7 +335,34 @@ class StoresController extends AdminController
 			$user['created_at']	= date('Y-m-d H:i:s' , time());
 			$user['updated_at']	= date('Y-m-d H:i:s' , time());
 
-			$storeModel->addStoreUser($user);
+
+			$storeUserModel = new StoreUser();
+			$storeUserModel->addStoreUser($user);
+
+			//更新店铺设置
+
+			$config = array();
+			if($request->has('store_logo')) {
+				$config['store_logo'] = $request->get('store_logo');
+			}
+			if($request->has('construction_money')) {
+				$config['construction_money'] = $request->get('construction_money');
+			}
+			if($request->has('security_deposit')) {
+				$config['security_deposit'] = $request->get('security_deposit');
+			}
+
+			$storeConfigModel = new StoreConfig();
+
+			if(!empty($config)) {
+				$storeConfigModel->config($storeId, $config);
+			}
+
+			if($request->has('bank_card')) {
+				$bankCard = $request->get('bank_card');
+				$storeBankModel = new StoreBankCard();
+				$storeBankModel->updateBankCard($storeId , array('bank_card_num'=>$bankCard));
+			}
 
 			return redirect('/alpha/stores/infos');
 		}

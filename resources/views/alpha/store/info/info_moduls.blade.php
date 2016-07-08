@@ -256,6 +256,27 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">银行卡号</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='bank_card' id="edit_bank_card"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺LOGO</label>
+								<div class="col-sm-10">
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='store_logo' id="edit_logo"/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='edit_logo_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">地址</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name='address' autocomplete="off" id="edit_address"/>
@@ -270,6 +291,18 @@
 								<label class="col-sm-2 col-sm-2 control-label">地图</label>
 								<div class="col-sm-10">
 									<div class="form-control" style="width:100%;height:500px;" name='address' id="edit_ditu"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺建设费</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='construction_money' id="edit_construction_money"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">保障金</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='security_deposit' id="edit_security_deposit"/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -342,6 +375,11 @@
 				$('#edit_id_card_img').val(data.data.id_card_img);
 				$('#edit_id_card_img_pre').attr('src' , data.data.id_card_img);
 				$('#edit_address').val(data.data.address);
+				$('#edit_logo').val(data.data.store_logo);
+				$('#edit_logo_pre').attr('src',data.data.store_logo);
+				$('#edit_construction_money').val(data.data.construction_money);
+				$('#edit_security_deposit').val(data.data.security_deposit);
+				$('#edit_bank_card').val(data.data.bank_card_num);
 
 				$.get('/alpha/stores/categories' , function(categories){
 					if(categories){
@@ -427,6 +465,23 @@
 				$('#edit_id_card_img_pre').attr('src' , data.data.host + '/' + data.data.key);
 			}
 		});
+
+		var edit_logo = new Dropzone("#edit_logo", {
+			url: "/upload/qiniu",
+			addRemoveLinks: true,
+			maxFiles: 1,
+			paramName:'img',
+			maxFilesize: 5120,
+			acceptedFiles: ".jpg , .png"
+		});
+
+		edit_logo.on('success' , function(file , data){
+			if(data.code == '0000'){
+				$('#edit_logo').val(data.data.host + '/' + data.data.key);
+				$('#edit_logo_pre').attr('src' , data.data.host + '/' + data.data.key);
+			}
+		});
+
 
 		$('#edit_province').bind('change' , function(){
 			$.get('/alpha/areas/'+$(this).val() , function(data){
@@ -615,6 +670,27 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">银行卡号</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='bank_card' />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺LOGO</label>
+								<div class="col-sm-10">
+									<div class="file" style="margin-left:15px;">
+										选择图片
+										<input type="text" class="form-control" name='store_logo' id='logo'/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">预览</label>
+								<div class="col-sm-10">
+									<img style="width: 200px;height: auto;" id='logo_pre' src='' />
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">地址</label>
 								<div class="col-sm-10">
 									<input type="text" class="form-control" name='address' autocomplete="off" id="address"/>
@@ -629,6 +705,18 @@
 								<label class="col-sm-2 col-sm-2 control-label">地图</label>
 								<div class="col-sm-10">
 									<div class="form-control" style="width:100%;height:500px;" name='address' id="ditu"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">店铺建设费</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='construction_money'/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">保障金</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name='security_deposit' />
 								</div>
 							</div>
 							<div class="form-group">
@@ -718,6 +806,22 @@ $('.add').bind('click' , function(){
 			$('#id_card_img_pre').attr('src' , url);
 		}
 	});
+
+	var logo = new Dropzone("#logo", {
+			url: "/upload/qiniu",
+			addRemoveLinks: true,
+			maxFiles: 1,
+			paramName:'img',
+			maxFilesize: 5120,
+			acceptedFiles: ".jpg , .png"
+		});
+
+		logo.on('success' , function(file , data){
+			if(data.code == '0000'){
+				$('#logo').val(data.data.host + '/' + data.data.key);
+				$('#logo_pre').attr('src' , data.data.host + '/' + data.data.key);
+			}
+		});
 
 
 	var windowsArr = [];

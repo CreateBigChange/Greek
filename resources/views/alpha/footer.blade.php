@@ -73,7 +73,7 @@
 
 		});
 
-		var ue = UE.getEditor('editor');
+//		var ue = UE.getEditor('editor');
 	});
 
 	//custom select box
