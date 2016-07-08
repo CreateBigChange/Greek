@@ -39,6 +39,8 @@ class Sms {
         // 发送模板短信
         $result = $rest->sendTemplateSMS($to,$datas,$tempId);
 
+        BLogger::getLogger(BLogger::LOG_SMS)->notice(json_encode($result));
+
         if($result == NULL ) {
             BLogger::getLogger(BLogger::LOG_SMS)->notice(json_encode($log));
         }

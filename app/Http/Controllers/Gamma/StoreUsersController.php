@@ -412,14 +412,16 @@ class StoreUsersController extends ApiController
         }
 
         if($type == 'android') {
-            $filename = public_path() . '/apk/jisxu_1.0.apk';
+            $filename = public_path() . '/apk/jisxu_1.0.1.apk';
 
             Header("Content-type:  application/octet-stream ");
             Header("Accept-Ranges: bytes ");
             Header("Accept-Length: " . filesize($filename));
-            header("Content-Disposition:  attachment;  filename=jisxu_1.0.apk");
+            header("Content-Disposition:  attachment;  filename=jisxu_1.0.1.apk");
             //echo file_get_contents($filename);
             readfile($filename);
+        }else{
+            return;
         }
     }
 
