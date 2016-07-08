@@ -12,7 +12,7 @@ class Message {
 	*/
 	static function setResponseInfo($errorkey , $data = '' , $code = '0001' , $msg = '未知错误' ){
 
-		BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($code[0]));
+		BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info($code[0]);
 
 			$error =  array(
 
