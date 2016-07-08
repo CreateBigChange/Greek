@@ -427,6 +427,22 @@ class StoreUsersController extends ApiController
 
     }
 
+    public function checkVersion(Request $request){
+
+        $type = $request->get('type');
+        $version = $request->get('version');
+
+        $versionModel = new AndroidVersion();
+        $version = (Array)$versionModel->versionIsNew($version , $type);
+
+        if($version === true){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('NO_NEW' , $version));
+        }
+
+    }
+
 
 
 }

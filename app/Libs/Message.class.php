@@ -43,6 +43,8 @@ class Message {
 				'MOBILE_NO_BIND'				=> array('code'=>'4020' , 'msg'=>'请先绑定手机号'),
 				'ORDER_NOT_EXIST'				=> array('code'=>'4021' , 'msg'=>'订单不存在'),
 
+				'NO_NEW'						=> array('code'=>'4022' , 'msg'=>'不是最新版'),
+
 
 
 
