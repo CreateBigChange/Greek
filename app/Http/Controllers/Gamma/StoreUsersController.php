@@ -410,8 +410,8 @@ class StoreUsersController extends ApiController
         }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
             $type = 'android';
         }else{
+            return;
         }
-        $type = 'android';
 
         $versionModel = new AndroidVersion();
         $version = (Array)$versionModel->getNew($type);
