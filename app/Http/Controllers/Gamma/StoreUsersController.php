@@ -412,10 +412,12 @@ class StoreUsersController extends ApiController
             return;
         }
 
-        if($type == 'android') {
+        $versionModel = new AndroidVersion();
+        $version = (Array)$versionModel->getNew($type);
+        $version['title'] = "急所需商户版APP下载";
+        $version['type']  = "android";
 
-            $versionModel = new AndroidVersion();
-            $version = (Array)$versionModel->getNew($type);
+        if($type == 'android') {
 
             if(!empty($version)) {
 //                $filename = public_path()."/apk/".$version['download'];
@@ -427,13 +429,11 @@ class StoreUsersController extends ApiController
 //                //echo file_get_contents($filename);
 //                readfile($filename);
 
-                $version['title'] = "急所需商户版APP下载";
-
 
                 return view("app.download" , $version);
             }
-        }else{
-            return;
+        }elseif(($type == 'ios')){
+            return view("app.download" , $version);
         }
     }
 
