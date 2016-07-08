@@ -28,7 +28,7 @@
 
 <div class="weixin-tip">
     <p>
-        <img src="/img/live_weixin.png" alt="浏览器打开"/>
+        <img src="{{ URL::asset('/') }}img/live_weixin.png" alt="浏览器打开"/>
     </p>
 </div>
 
