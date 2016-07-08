@@ -392,35 +392,10 @@
 					}
 				});
 
-				$.get('/alpha/areas/0' , function(provinceData){
-					if(provinceData){
-						provinceData.select = province;
-						var bt = baidu.template;
-						var html = '<option value="0">选择</option>' + bt('edit_areas' , provinceData);
-						$('#edit_province').html(html);
-
-						$.get('/alpha/areas/' + province , function(cityData){
-							if(cityData){
-								cityData.select = city;
-								var bt = baidu.template;
-								var html = '<option value="0">选择</option>' + bt('edit_areas' , cityData);
-								$('#edit_city').html(html);
-
-								$.get('/alpha/areas/' + city , function(countyData){
-									if(countyData){
-										countyData.select = county;
-										var bt = baidu.template;
-										var html = '<option value="0">选择</option>' + bt('edit_areas' , countyData);
-										$('#edit_county').append(html);
-									}
-								});
-							}
-						});
-					}
-				});
 
                 $('.switch').each(function(index , val){
                 	if(index == 0){
+                	console.log(data.data);
                 		if(data.data.is_open == 1){
                 			$(val).bootstrapSwitch('setState', true);
                 		}
