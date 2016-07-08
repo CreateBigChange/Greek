@@ -415,7 +415,7 @@ class StoreUsersController extends ApiController
         if($type == 'android') {
 
             $versionModel = new AndroidVersion();
-            $version = $versionModel->getNew();
+            $version = $versionModel->getNew($type);
             if($version) {
                 $filename = $version->download;
 
