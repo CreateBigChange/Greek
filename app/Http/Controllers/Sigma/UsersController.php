@@ -671,6 +671,7 @@ class UsersController extends ApiController
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
+            BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($isSend->statusCode));
             return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
     }
