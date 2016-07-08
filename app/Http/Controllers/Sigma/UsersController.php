@@ -349,7 +349,7 @@ class UsersController extends ApiController
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
     }
 
@@ -671,7 +671,7 @@ class UsersController extends ApiController
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
     }
 
