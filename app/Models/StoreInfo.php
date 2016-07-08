@@ -110,7 +110,7 @@ class StoreInfo extends Model{
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
         }
 
-        $sql .= " ORDER BY created_at DESC , updated_at DESC";
+        $sql .= " ORDER BY created_at ASC , updated_at ASC";
         $sql .= " LIMIT $offset , $length ";
 
         $info = DB::select($sql);
