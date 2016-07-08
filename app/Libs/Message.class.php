@@ -12,8 +12,6 @@ class Message {
 	*/
 	static function setResponseInfo($errorkey , $data = '' , $code = '0001' , $msg = '未知错误' ){
 
-		BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($code));
-
 			$error =  array(
 
 				/**
@@ -69,8 +67,7 @@ class Message {
 				$response = $error[strtoupper($errorkey)];
 				$response['data'] = $data;
 			}else{
-
-				$response = array('code' => $code , 'msg' => $msg , 'data' => $data);
+				$response = array('code' => $code[0] , 'msg' => $msg[0] , 'data' => $data);
 			}
 
 			BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($response));
