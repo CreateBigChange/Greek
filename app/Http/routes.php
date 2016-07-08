@@ -110,6 +110,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		//财务
 		Route::get('/finance/cash' , 'FinanceController@getWithdrawCashLog');
 
+
+		//版本
+		Route::get('/app/version' , 'AppVersionController@getApkVersion');
+
 	});
 
 	//登陆
@@ -277,7 +281,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
  * ##############################################################################
  */
 Route::group(['middleware' => ['api'] , 'namespace' => 'Common' ], function () {
+	Route::post('/upload/apk' , 'UploadController@uploadImg');
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
+	Route::post('/upload/qiniu/apk' , 'UploadController@uploadApkQiniu');
 	Route::get('/version/check', 'ToolController@versionIsNew');
 });
 
