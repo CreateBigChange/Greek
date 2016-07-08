@@ -27,4 +27,13 @@ class AndroidVersion extends Model
         }
     }
 
+
+    public function getNew($type){
+        return DB::table($this->table)->where('type' , $type)->orderBy('version' , 'desc')->first();
+    }
+
+    public function updateDownloadTimes($id){
+        return DB::table($this->table)->where('id' , $id)->increment('download_times');
+    }
+
 }

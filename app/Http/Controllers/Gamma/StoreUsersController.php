@@ -16,6 +16,7 @@ use Session , Cookie , Config;
 
 use App\Models\StoreUser;
 use App\Models\Feedback;
+use App\Models\AndroidVersion;
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
 use App\Libs\BLogger;
@@ -412,14 +413,20 @@ class StoreUsersController extends ApiController
         }
 
         if($type == 'android') {
-            $filename = public_path() . '/apk/jisxu_1.0.1.apk';
 
-            Header("Content-type:  application/octet-stream ");
-            Header("Accept-Ranges: bytes ");
-            Header("Accept-Length: " . filesize($filename));
-            header("Content-Disposition:  attachment;  filename=jisxu_1.0.1.apk");
-            //echo file_get_contents($filename);
-            readfile($filename);
+            $versionModel = new AndroidVersion();
+            $version = $versionModel->getNew();
+            if($version) {
+                $filename = $version->download;
+
+                header('Location: '.$filename);
+//                Header("Content-type:  application/octet-stream ");
+//                Header("Accept-Ranges: bytes ");
+//                Header("Accept-Length: " . filesize($filename));
+//                header("Content-Disposition:  attachment;  filename=jisxu_1.0.1.apk");
+//                //echo file_get_contents($filename);
+//                readfile($filename);
+            }
         }else{
             return;
         }
