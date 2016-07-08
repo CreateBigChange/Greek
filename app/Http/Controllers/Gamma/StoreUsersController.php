@@ -433,7 +433,7 @@ class StoreUsersController extends ApiController
         $version = $request->get('version');
 
         $versionModel = new AndroidVersion();
-        $version = (Array)$versionModel->versionIsNew($version , $type);
+        $version = $versionModel->versionIsNew($version , $type);
 
         if($version === true){
             return response()->json(Message::setResponseInfo('SUCCESS'));
