@@ -55,6 +55,7 @@
         }
         @elseif ($type == 'ios')
             $(".weixin-tip").html('IOS版在审核中,请稍等两天');
+            $(".weixin-tip").show();
         @endif
     })
 
