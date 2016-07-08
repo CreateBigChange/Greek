@@ -27,7 +27,7 @@
 <body>
 
 <div class="weixin-tip">
-    <p>
+    <p id="notice">
         <img src="{{ URL::asset('/') }}img/live_weixin.png" alt="浏览器打开"/>
     </p>
 </div>
@@ -54,7 +54,7 @@
             window.location.href = "{{ $download }}"
         }
         @elseif ($type == 'ios')
-            $(".weixin-tip").html('IOS版在审核中,请稍等两天');
+            $("#notice").html('IOS版在审核中,请稍等两天');
             $(".weixin-tip").show();
         @endif
     })
