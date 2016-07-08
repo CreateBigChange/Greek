@@ -422,10 +422,11 @@ class StoreUsersController extends ApiController
 
                 Header("Content-type:  application/octet-stream ");
                 Header("Accept-Ranges: bytes ");
-                Header("Accept-Length: " . filesize($filename));
-                header("Content-Disposition:  attachment;  filename=".$version['version'].".apk");
-                //echo file_get_contents($filename);
-                readfile($filename);
+                header("Lcation:".$filename);
+//                Header("Accept-Length: " . filesize($filename));
+//                header("Content-Disposition:  attachment;  filename=".$version['version'].".apk");
+//                //echo file_get_contents($filename);
+//                readfile($filename);
             }
         }else{
             return;
