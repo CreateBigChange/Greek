@@ -67,6 +67,7 @@ class Message {
 				$response = $error[strtoupper($errorkey)];
 				$response['data'] = $data;
 			}else{
+				BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($code));
 				$response = array('code' => $code , 'msg' => $msg , 'data' => $data);
 			}
 
