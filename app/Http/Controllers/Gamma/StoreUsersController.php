@@ -416,16 +416,18 @@ class StoreUsersController extends ApiController
 
             $versionModel = new AndroidVersion();
             $version = (Array)$versionModel->getNew($type);
-            if($version) {
+            if(empty($version)) {
 
-                $filename = public_path()."/apk/".$version['download'];
+//                $filename = public_path()."/apk/".$version['download'];
+//
+//                Header("Content-type:  application/octet-stream ");
+//                Header("Accept-Ranges: bytes ");
+//                Header("Accept-Length: " . filesize($filename));
+//                header("Content-Disposition:  attachment;  filename=".$version['download']);
+//                //echo file_get_contents($filename);
+//                readfile($filename);
 
-                Header("Content-type:  application/octet-stream ");
-                Header("Accept-Ranges: bytes ");
-                Header("Accept-Length: " . filesize($filename));
-                header("Content-Disposition:  attachment;  filename=".$version['download']);
-                //echo file_get_contents($filename);
-                readfile($filename);
+                return view("app.download" , $version);
             }
         }else{
             return;
