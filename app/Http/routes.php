@@ -205,6 +205,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	//下载
 	Route::get('/app/down', 'StoreUsersController@appDown');
+	Route::get('/app/check/version', 'StoreUsersController@checkVersion');
 
 });
 
