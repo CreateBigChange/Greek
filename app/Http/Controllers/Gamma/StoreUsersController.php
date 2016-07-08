@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\ApiController;
 
-use Illuminate\Support\Arr;
 use Session , Cookie , Config;
 
 use App\Models\StoreUser;
@@ -413,13 +412,24 @@ class StoreUsersController extends ApiController
             return;
         }
 
-        $versionModel = new AndroidVersion();
-        $version = (Array)$versionModel->getNew($type);
+        if($type == 'android') {
 
+            $versionModel = new AndroidVersion();
+            $version = (Array)$versionModel->getNew($type);
+            if($version) {
 
-        $version['title'] = "急所需商家版APP下载";
+                $filename = $version['download'];
 
-        return view('app.download' , $version);
+                Header("Content-type:  application/octet-stream ");
+                Header("Accept-Ranges: bytes ");
+                Header("Accept-Length: " . filesize($filename));
+                header("Content-Disposition:  attachment;  filename=".$version['version'].".apk");
+                //echo file_get_contents($filename);
+                readfile($filename);
+            }
+        }else{
+            return;
+        }
     }
 
 
