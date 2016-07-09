@@ -35,7 +35,7 @@ class OrderComplete extends Command
     {
         $orderModel         = new Order();
 
-        BLogger::getLogger(BLogger::LOG_RESPONSE)->info("准备将已满24小时并且还是已到达状态的订单改为完成状态");
+        BLogger::getLogger(BLogger::LOG_SCRIPT)->info("准备将已满24小时并且还是已到达状态的订单改为完成状态");
 
         $status = array(
             Config::get('orderstatus.arrive')['status'],
@@ -57,13 +57,13 @@ class OrderComplete extends Command
         }
 
         if(empty($orderIds)){
-            BLogger::getLogger(BLogger::LOG_RESPONSE)->info("没有已满24小时并且还是已到达状态的订单");
+            BLogger::getLogger(BLogger::LOG_SCRIPT)->info("没有已满24小时并且还是已到达状态的订单");
         }
         /**
          * 更新订单状态
          */
         if(DB::table($orderModel->getTable())->whereIn('id', $orderIds)->update(array('status' => Config::get('orderstatus.completd')['status']))){
-            BLogger::getLogger(BLogger::LOG_RESPONSE)->info("将订单改为".implode(' , ' ,$orderIds)."完成状态".Config::get('orderstatus.completd')['status'] );
+            BLogger::getLogger(BLogger::LOG_SCRIPT)->info("将订单改为".implode(' , ' ,$orderIds)."完成状态".Config::get('orderstatus.completd')['status'] );
         }
 
 
