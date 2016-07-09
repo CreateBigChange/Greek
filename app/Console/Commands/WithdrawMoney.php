@@ -128,8 +128,10 @@ class WithdrawMoney extends Command
 
 
 
-
                 $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
+
+                BLogger::getLogger(BLogger::LOG_RESPONSE)->info($emailContent);
+
                 $email = "wuhui904107775@qq.com";
                 $name = "吴辉";
                 $storeName = $storeInfo->name;
