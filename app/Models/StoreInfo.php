@@ -140,6 +140,9 @@ class StoreInfo extends Model{
             '日'
         );
 
+        if($week_tmp == 0){
+            $week_tmp = count($weekTime);
+        }
         $week = $weekTime[$week_tmp - 1];
 
         $restStore = array();
