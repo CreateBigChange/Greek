@@ -67,7 +67,7 @@ class FinanceController extends AdminController
 
         $this->response['log'] = $cashModel->getWithdrawCashLog(array('status' => 1) , $this->length , $pageData->offset);
 
-        $this->response['storeData'] = $cashModel ->getWithdrawCashLogByStoreId($page , $this->length , $totalNum);
+        //$this->response['storeData'] = $cashModel ->getWithdrawCashLogByStoreId($page , $this->length , $totalNum);
        // dump($this->response);
         return view('alpha.finance.cash' , $this->response);
     
