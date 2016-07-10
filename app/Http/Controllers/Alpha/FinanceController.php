@@ -54,14 +54,42 @@ class FinanceController extends AdminController
 
         $cashModel = new StoreWithdrawCashLog;
 
+        //获取相关的列表信息
+
         $totalNum = $cashModel->withdrawCashLogTotalNum();
+
+
+
         $pageData = $this->getPageData($page , $this->length , $totalNum);
 
         $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/finance/cash?');
 
+
+
         $this->response['log'] = $cashModel->getWithdrawCashLog(array('status' => 1) , $this->length , $pageData->offset);
 
-
+        $this->response['storeData'] = $cashModel ->getWithdrawCashLogByStoreId($page , $this->length , $totalNum);
+       // dump($this->response);
         return view('alpha.finance.cash' , $this->response);
+    
+    }
+
+    /*
+    *提现拒绝
+    */
+    public function withdrawReject(Request $request)
+    {
+
+        $cashModel = new StoreWithdrawCashLog;
+        $id=$request->get('id');
+        $reason = $request->get('reason');
+        $affected= $cashModel->withdrawRject($id,$reason);
+        return $affected;
+    
+    }
+    
+    public function withdrawAgree(Request $request)
+    {
+       var_dump($request);
     }
 }

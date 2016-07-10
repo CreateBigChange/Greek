@@ -109,6 +109,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		//财务
 		Route::get('/finance/cash' , 'FinanceController@getWithdrawCashLog');
+		Route::get('/finance/withdrawReject' , 'FinanceController@withdrawReject');
+		Route::get('/finance/withdrawAgree' , 'FinanceController@withdrawAgree');
 
 	});
 

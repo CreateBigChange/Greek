@@ -17,6 +17,8 @@ class StoreWithdrawCashLog extends Model
 {
 
     protected $table = 'store_withdraw_cash_log';
+    protected $OK=1;	  //数据库操作错误返回代码
+    protected $ERROR = 0; //数据库操作成功返回代码
 
     /**
      * @param $account
@@ -85,35 +87,118 @@ class StoreWithdrawCashLog extends Model
      */
     public function getWithdrawCashLogByStoreId($storeId , $length , $offset , $date=''){
 
-        $sql = "SELECT 
-                    su.real_name,
-                    sw.withdraw_cash_num,
-                    sw.created_at,
-                    sw.status,
-                    sw.reason,
-                    sw.bank_card_num
-               
-               FROM $this->table as sw" ;
 
-        $sql .= " LEFT JOIN store_users as su on su.id = sw.user_id";
 
-        $sql .= " WHERE sw.store_id = $storeId";
-        if($date){
-            $sql.= " AND sw.created_at LIKE '" . $date ."%'";
-        };
+/*
+*				store_withdraw_cash_log.created_at, //申请提现时间
+	            store_infos.name, 					//商户名称
+	            store_withdraw_cash_log.store_id,    //商户ID   
+	            store_withdraw_cash_log.updated_at,    //当期结算日期
+	            store_withdraw_cash_log.withdraw_cash_num,//申请提现金额
+	            store_configs.money,                	  //可提现金 
+	            store_configs.balance,//上期余额 
+*/
 
-        $sql .= " ORDER BY created_at DESC";
-        $sql .= " LIMIT $offset , $length ";
 
-        $result = DB::select($sql);
-        foreach ($result as $r){
+	$sql =" 
+			SELECT
+				store_withdraw_cash_log.id,   
+				store_withdraw_cash_log.created_at, 
+	            store_infos.name, 					
+	            store_withdraw_cash_log.store_id,     
+	            store_withdraw_cash_log.updated_at,    
+	            store_withdraw_cash_log.withdraw_cash_num,
+	            store_configs.money,                	  
+	            store_configs.balance	  
+	        FROM
+	            store_withdraw_cash_log,
+	            store_infos,
+	            store_configs
+	        WHERE
+	            store_withdraw_cash_log.store_id = store_infos.id and
+	            store_configs.store_id=store_infos.id";
 
-            $r->bank_card_num = preg_replace('/(^.*)\d{4}(\d{4})$/','\\2',$r->bank_card_num);
-            //$r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
-        }
 
+
+$result1=DB::select($sql);
+
+
+
+for($i=0;$i<count($result1);$i++)
+{
+
+//组合数据
+$result[$i]['created_at'] =$result1[$i]->created_at;
+$result[$i]['name'] =$result1[$i]->name;
+$result[$i]['store_id'] =$result1[$i]->store_id;
+$result[$i]['updated_at'] =$result1[$i]->updated_at; 
+$result[$i]['withdraw_cash_num'] =$result1[$i]->withdraw_cash_num;//提现金额
+$result[$i]['money'] =$result1[$i]->money;						//可提现金额
+$result[$i]['balance'] =$result1[$i]->balance; 					//上期余额
+$result[$i]['now_balance'] =$result1[$i]->balance-$result1[$i]->withdraw_cash_num; //当期余额
+$result[$i]['id']=$result1[$i]->id;
+    $ID=$result1[$i]->store_id; //获取商户ID
+    
+    //获取上期日期
+	$getLastTimeSql = "
+        SELECT
+            store_withdraw_cash_log.updated_at
+        FROM
+            store_withdraw_cash_log
+        WHERE
+            store_withdraw_cash_log.store_id = $ID and status =0
+    ";
+
+	  $tempResult1 = DB::select($getLastTimeSql);
+	  if(isset($tempResult1[1]))
+	  {
+  		 $lastTime =strtotime($tempResult1[1]->store_withdraw_cash_log.updata);//上次提现时间
+  		 $result[$i]['lastTime'] = $tempResult1[1]->store_withdraw_cash_log.updata;
+	  }
+	  else
+	  {
+	  	$lastTime=0;
+	  	 $result[$i]['lastTime']=0;
+	  }
+ 	  $now =strtotime($result1[$i]->updated_at);						     //这次提现时间
+//得出当期流水 当期收入 当期扣点
+$getTotalsql = "SELECT
+                    total,   
+                    deliver  
+                FROM
+                    orders
+                WHERE
+                    status =1 and    
+                    pay_time < $now and 
+                    pay_time >$lastTime 
+                ";
+$tempResult2 = DB::select($getTotalsql);
+
+$all = count($tempResult2);//获取订单总数
+$alltotal=0;  //当期总费用
+$alldeliver=0;//当期总运费
+
+
+for($k=0;$k<count($tempResult2);$k++)
+{
+	$alltotal+=$tempResult2[$k].total;
+	$alldeliver+=$tempResult2[$k].deliver;
+}
+
+$allmoney =$alltotal+$alldeliver;//当期流水
+
+$income =$allmoney*0.965; //当期收入
+
+$remain =$allmoney*0.035; //当期扣点
+
+//组合数据
+$result[$i]['allmoney'] =$allmoney;
+$result[$i]['income'] =$income;
+$result[$i]['remain'] =$remain;
+$result[$i]['all'] =$all;
+}
         return $result;
-    }
+}
 
 
     /**
@@ -140,6 +225,7 @@ class StoreWithdrawCashLog extends Model
         $result = DB::select($sql);
 
         return $result;
+
     }
 
 
@@ -252,6 +338,35 @@ class StoreWithdrawCashLog extends Model
         $data['can_withdraw_cash']      = $storeConfig->money;
 
         return $data;
+    }
+
+    public function withdrawRject($id,$reason="")
+    {
+
+
+    		$affected = DB::update('update store_withdraw_cash_log set status = 3,reason="'.$reason.'" where id ='.$id);
+
+    		if($affected)
+    		{
+    			return $this->OK;
+    		}
+    		else
+    		{
+    			return $this->ERROR;
+    		}
+    }
+
+    public function withdrawAgree($id)
+    {
+    		$affected = DB::update('update store_withdraw_cash_log set status = 0 where id = ?', $id);
+    		if($affected)
+    		{
+    			return $OK;
+    		}
+    		else
+    		{
+    			return $ERROR;
+    		}
     }
 
 }
