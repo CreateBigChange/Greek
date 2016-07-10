@@ -39,8 +39,8 @@ class WechatController extends ApiController
             'payment' => [
                 'merchant_id'        => Config::get('wechat.merchant_id'),
                 'key'                => Config::get('wechat.key'),
-                'cert_path'          => Config::get('wechat.cert_path'),
-                'key_path'           => Config::get('wechat.key_path'),
+                'cert_path'          => realpath(Config::get('wechat.cert_path')),
+                'key_path'           => realpath(Config::get('wechat.key_path')),
                 'notify_url'         => Config::get('wechat.notify_url'),
             ],
         ];
@@ -52,8 +52,8 @@ class WechatController extends ApiController
             'payment' => [
                 'merchant_id'        => Config::get('wechat.open_merchant_id'),
                 'key'                => Config::get('wechat.open_key'),
-                'cert_path'          => Config::get('wechat.open_cert_path'),
-                'key_path'           => Config::get('wechat.open_key_path'),
+                'cert_path'          => realpath(Config::get('wechat.open_cert_path')),
+                'key_path'           => realpath(Config::get('wechat.open_key_path')),
                 'notify_url'         => Config::get('wechat.open_notify_url'),
             ],
         ];

@@ -15,6 +15,7 @@ class BLogger
     const LOG_SMS           = 'SMS';
     const LOG_WECHAT_PAY    = 'WECHAT_PAY';
     const LOG_JPUSH         = 'JPUSH';
+    const LOG_SCRIPT        = 'SCRIPT';
 
     private static $loggers = array();
 

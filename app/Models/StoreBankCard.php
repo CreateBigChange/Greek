@@ -23,4 +23,15 @@ class StoreBankCard extends Model
 
     }
 
+
+    /**
+     * 返回店铺绑定的银行卡
+     */
+    public function updateBankCard($storeId, $data)
+    {
+
+        return DB::table($this->table)->where('store_id', $storeId)->update($data);
+
+    }
+
 }

@@ -53,7 +53,7 @@
 {{--<script type="text/javascript" charset="utf-8" src="{{ URL::asset('/') }}js/ueditor/lang/zh-cn/zh-cn.js"></script>--}}
 
  <!--script for this page-->
-{{--<script src="{{ URL::asset('/') }}js/form-component.js"></script>--}}
+<script src="{{ URL::asset('/') }}js/form-component.js"></script>
 
 <!-- 拖拽排序-->
 <script type="text/javascript" src="{{ URL::asset('/') }}js/dragsort-0.5.2/jquery.dragsort-0.5.2.min.js"></script>
@@ -73,7 +73,7 @@
 
 		});
 
-		var ue = UE.getEditor('editor');
+//		var ue = UE.getEditor('editor');
 	});
 
 	//custom select box

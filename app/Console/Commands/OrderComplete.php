@@ -8,6 +8,8 @@ use DB , Config;
 use App\Models\Order;
 use Mockery\CountValidator\Exception;
 
+use App\Libs\BLogger;
+
 class OrderComplete extends Command
 {
     /**
@@ -33,6 +35,8 @@ class OrderComplete extends Command
     {
         $orderModel         = new Order();
 
+        BLogger::getLogger(BLogger::LOG_SCRIPT)->info("准备将已满24小时并且还是已到达状态的订单改为完成状态");
+
         $status = array(
             Config::get('orderstatus.arrive')['status'],
         );
@@ -52,10 +56,16 @@ class OrderComplete extends Command
             $orderIds[] = $o->id;
         }
 
+        if(empty($orderIds)){
+            BLogger::getLogger(BLogger::LOG_SCRIPT)->info("没有已满24小时并且还是已到达状态的订单");
+        }
         /**
          * 更新订单状态
          */
-        DB::table($orderModel->getTable())->whereIn('id', $orderIds)->update(array('status' => Config::get('orderstatus.completd')['status']));
+        if(DB::table($orderModel->getTable())->whereIn('id', $orderIds)->update(array('status' => Config::get('orderstatus.completd')['status']))){
+            BLogger::getLogger(BLogger::LOG_SCRIPT)->info("将订单改为".implode(' , ' ,$orderIds)."完成状态".Config::get('orderstatus.completd')['status'] );
+        }
+
 
 
 

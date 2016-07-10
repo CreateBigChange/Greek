@@ -345,11 +345,11 @@ class UsersController extends ApiController
         //$this->dispatch(new SendSms($mobile , $code , Config::get('sms.templateId')));
 
         //return response()->json(Message::setResponseInfo('SUCCESS'));
-        if($isSend){
+        if($isSend->statusCode == '000000'){
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
     }
 
@@ -667,11 +667,12 @@ class UsersController extends ApiController
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
         $isSend = $sms->sendTemplateSMS($mobile , array($code , '1') , Config::get('sms.templateId'));
 
-        if($isSend){
+        if($isSend->statusCode == '000000'){
             Session::put("jsx_sms_$mobile" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            BLogger::getLogger(BLogger::LOG_REQUEST)->notice($isSend);
+            return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
     }
 
@@ -1004,7 +1005,7 @@ class UsersController extends ApiController
                     //$userInfo->token = $sessionKey;
                     return response()->json(Message::setResponseInfo('SUCCESS' , $userInfo));
                 }
-            }elseif($userInfo->wx_unionid){
+            }elseif($userInfo && $userInfo->wx_unionid){
                 /**
                  * 如果这个手机号用户存在并且有绑定微信,则提示手机号已绑定
                  */

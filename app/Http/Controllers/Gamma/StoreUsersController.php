@@ -16,6 +16,7 @@ use Session , Cookie , Config;
 
 use App\Models\StoreUser;
 use App\Models\Feedback;
+use App\Models\AndroidVersion;
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
 use App\Libs\BLogger;
@@ -229,11 +230,11 @@ class StoreUsersController extends ApiController
         BLogger::getLogger(BLogger::LOG_REQUEST)->notice(json_encode($code));
         $isSend = $sms->sendTemplateSMS($phone , array($code , '1') , Config::get('sms.templateId'));
 
-        if($isSend){
+        if($isSend->statusCode == '000000'){
             Session::put("jsx_sms_$account" , $code);
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
-            return response()->json(Message::setResponseInfo('FAILED'));
+            return response()->json(Message::setResponseInfo('SMS-FAILED' , '' , $isSend->statusCode , $isSend->statusMsg));
         }
 
     }
@@ -395,6 +396,49 @@ class StoreUsersController extends ApiController
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
+        }
+
+    }
+
+
+
+    public function appDown(){
+
+        if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
+            $type = 'ios';
+        }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
+            $type = 'android';
+        }else{
+            return;
+        }
+
+        $versionModel = new AndroidVersion();
+        $version = (Array)$versionModel->getNew($type);
+
+        if(empty($version)) {
+            $version['download'] = '';
+        }
+
+        $version['title'] = "急所需商户版APP下载";
+        $version['type']  = $type;
+
+        return view("app.download" , $version);
+
+
+    }
+
+    public function checkVersion(Request $request){
+
+        $type = $request->get('type');
+        $version = $request->get('version');
+
+        $versionModel = new AndroidVersion();
+        $version = $versionModel->versionIsNew($version , $type);
+
+        if($version === true){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('NO_NEW' , $version));
         }
 
     }

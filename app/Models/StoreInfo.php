@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\StoreConfig;
 use App\Models\StoreCategory;
 use App\Models\StoreActivity;
+use App\Models\StoreBankCard;
 
 class StoreInfo extends Model{
 
@@ -25,6 +26,7 @@ class StoreInfo extends Model{
     public function getStoreList($search = array() , $length=20 , $offset=0){
         $storeConfigModel   = new StoreConfig();
         $storeCategoryModel = new StoreCategory();
+        $storeBankModel     = new StoreBankCard();
 
         $sql  = "select 
                       si.id,
@@ -54,14 +56,22 @@ class StoreInfo extends Model{
                       sc.balance,
                       sc.notice,
                       sc.score,
+                      sc.is_collect_security_deposit,
+                      sc.is_collect_construction_money,
+                      sc.construction_money,
+                      sc.security_deposit,
                       si.is_del,
                       si.created_at,
                       si.updated_at,
-                      si.is_sign
+                      si.is_sign,
+                      sb.bank_card_num,
+                      sb.bank_card_holder,
+                      sb.bank_reserved_telephone
                   FROM $this->table as si";
 
         $sql .= " LEFT JOIN ".$storeConfigModel->getTable()." as sc ON si.id = sc.store_id";
         $sql .= " LEFT JOIN ".$storeCategoryModel->getTable()." as sca ON si.c_id = sca.id";
+        $sql .= " LEFT JOIN ".$storeBankModel->getTable()." as sb ON si.id = sb.store_id";
 
         $sql .= " WHERE si.is_del = 0";
         if(isset($search['is_open'])){
@@ -100,6 +110,7 @@ class StoreInfo extends Model{
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
         }
 
+        $sql .= " ORDER BY created_at ASC , updated_at ASC";
         $sql .= " LIMIT $offset , $length ";
 
         $info = DB::select($sql);
@@ -129,6 +140,9 @@ class StoreInfo extends Model{
             '日'
         );
 
+        if($week_tmp == 0){
+            $week_tmp = count($weekTime);
+        }
         $week = $weekTime[$week_tmp - 1];
 
         $restStore = array();
@@ -276,6 +290,7 @@ class StoreInfo extends Model{
     public function addStore($data){
 
         $storeConfigModel   = new StoreConfig();
+        $storeBankModel   = new StoreBankCard();
 
         $storeId = DB::table($this->table)->insertGetId($data);
         if($storeId){
@@ -283,6 +298,7 @@ class StoreInfo extends Model{
                 'store_id' => $storeId
             );
             DB::table($storeConfigModel->getTable())->insert($config);
+            DB::table($storeBankModel->getTable())->insert($config);
 
         }
 

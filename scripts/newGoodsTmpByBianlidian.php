@@ -24,7 +24,7 @@ if ($mysqli->connect_error) {
 
 $mysqli->query("set names utf8");
 
-$selectBrand = "SELECT * FROM zxshop.store_goods where img not like 'http://7xt4zt.com%'";
+$selectBrand = "SELECT * FROM zxshop.goods where img not like 'http://7xt4zt.com%'";
 
 $result = $mysqli->query($selectBrand);
 
@@ -32,18 +32,27 @@ $store = array();
 
 while ($row = $result->fetch_object()){
 
-    $path = "/tmp" . $row->img;
-    $info =  pathinfo( $path );
-    $exten = $info['extension'];
-    if(!$exten){
-        $exten = 'jpg';
+    $path = "./newGoodsTmpShuiGuoImg/" . $row->img;
+    $exten = "jpeg";
+
+    if(file_exists($path.".jpg")){
+        $path .= ".jpg";
+        $exten = "jpg";
+    }elseif(file_exists($path.".JPG")){
+        $exten = "jpg";
+        $path .= ".jpg";
+    }elseif(file_exists($path.".jpeg")){
+        $exten = "jpeg";
+        $path .= ".jpeg";
+    }elseif(file_exists($path.".JPEG")){
+        $exten = "jpeg";
+        $path .= ".JPEG";
     }
 
     $filename	= time() + mt_rand(1000 , 9999);
 
     // 上传到七牛后保存的文件名
     $key = $filename.'.'.$exten;
-
 
     if(file_exists($path)) {
 
@@ -56,7 +65,7 @@ while ($row = $result->fetch_object()){
         if ($err !== null) {
             echo "上传七牛失败,商品名称:" . $row->name;
         } else {
-            $sql = "UPDATE store_goods SET `img`='" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "' WHERE `id` = " . $row->id;
+            $sql = "UPDATE goods SET `img`='" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "' WHERE `id` = " . $row->id;
             if ($mysqli->query($sql)) {
                 echo "成功更新一条,商品名称:" . $row->name;
             } else {

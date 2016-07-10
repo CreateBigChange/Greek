@@ -5,7 +5,7 @@ namespace App\Libs;
 use App\Libs\BLogger;
 
 class Message {
-	/*
+	/**
 	 * 定义通用报错列表
 	*
 	* @return	array
@@ -43,6 +43,8 @@ class Message {
 				'MOBILE_NO_BIND'				=> array('code'=>'4020' , 'msg'=>'请先绑定手机号'),
 				'ORDER_NOT_EXIST'				=> array('code'=>'4021' , 'msg'=>'订单不存在'),
 
+				'NO_NEW'						=> array('code'=>'4022' , 'msg'=>'不是最新版'),
+
 
 
 
@@ -67,7 +69,7 @@ class Message {
 				$response = $error[strtoupper($errorkey)];
 				$response['data'] = $data;
 			}else{
-				$response = array('code' => $code , 'msg' => $msg , 'data' => $data);
+				$response = array('code' => "$code[0]" , 'msg' => "$msg[0]" , 'data' => $data);
 			}
 
 			BLogger::getInOutLogger(BLogger::LOG_RESPONSE)->info(json_encode($response));

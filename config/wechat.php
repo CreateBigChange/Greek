@@ -9,7 +9,7 @@ return [
     'key'           => env('WECHAT_KEY' , 'WECHAT_KEY'),         //商户密钥
     'cert_path'     => env('WECHAT_CERT_PATH' , 'WECHAT_CERT_PATH'),
     'key_path'      => env('WECHAT_KET_PATH' , 'WECHAT_KET_PATH'),
-    'notify_url'    => 'http://preview.jisxu.com/wechat/notify/pub',
+    'notify_url'    => env('WECHAT_NOTIFY_URL' , 'WECHAT_NOTIFY_URL'),
 
 
     'open_use_alias'     => env('WECHAT_OPEN_USE_ALIAS', false),
@@ -19,5 +19,5 @@ return [
     'open_key'           => env('WECHAT_OPEN_KEY' , 'WECHAT_KEY'),         //商户密钥
     'open_cert_path'     => env('WECHAT_OPEN_CERT_PATH' , 'WECHAT_CERT_PATH'),
     'open_key_path'      => env('WECHAT_OPEN_KET_PATH' , 'WECHAT_KET_PATH'),
-    'open_notify_url'    => 'http://preview.jisxu.com/wechat/notify/open',
+    'open_notify_url'    => env('WECHAT_OPEN_NOTIFY_URL' , 'WECHAT_OPEN_NOTIFY_URL'),
 ];

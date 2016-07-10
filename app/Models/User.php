@@ -30,7 +30,6 @@ class User extends Model{
         'wx_app_openid',
         'wx_pub_openid',
         'wx_unionid',
-
     ];
 
     /**

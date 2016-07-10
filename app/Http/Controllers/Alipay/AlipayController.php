@@ -90,13 +90,13 @@ class AlipayController extends ApiController
 
 
         $gateway = Omnipay::create('Alipay_MobileExpress');
-        $gateway->setPartner('2088121058783821');
-        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
-        $gateway->setSellerEmail('zxhy201510@163.com');
-        $gateway->setNotifyUrl('http://preview.jisxu.com/alipay/notify');
+        $gateway->setPartner(Config::get('alipay.partner'));
+        $gateway->setKey(Config::get('alipay.key'));
+        $gateway->setSellerEmail(Config::get('alipay.seller_user_id'));
+        $gateway->setNotifyUrl(Config::get('alipay.notify_url'));
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setPrivateKey(public_path() . '/alipay/rsa_private_key.pem');
+        $gateway->setPrivateKey(realpath(Config::get('alipay.private_key_path')));
 
         $options = [
             'out_trade_no'      => date('YmdHis') . mt_rand(1000, 9999),
@@ -133,12 +133,12 @@ class AlipayController extends ApiController
 
     public function notify(){
         $gateway = Omnipay::create('Alipay_MobileExpress');
-        $gateway->setPartner('2088121058783821');
-        $gateway->setKey('s5zbht2t95j0hbjxctsy69yoyfiki7n5');
-        $gateway->setSellerEmail('zxhy201510@163.com');
+        $gateway->setPartner(Config::get('alipay.partner'));
+        $gateway->setKey(Config::get('alipay.key'));
+        $gateway->setSellerEmail(Config::get('alipay.seller_user_id'));
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
-        $gateway->setAlipayPublicKey(public_path().'/alipay/alipay_public_key.pem');
+        $gateway->setAlipayPublicKey(realpath(Config::get('alipay.ali_public_key_path')));
         
         $outTradeNo = $_POST['out_trade_no'];
         $order = $this->_model->getOrderByOutTradeNo($outTradeNo);

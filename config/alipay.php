@@ -1,15 +1,16 @@
 <?php
 
 return [
-    'partner'               => '2088121058783821',
-    'seller_user_id'        => 'zxhy201510@163.com',
-    'private_key_path'      => public_path() . '/alipay/rsa_private_key.pem',
-    'ali_public_key_path'   => public_path().'/alipay/alipay_public_key.pem',
-    'notify_url'            => 'http://preview.jisxu.com/alipay/notify/refund',
+    'partner'               => env('ALIPAY_PARTNER' , 'ALIPAY_PARTNER'),
+    'seller_user_id'        => env('ALIPAY_SELLER_USER_ID' , 'ALIPAY_SELLER_USER_ID'),
+    'private_key_path'      => env('ALIPAY_PRIVATE_KEY_PATH' , 'ALIPAY_PRIVATE_KEY_PATH'),
+    'ali_public_key_path'   => env('ALIPAY_PUBLIC_KEY_PATH' , 'ALIPAY_PUBLIC_KEY_PATH'),
+    'notify_url'            => env('ALIPAY_NOTIFY_URL' , 'ALIPAY_NOTIFY_URL'),
     'sign_type'             => strtoupper('RSA'),
     'refund_date'           => date("Y-m-d H:i:s",time()),
     'input_charset'         => strtolower('utf-8'),
-    'cacert'                => public_path().'/alipay/cacert.pem',
+    'cacert'                => env('ALIPAY_CACERT' , 'ALIPAY_CACERT'),
     'transport'             => 'http',
-    'service'               => 'refund_fastpay_by_platform_nopwd'
+    'service'               => 'refund_fastpay_by_platform_nopwd',
+    'key'                   => env('ALIPAY_KEY' , 'ALIPAY_KEY')
 ];

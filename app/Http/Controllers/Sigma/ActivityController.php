@@ -25,7 +25,7 @@ class ActivityController extends ApiController
     public function __construct(){
         parent::__construct();
         $this->_model       = new Banner;
-        $this->_length		= 20;
+        $this->_length		= 10;
     }
 
 

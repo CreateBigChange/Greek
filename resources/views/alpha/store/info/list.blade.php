@@ -24,7 +24,6 @@
 										<th>营业执照</th>
 										<th>联系人</th>
 										<th>联系电话</th>
-										<th>联系邮箱</th>
 										<th>地址</th>
 										<th>地图标记</th>
 										<th>审核</th>
@@ -42,7 +41,6 @@
 											<td><img style="width:50px;height:50px;" src="{{ $si->business_license }}" alt="{{ $si->business_license }}" title="{{ $si->store_name }}" /></td>
 											<td>{{ $si->contacts }}</td>
 											<td>{{ $si->contact_phone }}</td>
-											<td>{{ $si->contact_email }}</td>
 											<td>{{ $si->province }}{{ $si->city }}{{ $si->county }}{{ $si->address }}</td>
 											<td>@if ($si->is_sign == 1) 已标记 @else 未标记 @endif</td>
 											<td>@if ($si->is_checked == 1) 已审核 @else 未审核 @endif</td>

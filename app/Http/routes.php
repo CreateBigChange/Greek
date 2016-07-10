@@ -112,6 +112,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/finance/withdrawReject' , 'FinanceController@withdrawReject');
 		Route::get('/finance/withdrawAgree' , 'FinanceController@withdrawAgree');
 
+
+		//版本
+		Route::get('/app/version' , 'AppVersionController@getApkVersion');
+
 	});
 
 	//登陆
@@ -184,7 +188,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//意见反馈
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
-
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
@@ -204,6 +207,11 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::post('/reset/password', 'StoreUsersController@resetPassword');
 
 	Route::post('/sendsms', 'StoreUsersController@sendSms');
+
+
+	//下载
+	Route::get('/app/down', 'StoreUsersController@appDown');
+	Route::get('/app/check/version', 'StoreUsersController@checkVersion');
 
 });
 
@@ -275,7 +283,9 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
  * ##############################################################################
  */
 Route::group(['middleware' => ['api'] , 'namespace' => 'Common' ], function () {
+	Route::post('/upload/apk' , 'UploadController@uploadImg');
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
+	Route::post('/upload/qiniu/apk' , 'UploadController@uploadApkQiniu');
 	Route::get('/version/check', 'ToolController@versionIsNew');
 });
 
