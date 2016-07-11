@@ -10,12 +10,12 @@ namespace App\Models;
 use DB , Config;
 use Illuminate\Database\Eloquent\Model;
 
-class AndroidVersion extends Model
+class Version extends Model
 {
-    protected $table            = 'android_version';
+    protected $table            = 'version';
 
-    public function versionIsNew($version , $type){
-        $oldVersion = DB::table($this->table)->where('type' , $type)->orderBy('version' , 'desc')->first();
+    public function versionIsNew($version , $system , $type){
+        $oldVersion = DB::table($this->table)->where('system' , $system)->where('type' , $type)->orderBy('version' , 'desc')->first();
 
         if(!$oldVersion){
             return true;
@@ -28,8 +28,8 @@ class AndroidVersion extends Model
     }
 
 
-    public function getNew($type){
-        return DB::table($this->table)->where('type' , $type)->orderBy('version' , 'desc')->first();
+    public function getNew($system , $type){
+        return DB::table($this->table)->where('system' , $system)->where('type' , $type)->orderBy('version' , 'desc')->first();
     }
 
     public function updateDownloadTimes($id){

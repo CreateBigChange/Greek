@@ -275,6 +275,10 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 	Route::post('/sendsms', 'UsersController@sendSms');
 	Route::get('/redis', 'UsersController@redis');
 
+	//下载
+	Route::get('/app/down', 'UsersController@appDown');
+	Route::get('/app/check/version', 'UsersController@checkVersion');
+
 });
 
 /**
