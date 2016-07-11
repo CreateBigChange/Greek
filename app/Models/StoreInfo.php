@@ -23,7 +23,7 @@ class StoreInfo extends Model{
      *
      * 获取店铺信息
      */
-    public function getStoreList($search = array() , $length=20 , $offset=0){
+    public function getStoreList($search = array() , $length=20 , $offset=0 , $orderBY = ''){
         $storeConfigModel   = new StoreConfig();
         $storeCategoryModel = new StoreCategory();
         $storeBankModel     = new StoreBankCard();
@@ -110,7 +110,12 @@ class StoreInfo extends Model{
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
         }
 
-        $sql .= " ORDER BY created_at ASC , updated_at ASC";
+        if($orderBY == ''){
+            //$sql .= " ORDER BY created_at ASC , updated_at ASC";
+        }else{
+            $sql .= " ORDER BY " . $orderBY;
+        }
+
         $sql .= " LIMIT $offset , $length ";
 
         $info = DB::select($sql);

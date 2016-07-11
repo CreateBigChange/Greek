@@ -110,7 +110,7 @@ class StoresController extends ApiController
     public function getStoreListByIds(Request $request){
 
         $page = 1;
-        if(isset($_GET['page'])){
+        if(isset($_GET['page']) && $_GET['page'] != 0){
             $page = $_GET['page'];
         }
 
