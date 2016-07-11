@@ -111,7 +111,7 @@ class StoreInfo extends Model{
         }
 
         if($orderBY == ''){
-            //$sql .= " ORDER BY created_at ASC , updated_at ASC";
+            $sql .= " ORDER BY created_at ASC , updated_at ASC";
         }else{
             $sql .= " ORDER BY " . $orderBY;
         }
@@ -119,8 +119,6 @@ class StoreInfo extends Model{
         $sql .= " LIMIT $offset , $length ";
 
         $info = DB::select($sql);
-
-        var_dump($info);die;
 
         $ids = array();
         foreach ($info as $si){
