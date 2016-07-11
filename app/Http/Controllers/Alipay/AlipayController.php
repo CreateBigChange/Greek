@@ -93,7 +93,7 @@ class AlipayController extends ApiController
         $gateway->setPartner(Config::get('alipay.partner'));
         $gateway->setKey(Config::get('alipay.key'));
         $gateway->setSellerEmail(Config::get('alipay.seller_user_id'));
-        $gateway->setNotifyUrl(Config::get('alipay.notify_url'));
+        $gateway->setNotifyUrl(Config::get('alipay.notify_pay_url'));
 
         //For 'Alipay_MobileExpress', 'Alipay_WapExpress'
         $gateway->setPrivateKey(realpath(Config::get('alipay.private_key_path')));
@@ -186,7 +186,7 @@ class AlipayController extends ApiController
                 "急所需有新订单啦,请及时处理",
                 "急所需新订单",
                 array('ios' , 'android'),
-                "$order->store_id",
+                 "$order->store_id",
                 array(),
                 $bell
             ));
