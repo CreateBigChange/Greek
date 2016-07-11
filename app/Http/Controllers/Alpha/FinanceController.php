@@ -84,7 +84,14 @@ class FinanceController extends AdminController
         $id=$request->get('id');
         $reason = $request->get('reason');
         $affected= $cashModel->withdrawRject($id,$reason);
-        return $affected;
+        if($affected==1)
+            {
+                
+            }
+        else
+            {
+
+            }
     
     }
     

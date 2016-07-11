@@ -19,13 +19,10 @@
                                 <thead>
 
                                 <tr>
-                                    <td>ID</td><td>{{ $l['store_id'] }}</td><td>店铺名称</td><td>{{ $l['name'] }}</td><td>申请提现时间</td><td>{{ $l['created_at'] }}</td>
+                                    <td>ID</td><td>{{ $l['id'] }}</td><td>店铺名称</td><td>{{ $l['name'] }}</td><td>申请提现时间</td><td>{{ $l['created_at'] }}</td>
                                 </tr>
                                 </thead>
                                 <tbody class="dragsort">
-                             
-
-
                                     <tr>
                                         <td>上期结算日期</td>
                                         <td>当期结算日期</td>
@@ -48,12 +45,11 @@
                                         <td>{{ $l['balance'] }}</td>
                                          <td>{{ $l['all'] }}</td>
                                         <td>{{ $l['money'] }}</td>
-                                       
                                         <td>{{ $l['withdraw_cash_num'] }}</td>
                                         <td>{{ $l['now_balance'] }}</td>
                                         <td>
-                                            <div title="审核" class="btn btn-primary btn-xs" id="checked" withdrawId={{ $l['store_id'] }}>审核通过</div>
-                                            <div title="审核" class="btn btn-primary btn-xs" data-toggle="modal" href="#check" id="nonchecked" data-withdrawId="{{ $l['store_id'] }}">审核不通过</div>
+                                            <div title="审核" class="btn btn-primary btn-xs" id="checked" withdrawId={{ $l['id'] }}>审核通过</div>
+                                            <div title="审核" class="btn btn-primary btn-xs" data-toggle="modal" href="#check" id="nonchecked" data-withdrawId="{{ $l['id'] }}">审核不通过</div>
                                         </td>
                                     </tr>
                                

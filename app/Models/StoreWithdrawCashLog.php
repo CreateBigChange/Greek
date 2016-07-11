@@ -343,8 +343,9 @@ $result[$i]['all'] =$all;
     public function withdrawRject($id,$reason="")
     {
 
-
-    		$affected = DB::update('update store_withdraw_cash_log set status = 3,reason="'.$reason.'" where id ='.$id);
+            echo "$reason";
+            echo "$id";
+    		$affected = DB::update('update store_withdraw_cash_log set status = 3,reason="'.$reason.'" where id =?',["$id"]);
 
     		if($affected)
     		{
