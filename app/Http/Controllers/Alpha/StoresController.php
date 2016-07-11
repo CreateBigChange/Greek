@@ -235,19 +235,19 @@ class StoresController extends AdminController
 	public function addStore(Request $request){
 
 		if(!$request->has('c_id')){
-			return false;
+			return view('errors.503');
 		}
 		if(!$request->has('name')){
-			return false;
+			return view('errors.503');
 		}
 		if(!$request->has('address')){
-			return false;
+			return view('errors.503');
 		}
 		if(!$request->has('contacts')){
-			return false;
+			return view('errors.503');
 		}
 		if(!$request->has('contact_phone')){
-			return false;
+			return view('errors.503');
 		}
 
 		$data					= array();
