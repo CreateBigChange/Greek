@@ -120,6 +120,8 @@ class StoreInfo extends Model{
 
         $info = DB::select($sql);
 
+        var_dump($info);die;
+
         $ids = array();
         foreach ($info as $si){
             $ids[] = $si->id;
