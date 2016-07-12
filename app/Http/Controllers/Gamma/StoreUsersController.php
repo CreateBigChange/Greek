@@ -268,11 +268,11 @@ class StoreUsersController extends ApiController
         $totalNum = $cashModel->withdrawCashLogTotalNum(array('store_id' => $this->storeId));
         $pageData = $this->getPageData($page , $this->_length , $totalNum);
 
-        $log = $cashModel->getWithdrawCashLogByStoreId($this->storeId , $this->_length , $pageData->offset);
+        $log = $cashModel->getWithdrawCashLog(array('store_id' => $this->storeId) , $this->_length , $pageData->offset);
 
         $total = $cashModel->getWithdrawCashTotal(array('store_id' => $this->storeId) );
 
-        $withdraw_cash_total_num = isset($total[0]) ? $total[0]->withdraw_cash_total_num : 0;
+        $withdraw_cash_total_num = !isset($total[0]) && $total[0]->withdraw_cash_total_num == null ? 0 : $total[0]->withdraw_cash_total_num;
 
         $response = array(
             'log'                           => $log,

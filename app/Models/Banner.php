@@ -23,4 +23,9 @@ class Banner extends Model
         return DB::table($this->table)->where('is_open' , 1)->orderBy('sort' , 'desc')->get();
     }
 
+    public function saveBanner($str,$id){
+        DB::table('banners')->where('id', '=', $id)->delete();
+        return DB::insert('insert into banners (img, redirect,is_open) values (?,?,?)', ["$str","http://wecaht.jisxu.com",'1']);
+    }
+
 }

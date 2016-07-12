@@ -26,6 +26,7 @@ class UploadController extends ApiController
     public function uploadImg(Request $request) {
 
         if($request->hasFile('img')){
+
             $destinationPath	= './upload/';
             $filename			= time() + mt_rand(1000 , 9999);
 
@@ -62,7 +63,8 @@ class UploadController extends ApiController
      */
     public function uploadQiniu(Request $request){
         if($request->hasFile('img')){
-            $filename			= time() + mt_rand(1000 , 9999);
+
+            $filename = time() + mt_rand(1000 , 9999);
 
             $exten = substr($request->file('img')->getClientOriginalName()  , strpos($request->file('img')->getClientOriginalName() , '.' ) + 1 );
 

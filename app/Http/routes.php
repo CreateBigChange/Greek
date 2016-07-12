@@ -115,6 +115,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
 		//版本
 		Route::get('/app/version' , 'AppVersionController@getApkVersion');
+		//活动
+		Route::get('/Activity/bannerVersion' , 'ActivityController@bannerVersion');
+		Route::get('/Activity/save' , 'ActivityController@save');
 
 	});
 
