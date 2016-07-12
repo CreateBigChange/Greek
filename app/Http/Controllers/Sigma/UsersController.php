@@ -184,6 +184,13 @@ class UsersController extends ApiController
             'updated_at'    => date('Y-m-d H:i:s' , time())
         );
 
+        /**
+         * 检测帐号和手机号是否存在
+         */
+        if($this->_model->checkUserByAM($data['account'] , $data['mobile'])){
+            return response()->json(Message::setResponseInfo('REGISTERED'));
+        }
+
         $userId  = $this->_model->addUser($data);
 
         if($userId){

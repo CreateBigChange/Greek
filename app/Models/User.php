@@ -309,4 +309,18 @@ class User extends Model{
             )
             ->where('is_del' , 0)->get();
     }
+
+    /**
+     * @param $account
+     * @return mixed
+     * 检测注册用户帐号和手机号是否存在
+     */
+    public function checkUserByAM($account , $mobile){
+        return DB::table($this->table)
+            ->select($this->field)
+            ->where('account' , $account)
+            ->orWhere('mobile' , $tel)
+            ->first();
+
+    }
 }

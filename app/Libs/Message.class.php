@@ -28,7 +28,7 @@ class Message {
 				"PARAMETER_ERROR"				=> array('code'=>'4005' , 'msg'=>'参数错误'),
 				"PASSWORD_IS_NOT_CONSISTENT"	=> array('code'=>'4006' , 'msg'=>'两次密码不一致'),
 				'REGISTERED'					=> array('code'=>'4007' , 'msg'=>'账户已被注册'),
-				'REGISTERED'					=> array('code'=>'4008' , 'msg'=>'账户没有注册'),
+				'NOT_REGISTERED'				=> array('code'=>'4008' , 'msg'=>'账户没有注册'),
 				'NO_PHONE'						=> array('code'=>'4009' , 'msg'=>'手机号格式不对'),
 				'NO_EMAIL'						=> array('code'=>'4010' , 'msg'=>'邮箱格式不对'),
 				'TOKEN_FAILURE'					=> array('code'=>'4011' , 'msg'=>'令牌无效或过期'),
