@@ -60,6 +60,10 @@ class StoreGoods extends Model{
             $sql .= " WHERE sg.is_open = 1";
         }
 
+        if(isset($search['stock'])){
+            $sql .= " AND sg.stock <> 0";
+        }
+
         if(isset($search['store_id'])) {
             $sql .= " AND sg.store_id = " . $search['store_id'];
         }

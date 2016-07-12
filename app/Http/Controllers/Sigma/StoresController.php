@@ -179,6 +179,9 @@ class StoresController extends ApiController
 
         $search['store_id'] = $storeId;
 
+        //排除库存为0的
+        $search['stock'] = 0;
+
 
         $storeGoodsModel = new StoreGoods;
         $goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
