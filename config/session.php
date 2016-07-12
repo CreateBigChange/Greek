@@ -153,11 +153,11 @@ return [
     'web_login_cookie' => 'jisux_store_admin',
     'store_app_login_cookie' => 'jisux_store_app',
     //一年
-    'store_app_lifetime' => 525600 * 60 * 1000,
+    'store_app_lifetime' => 315360000000,
 
     'sigma_login_cookie' => 'jisux_app',
 
     //一年
-    'sigma_lifetime' => 525600 * 60 * 1000,
+    'sigma_lifetime' => 315360000000,
 
 ];
