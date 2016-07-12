@@ -12,13 +12,13 @@ if ($mysqli->connect_error) {
 
 $mysqli->query("set names utf8");
 
-$zxshopSql = "SELECT * FROM store_configs";
+$zxshopSql = "SELECT * FROM store_infos";
 
 $zxshopResult = $mysqli->query($zxshopSql);
 
 while ($row = $zxshopResult->fetch_object()){
 
-    $jsxSql = "UPDATE `store_configs` SET `store_logo` = '" . $row->store_logo . "' WHERE `store_id` = " .$row->store_id;
+    $jsxSql = "UPDATE `store_infos` SET `business_license` = '" . $row->business_license . "' , `id_card_img` = '". $row->id_card_img ."' WHERE `store_id` = " .$row->store_id;
     $mysqliJsx->query($jsxSql);
 }
 
