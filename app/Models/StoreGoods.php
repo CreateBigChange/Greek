@@ -61,7 +61,7 @@ class StoreGoods extends Model{
         }
 
         if(isset($search['stock'])){
-            $sql .= " AND sg.stock <> 0";
+            $sql .= " AND sg.stock > 0";
         }
 
         if(isset($search['store_id'])) {
