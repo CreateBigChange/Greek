@@ -16,7 +16,7 @@ $zxshopSql = "SELECT * FROM store_configs";
 
 $zxshopResult = $mysqli->query($zxshopSql);
 
-while ($row = $zxshopResult->fetch_row()){
+while ($row = $zxshopResult->fetch_object()){
 
     $jsxSql = "UPDATE `store_configs` SET `store_logo` = " . $row->store_logo . "WHERE `id` = " .$row->store_id;
     $mysqliJsx->query($jsxSql);
