@@ -98,7 +98,7 @@ class WithdrawMoney extends Command
                     continue;
                 }
 
-                $balanceMoney = bcsub($storeConfig->balance , $storeMoney[$s] *  bcsub(1 - Config::get('withdrawcash.point')) , 2);
+                $balanceMoney = bcsub( $storeConfig->balance , $storeMoney[$s] , 2 );
 
                 if($balanceMoney < 0){
                     
