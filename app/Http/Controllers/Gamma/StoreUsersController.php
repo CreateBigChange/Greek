@@ -16,7 +16,7 @@ use Session , Cookie , Config;
 
 use App\Models\StoreUser;
 use App\Models\Feedback;
-use App\Models\AndroidVersion;
+use App\Models\Version;
 use App\Libs\Message;
 use App\Libs\Smsrest\Sms;
 use App\Libs\BLogger;
@@ -313,6 +313,7 @@ class StoreUsersController extends ApiController
         $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
         $data['created_at']                 = date('Y-m-d H:i:s' , time());
+        $data['point']                      = Config::get('withdrawcash.point');
 
         $cashModel = new StoreWithdrawCashLog;
         $result = $cashModel->withdrawCash($data);
@@ -405,22 +406,24 @@ class StoreUsersController extends ApiController
     public function appDown(){
 
         if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
-            $type = 'ios';
+            $system = 'ios';
         }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
-            $type = 'android';
+            $system = 'android';
         }else{
             return;
         }
 
-        $versionModel = new AndroidVersion();
-        $version = (Array)$versionModel->getNew($type);
+        $type = 2;
+
+        $versionModel = new Version();
+        $version = (Array)$versionModel->getNew($system , $type);
 
         if(empty($version)) {
             $version['download'] = '';
         }
 
-        $version['title'] = "急所需商户版APP下载";
-        $version['type']  = $type;
+        $version['title']   = "急所需商户版APP下载";
+        $version['system']  = $system;
 
         return view("app.download" , $version);
 
@@ -429,11 +432,21 @@ class StoreUsersController extends ApiController
 
     public function checkVersion(Request $request){
 
-        $type = $request->get('type');
-        $version = $request->get('version');
+        //这个type是为了兼容上一个版本1.0.1
+        $type           = $request->get('type');
+        $system         = $request->get('system' , '');
+        $version        = $request->get('version');
 
-        $versionModel = new AndroidVersion();
-        $version = $versionModel->versionIsNew($version , $type);
+        if($type == 'android'){
+            $system = 'android';
+        }elseif($type == 'ios'){
+            $system = 'ios';
+        }
+
+        $type = 2;
+
+        $versionModel = new Version();
+        $version = $versionModel->versionIsNew($version , $system , $type);
 
         if($version === true){
             return response()->json(Message::setResponseInfo('SUCCESS'));

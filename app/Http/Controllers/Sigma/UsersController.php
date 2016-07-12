@@ -15,6 +15,7 @@ use App\Libs\BLogger;
 
 use App\Models\User;
 use App\Models\ConsigneeAddress;
+use App\Models\Version;
 
 class UsersController extends ApiController
 {
@@ -1088,6 +1089,62 @@ class UsersController extends ApiController
         }
 
     }
+
+    public function appDown(){
+
+        if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')||strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
+            $system = 'ios';
+        }else if(strpos($_SERVER['HTTP_USER_AGENT'], 'Android')){
+            $system = 'android';
+        }else{
+            return;
+        }
+
+        $type = 2;
+
+        $versionModel = new Version();
+        $version = (Array)$versionModel->getNew($system , $type);
+
+        if(empty($version)) {
+            $version['download'] = '';
+        }
+
+        $version['title']   = "急所需商户版APP下载";
+        $version['system']  = $system;
+
+        return view("app.download" , $version);
+
+
+    }
+
+    public function checkVersion(Request $request){
+
+        //这个type是为了兼容上一个版本1.0.1
+        $type           = $request->get('type');
+        $system         = $request->get('system' , '');
+        $version        = $request->get('version');
+
+        if($type == 'android'){
+            $system = 'android';
+        }elseif($type == 'ios'){
+            $system = 'ios';
+        }
+
+        $type = 2;
+
+        $versionModel = new Version();
+        $version = $versionModel->versionIsNew($version , $system , $type);
+
+        if($version === true){
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('NO_NEW' , $version));
+        }
+
+    }
+
+
+
 
 
 }
