@@ -18,7 +18,7 @@ $zxshopResult = $mysqli->query($zxshopSql);
 
 while ($row = $zxshopResult->fetch_object()){
 
-    $jsxSql = "UPDATE `store_infos` SET `business_license` = '" . $row->business_license . "' , `id_card_img` = '". $row->id_card_img ."' WHERE `store_id` = " .$row->store_id;
+    $jsxSql = "UPDATE `store_infos` SET `business_license` = '" . $row->business_license . "' , `id_card_img` = '". $row->id_card_img ."' WHERE `id` = " .$row->id;
     $mysqliJsx->query($jsxSql);
 }
 
