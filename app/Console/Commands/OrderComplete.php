@@ -66,8 +66,5 @@ class OrderComplete extends Command
             BLogger::getLogger(BLogger::LOG_SCRIPT)->info("将订单改为".implode(' , ' ,$orderIds)."完成状态".Config::get('orderstatus.completd')['status'] );
         }
 
-
-
-
     }
 }

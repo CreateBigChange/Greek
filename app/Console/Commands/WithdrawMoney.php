@@ -51,6 +51,7 @@ class WithdrawMoney extends Command
          * 获取几天前的订单
          */
         $day  = date("Y-m-d",strtotime("-3 day"));
+        BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 
         $order = DB::table($orderModel->getTable())
@@ -100,18 +101,19 @@ class WithdrawMoney extends Command
 
                 $balanceMoney = bcsub( $storeConfig->balance , $storeMoney[$s] , 2 );
 
+                $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
+                $email = "wuhui904107775@qq.com";
+                $name = "吴辉";
+                $storeName = $storeInfo->name;
+                $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
+                Mail::raw($emailContent, function($message) use($data)
+                {
+                    $message->from('zxhy201510@163.com', "正兴宏业");
+                    $message->to($data['email'], $data['name'])->subject($data['storeName']);
+                });
+
                 if($balanceMoney < 0){
                     
-                    $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
-                    $email = "wuhui904107775@qq.com";
-                    $name = "吴辉";
-                    $storeName = $storeInfo->name;
-                    $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
-                    Mail::raw($emailContent, function($message) use($data)
-                    {
-                        $message->from('zxhy201510@163.com', "正兴宏业");
-                        $message->to($data['email'], $data['name'])->subject($data['storeName']);
-                    });
                     continue;
                 }
 
