@@ -15,8 +15,8 @@ $auth = new Auth("_mg2zyrq_pBlWx5pMe4OCk2F7vf1usEKC1Usaivn", "CxJOBYAA7-drI2uNMB
 $token = $auth->uploadToken("jisxu-store-app-test");
 
 //
-//$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+//$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
@@ -30,6 +30,7 @@ $result = $mysqli->query($selectBrand);
 
 $store = array();
 
+$i = 0;
 while ($row = $result->fetch_object()){
 
     $path = "/tmp" . $row->img;
@@ -58,7 +59,8 @@ while ($row = $result->fetch_object()){
         } else {
             $sql = "UPDATE store_goods SET `img`='" . "http://7xt4zt.com2.z0.glb.clouddn.com/" . $ret['key'] . "' WHERE `id` = " . $row->id;
             if ($mysqli->query($sql)) {
-                echo "成功更新一条,商品名称:" . $row->name;
+                $i++;
+                echo "成功更新{$i}条,商品名称:" . $row->name;
             } else {
                 echo "更新失败,商品名称:" . $row->name;
             }
