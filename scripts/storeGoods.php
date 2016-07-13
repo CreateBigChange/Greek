@@ -33,6 +33,7 @@ if ($mysqli->connect_error) {
 
 $mysqli->query("set names utf8");
 
+$i = 1;
 
 /** 循环读取每个单元格的数据 */
 for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
@@ -104,9 +105,10 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
     $result         = $mysqli->query($sql);
 
     if($result){
-        echo "成功插入一条,商品名称:".$name."\n";
+        echo "成功插入{$i}条 , 店铺名称".$sname.",商品名称:".$name."\n";
+        $i++;
     }else{
-        echo "失败一条,商品名称:" . $name."\n";
+        echo "失败一条,店铺名称".$sname.",商品名称:".$name."\n";
     }
 
 
