@@ -33,9 +33,7 @@ if ($mysqli->connect_error) {
 
 $mysqli->query("set names utf8");
 
-$storeGoods             = array();
-$storeName              = array();
-$storeGoodsNum          = 0;
+
 /** 循环读取每个单元格的数据 */
 for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
 
@@ -43,7 +41,6 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
 
 
     $selectStore    = "SELECT * from store_infos WHERE name ='". $sname ."' limit 1";
-//    $selectStore    = "SELECT * from store_infos"." limit 1";
     $result         = $mysqli->query($selectStore);
 
     if($result) {
@@ -51,9 +48,6 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
 
         if($resultRow){
             $storeId = $resultRow->id;
-            if(!isset($storeGoods[$storeId])) {
-                $storeGoods[$storeId] = array();
-            }
         }else{
             file_put_contents('./store_goods.log', $sname."\n" ,FILE_APPEND);
             continue;
@@ -63,9 +57,6 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
         file_put_contents('./store_goods.log', $sname."\n" ,FILE_APPEND);
         continue;
     }
-
-    $length = count($storeGoods[$storeId]);
-    $storeGoods[$storeId][$length] = array();
 
     for ($column = 'B'; $column <= $highestColumm; $column++) {
 
