@@ -42,12 +42,12 @@ class Banner extends Model
 
         if($method==1)
         {
-                return DB::update("update banners set img='$imgs',redirect='$redirect',name='$name',created_at= '$create_at',updated_at= '$updated_at',is_open='$is_open',sort='$sort' where id = ?", ["$id"]);
+                return DB::update("update banners set img='$imgs',redirect='$redirect',name='$name',updated_at='$updated_at',is_open='$is_open',sort='$sort' where id = ?", ["$id"]);
         }
 
         if($method==0)
         {
-            return DB::insert('insert into banners (img, redirect,name,created_at,updated_at,is_open,sort) values (?, ?,?,?,?,?,?)', [$imgs,$redirect,$name,$create_at,$updated_at, $is_open,$sort]);
+            return DB::insert('insert into banners (img, redirect,name,created_at,is_open,sort) values (?, ?,?,?,?,?)', [$imgs,$redirect,$name,$create_at, $is_open,$sort]);
         }
             return 0;
 
@@ -56,7 +56,7 @@ class Banner extends Model
 
     public function bannerVersionTotalNum()
     {
-        $sql = "select  count(*) as num from banners";
+        $sql = "select  count(*) as num from banners where is_open=1";
         $num = DB::select($sql);
         return $num[0]->num;
     }

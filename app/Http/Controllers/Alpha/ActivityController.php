@@ -53,8 +53,8 @@ class ActivityController extends AdminController
         $data['id']=$request->query('id');
         $data['redirect']=$request->query('redirect');
         $data['name']=$request->query('name');
-        $data['create_time']=$request->query('create_time');
-        $data['update_time']=$request->query('update_time');
+        $data['create_time']=date('Y-m-d H:i:s',time());
+        $data['update_time']=date('Y-m-d H:i:s',time());
         $data['is_open']=$request->query('is_open');
         $data['order']=$request->query('order');
         $data['img']=$request->query('img');
@@ -74,7 +74,6 @@ class ActivityController extends AdminController
 
         $this->response['list']=$this->banner->getBannerList();
 
-        
         return redirect('/alpha/Activity/bannerVersion');    
        
     }
