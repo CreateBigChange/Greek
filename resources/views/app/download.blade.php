@@ -36,7 +36,7 @@
 
 <script>
     $(function () {
-        @if ($type == 'android')
+        @if ($system == 'android')
             var winHeight = $(window).height();
             function is_weixin() {
                 var ua = navigator.userAgent.toLowerCase();
@@ -53,7 +53,7 @@
             }else {
                 location.href = "{{ $download }}"
             }
-        @elseif ($type == 'ios')
+        @elseif ($system == 'ios')
             $("#notice").html('IOS版在审核中,请稍等两天');
             $(".weixin-tip").show();
         @endif

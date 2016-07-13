@@ -51,6 +51,7 @@ class WithdrawMoney extends Command
          * 获取几天前的订单
          */
         $day  = date("Y-m-d",strtotime("-3 day"));
+        BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 
         $order = DB::table($orderModel->getTable())
