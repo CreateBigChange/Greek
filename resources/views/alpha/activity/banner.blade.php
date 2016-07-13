@@ -1,94 +1,97 @@
 @include('alpha.header')
-              <!--Advanced File Input start-->
-              <div class="row" >
-                  <div class="col-md-12">
-                      <section class="panel">
-                          <header class="panel-heading">
-                              Advanced File Input
-                                  <span class="tools pull-right">
-                                    <a href="javascript:;" class="fa fa-chevron-down"></a>
-                                    <a href="javascript:;" class="fa fa-times"></a>
-                                </span>
-                          </header>
-                          <div class="panel-body">
-                              <form  class="form-horizontal tasi-form" style="margin-top:100px;height:100%;" enctype="multipart/form-data"  id="uploadForm">
-                                      <div class="form-group last">
-                                          <label class="control-label col-md-3">Image Upload</label>
-                                          <div class="col-md-9">
-                                              <div class="fileupload fileupload-new" data-provides="fileupload">	
-                                                  <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;" id="showimage" >
-                                                  </div>
-	                                                   <span class="btn btn-white btn-file">
-	                                                   <span class="fileupload-new" id="select" style="width:100%;"><i class="fa fa-paper-clip"></i> Select image</span>
-	                                                   <div hidden=1><input type="file" name='img' class="default" id="hiddenform" /></div>
-	                                                   </span>
-	                                                      <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> 
-	                                                      	<select name='vesion' id="vesion">
 
-															@foreach ($list as $li)
-															    <option value="{{ $li->id }}">{{ $li->id }}	</option>
-															@endforeach
+<!--main content start-->
+<section id="main-content">
+	<section class="wrapper">
+		<!-- page start-->
+		<div class="row">
+			<div class="col-lg-12">
+				<section class="panel">
+					<header class="panel-heading">
+						banner基本信息
+						<div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" id="add" href="#change"><i class="icon-plus"></i></div>
+						<div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+					</header>
+					<div class="panel-body">
+						<section id="unseen">
+							<table class="table table-bordered table-striped table-condensed">
+								<thead>
+									<tr>
+										<th>id</th>
+										<th>url</th>
+										<th>redirect</th>
+										<th>图片</th>
+										<th>名字</th>
+										<th>创建时间</th>
+										<th>更新时间</th>
+										<th>是否开启</th>
+										<th>排序</th>
+										<th width="100px;">操作</th>
+									</tr>
+								</thead>
+								<tbody class="dragsort">
+									@foreach ($list as $si)
+										<tr >
+											<td>{{ $si->id }}</td>
+											<td>{{ $si->img }}</td>
+											<td>{{ $si->redirect }}</td>
+											<td><img style="width:50px;height:50px;" src="{{ $si->img }}"  /></td>
+											<td>{{ $si->name }}</td>
+											<td>{{ $si->created_at }}</td>
+											<td>{{ $si->updated_at }}</td>
+											<td>{{ $si->is_open }}</td>
+											<td>{{ $si->sort}}</td>
+											<td>
+												<div class="update" p_order={{$si->sort}}  p_is_open={{ $si->is_open }}  p_updateed_at = "{{ $si->updated_at }}" p_created_at="{{ $si->created_at }}" p_name="{{ $si->name }}" p_redirect="{{ $si->redirect }}" p_img="{{ $si->img }}" p_id="{{ $si->id }}" title="修改"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#change"><i class="icon-plus">修改</i></div>
+											</td>
+										</tr>
+									@endforeach
+								</tbody>
+							</table>
+						</section>
+					</div>
+					<div class="text-center">
+						{!! $pageHtml !!}
+					</div>
+				</section>
+			</div>
+		</div>
 
-	                                                      	</select>
-	                                                      </a>
-                                                  </div>
-                                              </div>
-                                              <span class="label label-danger">NOTE!</span>
-                                          </div>
-                                      </div>
-                                      <div style="width:100%;"><center><button type="button" class="btn btn-success btn-mid btn-block" style="width:50%" id="buttonImg">提交</button></center></div>
-                              </form>
-                          </div>
-                      </section>
-                  </div>
-              </div>
-              <!--Advanced File Input end-->
+	</section>
+
+</section>
 <script type="text/javascript">
-	$("#select").click(function(){
+	
+	$(".update").click(function(){
 
-		$("#hiddenform").click();
-	})
 
-	$("#hiddenform").change(function(){
+	
+		$("#addBanner").css("display","none");
+		$("#subForm").css("display","block");
 
-		var file= document.getElementById('hiddenform').files[0];
-		if(file)
-		{
-			var reader=new FileReader();
 
-			reader.onload=function(){
-				document.getElementById('showimage').innerHTML='<IMG src="'+this.result+'">';
-			}
+		$("#change").attr("p_id",$(this).attr("p_id"));
+		$("#edit_redirect").attr("value",$(this).attr("p_redirect"));
+		document.getElementById('showimage').innerHTML="<img src='"+$(this).attr("p_img")+"'>";
+		$("#edit_name").attr("value",$(this).attr("p_name"));
+		$("#edit_created_time").attr("value",$(this).attr("p_created_at"));
+		$("#edit_update_time").attr("value",$(this).attr("p_updateed_at"));
+		$("#edit_img").attr("value",$(this).attr("p_img"));
+			if($(this).attr("p_is_open")==1)
+						$("#edit_is_open").attr("checked","true");
+			else
+						$("#edit_is_open").attr("checked","false");
+		$("#edit_order").attr("value",$(this).attr("p_order"))
+	})	
 
-			reader.readAsDataURL(file);
-		}
+	$("#add").click(function(){
+		$("#addBanner").css("display","block");
+		$("#subForm").css("display","none");
 
-		$("#buttonImg").click(function(){
-		    //获取要替换的bannerID
-			var BannerId = $("#vesion option:selected").val();
-			$.ajax({
-				dataType:'json',
-				type:'post',
-				url:'/upload/qiniu',
-				cache: false,
-    			data: new FormData($('#uploadForm')[0]),
-   				processData: false,
-    			contentType: false,
-				success:function(data)
-				{
-					console.log(data);
-					var str="str="+data['data']["host"]+"/"+data['data']["key"]+"&id="+BannerId;
-					document.location.href='./save?'+str;
-					
-				},
-				error:function(data)
-				{
-					console.log(data);				
-				}
-			})
-		})
 	})
 </script>
+<!--main content end-->
 
-@include('alpha.moduls.warning')
+@include('alpha.activity.banner_mouder')
+
 @include('alpha.footer')
