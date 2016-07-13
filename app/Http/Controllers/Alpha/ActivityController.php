@@ -73,7 +73,9 @@ class ActivityController extends AdminController
         $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/activity/banner?');            
 
          $this->response['list']=$this->banner->getBannerList();
-         return  view('alpha.activity.banner',$this->response);
+
+         return redirect('/alpha/Activity/bannerVersions/');
+       
     }
 }
 
