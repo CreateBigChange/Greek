@@ -123,7 +123,8 @@
 <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/update'>
+			<form class="form-horizontal tasi-form updataform" method="post" action='/alpha/permission/update'>
+
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title">修改顶级节点</h4>
@@ -132,9 +133,10 @@
 					<section class="panel" style="margin-bottom:0px">
 						<div class="panel-body">
 							<!--顶级节点默认fid为0;is_menu为1 -->
-							<input type="hidden" class="form-control" name='id' id='update_id' />
+							<input type="hidden" class="form-control updataform" name='id' id='update_id'  value="" />
 							<input type="hidden" class="form-control" name='fid' value='0' />
 							<input type="hidden" class="form-control" name='is_menu' value='on' />
+	
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
@@ -165,7 +167,7 @@
 				</div>
 				<div class="modal-footer"  style="margin-top:0px">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-success" type="submit">修改</button>
+					<button class="btn btn-success" type="submit" >修改</button>
 				</div>
 			</form>
 		</div>
@@ -178,7 +180,9 @@
 <div class="modal fade" id="updateChild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form class="form-horizontal tasi-form" method="post" action='/alpha/permission/update'>
+			<form class="form-horizontal tasi-form " method="post" action='/alpha/permission/update'>
+				
+		
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title">修改子节点</h4>
@@ -186,7 +190,7 @@
 				<div class="modal-body">
 					<section class="panel" style="margin-bottom:0px">
 						<div class="panel-body">
-							<input type="hidden" class="form-control" name='id' id='update_child_id' />
+							<input type="hidden" class="form-control" name='id' id='update_child_id' value="" />
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">上级名称</label>
 								<div class="col-sm-10">
@@ -195,6 +199,13 @@
 									</select>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label"></label>
+								<div class="col-sm-10">
+									<input type="hidden" class="form-control updataform" name='id' id='update_child_name1' value="" />
+								</div>
+							</div>
+
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">名称</label>
 								<div class="col-sm-10">
@@ -225,7 +236,7 @@
 				</div>
 				<div class="modal-footer"  style="margin-top:0px">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-success" type="submit">修改</button>
+					<button class="btn btn-success"  type="submit"   >修改</button>
 				</div>
 			</form>
 		</div>
@@ -247,12 +258,14 @@ $('.update').bind('click' , function(){
 	});
 });
 
-
 $('.updateChild').bind('click' , function(){
+
 	var pid = $(this).attr('p_id');
 	var level = $(this).attr('level');
+
 	$.get('/alpha/permission/info/' + pid , function(data){
 		if(data){
+
 			$.get('/alpha/permission/level/' + level , function(top){
 				if(top){
 					var option = '';
@@ -277,7 +290,6 @@ $('.updateChild').bind('click' , function(){
 				$('#update_child_menu').attr('checked' , 'checked');
 				$('#update_child_menu').parent().removeClass('switch-off').addClass('switch-on');
 			}
-
 		}
 	});
 });

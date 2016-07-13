@@ -22,12 +22,14 @@ class AdminPermissionController extends AdminController
         parent::__construct();
         $this->response['title']		= '权限管理';
         $this->response['menuactive']	= '权限管理';
+
     }
 
     /**
      * 获取节点列表
      */
     public function getPermissionsList(){
+
         $this->response['title']		= '角色列表';
         $this->response['menuactive']	= 'qxgl';
 
@@ -36,7 +38,7 @@ class AdminPermissionController extends AdminController
 		$permissionList = $permissionModel->getPermissionsList();
 
         $this->response['permissions'] = $permissionList;
-
+        //dump( $this->response);
         return view('alpha.auth.permissions.list' , $this->response);
     }
 
@@ -110,6 +112,7 @@ class AdminPermissionController extends AdminController
     public function delPermission($id){
 
         AdminPermission::where('id' , $id)->delete();
+   
         return redirect('alpha/permissions');
 
     }
@@ -120,7 +123,7 @@ class AdminPermissionController extends AdminController
     public function getPermissionInfo($id){
 
         $permissionModel	= new AdminPermission;
-
+         return $id;
 		$info				= $permissionModel->getPermissionInfo($id);
 
 		return response()->json($info);
@@ -131,9 +134,12 @@ class AdminPermissionController extends AdminController
      * 更新节点
      */
     public function updatePermission(Request $request){
+
+      
 		if(!$request->has('id')){
-            return view('errors.503');
+           return view('errors.503');
 		}
+
         $this->response['title']		= '更新节点';
         $this->response['menuactive']	= 'qxgl';
 

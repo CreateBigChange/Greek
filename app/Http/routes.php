@@ -36,10 +36,18 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/permissions' , 'AdminPermissionController@getPermissionsList');
 		Route::get('/permissions/ajax' , 'AdminPermissionController@ajaxPermissionsList');
 		Route::post('/permission/add' , 'AdminPermissionController@addPermission');
+
+
+
 		Route::get('/permission/del/{id}' , 'AdminPermissionController@delPermission');
+
+
+
 		Route::get('/permission/info/{id}' , 'AdminPermissionController@getPermissionInfo');
 		Route::post('/permission/update' , 'AdminPermissionController@updatePermission');
 		Route::get('/permission/level/{level}' , 'AdminPermissionController@getLevelPermission');
+
+
 
 		//角色权限操作
 		Route::get('/permission/role/{rid}' , 'AdminPermissionRoleController@getPermissionIdsByRoleID');

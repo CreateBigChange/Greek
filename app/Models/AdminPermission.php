@@ -80,24 +80,4 @@ class AdminPermission extends Model{
 
         return $parent;
     }
-
-    /**
-     * 获取节点信息
-     */
-    public function getPermissionInfo($id) {
-        $child = DB::table($this->table)->where('id' , $id)->get();
-        if(!empty($child)){
-            $child[0]->parent = '';
-            $parent	= DB::table($this->table)->where('id' , $child[0]->fid)->get();
-            if(!empty($parent)){
-                $child[0]->parent = $parent[0];
-            }
-            return $child[0];
-        }
-
-        return false;
-
-    }
-
-
 }

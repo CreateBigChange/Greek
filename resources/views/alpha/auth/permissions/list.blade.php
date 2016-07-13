@@ -29,7 +29,7 @@
 											<td>{{ $p->sort }}</td>
 											<td>
 												<a p_id="{{ $p->id }}" display_name="{{ $p->name }}" level="1" class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></a>
-												<div p_id="{{ $p->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+												<div  p_id="{{ $p->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update change" ><i class="icon-pencil "></i></div>
 												<a url="/alpha/permission/del/{{ $p->id }}" data-toggle="modal" href="#warning" class="btn btn-danger btn-xs warning"><i class="icon-trash "></i></a>
 											</td>
 										</tr>
@@ -40,7 +40,7 @@
 												<td>{{ $c->sort }}</td>
 												<td>
 													<a p_id="{{ $c->id }}" display_name="{{ $c->name }}" level="2" class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></a>
-													<div p_id="{{ $c->id }}" level="0" data-toggle="modal" href="#updateChild" class="btn btn-primary btn-xs updateChild"><i class="icon-pencil"></i></div>
+													<div p_id="{{ $c->id }}" level="0" data-toggle="modal" href="#updateChild" class="btn btn-primary btn-xs updateChild change"><i class="icon-pencil"></i></div>
 													<a url="/alpha/permission/del/{{ $c->id }}" data-toggle="modal" href="#warning" class="btn btn-danger btn-xs warning"><i class="icon-trash "></i></a>
 												</td>
 											</tr>
@@ -50,7 +50,7 @@
 													<td>{!! preg_replace('/\,/' , '<br>' ,$cc->url) !!} </td>
 													<td>{{ $cc->sort }}</td>
 													<td>
-														<div p_id="{{ $cc->id }}" level="1" data-toggle="modal" href="#updateChild" class="btn btn-primary btn-xs updateChild"><i class="icon-pencil"></i></div>
+														<div p_id="{{ $cc->id }}" level="1" data-toggle="modal" href="#updateChild" class="btn btn-primary btn-xs updateChild change"><i class="icon-pencil"></i></div>
 														<a url="/alpha/permission/del/{{ $cc->id }}" data-toggle="modal" href="#warning" class="btn btn-danger btn-xs warning"><i class="icon-trash "></i></a>
 													</td>
 												</tr>
@@ -84,6 +84,17 @@ $('.addChild').bind('click' , function(){
 	$('#add_fid').val(permissionId);
 	
 });
+
+$(".change").click(function(){
+	
+var form = $(".updataform");
+console.log(form);
+for(i = 0;i<form.length;i++)
+{
+	form.attr("value",$(this).attr("p_id"))
+}
+
+})
 </script>
 
 <!--
