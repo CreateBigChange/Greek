@@ -1,19 +1,6 @@
 {{--添加--}}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 {{--修改--}}
         <!-- Modal -->
 <div class="modal fade" id="change"  p_id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -28,7 +15,7 @@
                 <div class="modal-body">
                     <section class="panel" style="margin-bottom:0px">
                         <div class="panel-body">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none">
                                 <label class="col-sm-2 col-sm-2 control-label">url</label>
                                  <div class="col-sm-10">
                                     <input type="text" class="form-control" name='redirect' id="edit_img"/>
@@ -60,13 +47,13 @@
                                     <input type="text" class="form-control" name='name' id="edit_name"/>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display:none">
                                 <label class="col-sm-2 col-sm-2 control-label">创建时间</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" name='create_time' id="edit_create_time"/>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display:none">
                                 <label class="col-sm-2 col-sm-2 control-label">更新时间</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" name='updata_time' id="edit_update_time"/>
@@ -90,8 +77,8 @@
                 </div>
                 <div class="modal-footer"  style="margin-top:0px">
                     <button data-dismiss="modal" class="btn btn-default" type="button" >取消</button>
-                    <button style="display:none" class="btn btn-success"   id="subForm">添加</button>
-                    <button style="display:none" class="btn btn-success"   id="addBanner">添加</button>
+                    <button style="display:none;width:100px;float:right" class="btn btn-success"   id="subForm">修改</button>
+                    <button style="display:none;width:100px;float:right" class="btn btn-success"   id="addBanner">添加</button>
                 </div>
             </form>
         </div>
