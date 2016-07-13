@@ -82,7 +82,7 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
                 $c_id = $category->id;
             }
 
-            $selectNav = "SELECT * FROM store_nav WHERE `name` = '" . $value ."'";
+            $selectNav = "SELECT * FROM store_nav WHERE `name` = '" . $value ."' AND `store_id` = {$storeId}";
             $selectNavResult = $mysqli->query($selectNav);
             $nav = $selectNavResult->fetch_object();
             if($nav) {
