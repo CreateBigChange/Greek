@@ -51,9 +51,9 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
 
         if($resultRow){
             $storeId = $resultRow->id;
-            if(!isset($storeGoods[$storeId])) {
-                $storeGoods[$storeId] = array();
-            }
+//            if(!isset($storeGoods[$storeId])) {
+//                $storeGoods[$storeId] = array();
+//            }
         }else{
             file_put_contents('./store_goods.log', $sname."\n" ,FILE_APPEND);
             continue;
@@ -64,8 +64,8 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
         continue;
     }
 
-    $length = count($storeGoods[$storeId]);
-    $storeGoods[$storeId][$length] = array();
+//    $length = count($storeGoods[$storeId]);
+    //$storeGoods[$storeId][$length] = array();
 
     for ($column = 'B'; $column <= $highestColumm; $column++) {
 
