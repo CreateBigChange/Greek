@@ -43,14 +43,13 @@ class WithdrawMoney extends Command
          * 状态为已送达的
          */
         $status = array(
-            Config::get('orderstatus.arrive')['status'],
             Config::get('orderstatus.completd')['status']
         );
 
         /**
-         * 获取几天前的订单
+         * 获取当前时间完成的订单
          */
-        $day  = date("Y-m-d",strtotime("-3 day"));
+        $day  = date("Y-m-d H:i:s",time());
         BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 
@@ -102,6 +101,7 @@ class WithdrawMoney extends Command
                 $balanceMoney = bcsub( $storeConfig->balance , $storeMoney[$s] , 2 );
 
                 $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
+                BLogger::getLogger(BLogger::LOG_SCRIPT)->info($emailContent);
                 $email = "wuhui904107775@qq.com";
                 $name = "吴辉";
                 $storeName = $storeInfo->name;
@@ -126,22 +126,6 @@ class WithdrawMoney extends Command
                  * 更新订单状态
                  */
                 DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $storeOrderId[$s])->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
-
-
-
-                $emailContent = "店铺ID:".$s.",店铺余额:$balanceMoney ".",店铺可提现金额:" . $storeMoney[$s] . ", 本次处理的订单ID: ". implode(',' , $storeOrderId[$s]);
-
-                BLogger::getLogger(BLogger::LOG_SCRIPT)->info($emailContent);
-
-                $email = "wuhui904107775@qq.com";
-                $name = "吴辉";
-                $storeName = $storeInfo->name;
-                $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
-                Mail::raw($emailContent, function($message) use($data)
-                {
-                    $message->from('zxhy201510@163.com', "正兴宏业");
-                    $message->to($data['email'], $data['name'])->subject($data['storeName']);
-                });
 
                 DB::commit();
 
