@@ -135,7 +135,7 @@ class StoresController extends ApiController
         $response['pageData'] = $this->getPageData($page , $this->_length , $totalNum);
 
 
-        $orderBy = " FIELD (id , $ids)";
+        $orderBy = " FIELD (si.id , $ids)";
         $response['storeList'] = $this->_model->getStoreList( $search , $this->_length , $response['pageData']->offset  , $orderBy);
 
 
