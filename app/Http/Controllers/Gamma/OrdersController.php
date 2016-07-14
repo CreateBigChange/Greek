@@ -99,8 +99,6 @@ class OrdersController extends ApiController
             );
         }
 
-        var_dump($search);die;
-
        // $storeId = $this->storeId;
 
 //        if($request->has('isClearNotice')) {
