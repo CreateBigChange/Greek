@@ -319,7 +319,7 @@ class User extends Model{
         return DB::table($this->table)
             ->select($this->field)
             ->where('account' , $account)
-            ->orWhere('mobile' , $tel)
+            ->orWhere('mobile' , $mobile)
             ->first();
 
     }
