@@ -188,6 +188,7 @@ class AdminUsersController extends AdminController
 	 */
 	public function updateAdminUser(Request $request){
 	
+
 		if(!$request->has('id')){
             return view('errors.503');
 		}

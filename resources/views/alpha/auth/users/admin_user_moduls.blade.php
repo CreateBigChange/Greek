@@ -3,7 +3,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form class="form-horizontal tasi-form" method="post" action='/alpha/admin/user/update'>
-				<input type="hidden" class="form-control" name='id' id="edit_id" />
+				<input type="hidden" class="form-control" name='id' id="edit_id" value />
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title">修改管理用户</h4>
@@ -164,7 +164,9 @@ $('.edit').bind('click' , function(){
 					var html = bt('editRoles' , ruData);			
 					$('#edit_roles').html(html);
 				}
+				
 				$('#edit_id').val(data.info.id);
+
 				$('#edit_name').val(data.info.name);
 				$('#edit_email').val(data.info.email);
 				$('#edit_real_name').val(data.info.real_name);
