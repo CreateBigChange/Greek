@@ -104,6 +104,10 @@ class Order extends Model{
 
         $sql .= " WHERE 1 = 1";
 
+        if(isset($search['search']) && !empty($search['search'])){
+            $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";
+        }
+
         if(isset($search['user'])){
             $sql .= " AND o.user = ".$search['user'];
         }
@@ -116,10 +120,6 @@ class Order extends Model{
         }
         if(isset($search['id'])){
             $sql .= " AND o.id = " . $search['id'];
-        }
-
-        if(isset($search['search']) && !empty($search['search'])){
-            $sql .= " AND o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%'";
         }
 
         $sql .= " GROUP BY o.id";
