@@ -51,7 +51,6 @@ class OrdersController extends ApiController
      *      {
      *          search : 18401586654
      *          status : 1
-     *          isClearNotice : new
      *      }
      * @apiUse CODE_200
      *
@@ -99,6 +98,8 @@ class OrdersController extends ApiController
                 Config::get('orderstatus.withdrawMoney')['status']
             );
         }
+
+        var_dump($search);die;
 
        // $storeId = $this->storeId;
 

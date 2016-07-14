@@ -110,10 +110,10 @@ class StoreInfo extends Model{
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
         }
 
-        if($orderBY == ''){
-            $sql .= " ORDER BY created_at ASC , updated_at ASC";
-        }else{
+        if($orderBY != ''){
             $sql .= " ORDER BY " . $orderBY;
+        }else{
+            //$sql .= " ORDER BY created_at ASC , updated_at ASC";
         }
 
         $sql .= " LIMIT $offset , $length ";
