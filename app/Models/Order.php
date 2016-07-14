@@ -126,8 +126,6 @@ class Order extends Model{
         $sql .= " ORDER BY o.updated_at DESC , o.created_at DESC";
         $sql .= " LIMIT $offset , $length";
 
-        var_dump($sql);die;
-
         $orders = DB::select($sql);
 
         $orderIds = array();
