@@ -199,6 +199,13 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//意见反馈
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
+
+		//优惠券
+		Route::post('/store/coupon/add', 'CouponController@addCoupon');
+		Route::post('/store/coupon/list', 'CouponController@getCouponList');
+		Route::post('/store/coupon/info/{couponId}', 'CouponController@getCouponInfo');
+		Route::post('/store/coupon/stop/{couponId}', 'CouponController@stopCoupon');
+
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
