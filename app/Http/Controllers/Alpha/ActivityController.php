@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Models\User;
 use App\Libs\Message;
 use App\Models\Banner;
+use App\Models\Coupon;
 
 class ActivityController extends AdminController
 {
@@ -21,12 +22,14 @@ class ActivityController extends AdminController
     private $length;
     private $_model;
     private $banner;
+    private $couponModel;
 
     public function __construct(){
         parent::__construct();
         $this->_model = new User();
         $this->banner = new Banner();
-        $this->response['title']		= 'bannerVersions';
+        $this->couponModel = new Coupon();
+        $this->response['title']		= '活动';
         $this->length=10;
     }
 
@@ -76,6 +79,45 @@ class ActivityController extends AdminController
 
         return redirect('/alpha/Activity/bannerVersion');    
        
+    }
+
+    //优惠券的控制器
+    public function coupon(Request $request)
+    {
+
+        $page = 1;
+
+        if($request->has('page')){
+            $page = $request->get('page');
+        }
+        $totalNum =  $this->couponModel->couponTotalNum();
+        $pageData = $this->getPageData($page  , $this->length, $totalNum);
+        $this->response['list']= $this->couponModel->getCouponList();
+        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/activity/banner?');
+        //dd($this->response);
+    
+        return view('alpha.activity.coupon',$this->response);
+    }
+    public function couponUpdate(Request $request)
+    {
+        
+       //dd($request);
+        $this->couponModel->updateCoupon($request);
+        
+       return redirect('/alpha/Activity/coupon');    
+        
+    }
+    public function couponAdd(Request $request)
+    {
+         // dd($request);
+       $this->couponModel->addCoupon($request);
+        
+       return redirect('/alpha/Activity/coupon');  
+    }
+    public function couponDelete( $id)
+    {
+        $this->couponModel->couponDelete($id);
+        return redirect('/alpha/Activity/coupon');  
     }
 }
 

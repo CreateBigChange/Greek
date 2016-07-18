@@ -110,7 +110,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/order/delivery' , 'OrdersController@getOrderDelivery');
 		Route::get('/order/notdelivery' , 'OrdersController@getOrderNotDelivery');
 		Route::get('/order/accident' , 'OrdersController@getOrderAccident');
+		Route::get('/order/dispatching' , 'OrdersController@getOrderDispatching');
 		Route::post('/order/change/status/{id}', 'OrdersController@changeStatus');
+
 
 		//用户
 		Route::get('/user/list' , 'UserController@getUserList');
@@ -126,6 +128,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		//活动
 		Route::get('/Activity/bannerVersion' , 'ActivityController@bannerVersion');
 		Route::get('/Activity/save' , 'ActivityController@save');
+		Route::get('/Activity/coupon','ActivityController@coupon');
+		Route::post('/Activity/couponUpdate','ActivityController@couponUpdate');
+		Route::post('/Activity/couponAdd','ActivityController@couponAdd');
+		Route::get('/Activity/couponDelete/{id}','ActivityController@couponDelete');
 
 	});
 

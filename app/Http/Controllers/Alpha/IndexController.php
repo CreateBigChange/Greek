@@ -24,7 +24,11 @@ class IndexController extends AdminController
     }
 
     public function index() {
+    	//dump($this->response);
         return view('alpha.index.index' , $this->response);
+
+
+
     }
 
 }
