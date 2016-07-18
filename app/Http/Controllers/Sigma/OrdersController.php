@@ -658,14 +658,22 @@ class OrdersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function getOrderCoupon($orderId){
+    public function getOrderCoupon($orderId , Request $request){
+
+        $page = 1;
+        if($request->has('page')){
+            $page = $request->get('page');
+        }
 
         $userCouponModel = new UserCoupon();
 
-        $coupon = $userCouponModel->getOrderCanUseCoupon($this->userId, $orderId);
+        $totalNum = $userCouponModel->getUserCouponTotalNum($this->userId);
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $coupon));
+        $pageData = $this->getPageData($page, $this->_length , $totalNum);
 
+        $coupon = $userCouponModel->getOrderCanUseCoupon($this->userId, $orderId , $this->_length , $pageData->offset);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array('pageData' => $pageData , 'coupon'=> $coupon)));
     }
 
 
@@ -700,7 +708,7 @@ class OrdersController extends ApiController
         $userId     = $this->userId;
 
         $coupon    = $request->get('coupon_id');
-        
+
         if ($this->_model->updateOrderCoupon($userId, $orderId, $coupon)) {
             return response()->json(Message::setResponseInfo('SUCCESS'));
         } else {

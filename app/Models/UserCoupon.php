@@ -77,14 +77,14 @@ class UserCoupon extends Model{
             ->count();
     }
 
-    public function getOrderCanUseCoupon($userId , $orderId){
+    public function getOrderCanUseCoupon($userId , $orderId , $length , $offset){
         $orderModel = new Order();
         $order  = DB::table($orderModel->getTable())->where('id' , $orderId)->where('status' , Config::get('orderstatus.no_pay')['status'])->first();
 
         if($order->user != $userId){
             return false;
         }
-        $coupon = $this->getUserCoupon($userId);
+        $coupon = $this->getUserCoupon($userId , $length , $offset);
 
         if(!$order){
             return false;
