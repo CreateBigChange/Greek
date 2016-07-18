@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Sigma;
 
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input , RedisClass as Redis;
@@ -647,7 +648,7 @@ class OrdersController extends ApiController
      * @apiName ordersCoupon
      * @apiGroup SIGMA
      * @apiVersion 1.0.0
-     * @apiDescription 评价
+     * @apiDescription 获取订单可以使用的优惠券
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/coupon/1
      *
@@ -671,7 +672,7 @@ class OrdersController extends ApiController
 
         $pageData = $this->getPageData($page, $this->_length , $totalNum);
 
-        $coupon = $userCouponModel->getOrderCanUseCoupon($this->userId, $orderId , $this->_length , $pageData->offset);
+        $coupon = $userCouponModel->getOrderCoupon($this->userId, $orderId , $this->_length , $pageData->offset);
 
         return response()->json(Message::setResponseInfo('SUCCESS' , array('pageData' => $pageData , 'coupon'=> $coupon)));
     }
@@ -709,10 +710,11 @@ class OrdersController extends ApiController
 
         $coupon    = $request->get('coupon_id');
 
-        if ($this->_model->updateOrderCoupon($userId, $orderId, $coupon)) {
-            return response()->json(Message::setResponseInfo('SUCCESS'));
-        } else {
+        $isUpdate = $this->_model->updateOrderCoupon($userId, $orderId, $coupon);
+        if ($isUpdate === false) {
             return response()->json(Message::setResponseInfo('FAILED'));
+        } else {
+            return response()->json(Message::setResponseInfo('SUCCESS' , $isUpdate));
         }
 
 

@@ -25,6 +25,7 @@ use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
 use App\Models\User;
 use App\Models\UserCoupon;
+use phpDocumentor\Reflection\Types\Object_;
 
 class Order extends Model{
 
@@ -361,8 +362,27 @@ class Order extends Model{
             $order['consignee_street']      = $address[0]->street;
             $order['consignee_address']     = $address[0]->address;
             $order['consignee_street']      = $address[0]->street;
-            $order['pay_total']             = $total + $storeInfo->deliver;
         }
+
+        $userCouponModel = new UserCoupon();
+
+        $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder( (Object) $order);
+
+        if(!empty($canUseCoupon)){
+            $coupon = $canUseCoupon[0];
+            $order['coupon_id']                         = $coupon->coupon_id;
+            $order['coupon_type']                       = $coupon->type;
+            $order['coupon_value']                      = $coupon->value;
+            $order['coupon_prerequisite']                  = $coupon->prerequisite;
+
+            if($coupon->store_id == 0 || $coupon->store_id == ''){
+                $order['coupon_issuing_party']  = 1;
+            }else{
+                $order['coupon_issuing_party']  = 2;
+            }
+        }
+
+        $order['pay_total']             = $this->reckonOrderPayTotal( (Object) $order);
 
         //开始事物
         DB::beginTransaction();
@@ -398,10 +418,13 @@ class Order extends Model{
             }
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderInfo);
+
             $orderInfoMode = new OrderInfo();
             DB::table($orderInfoMode->getTable())->insert($orderInfo);
+
             //OrderInfo::create($orderInfo);
             //DB::table($this->_order_infos_table)->insert($orderInfo);
+
             DB::commit();
 
             $orderLogMode = new OrderLog();
@@ -482,11 +505,8 @@ class Order extends Model{
         }
 
         //计算需要支付的数量
-        //$payNum = $order->total + $order->deliver - ($inPoints / 100);
-//        $payNum = $order->total + $order->deliver;
-//
-        $payNum = $order->pay_total;
-//
+        $payNum = $this->reckonOrderPayTotal($order);
+
         if($payNum < 0){
             return Message::setResponseInfo('FAILED');
         }
@@ -562,8 +582,8 @@ class Order extends Model{
          * 计算需要支付的数量
          * *********************************
          */
-        $payNum = $order->total + $order->deliver - ($order->in_points / 100);
-        $payNum = round($payNum , 2);
+        $payNum = $order->pay_total;
+//        $payNum = round($payNum , 2);
 
         if ($payMoney != $payNum) {
             $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-支付的金额与需要支付的金额不等');
@@ -881,7 +901,7 @@ class Order extends Model{
              */
             if($order->coupon_id != 0) {
                 $userCouponModel = new UserCoupon();
-                $userCouponModel->updateCouponIsuse($userId, $order->coupon_id, 1);
+                $userCouponModel->updateCouponIsuse($order->user, $order->coupon_id, 1);
             }
 
             DB::commit();
@@ -1172,47 +1192,96 @@ class Order extends Model{
      * 更新订单优惠券
      */
     public function updateOrderCoupon($userId , $orderId , $couponId){
-        $userCouponModel  = new UserCoupon();
-        $coupon = $userCouponModel->getCouponById($userId , $couponId);
-
-        if(!$coupon){
-            return false;
-        }
-
-        $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder($orderId);
-
-        $couponId = array();
-        foreach ($canUseCoupon as $cuc){
-            $couponId[] = $cuc->coupon_id;
-        }
-
-        if(!in_array($coupon->coupon_id , $couponId)){
-            return false;
-        }
-
-        $data = array(
-            'coupon_id'                         => $coupon->coupon_id,
-            'coupon_type'                       => $coupon->type,
-            'coupon_value'                      => $coupon->value,
-            'coupon_condition'                  => $coupon->condition,
-            'updated_at'                        => date('Y-m-d H:i:s' , time())
-        );
-
-        if($coupon->store_id == 0 || $coupon->store_id == ''){
-            $data['coupon_issuing_party']  = 1;
-        }else{
-            $data['coupon_issuing_party']  = 2;
-        }
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
+        if($couponId == 0){
+            $data = array(
+                'coupon_id'                         => 0
+            );
 
-        if(!$order || $order->status != Config::get('orderstatus.no_pay')['status']){
-            return false;
+            if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
+                $order->coupon_id = 0;
+                return $this->reckonOrderPayTotal($order);
+            }else{
+                return false;
+            }
+        }else {
+
+            $userCouponModel = new UserCoupon();
+
+            $coupon = $userCouponModel->getCouponById($userId, $couponId);
+
+            if (!$coupon) {
+                return false;
+            }
+
+            $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder($order);
+
+            $couponId = array();
+            foreach ($canUseCoupon as $cuc) {
+                $couponId[] = $cuc->coupon_id;
+            }
+
+            if (!in_array($coupon->coupon_id, $couponId)) {
+                return false;
+            }
+
+            $data = array(
+                'coupon_id' => $coupon->coupon_id,
+                'coupon_type' => $coupon->type,
+                'coupon_value' => $coupon->value,
+                'coupon_prerequisite' => $coupon->prerequisite,
+                'updated_at' => date('Y-m-d H:i:s', time())
+            );
+
+            if ($coupon->store_id == 0 || $coupon->store_id == '') {
+                $data['coupon_issuing_party'] = 1;
+            } else {
+                $data['coupon_issuing_party'] = 2;
+            }
+
+            /**
+             * 如果订单不存在或者订单不是未支付状态
+             */
+            if (!$order || $order->status != Config::get('orderstatus.no_pay')['status']) {
+                return false;
+            }
+
+//        $data['pay_total'] = $userCouponModel->reckonOrderPayTotal($coupon->type , $coupon->value , $order->pay_total);
+
+            if (DB::table($this->table)->where('user', $userId)->where('id', $orderId)->update($data)) {
+                $order->coupon_id = $coupon->coupon_id;
+                $order->coupon_type = $coupon->type;
+                $order->coupon_value = $coupon->value;
+
+                return $this->reckonOrderPayTotal($order);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * @param $order
+     * @return string
+     *
+     * 计算最后订单实际需要支付的钱数
+     */
+    public function reckonOrderPayTotal($order){
+        //订单商品价格
+        $total = $order->total;
+
+        //订单配送费
+        $deliver = $order->deliver;
+
+        //订单的优惠券减的钱数
+        $coupon = 0;
+        if($order->coupon_id != 0) {
+            $userCouponModel = new UserCoupon();
+            $coupon = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
         }
 
-        $data['pay_total'] = $userCouponModel->reckonOrderPayTotal($coupon->type , $coupon->value , $order->pay_total);
-
-        return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data);
+        return $total + $deliver - $coupon;
     }
 
 }

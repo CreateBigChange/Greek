@@ -19,13 +19,13 @@ class UserCoupon extends Model{
     protected $table = 'user_coupon';
 
 
-    public function getUserCoupon($userId , $length , $offset){
+    public function getUserCoupon($userId , $length = 0 , $offset = 0){
 
         $date = date('Y-m-d H:i:s' , time());
 
         $couponModel = new Coupon();
 
-        $coupon = DB::table($this->table . " as uCoupon")
+        $sql = DB::table($this->table . " as uCoupon")
             ->select(
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
@@ -40,11 +40,13 @@ class UserCoupon extends Model{
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
             ->where('is_use' , 0)
             ->where('user_id' , $userId)
-            ->where('expire_time' , '>=' , $date)
-            ->skip($offset)
-            ->take($length)
-            ->orderBy('value' , 'desc')
-            ->get();
+            ->where('expire_time' , '>=' , $date);
+            if($length != 0) {
+                $sql->skip($offset)
+                    ->take($length);
+            }
+            $sql->orderBy('value' , 'desc');
+            $coupon =  $sql->get();
 
         $storeId = array();
         foreach ($coupon as $c){
@@ -77,7 +79,7 @@ class UserCoupon extends Model{
             ->count();
     }
 
-    public function getOrderCanUseCoupon($userId , $orderId , $length , $offset){
+    public function getOrderCoupon($userId , $orderId , $length , $offset){
         $orderModel = new Order();
         $order  = DB::table($orderModel->getTable())->where('id' , $orderId)->where('status' , Config::get('orderstatus.no_pay')['status'])->first();
 
@@ -161,10 +163,7 @@ class UserCoupon extends Model{
      *
      * 获取一个订单可以使用的优惠券
      */
-    public function getCanUseCouponWithOrder($orderId){
-
-        $orderModel = new Order();
-        $order  = DB::table($orderModel->getTable())->where('id' , $orderId)->where('status' , Config::get('orderstatus.no_pay')['status'])->first();
+    public function getCanUseCouponWithOrder($order){
 
         if(!$order){
             return false;
@@ -211,12 +210,13 @@ class UserCoupon extends Model{
     /**
      * 根据优惠券的类型计算价格
      */
-    public function reckonOrderPayTotal($type , $couponValue , $payTotal){
+    public function reckonDiscountMoney($type , $couponValue , $total){
+        $discountMoney = 0;
         if($type == 1){
-            $payTotal = $payTotal - $couponValue;
+            $discountMoney = $couponValue;
         }
 
-        return $payTotal;
+        return $discountMoney;
     }
 
 
