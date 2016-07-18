@@ -103,6 +103,7 @@ return array(
     'App\\Models\\StoreUserRole' => $baseDir . '/app/Models/StoreUserRole.php',
     'App\\Models\\StoreWithdrawCashLog' => $baseDir . '/app/Models/StoreWithdrawCashLog.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\UserCoupon' => $baseDir . '/app/Models/UserCoupon.php',
     'App\\Models\\Version' => $baseDir . '/app/Models/Version.php',
     'App\\Models\\WechatPayLog' => $baseDir . '/app/Models/WechatPayLog.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

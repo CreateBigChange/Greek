@@ -16,6 +16,7 @@ use App\Libs\BLogger;
 use App\Models\User;
 use App\Models\ConsigneeAddress;
 use App\Models\Version;
+use App\Models\UserCoupon;
 
 class UsersController extends ApiController
 {
@@ -1152,6 +1153,29 @@ class UsersController extends ApiController
 
 
 
+    /**
+     * @api {POST} /sigma/user/coupon/list 用户优惠券
+     * @apiName userCouponList
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription just a test
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/user/coupon/list
+     *
+     * @apiParamExample {json} Request Example
+     * POST /sigma/user/coupon/list
+     * {
+     * }
+     * @apiUse CODE_200
+     *
+     */
+    public function getUserCouponList(){
 
+        $userCouponModel = new UserCoupon();
 
+        $coupon = $userCouponModel->getUserCoupon($this->userId);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , $coupon));
+    }
+    
 }

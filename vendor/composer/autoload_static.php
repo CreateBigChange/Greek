@@ -564,6 +564,7 @@ class ComposerStaticInit661aa77873983e11c3071356df097914
         'App\\Models\\StoreUserRole' => __DIR__ . '/../..' . '/app/Models/StoreUserRole.php',
         'App\\Models\\StoreWithdrawCashLog' => __DIR__ . '/../..' . '/app/Models/StoreWithdrawCashLog.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserCoupon' => __DIR__ . '/../..' . '/app/Models/UserCoupon.php',
         'App\\Models\\Version' => __DIR__ . '/../..' . '/app/Models/Version.php',
         'App\\Models\\WechatPayLog' => __DIR__ . '/../..' . '/app/Models/WechatPayLog.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

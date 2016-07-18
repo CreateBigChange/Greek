@@ -24,6 +24,7 @@ use App\Models\StoreConfig;
 use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
 use App\Models\User;
+use App\Models\UserCoupon;
 
 class Order extends Model{
 
@@ -434,6 +435,7 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
+
 //        $userModel = new User;
 
 //        /**
@@ -456,6 +458,15 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
+        $date = time();
+
+        /**
+         * 一个小时还未支付
+         */
+        if($date - strtotime($order->created_at) > 3600){
+            return Message::setResponseInfo('FAILED');
+        }
+
 //        $storeModel = new StoreInfo;
 //        $storeInfo  = $storeModel->getStoreInfo($order->store_id);
 //        //店铺积分是否充足
@@ -472,10 +483,10 @@ class Order extends Model{
 
         //计算需要支付的数量
         //$payNum = $order->total + $order->deliver - ($inPoints / 100);
-        $payNum = $order->total + $order->deliver;
-
-        $payNum = round($payNum , 2);
-
+//        $payNum = $order->total + $order->deliver;
+//
+        $payNum = $order->pay_total;
+//
         if($payNum < 0){
             return Message::setResponseInfo('FAILED');
         }
@@ -648,6 +659,14 @@ class Order extends Model{
             DB::table($this->table)->where('user', $userId)->where('id', $orderId)->update($update);
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----支付成功' );
             $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单成功' , $update['status']);
+
+            /**
+             * 更新用户券的状态
+             */
+            if($order->coupon_id != 0) {
+                $userCouponModel = new UserCoupon();
+                $userCouponModel->updateCouponIsuse($userId, $order->coupon_id, 1);
+            }
 
             DB::commit();
 
@@ -855,6 +874,15 @@ class Order extends Model{
                 'status' => Config::get('orderstatus.refunded')['status']
             );
             DB::table($orderLogModel->getTable())->insert($log);
+
+
+            /**
+             * 更新用户券的状态
+             */
+            if($order->coupon_id != 0) {
+                $userCouponModel = new UserCoupon();
+                $userCouponModel->updateCouponIsuse($userId, $order->coupon_id, 1);
+            }
 
             DB::commit();
 
@@ -1134,6 +1162,57 @@ class Order extends Model{
 
         return $count;
 
+    }
+
+    /**
+     * @param $userId
+     * @param $orderId
+     * @param $couponId
+     * @return bool
+     * 更新订单优惠券
+     */
+    public function updateOrderCoupon($userId , $orderId , $couponId){
+        $userCouponModel  = new UserCoupon();
+        $coupon = $userCouponModel->getCouponById($userId , $couponId);
+
+        if(!$coupon){
+            return false;
+        }
+
+        $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder($orderId);
+
+        $couponId = array();
+        foreach ($canUseCoupon as $cuc){
+            $couponId[] = $cuc->coupon_id;
+        }
+
+        if(!in_array($coupon->coupon_id , $couponId)){
+            return false;
+        }
+
+        $data = array(
+            'coupon_id'                         => $coupon->coupon_id,
+            'coupon_type'                       => $coupon->type,
+            'coupon_value'                      => $coupon->value,
+            'coupon_condition'                  => $coupon->condition,
+            'updated_at'                        => date('Y-m-d H:i:s' , time())
+        );
+
+        if($coupon->store_id == 0 || $coupon->store_id == ''){
+            $data['coupon_issuing_party']  = 1;
+        }else{
+            $data['coupon_issuing_party']  = 2;
+        }
+
+        $order  = DB::table($this->table)->where('id' , $orderId)->first();
+
+        if(!$order || $order->status != Config::get('orderstatus.no_pay')['status']){
+            return false;
+        }
+
+        $data['pay_total'] = $userCouponModel->reckonOrderPayTotal($coupon->type , $coupon->value , $order->pay_total);
+
+        return DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data);
     }
 
 }
