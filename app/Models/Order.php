@@ -1276,7 +1276,7 @@ class Order extends Model{
 
         //订单的优惠券减的钱数
         $coupon = 0;
-        if($order->coupon_id != 0) {
+        if(isset($order->coupon) && $order->coupon_id != 0) {
             $userCouponModel = new UserCoupon();
             $coupon = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
         }
