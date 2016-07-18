@@ -41,7 +41,7 @@ class CouponController extends ApiController
      * @apiParam {string} name 优惠券名称
      * @apiParam {folat} value 券价值
      * @apiParam {int} effective_time 有效时长
-     * @apiParam {int} [condition] 条件
+     * @apiParam {int} [prerequisite] 条件
      * @apiParam {int} total_num 总数量
      *
      * @apiParamExample {json} Request Example
@@ -50,7 +50,7 @@ class CouponController extends ApiController
      *          'name'              : "店铺专享券",
      *          'value'             : "3.3",
      *          'effective_time'    : 3,
-     *          'condition'         : 50,
+     *          'prerequisite'         : 50,
      *          'total_num'         : 1000,
      *      }
      * @apiUse CODE_200
@@ -72,8 +72,8 @@ class CouponController extends ApiController
         $data['value']              = $request->get('value');
         $data['effective_time']     = $request->get('effective_time');
 
-        if($request->has('condition')) {
-            $data['condition'] = $request->get('condition');
+        if($request->has('prerequisite')) {
+            $data['prerequisite'] = $request->get('prerequisite');
         }
 
         $data['total_num']          = $request->get('total_num');

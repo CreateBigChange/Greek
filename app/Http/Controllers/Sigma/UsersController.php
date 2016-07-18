@@ -1169,13 +1169,22 @@ class UsersController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function getUserCouponList(){
+    public function getUserCouponList(Request $request){
+
+        $page = 1;
+        if($request->has('page')){
+            $page = $request->get('page');
+        }
 
         $userCouponModel = new UserCoupon();
 
-        $coupon = $userCouponModel->getUserCoupon($this->userId);
+        $totalNum = $userCouponModel->getUserCouponTotalNum($this->userId);
 
-        return response()->json(Message::setResponseInfo('SUCCESS' , $coupon));
+        $pageData = $this->getPageData($page, $this->_length , $totalNum);
+
+        $coupon = $userCouponModel->getUserCoupon($this->userId , $this->_length , $pageData->offset);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array('pageData' => $pageData , 'coupon'=> $coupon)));
     }
-    
+
 }

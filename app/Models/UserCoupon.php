@@ -19,7 +19,7 @@ class UserCoupon extends Model{
     protected $table = 'user_coupon';
 
 
-    public function getUserCoupon($userId){
+    public function getUserCoupon($userId , $length , $offset){
 
         $date = date('Y-m-d H:i:s' , time());
 
@@ -41,6 +41,8 @@ class UserCoupon extends Model{
             ->where('is_use' , 0)
             ->where('user_id' , $userId)
             ->where('expire_time' , '>=' , $date)
+            ->skip($offset)
+            ->take($length)
             ->orderBy('value' , 'desc')
             ->get();
 
@@ -62,6 +64,17 @@ class UserCoupon extends Model{
         }
 
         return $coupon;
+    }
+
+    public function getUserCouponTotalNum($userId){
+
+        $date = date('Y-m-d H:i:s' , time());
+
+        return $coupon = DB::table($this->table)
+            ->where('is_use' , 0)
+            ->where('user_id' , $userId)
+            ->where('expire_time' , '>=' , $date)
+            ->count();
     }
 
     public function getOrderCanUseCoupon($userId , $orderId){
