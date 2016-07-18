@@ -90,6 +90,9 @@ class Order extends Model{
                     o.pay_type_name,
                     o.trade_no,
                     o.transaction_id,
+                    o.coupon_type,
+                    o.coupon_value,
+                    o.coupon_id,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -373,16 +376,19 @@ class Order extends Model{
             $order['coupon_id']                         = $coupon->coupon_id;
             $order['coupon_type']                       = $coupon->type;
             $order['coupon_value']                      = $coupon->value;
-            $order['coupon_prerequisite']                  = $coupon->prerequisite;
+            $order['coupon_prerequisite']               = $coupon->prerequisite;
 
             if($coupon->store_id == 0 || $coupon->store_id == ''){
                 $order['coupon_issuing_party']  = 1;
             }else{
                 $order['coupon_issuing_party']  = 2;
             }
+
+            $order['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
         }
 
         $order['pay_total']             = $this->reckonOrderPayTotal( (Object) $order);
+
 
         //开始事物
         DB::beginTransaction();
@@ -1196,7 +1202,8 @@ class Order extends Model{
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
         if($couponId == 0){
             $data = array(
-                'coupon_id'                         => 0
+                'coupon_id'                         => 0,
+                'coupon_issuing_party'              => 0
             );
 
             if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
@@ -1239,6 +1246,8 @@ class Order extends Model{
             } else {
                 $data['coupon_issuing_party'] = 2;
             }
+
+            $data['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($coupon->type, $coupon->value, $order->total);
 
             /**
              * 如果订单不存在或者订单不是未支付状态
