@@ -32,6 +32,22 @@ class Order extends Model{
     protected $table = 'orders';
 
     /**
+    *获取订单总价
+    *@param $status 其中 1 代表查询所有正常订单 指status 不为 11
+    *                    2 代表查询所有意外订单 指satus
+    *                    3 代表查询所有已配送订单
+    *                    4 代表所有未配送订单
+    *                    5 代表所有配送中的订单
+    */
+
+    public function getOrderTotalMony($search)
+    {
+       
+        $sql="select sum(pay_total)  as totalMony FROM orders where status IN (".implode(',' , $search['status']).")";
+        return DB::SELECT($sql);
+    }
+
+    /**
      * 获取订单总数
      * @param storeId   number
      * @param search    array
@@ -104,7 +120,7 @@ class Order extends Model{
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
-        $sql .= " WHERE 1 = 1";
+        $sql .= " WHERE status != 11";
 
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";

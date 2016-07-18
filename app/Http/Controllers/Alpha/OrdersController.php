@@ -45,37 +45,60 @@ class OrdersController extends AdminController
         if(isset($_GET['status'])){
             $type = $_GET['status'];
             $param .= 'status=' . $_GET['status'] . '&';
-           
         }
 
         $status = Config::get('orderstatus');
 
-        if ($type == 1){
-            $search['status'] = array($status['paid']['status']);
-        }elseif ($type == 2){
-            $search['status'] = array($status['on_the_way']['status']);
-        }elseif ($type == 3){
-            $search['status'] = array($status['completd']['status']);
-        }elseif ($type == 4){
-            $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
+
+
+
+
+        //dump($status);
+
+        //dump($type);
+
+
+
+
+        switch ($type) {
+            case '0':
+                $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status'] , $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
+                break;
+             case '1':
+                $search['status'] = array($status['paid']['status']);
+                break;
+            case '2':
+               $search['status'] = array($status['on_the_way']['status']);
+                break;
+            case '3':
+                 $search['status'] = array($status['completd']['status']);
+                break;
+            case '4':
+                 $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
+                break;                                                                          
+            default:
+                # code...
+                break;
         }
+
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
-
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+      
         $pageData = $this->getPageData($page  , $this->length, $orderNum);
-
-
+       
+        $this->response['totalMoney'] = $orderMoney;
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
         $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/list?' . $param);
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
         
-        //dump($this->response);
+       // dump($this->response);
         return view('alpha.order.list' , $this->response);
 
     }
@@ -94,11 +117,17 @@ class OrdersController extends AdminController
 
         $status = Config::get('orderstatus');
 
-        $search['status'] = array($status['accepted']['status'] , $status['paid']['status']);
+       
+
+        $search['status'] = array($status['paid']['status']);
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
+
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+        $this->response['totalMoney'] = $orderMoney;
+
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
 
@@ -111,7 +140,6 @@ class OrdersController extends AdminController
         $this->response['status']       = $status;
 
         return view('alpha.order.list' , $this->response);
-
     }
 
     public function getOrderDelivery(Request $request){
@@ -130,6 +158,9 @@ class OrdersController extends AdminController
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
+
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+        $this->response['totalMoney'] = $orderMoney;
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
 
@@ -156,11 +187,24 @@ class OrdersController extends AdminController
 
         $status = Config::get('orderstatus');
 
+
+
+
         $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
+
+
+
+
+
+
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
+
+
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+        $this->response['totalMoney'] = $orderMoney;
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
 
@@ -191,6 +235,47 @@ class OrdersController extends AdminController
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
+    }
+
+/*
+*   得到配送中的订单
+*/
+    public function getOrderDispatching(Request $request)
+    {
+
+        $search = array();
+
+        if(!isset($_GET['page'])){
+            $page = 1;
+        }else{
+            $page = $_GET['page'];
+        }
+
+        $status = Config::get('orderstatus');
+
+
+        $search['status'] = array($status['on_the_way']['status']);
+
+
+
+        if($request->has('search')){
+            $search['search'] = trim($request->get('search'));
+        }
+
+
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+        $this->response['totalMoney'] = $orderMoney;
+
+        $orderNum   = $this->_model->getOrderTotalNum($search);
+
+        $pageData = $this->getPageData($page , $this->length, $orderNum);
+
+        $this->response['page']         = $pageData->page;
+        $this->response['pageData']     = $pageData;
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
+        $this->response['status']       = $status;
+        return view('alpha.order.list' , $this->response);
     }
 
 }

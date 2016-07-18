@@ -10,7 +10,8 @@
                     <header class="panel-heading">
                         订单列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
-                        <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search">订单总数: {{ $pageData->totalNum }}</div>
+                        <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总数: {{ $pageData->totalNum }}</div>
+                        <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总价: {{ $totalMoney[0]->totalMony }}</div>
                     </header>
               <div id="table">
               <table class="table">
@@ -20,7 +21,7 @@
                       <th>收货电话</th>
                       <th>收货地址</th>
                       <th>店铺</th>
-                      <th>真实姓名</th>
+                      <th>状态</th>
                       <th>电话</th>
                       <th>支付类型</th>
                       <th>配送费</th>
@@ -34,7 +35,39 @@
                          <td>{{$order->consignee_tel }}</td>
                          <td>{{$order->consignee_address}}</td>
                          <td>{{$order->sname}}</td>
-                         <td>{{$order->true_name}}</td>
+                         <td>
+                          <?php
+                            switch ($order->status) {
+                              case '1':
+                                echo "已完成";
+                                break;
+                              case '2':
+                                echo "已付款";
+                                break;
+                              case '3':
+                                echo "已接单";
+                                break;
+                              case '4':
+                               echo "配送中";
+                                break;
+                              case '5':
+                                echo "已送达";
+                                break;
+                              case '11':
+                                echo "未付款 ";
+                                break;
+                              case '12':
+                                echo "已取消";
+                                break;
+                              case '13':
+                                echo "退款中";
+                                break;  
+                              case '14':
+                                echo "已退款";
+                                break;                                                                                                                                                                                   
+                            }
+                          ?>
+                         </td>
                          <td>{{$order->smobile}}</td>
                          <td>{{$order->pay_type_name }}</td>
                          <td>{{$order->deliver}}</td>
