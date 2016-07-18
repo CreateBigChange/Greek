@@ -100,9 +100,6 @@ class Order extends Model{
                     
                 FROM $this->table AS o";
 
-//        $sql .= " LEFT JOIN areas as ap ON ap.id = o.consignee_province";
-//        $sql .= " LEFT JOIN areas as aci ON aci.id = o.consignee_city";
-//        $sql .= " LEFT JOIN areas as aco ON aco.id = o.consignee_county";
         $sql .= " LEFT JOIN store_infos as si ON si.id = o.store_id";
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
@@ -144,14 +141,10 @@ class Order extends Model{
             $o->goods = array();
             $o->goodsNum = 0;
 
-            //实际需要支付的数目
-//            $o->payTotal            = round($o->total + $o->deliver - ($o->in_points / 100) , 2);
-            $o->payTotal            = round($o->total + $o->deliver , 2);
+            $o->payTotal            = $this->reckonOrderPayTotal($o);
 
-            //不算积分需要支付的数目
+            //不算其他优惠需要支付的数目
             $o->total               = $o->total + $o->deliver;
-
-            //$o->inPointsToMoney     = $o->in_points / 100;
 
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
@@ -182,9 +175,7 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
-//        $isUpdateUserPoint  = 0;
         $isUpdateStoreMoney = 0;
-//        $isUpdateStorePoint = 0;
 
         DB::beginTransaction();
         try {
@@ -207,34 +198,8 @@ class Order extends Model{
                 $balance = $storeInfo->balance + $orderInfo->pay_total;
                 $storeConfigModel->updateBalance($storeId, $balance);
 
-                /**
-                 * ************************************************a****
-                 * 将此订单店铺应得的积分增加到商户账号上
-                 * ****************************************************
-                 */
-//                $storeConfigModel->updateBalancePoint($storeId, ($storeInfo->balance_point + $orderInfo->in_points));
 
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺余额更新成功' . $storeId . '----'.$balance);
-
-                /**
-                 * ****************************************************
-                 * 将订单赠送的积分增加到用户账号上
-                 * ****************************************************
-                 */
-//                $userModel = new User;
-//                $userInfo = $userModel->getUserInfoById($userId);
-//
-//                if (!$orderInfo || !$userInfo) {
-//                    return false;
-//                }
-//                $point = $userInfo->points + $orderInfo->out_points;
-//                $userModel->updatePoint($userId, $point);
-
-                //BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('用户积分发放成功' . $userId . '----'.$point);
-
-//                $isUpdateUserPoint  = 1;
                 $isUpdateStoreMoney = 1;
-//                $isUpdateStorePoint = 1;
 
             }
 
@@ -321,12 +286,6 @@ class Order extends Model{
             $outPoints += (int) $g->give_points * $nums[$g->id];
         }
 
-//        //店铺积分是否充足
-//        if($storeInfo->point < $outPoints){
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('店铺积分不足');
-//            return false;
-//        }
-
         $consigneeAddressModel  = new ConsigneeAddress();
 
         //生成订单基本信息的数据
@@ -367,10 +326,9 @@ class Order extends Model{
             $order['consignee_street']      = $address[0]->street;
         }
 
+        //获取默认优惠券
         $userCouponModel = new UserCoupon();
-
         $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder( (Object) $order);
-
         if(!empty($canUseCoupon)){
             $coupon = $canUseCoupon[0];
             $order['coupon_id']                         = $coupon->coupon_id;
@@ -384,9 +342,12 @@ class Order extends Model{
                 $order['coupon_issuing_party']  = 2;
             }
 
+            //计算优惠卷实际优惠的钱数
             $order['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
         }
 
+
+        //计算需要支付的钱数
         $order['pay_total']             = $this->reckonOrderPayTotal( (Object) $order);
 
 
@@ -464,17 +425,6 @@ class Order extends Model{
             return Message::setResponseInfo('FAILED');
         }
 
-
-//        $userModel = new User;
-
-//        /**
-//         * 判断用户余额是否充足
-//         */
-//        $isAmplePoint =$userModel->isAmplePoint($userId , $inPoints);
-//        if($isAmplePoint === false){
-//            return Message::setResponseInfo('POINT_NOT_AMPLE');
-//        }
-
         $update = array(
             //'in_points'     => $inPoints,
             'pay_type_id'   => $payType->id,
@@ -495,13 +445,6 @@ class Order extends Model{
         if($date - strtotime($order->created_at) > 3600){
             return Message::setResponseInfo('FAILED');
         }
-
-//        $storeModel = new StoreInfo;
-//        $storeInfo  = $storeModel->getStoreInfo($order->store_id);
-//        //店铺积分是否充足
-//        if($storeInfo->point < $order->out_points){
-//            return Message::setResponseInfo('FAILED');
-//        }
 
         /**
          * 订单是否填写了收货地址
@@ -568,20 +511,6 @@ class Order extends Model{
 
         $userId = $order->user;
 
-        $userModel = new User;
-
-        /**
-         * *********************************
-         * 用户积分是否充足
-         * *********************************
-         */
-//        $isAmplePoint =$userModel->isAmplePoint($userId , $order->in_points);
-//
-//        if($isAmplePoint === false){
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----用户积分不足');
-//            $orderLogMode->createOrderLog($orderId, $userId, '普通用户', '用户端APP', '支付订单失败-积分不足');
-//            return Message::setResponseInfo('POINT_NOT_AMPLE');
-//        }
 
         /**
          * *********************************
@@ -616,37 +545,10 @@ class Order extends Model{
 //        }
 
         $storeModel = new StoreInfo();
-        $storeConfigModel = new StoreConfig();
-        $storeInfo = $storeModel->getStoreInfo($order->store_id);
-
-        /**
-         * *********************************
-         * 店铺积分是否充足
-         * *********************************
-         */
-//        if($storeInfo->point < $order->out_points){
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----店铺积分不足');
-//            return Message::setResponseInfo('FAILED');
-//        }
 
         DB::beginTransaction();
 
         try {
-            /**
-             * *********************************
-             * 扣除用户积分
-             * *********************************
-             */
-//            $userModel->updatePoint($userId, $isAmplePoint);
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除用户'.$userId.'积分成功,当前积分为' . $isAmplePoint);
-
-            /**
-             * *********************************
-             * 扣除店铺积分
-             * *********************************
-             */
-//            $storeConfigModel->updateBalancePoint($order->store_id, ($storeInfo->balance_point - $order->out_points));
-//            BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----扣除店铺'.$order->store_id.'积分成功,当前积分为' . ($storeInfo->point - $order->out_points));
 
             /**
              * *********************************
@@ -696,17 +598,6 @@ class Order extends Model{
 
             DB::commit();
 
-            $storeId = $order->store_id;
-
-//            /**
-//             * **************************
-//             * 添加新订单通知的数量
-//             * **************************
-//             */
-//            $new =  Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
-//            $new = $new + 1;
-//            Redis::set("store:$order->store_id:new"  , $new );
-
             /**
              * *************************************
              * 增加商品销售数量以及减少库存
@@ -722,7 +613,6 @@ class Order extends Model{
             }
 
 
-//            return Message::setResponseInfo('SUCCESS' , array('points'=>$isAmplePoint , 'money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
             return Message::setResponseInfo('SUCCESS' , array('money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
 
         }catch (Exception $e){
@@ -817,49 +707,6 @@ class Order extends Model{
                 return false;
             }
 
-//            if($order->out_points != 0) {
-//                $point = $storeInfo->balance_point + $order->out_points;
-//
-//                $storeConfigModel->updateBalancePoint($storeId, $point);
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺积分 积分为' . $point);
-//            }
-
-            /**
-             * ***************************************************************************
-             * 如果订单状态是已送达和已完成再退款的,需要返还用户积分和扣除店铺的余额
-             * ***************************************************************************
-             */
-            //$orderLog = DB::table($orderLogModel->getTable())->where('order_id' , $orderId)->where('status' , Config::get('orderstatus.arrive')['status'])->orWhere('status' ,  Config::get('orderstatus.completd')['status'])->get();
-
-            /**
-             * ***************************************************************************
-             * 添加用户积分
-             * ***************************************************************************
-             */
-//            $userInfo = DB::table('users')->where('id', $order->user)->first();
-            /**
-             * 加上用户消耗的积分
-             */
-//            $userPoint = $userInfo->points + $order->in_points;
-//            if($userPoint < 0){
-//                return false;
-//            }
-
-            /**
-             * ***************************************************************************
-             * 是否给用户发放了积分
-             * ***************************************************************************
-             */
-//            if($order->is_update_user_point ) {
-//                $userPoint = $userPoint - $order->out_points;
-//            }
-//            if ($userPoint != $userInfo->points) {
-//                $userModel = new User();
-//                DB::table($userModel->getTable())->where('id', $order->user)->update(array('points' => $userPoint));
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice('更新用户积分,积分为' . $userPoint);
-//            }
-
-
             if($order->is_update_store_money){
                 /**
                  * ***************************************************************************
@@ -870,18 +717,6 @@ class Order extends Model{
                 $storeConfigModel->updateBalance($storeId, $balance);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$balance);
             }
-//            if($order->is_update_store_point){
-//
-//                /**
-//                 * ***************************************************************************
-//                 * 扣除店铺积分
-//                 * ***************************************************************************
-//                 */
-//                $point = $storeInfo->balance_point - $order->in_points + $order->out_points;
-//                $storeConfigModel->updateBalancePoint($storeId, $point);
-//                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$point);
-//            }
-
 
             DB::table($this->table)->where('id', $orderId)->update(array(
                 'status' => Config::get('orderstatus.refunded')['status'],
@@ -1255,8 +1090,6 @@ class Order extends Model{
             if (!$order || $order->status != Config::get('orderstatus.no_pay')['status']) {
                 return false;
             }
-
-//        $data['pay_total'] = $userCouponModel->reckonOrderPayTotal($coupon->type , $coupon->value , $order->pay_total);
 
             if (DB::table($this->table)->where('user', $userId)->where('id', $orderId)->update($data)) {
                 $order->coupon_id = $coupon->coupon_id;
