@@ -33,7 +33,7 @@ class UserCoupon extends Model{
                 'coupon.name',
                 'coupon.type',
                 'coupon.value',
-                'coupon.condition',
+                'coupon.prerequisite',
                 'coupon.store_id'
             )
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
@@ -119,7 +119,7 @@ class UserCoupon extends Model{
          */
         foreach ($coupon as $c){
             $c->canUse = 0;
-            if ($c->type == 1 && $c->condition <= $order->total) {
+            if ($c->type == 1 && $c->prerequisite <= $order->total) {
                 if($c->store_id != 0) {
                     if( $c->store_id == $order->store_id) {
                         $c->canUse = 1;
@@ -179,7 +179,7 @@ class UserCoupon extends Model{
                 'coupon.name',
                 'coupon.type',
                 'coupon.value',
-                'coupon.condition',
+                'coupon.prerequisite',
                 'coupon.store_id'
             )
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
