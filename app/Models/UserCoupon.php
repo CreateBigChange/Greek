@@ -33,6 +33,7 @@ class UserCoupon extends Model{
                 'coupon.name',
                 'coupon.type',
                 'coupon.value',
+                'coupon.content',
                 'coupon.prerequisite',
                 'coupon.store_id'
             )
@@ -178,6 +179,7 @@ class UserCoupon extends Model{
                 'uCoupon.created_at',
                 'coupon.name',
                 'coupon.type',
+                'coupon.content',
                 'coupon.value',
                 'coupon.prerequisite',
                 'coupon.store_id'
