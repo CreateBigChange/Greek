@@ -51,7 +51,6 @@ class OrdersController extends ApiController
      *      {
      *          search : 18401586654
      *          status : 1
-     *          isClearNotice : new
      *      }
      * @apiUse CODE_200
      *

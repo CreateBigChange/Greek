@@ -205,6 +205,13 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		//意见反馈
 		Route::post('/feedback', 'StoreUsersController@feedback');
 
+
+		//优惠券
+		Route::post('/store/coupon/add', 'CouponController@addCoupon');
+		Route::post('/store/coupon/list', 'CouponController@getCouponList');
+		Route::post('/store/coupon/info/{couponId}', 'CouponController@getCouponInfo');
+		Route::post('/store/coupon/stop/{couponId}', 'CouponController@stopCoupon');
+
 	});
 
 //	Route::get('/store/count/finance/{storeId}', 'StoresController@financeCount');
@@ -247,16 +254,15 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/order/info/{orderId}' , 'OrdersController@getOrderInfo');
 		Route::post('/order/confirm/{orderId}' , 'OrdersController@confirmOrder');
 		Route::post('/order/change/status/{id}' , 'OrdersController@changeStatus');
-
 		Route::post('/order/status/{orderId}' , 'OrdersController@getOrderStatus');
-
+		Route::post('/order/coupon/{orderId}' , 'OrdersController@getOrderCoupon');
+		Route::post('/order/update/coupon/{orderId}' , 'OrdersController@updateOrderCoupon');
 		Route::post('/order/update/address/{orderId}' , 'OrdersController@updateOrderAddress');
 
 		Route::post('/user/address' , 'UsersController@getConsigneeAddressByUserId');
 		Route::post('/user/address/add' , 'UsersController@addConsigneeAddress');
 		Route::post('/user/address/update/{addressId}' , 'UsersController@updateConsigneeAddress');
 		Route::post('/user/address/del/{addressId}' , 'UsersController@delConsigneeAddress');
-
 
 		Route::post('/user/update/password' , 'UsersController@updatePassword');
 		Route::post('/user/update' , 'UsersController@updateUser');
@@ -269,6 +275,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'sigma' , 'namespace' => 'Si
 		Route::post('/sendsms/by/bindmobile' , 'UsersController@bindMobilSms');
 
 		Route::post('/user/info' , 'UsersController@userInfo');
+		Route::post('/user/coupon/list' , 'UsersController@getUserCouponList');
 
 	});
 

@@ -101,17 +101,42 @@ class ActivityController extends AdminController
     public function couponUpdate(Request $request)
     {
         
-       //dd($request);
-        $this->couponModel->updateCoupon($request);
-        
+        $data = array(
+            'name' => $request->get('name'),
+            'content' => $request->get('content'),
+            'type' => $request->get('type'),
+            'effective_time' => $request->get('effective_time'),
+            'value' => $request->get('value'),
+            'prerequisite' => $request->get('prerequisite'),
+            'total_num' => $request->get('total_num'),
+            'in_num' => $request->get('in_num'),
+            'out_num' => $request->get('out_num'),
+            'stop_out' => $request->get('stop_out'),
+            'num' => $request->get('num')
+            );
+
+         $coupon_id=$request->get('coupon_id');
+       $this->couponModel->updateCoupon($data,$coupon_id);
        return redirect('/alpha/Activity/coupon');    
         
     }
     public function couponAdd(Request $request)
     {
-         // dd($request);
-       $this->couponModel->addCoupon($request);
-        
+
+            $data =  array(
+            'name' => $request->get('name'),
+            'content' => $request->get('content'),
+            'type' => $request->get('type'),
+            'effective_time' => $request->get('effective_time'),
+            'value' => $request->get('value'),
+            'prerequisite' => $request->get('prerequisite'),
+            'total_num' => $request->get('total_num'),
+            'in_num' => $request->get('in_num'),
+            'out_num' => $request->get('out_num'),
+            'stop_out' => $request->get('stop_out'),
+            'num' => $request->get('num')
+            );
+       $this->couponModel->addCouponOther($data);
        return redirect('/alpha/Activity/coupon');  
     }
     public function couponDelete( $id)

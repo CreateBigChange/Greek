@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Sigma;
 
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input , RedisClass as Redis;
@@ -23,6 +24,8 @@ use App\Models\OrderLog;
 use App\Models\OrderComplaint;
 use App\Models\OrderEvaluate;
 use App\Libs\Message;
+
+use App\Models\UserCoupon;
 
 use App\Jobs\Jpush;
 
@@ -238,8 +241,6 @@ class OrdersController extends ApiController
         if(empty($userinfo->mobile)){
             return response()->json(Message::setResponseInfo('MOBILE_NO_BIND'));
         }
-
-
 
         $orderId = $this->_model->initOrder($storeId , $userId , $goods);
         if($orderId){
@@ -590,30 +591,30 @@ class OrdersController extends ApiController
     }
 
     /**
-     * @api {POST} /sigma/order/evaluate/1 评价
-     * @apiName ordersEvaluate
-     * @apiGroup SIGMA
-     * @apiVersion 1.0.0
-     * @apiDescription 评价
-     * @apiPermission anyone
-     * @apiSampleRequest http://greek.test.com/sigma/order/evaluate/1
-     *
-     * @apiParam {string} content 评价内容
-     * @apiParam {FLOAT} speed 配送速度
-     * @apiParam {FLOAT} attitude 服务态度
-     * @apiParam {FLOAT} quality 商品质量
-     *
-     * @apiParamExample {json} Request Example
-     *      POST /sigma/order/evaluate/1
-     *      {
-     *          'content'   : "太好了",
-     *          'speed'     : 4,
-     *          'attitude'  : 5,
-     *          'quality'   : 5
-     *      }
-     * @apiUse CODE_200
-     *
-     */
+ * @api {POST} /sigma/order/evaluate/1 评价
+ * @apiName ordersEvaluate
+ * @apiGroup SIGMA
+ * @apiVersion 1.0.0
+ * @apiDescription 评价
+ * @apiPermission anyone
+ * @apiSampleRequest http://greek.test.com/sigma/order/evaluate/1
+ *
+ * @apiParam {string} content 评价内容
+ * @apiParam {FLOAT} speed 配送速度
+ * @apiParam {FLOAT} attitude 服务态度
+ * @apiParam {FLOAT} quality 商品质量
+ *
+ * @apiParamExample {json} Request Example
+ *      POST /sigma/order/evaluate/1
+ *      {
+ *          'content'   : "太好了",
+ *          'speed'     : 4,
+ *          'attitude'  : 5,
+ *          'quality'   : 5
+ *      }
+ * @apiUse CODE_200
+ *
+ */
     public function evaluate($orderId , Request $request){
         $validation = Validator::make($request->all(), [
             'speed'                 => 'required',
@@ -639,6 +640,83 @@ class OrdersController extends ApiController
         }else{
             return response()->json(Message::setResponseInfo('FAILED'));
         }
+
+    }
+
+    /**
+     * @api {POST} /sigma/order/coupon/{orderId} 获取订单可以使用的优惠券
+     * @apiName ordersCoupon
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 获取订单可以使用的优惠券
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/order/coupon/1
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/order/coupon/1
+     *      {
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function getOrderCoupon($orderId , Request $request){
+
+        $page = 1;
+        if($request->has('page')){
+            $page = $request->get('page');
+        }
+
+        $userCouponModel = new UserCoupon();
+
+        $totalNum = $userCouponModel->getUserCouponTotalNum($this->userId);
+
+        $pageData = $this->getPageData($page, $this->_length , $totalNum);
+
+        $coupon = $userCouponModel->getOrderCoupon($this->userId, $orderId , $this->_length , $pageData->offset);
+
+        return response()->json(Message::setResponseInfo('SUCCESS' , array('pageData' => $pageData , 'coupon'=> $coupon)));
+    }
+
+
+    /**
+     * @api {POST} /sigma/order/update/coupon/{orderId} 更新订单使用的优惠券
+     * @apiName ordersUpdateCoupon
+     * @apiGroup SIGMA
+     * @apiVersion 1.0.0
+     * @apiDescription 更新订单使用的优惠券
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/sigma/order/update/coupon/1
+     *
+     * @apiParam {int} coupon_id 优惠券ID
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /sigma/order/update/coupon/1
+     *      {
+     *          coupon_id : 2,
+     *
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function updateOrderCoupon($orderId , Request $request){
+
+        $validation = Validator::make($request->all(), [
+            'coupon_id'             => 'required'
+        ]);
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        $userId     = $this->userId;
+
+        $coupon    = $request->get('coupon_id');
+
+        $isUpdate = $this->_model->updateOrderCoupon($userId, $orderId, $coupon);
+        if ($isUpdate === false) {
+            return response()->json(Message::setResponseInfo('FAILED'));
+        } else {
+            return response()->json(Message::setResponseInfo('SUCCESS' , $isUpdate));
+        }
+
 
     }
 

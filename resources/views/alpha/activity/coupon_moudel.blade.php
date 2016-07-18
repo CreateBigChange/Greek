@@ -75,16 +75,21 @@
                                 </div>
 
                            </div>
-                            <div class="form-group">
-                               <label class="col-sm-2 col-sm-2 control-label">stop_out</label>
-                                <div class="col-sm-10">
-                                        <select class="form-control" name="stop_out" id="coupon_stop_out">
-                                            <option value=1>1</option>
-                                             <option value=0>0</option>
-                                        </select>
-                                </div>
 
-                            </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">开启</label>
+                        <div class="col-sm-10">
+                          <select class="form-control m-bot15" name='stop_out' id='coupon_stop_out'>
+                            <option value="-1">全部</option>
+                            <option value="1">开启</option>
+                            <option value="0">关闭</option>
+                          </select>
+                        </div>
+                      </div>
+
+
                           <div class="form-group">
                                <label class="col-sm-2 col-sm-2 control-label">num</label>
                                 <div class="col-sm-10">
