@@ -29,6 +29,7 @@ class UserCoupon extends Model{
             ->select(
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
+                'uCoupon.created_at',
                 'coupon.name',
                 'coupon.type',
                 'coupon.value',
@@ -174,6 +175,7 @@ class UserCoupon extends Model{
             ->select(
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
+                'uCoupon.created_at',
                 'coupon.name',
                 'coupon.type',
                 'coupon.value',
