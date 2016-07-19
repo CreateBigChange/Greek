@@ -287,7 +287,6 @@ class Order extends Model{
 
         $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
 
-        var_dump($goodsList);die;
         $storeInfo  = $storeInfoModel->getStoreInfo($storeId);
 
 
@@ -384,6 +383,8 @@ class Order extends Model{
             $orderInfo = array();
             $i = 0;
             foreach ($goodsList as $g) {
+
+                var_dump($g);die;
                 $orderInfo[$i]['order_id'] = $orderId;
                 $orderInfo[$i]['goods_id'] = $g->id;
                 $orderInfo[$i]['c_id'] = $g->category_id;
