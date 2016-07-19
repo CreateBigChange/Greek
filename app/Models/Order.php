@@ -115,6 +115,7 @@ class Order extends Model{
                     o.coupon_id,
                     o.coupon_actual_reduce,
                     o.coupon_name,
+                    o.coupon_user_id,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
