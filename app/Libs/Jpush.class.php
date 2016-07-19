@@ -37,7 +37,7 @@ class Jpush
             $push->addTag($tag);
         }
 
-        $push->setNotificationAlert('急所需商家版')
+        $push->setNotificationAlert('急所需')
             //->addAllAudience()
             ->addAndroidNotification($content, $title, 1, array("type"=>$type))
             ->addIosNotification($content, $sound, "+1" , true, 'iOS ORDER NEW', array("type"=>$type))
