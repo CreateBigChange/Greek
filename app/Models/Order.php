@@ -1083,6 +1083,19 @@ class Order extends Model{
     public function updateOrderCoupon($userId , $orderId , $couponUserId){
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
+
+        if(!$order){
+            return false;
+        }
+
+        if($couponUserId == $order->coupon_user_id){
+            $data = array(
+                'coupon_actual_reduce'      => $order->coupon_actual_reduce,
+                'pay_total'                 => $this->reckonOrderPayTotal($order)
+            );
+
+            return $data;
+        }
         if($couponUserId == 0){
             $data = array(
                 'coupon_user_id'                    => 0,
