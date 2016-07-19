@@ -52,6 +52,7 @@ class CouponController extends ApiController
      *          'effective_time'    : 3,
      *          'prerequisite'         : 50,
      *          'total_num'         : 1000,
+     *          'content'           : "满20可用"
      *      }
      * @apiUse CODE_200
      *
@@ -62,6 +63,7 @@ class CouponController extends ApiController
             'value'                     => 'required',
             'effective_time'            => 'required',
             'total_num'                 => 'required',
+            'content'                 => 'required',
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
@@ -71,6 +73,7 @@ class CouponController extends ApiController
         $data['name']               = $request->get('name');
         $data['value']              = $request->get('value');
         $data['effective_time']     = $request->get('effective_time');
+        $data['content']            = $request->get('content');
 
         if($request->has('prerequisite')) {
             $data['prerequisite'] = $request->get('prerequisite');
