@@ -284,7 +284,7 @@ class Order extends Model{
             if ($status == Config::get('orderstatus.on_the_way')['status']) {
                 //消息推送队列
                 $this->dispatch(new Jpush(
-                    "你有一个退款成功的订单",
+                    "你有一个订单在配送中",
                     "急所需",
                     array('ios' , 'android'),
                     "$orderInfo->user",
