@@ -1088,7 +1088,8 @@ class Order extends Model{
                 'coupon_user_id'                    => 0,
                 'coupon_id'                         => 0,
                 'coupon_issuing_party'              => 0,
-                'coupon_actual_reduce'              => 0
+                'coupon_actual_reduce'              => 0,
+                'updated_at'                        => date('Y-m-d H:i:s' , time())
             );
 
             if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
