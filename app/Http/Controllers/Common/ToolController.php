@@ -52,7 +52,7 @@ class ToolController extends ApiController
         $jpush = new Jpush();
         return $jpush->push('急所需新订单' , '急所需新订单来了' , array('ios' , 'android') , '5' , array(),
             "default",
-            "ontheway");
+            "ontheway" , "user");
     }
 
     /**
