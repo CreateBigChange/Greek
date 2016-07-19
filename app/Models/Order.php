@@ -382,6 +382,7 @@ class Order extends Model{
             $orderInfo = array();
             $i = 0;
             foreach ($goodsList as $g) {
+                BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($g);
                 $orderInfo[$i]['order_id'] = $orderId;
                 $orderInfo[$i]['goods_id'] = $g->id;
                 $orderInfo[$i]['c_id'] = $g->category_id;
