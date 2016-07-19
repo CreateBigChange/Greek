@@ -694,7 +694,7 @@ class OrdersController extends ApiController
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/update/coupon/1
      *      {
-     *          coupon_id : 2,
+     *          id : 2,
      *
      *      }
      * @apiUse CODE_200
@@ -703,16 +703,16 @@ class OrdersController extends ApiController
     public function updateOrderCoupon($orderId , Request $request){
 
         $validation = Validator::make($request->all(), [
-            'coupon_id'             => 'required'
+            'id'             => 'required'
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
-        $userId     = $this->userId;
+        $userId             = $this->userId;
 
-        $coupon    = $request->get('coupon_id');
+        $couponUserId       = $request->get('id');
 
-        $isUpdate = $this->_model->updateOrderCoupon($userId, $orderId, $coupon);
+        $isUpdate = $this->_model->updateOrderCoupon($userId, $orderId, $couponUserId);
         if ($isUpdate === false) {
             return response()->json(Message::setResponseInfo('FAILED'));
         } else {

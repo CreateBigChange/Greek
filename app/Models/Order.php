@@ -1091,10 +1091,10 @@ class Order extends Model{
      * @return bool
      * 更新订单优惠券
      */
-    public function updateOrderCoupon($userId , $orderId , $couponId){
+    public function updateOrderCoupon($userId , $orderId , $couponUserId){
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
-        if($couponId == 0){
+        if($couponUserId == 0){
             $data = array(
                 'coupon_user_id'                    => 0,
                 'coupon_id'                         => 0,
@@ -1116,7 +1116,7 @@ class Order extends Model{
 
             $userCouponModel = new UserCoupon();
 
-            $coupon = $userCouponModel->getCouponById($userId, $couponId);
+            $coupon = $userCouponModel->getCouponById($userId, $couponUserId);
 
             if (!$coupon) {
                 return false;
