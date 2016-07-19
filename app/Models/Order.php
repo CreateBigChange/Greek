@@ -363,7 +363,6 @@ class Order extends Model{
             $order['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
         }
 
-
         //计算需要支付的钱数
         $order['pay_total']             = $this->reckonOrderPayTotal( (Object) $order);
 
@@ -383,8 +382,6 @@ class Order extends Model{
             $orderInfo = array();
             $i = 0;
             foreach ($goodsList as $g) {
-
-                var_dump($g);die;
                 $orderInfo[$i]['order_id'] = $orderId;
                 $orderInfo[$i]['goods_id'] = $g->id;
                 $orderInfo[$i]['c_id'] = $g->category_id;
