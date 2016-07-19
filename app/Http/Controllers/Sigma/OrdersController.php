@@ -7,7 +7,7 @@
  */
 namespace App\Http\Controllers\Sigma;
 
-use App\Models\Coupon;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Validator , Input , RedisClass as Redis;
@@ -23,6 +23,7 @@ use App\Models\StoreInfo;
 use App\Models\OrderLog;
 use App\Models\OrderComplaint;
 use App\Models\OrderEvaluate;
+use App\Models\Coupon;
 use App\Libs\Message;
 
 use App\Models\UserCoupon;
@@ -221,6 +222,8 @@ class OrdersController extends ApiController
         }
         $storeId    = $request->get('store');
         $goods      = json_decode($request->get('goods'));
+
+        return response()->json(Message::setResponseInfo('FAILED' , $goods));
         $userId     = $this->userId;
 
         $storeModel = new StoreInfo();
