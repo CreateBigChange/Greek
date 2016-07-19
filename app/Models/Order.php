@@ -1084,6 +1084,7 @@ class Order extends Model{
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
 
+        var_dump($order);die;
         if(!$order){
             return false;
         }
@@ -1132,6 +1133,7 @@ class Order extends Model{
                 $couponId[] = $cuc->coupon_id;
             }
 
+            //判断传进来的是否是可以使用的优惠券
             if (!in_array($coupon->coupon_id, $couponId)) {
                 return false;
             }
