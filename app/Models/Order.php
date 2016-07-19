@@ -29,8 +29,6 @@ use App\Models\UserCoupon;
 use phpDocumentor\Reflection\Types\Object;
 
 
-use App\Jobs\Jpush;
-
 class Order extends Model{
 
     protected $table = 'orders';

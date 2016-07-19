@@ -23,6 +23,9 @@ use EasyWeChat\Foundation\Application;
 
 use App\Libs\Alipay\Alipay;
 
+
+use App\Jobs\Jpush;
+
 class OrdersController extends ApiController
 {
     private $_model;
