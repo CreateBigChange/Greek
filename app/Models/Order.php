@@ -1084,7 +1084,6 @@ class Order extends Model{
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
 
-        var_dump($order);die;
         if(!$order){
             return false;
         }
