@@ -286,6 +286,8 @@ class Order extends Model{
         $storeInfoModel = new StoreInfo();
 
         $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
+
+        var_dump($goodsList);die;
         $storeInfo  = $storeInfoModel->getStoreInfo($storeId);
 
 
