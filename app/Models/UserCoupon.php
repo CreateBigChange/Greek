@@ -27,6 +27,7 @@ class UserCoupon extends Model{
 
         $sql = DB::table($this->table . " as uCoupon")
             ->select(
+                'uCoupon.id',
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
                 'uCoupon.created_at',
@@ -186,6 +187,7 @@ class UserCoupon extends Model{
 
         $coupon = DB::table($this->table . " as uCoupon")
             ->select(
+                'uCoupon.id',
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
                 'uCoupon.created_at',
@@ -199,7 +201,7 @@ class UserCoupon extends Model{
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
             ->where('is_use' , 0)
             ->where('user_id' , $userId)
-            ->where('coupon_id' , $couponId)
+            ->where('id' , $couponId)
             ->where('expire_time' , '>=' , $date)
             ->first();
 
@@ -226,7 +228,7 @@ class UserCoupon extends Model{
     public function updateCouponIsuse($userId , $couponId  , $isUse){
 
         $couponModel = new Coupon();
-        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('coupon_id' , $couponId)->update(array('is_use' => $isUse));
+        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('id' , $couponId)->update(array('is_use' => $isUse));
         if($isUpdate) {
             if ($isUse == 1) {
                 DB::table($couponModel->getTable())->where('id' , $couponId)->increment('in_num');

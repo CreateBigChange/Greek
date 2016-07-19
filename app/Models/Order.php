@@ -26,7 +26,10 @@ use App\Models\ConsigneeAddress;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\UserCoupon;
-use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Object;
+
+
+use App\Jobs\Jpush;
 
 class Order extends Model{
 
@@ -375,6 +378,7 @@ class Order extends Model{
         $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder( (Object) $order);
         if(!empty($canUseCoupon)){
             $coupon = $canUseCoupon[0];
+            $order['coupon_user_id']                    = $coupon->id;
             $order['coupon_id']                         = $coupon->coupon_id;
             $order['coupon_type']                       = $coupon->type;
             $order['coupon_value']                      = $coupon->value;
@@ -637,7 +641,7 @@ class Order extends Model{
              */
             if($order->coupon_id != 0) {
                 $userCouponModel = new UserCoupon();
-                $userCouponModel->updateCouponIsuse($userId, $order->coupon_id, 1);
+                $userCouponModel->updateCouponIsuse($userId, $order->coupon_user_id, 1);
             }
 
             DB::commit();
@@ -655,7 +659,6 @@ class Order extends Model{
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('out_num' , $oi->num);
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('stock' , $oi->num);
             }
-
 
             return Message::setResponseInfo('SUCCESS' , array('money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
 
@@ -804,6 +807,17 @@ class Order extends Model{
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('out_num' , $oi->num);
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('stock' , $oi->num);
             }
+
+            //消息推送队列
+            $this->dispatch(new Jpush(
+                "你有一个退款成功的订单",
+                "急所需",
+                array('ios' , 'android'),
+                "$order->user",
+                array(),
+                "default",
+                "user"
+            ));
 
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
@@ -1081,6 +1095,7 @@ class Order extends Model{
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
         if($couponId == 0){
             $data = array(
+                'coupon_user_id'                    => 0,
                 'coupon_id'                         => 0,
                 'coupon_issuing_party'              => 0,
                 'coupon_actual_reduce'              => 0
@@ -1118,6 +1133,7 @@ class Order extends Model{
             }
 
             $data = array(
+                'coupon_user_id'        => $coupon->id,
                 'coupon_id'             => $coupon->coupon_id,
                 'coupon_type'           => $coupon->type,
                 'coupon_value'          => $coupon->value,
