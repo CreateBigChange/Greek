@@ -218,7 +218,7 @@ class Order extends Model{
 
                 $isUpdateStoreMoney = 1;
 
-                
+
 
             }
 
@@ -1062,7 +1062,11 @@ class Order extends Model{
 
             if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
                 $order->coupon_id = 0;
-                return $this->reckonOrderPayTotal($order);
+                $data = array(
+                    'coupon_actual_reduce'      => 0,
+                    'pay_total'                 => $this->reckonOrderPayTotal($order)
+                );
+                return $data;
             }else{
                 return false;
             }
