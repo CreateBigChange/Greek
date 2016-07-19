@@ -109,6 +109,7 @@ class Order extends Model{
                     o.coupon_type,
                     o.coupon_value,
                     o.coupon_id,
+                    o.coupon_actual_reduce,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -152,6 +153,8 @@ class Order extends Model{
         }
 
         $goods = OrderInfo::whereIn('order_id' , $orderIds)->get();
+
+        var_dump($orders);die;
 
         foreach ($orders as $o){
             $o->goods = array();
