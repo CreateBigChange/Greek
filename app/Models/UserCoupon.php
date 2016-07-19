@@ -201,7 +201,7 @@ class UserCoupon extends Model{
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
             ->where('is_use' , 0)
             ->where('user_id' , $userId)
-            ->where('id' , $couponId)
+            ->where('uCoupon.id' , $couponId)
             ->where('expire_time' , '>=' , $date)
             ->first();
 
