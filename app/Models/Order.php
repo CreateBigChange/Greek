@@ -281,18 +281,6 @@ class Order extends Model{
 
             DB::commit();
 
-            if ($status == Config::get('orderstatus.on_the_way')['status']) {
-                //消息推送队列
-                $this->dispatch(new Jpush(
-                    "你有一个订单在配送中",
-                    "急所需",
-                    array('ios' , 'android'),
-                    "$orderInfo->user",
-                    array(),
-                    "default",
-                    "user"
-                ));
-            }
             return true;
         }catch (Exception $e){
             DB::rollBack();
@@ -823,18 +811,6 @@ class Order extends Model{
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('out_num' , $oi->num);
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('stock' , $oi->num);
             }
-
-            //消息推送队列
-            $this->dispatch(new Jpush(
-                "你有一个退款成功的订单",
-                "急所需",
-                array('ios' , 'android'),
-                "$order->user",
-                array(),
-                "default",
-                "user"
-            ));
-
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
             return true;
