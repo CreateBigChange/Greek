@@ -791,7 +791,7 @@ class Order extends Model{
              */
             if($order->coupon_id != 0) {
                 $userCouponModel = new UserCoupon();
-                $userCouponModel->updateCouponIsuse($order->user, $order->coupon_id, 1);
+                $userCouponModel->updateCouponIsuse($order->user, $order->coupon_user_id, 0);
             }
 
             DB::commit();
