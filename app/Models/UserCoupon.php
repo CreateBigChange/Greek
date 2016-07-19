@@ -247,7 +247,16 @@ class UserCoupon extends Model{
      * 给用户发放优惠卷
      */
     public function addUserCoupon($data){
-        return DB::table($this->table)->insert($data);
+        if(DB::table($this->table)->insert($data)){
+            $couponModel = new Coupon();
+            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->decrement('in_num');
+            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->increment('out_num');
+            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->increment('num');
+
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
