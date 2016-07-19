@@ -121,6 +121,8 @@ class Order extends Model{
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
+        $sql .= "WHERE 1 = 1";
+
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";
         }
