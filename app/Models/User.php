@@ -150,7 +150,7 @@ class User extends Model{
             $couponModel = new Coupon();
             $userCouponModel = new UserCoupon();
 
-            $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->first();
+            $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->where('stop_out' , 0)->first();
 
             $emailContent = '';
             if(!$coupon){
