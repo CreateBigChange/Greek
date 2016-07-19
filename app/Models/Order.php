@@ -198,14 +198,16 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
+        $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
+        if(!$orderInfo){
+            return false;
+        }
         $isUpdateStoreMoney = 0;
 
         DB::beginTransaction();
         try {
 
             if ($status == Config::get('orderstatus.arrive')['status']) {
-
-                $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
                 /**
                  * ****************************************************
@@ -278,6 +280,19 @@ class Order extends Model{
             $orderLog->save();
 
             DB::commit();
+
+            if ($status == Config::get('orderstatus.on_the_way')['status']) {
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "你有一个退款成功的订单",
+                    "急所需",
+                    array('ios' , 'android'),
+                    "$orderInfo->user",
+                    array(),
+                    "default",
+                    "user"
+                ));
+            }
             return true;
         }catch (Exception $e){
             DB::rollBack();

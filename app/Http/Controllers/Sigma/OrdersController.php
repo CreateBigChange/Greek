@@ -689,7 +689,7 @@ class OrdersController extends ApiController
      * @apiPermission anyone
      * @apiSampleRequest http://greek.test.com/sigma/order/update/coupon/1
      *
-     * @apiParam {int} coupon_id 优惠券ID
+     * @apiParam {int} id 优惠券与用户关系ID
      *
      * @apiParamExample {json} Request Example
      *      POST /sigma/order/update/coupon/1
