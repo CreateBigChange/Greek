@@ -111,6 +111,7 @@ class Order extends Model{
                     o.coupon_value,
                     o.coupon_id,
                     o.coupon_actual_reduce,
+                    o.coupon_name,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -377,6 +378,7 @@ class Order extends Model{
             $order['coupon_id']                         = $coupon->coupon_id;
             $order['coupon_type']                       = $coupon->type;
             $order['coupon_value']                      = $coupon->value;
+            $order['coupon_name']                       = $coupon->name;
             $order['coupon_prerequisite']               = $coupon->prerequisite;
 
             if($coupon->store_id == 0 || $coupon->store_id == ''){
@@ -1116,11 +1118,12 @@ class Order extends Model{
             }
 
             $data = array(
-                'coupon_id' => $coupon->coupon_id,
-                'coupon_type' => $coupon->type,
-                'coupon_value' => $coupon->value,
-                'coupon_prerequisite' => $coupon->prerequisite,
-                'updated_at' => date('Y-m-d H:i:s', time())
+                'coupon_id'             => $coupon->coupon_id,
+                'coupon_type'           => $coupon->type,
+                'coupon_value'          => $coupon->value,
+                'coupon_name'           => $coupon->name,
+                'coupon_prerequisite'   => $coupon->prerequisite,
+                'updated_at'            => date('Y-m-d H:i:s', time())
             );
 
             if ($coupon->store_id == 0 || $coupon->store_id == '') {
