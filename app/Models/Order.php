@@ -1080,7 +1080,8 @@ class Order extends Model{
         if($couponId == 0){
             $data = array(
                 'coupon_id'                         => 0,
-                'coupon_issuing_party'              => 0
+                'coupon_issuing_party'              => 0,
+                'coupon_actual_reduce'              => 0
             );
 
             if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
