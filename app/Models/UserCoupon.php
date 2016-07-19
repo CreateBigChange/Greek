@@ -240,4 +240,12 @@ class UserCoupon extends Model{
         }
     }
 
+
+    /**
+     * 给用户发放优惠卷
+     */
+    public function addUserCoupon($data){
+        return DB::table($this->table)->insert($data);
+    }
+
 }
