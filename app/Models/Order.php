@@ -360,7 +360,7 @@ class Order extends Model{
             }
 
             //计算优惠卷实际优惠的钱数
-            $order['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
+            $order['coupon_actual_reduce'] = $userCouponModel->reckonDiscountMoney($order['coupon_type'], $order['coupon_value'], $order['total']);
         }
 
         //计算需要支付的钱数
