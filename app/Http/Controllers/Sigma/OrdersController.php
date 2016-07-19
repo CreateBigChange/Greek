@@ -223,7 +223,6 @@ class OrdersController extends ApiController
         $storeId    = $request->get('store');
         $goods      = json_decode($request->get('goods'));
 
-        return response()->json(Message::setResponseInfo('FAILED' , $goods));
         $userId     = $this->userId;
 
         $storeModel = new StoreInfo();

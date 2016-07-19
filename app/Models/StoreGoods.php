@@ -40,8 +40,8 @@ class StoreGoods extends Model{
                     sg.updated_at,
                     sg.out_num,
                     gc.name AS category_name ,
-                    gc.id AS category_id ,
-                    gb.id AS brand_id,
+                    sg.c_id AS category_id ,
+                    sg.b_id AS brand_id,
                     gb.name AS brand_name,
                     sn.id AS nav_id,
                     sn.name AS nav_name
