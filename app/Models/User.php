@@ -159,14 +159,19 @@ class User extends Model{
 
             $userCoupon = array();
 
-            $userCoupon['user_id']      = $userId;
-            $userCoupon['coupon_id']    = $coupon->id;
-            $userCoupon['created_at']   = date('Y-m-d H:i:s' , time());
+            for($i = 0 ; $i < Config::get('activity.first_register_give_coupon_number') ; $i++ ) {
 
-            if($coupon->effective_time){
-                $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$coupon->effective_time} day" ));
-            }else{
-                $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+30 day" ));
+                $userCoupon[$i] =  array();
+
+                $userCoupon[$i]['user_id'] = $userId;
+                $userCoupon[$i]['coupon_id'] = $coupon->id;
+                $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
+
+                if ($coupon->effective_time) {
+                    $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon->effective_time} day"));
+                } else {
+                    $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                }
             }
 
             if($userCouponModel->addUserCoupon($userCoupon)){
