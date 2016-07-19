@@ -7,8 +7,11 @@
  */
 namespace App\Models;
 
-use DB;
+use Config , DB , Mail;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\UserCoupon;
+use App\Models\Coupon;
 
 class User extends Model{
 
@@ -140,7 +143,52 @@ class User extends Model{
     }
 
     public function addUser($data){
-        return DB::table($this->table)->insertGetId($data);
+        $userId = DB::table($this->table)->insertGetId($data);
+
+        //首次注册送优惠券
+        if($userId){
+            $couponModel = new Coupon();
+            $userCouponModel = new UserCoupon();
+
+            $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->first();
+
+            $emailContent = '';
+            if(!$coupon){
+                $emailContent = "平台可送的“首次注册送的优惠券”没有了";
+            }
+
+            $userCoupon = array();
+
+            $userCoupon['user_id']      = $userId;
+            $userCoupon['coupon_id']    = $coupon->id;
+            $userCoupon['created_at']   = date('Y-m-d H:i:s' , time());
+
+            if($coupon->effective_time){
+                $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$coupon->effective_time} day" ));
+            }else{
+                $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+30 day" ));
+            }
+
+            if($userCouponModel->addUserCoupon($userCoupon)){
+                $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+            }
+
+            if(empty($emailContent)){
+                $emailContent = "用户{$userId}首次注册赠送优惠券成功";
+            }
+
+            $email = "wuhui904107775@qq.com";
+            $name = "吴辉";
+            $data = ['email'=>$email, 'name'=>$name , 'storeName' => "首次注册送优惠券"];
+            Mail::raw($emailContent, function($message) use($data)
+            {
+                $message->from('zxhy201510@163.com', "正兴宏业");
+                $message->to($data['email'], $data['name'])->subject($data['storeName']);
+            });
+
+        }
+
+        return $userId;
     }
 
     /**
