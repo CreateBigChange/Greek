@@ -233,11 +233,10 @@ class UserCoupon extends Model{
             if ($isUse == 1) {
                 DB::table($couponModel->getTable())->where('id' , $couponId)->increment('in_num');
                 DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('out_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('num');
-            }elseif($isUse == 0){
-                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('in_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->increment('out_num');
                 DB::table($couponModel->getTable())->where('id' , $couponId)->increment('num');
+            }elseif($isUse == 0){
+                DB::table($couponModel->getTable())->where('id' , $couponId)->increment('out_num');
+                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('num');
             }
         }
     }
@@ -249,9 +248,8 @@ class UserCoupon extends Model{
     public function addUserCoupon($data){
         if(DB::table($this->table)->insert($data)){
             $couponModel = new Coupon();
-            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->decrement('in_num');
             DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->increment('out_num');
-            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->increment('num');
+            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->decrement('num');
 
             return true;
         }else{
