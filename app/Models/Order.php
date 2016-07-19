@@ -121,8 +121,6 @@ class Order extends Model{
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
 
-        $sql .= " WHERE status != 11";
-
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";
         }
@@ -153,8 +151,6 @@ class Order extends Model{
         }
 
         $goods = OrderInfo::whereIn('order_id' , $orderIds)->get();
-
-        var_dump($orders);die;
 
         foreach ($orders as $o){
             $o->goods = array();
