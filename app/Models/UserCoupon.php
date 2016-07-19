@@ -226,7 +226,7 @@ class UserCoupon extends Model{
     public function updateCouponIsuse($userId , $couponId  , $isUse){
 
         $couponModel = new Coupon();
-        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('coupon_id' , $couponId)->update('is_use' , $isUse);
+        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('coupon_id' , $couponId)->update(array('is_use' => $isUse));
         if($isUpdate) {
             if ($isUse == 1) {
                 DB::table($couponModel->getTable())->where('id' , $couponId)->increment('in_num');

@@ -24,6 +24,7 @@ use App\Models\StoreConfig;
 use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
 use App\Models\User;
+use App\Models\Coupon;
 use App\Models\UserCoupon;
 use phpDocumentor\Reflection\Types\Object_;
 
@@ -219,6 +220,22 @@ class Order extends Model{
                 $isUpdateStoreMoney = 1;
 
 
+                $couponModel = new Coupon();
+
+                $storeCoupon = $couponModel->getStoreCouponByLast($storeId);
+
+                if($storeCoupon){
+                    $userCoupon = array();
+
+                    $userCoupon['user_id']      = $orderInfo->user;
+                    $userCoupon['coupon_id']    = $storeCoupon->id;
+                    $userCoupon['created_at']   = date('Y-m-d H:i:s' , time());
+
+                    if($storeCoupon->prerequisite){
+                        $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$storeCoupon->prerequisite} day" ));
+                    }
+
+                }
 
             }
 
