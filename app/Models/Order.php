@@ -1054,7 +1054,7 @@ class Order extends Model{
                     `total` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
-                    `hour`                    
+                    `hour`                  
                FROM $this->table";
         $sql .= " WHERE store_id = " . $storeId;
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status']. ',' . Config::get('orderstatus.refunded')['status'] .')';

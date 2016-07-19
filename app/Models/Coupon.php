@@ -72,7 +72,7 @@ class Coupon extends Model
 
         return $sql->skip($offset)
             ->take($length)
-            ->orderBy('created_at desc')
+            ->orderBy('created_at' , 'desc')
             ->get();
     }
 
