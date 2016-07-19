@@ -231,8 +231,8 @@ class Order extends Model{
                     $userCoupon['coupon_id']    = $storeCoupon->id;
                     $userCoupon['created_at']   = date('Y-m-d H:i:s' , time());
 
-                    if($storeCoupon->prerequisite){
-                        $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$storeCoupon->prerequisite} day" ));
+                    if($storeCoupon->effective_time){
+                        $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$storeCoupon->effective_time} day" ));
                     }else{
                         $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+30 day" ));
                     }
