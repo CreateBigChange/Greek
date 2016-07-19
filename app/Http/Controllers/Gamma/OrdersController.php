@@ -267,7 +267,8 @@ class OrdersController extends ApiController
                     "{$orderInfo[0]->user}",
                     array(),
                     "default",
-                    "success"
+                    "success",
+                    "user"
                 ));
             }elseif($status == Config::get('orderstatus.on_the_way')['status']){
                 //消息推送队列
@@ -278,7 +279,8 @@ class OrdersController extends ApiController
                     "{$orderInfo[0]->user}",
                     array(),
                     "default",
-                    "ontheway"
+                    "ontheway",
+                    "user"
                 ));
             }
             return response()->json(Message::setResponseInfo('SUCCESS'));
