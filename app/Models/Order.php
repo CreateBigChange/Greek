@@ -1111,7 +1111,11 @@ class Order extends Model{
                 $order->coupon_type = $coupon->type;
                 $order->coupon_value = $coupon->value;
 
-                return $this->reckonOrderPayTotal($order);
+                $data = array(
+                    'discount'   => $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total),
+                    'pay_total'  => $this->reckonOrderPayTotal($order)
+                );
+                return $data;
             } else {
                 return false;
             }
