@@ -219,7 +219,6 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 
 	Route::post('/store/areas', 'StoresController@areas');
 	Route::post('/store/settling', 'StoresController@settling');
-	Route::get('/push', 'Common\ToolController@push');
 
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
 
@@ -349,6 +348,9 @@ Route::group(['middleware' => ['api'] , 'namespace' => 'Alipay' ], function () {
 	Route::any('/alipay/notify', 'AlipayController@notify');
 	Route::any('/alipay/notify/refund', 'AlipayController@refundNotify');
 });
+
+
+Route::get('/push', 'Common\ToolController@push');
 
 
 //Route::group(['middleware' => ['api' , 'wechat.oauth'] , 'namespace' => 'Wxpay' ], function () {
