@@ -63,7 +63,7 @@ class CouponController extends ApiController
             'value'                     => 'required',
             'effective_time'            => 'required',
             'total_num'                 => 'required',
-            'content'                 => 'required',
+            'content'                   => 'required',
         ]);
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));

@@ -251,7 +251,7 @@ class UserCoupon extends Model{
 
             if(isset($data['coupon_id'])) {
                 $couponId = $data['coupon_id'];
-                $num = count($data);
+                $num = 1;
             }else{
                 $couponId = $data[0]['coupon_id'];
                 $num = count($data);
