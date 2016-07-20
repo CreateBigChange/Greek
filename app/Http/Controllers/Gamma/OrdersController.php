@@ -23,6 +23,9 @@ use EasyWeChat\Foundation\Application;
 
 use App\Libs\Alipay\Alipay;
 
+
+use App\Jobs\Jpush;
+
 class OrdersController extends ApiController
 {
     private $_model;
@@ -167,6 +170,8 @@ class OrdersController extends ApiController
             }
         }
 
+        $resultStatus = false;
+
         /**
          * **************************************
          * 退款
@@ -206,9 +211,11 @@ class OrdersController extends ApiController
                  */
                 if ($this->_wechatRefund($orderNo, $refundNo, $payTotal * 100 , $type)) {
                     if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
-                        return response()->json(Message::setResponseInfo('SUCCESS'));
+                        $resultStatus = true;
+//                        return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
-                        return response()->json(Message::setResponseInfo('FAILED'));
+                        $resultStatus = false;
+//                        return response()->json(Message::setResponseInfo('FAILED'));
                     }
                 }
             }elseif($orderInfo[0]->pay_type_id == 2){
@@ -217,9 +224,11 @@ class OrdersController extends ApiController
                  */
                 if($this->_aliPayRefund($orderInfo[0]->trade_no, $refundNo, $payTotal)){
                     if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
-                        return response()->json(Message::setResponseInfo('SUCCESS'));
+                        $resultStatus = true;
+//                        return response()->json(Message::setResponseInfo('SUCCESS'));
                     } else {
-                        return response()->json(Message::setResponseInfo('FAILED'));
+                        $resultStatus = false;
+//                        return response()->json(Message::setResponseInfo('FAILED'));
                     }
                 }
 
@@ -229,19 +238,54 @@ class OrdersController extends ApiController
                  * 积分支付退款
                  */
                 if ($this->_model->refund($this->storeId, $orderId, $refundNo)) {
-                    return response()->json(Message::setResponseInfo('SUCCESS'));
+                    $resultStatus = true;
+//                    return response()->json(Message::setResponseInfo('SUCCESS'));
                 } else {
-                    return response()->json(Message::setResponseInfo('FAILED'));
+                    $resultStatus = false;
+//                    return response()->json(Message::setResponseInfo('FAILED'));
                 }
             }
 
         }else {
 
             if ($this->_model->changeStatus($this->storeId, $orderInfo[0]->user, $orderId, $status)) {
-                return response()->json(Message::setResponseInfo('SUCCESS'));
+                $resultStatus = true;
+//                return response()->json(Message::setResponseInfo('SUCCESS'));
             } else {
-                return response()->json(Message::setResponseInfo('FAILED'));
+                $resultStatus = false;
+//                return response()->json(Message::setResponseInfo('FAILED'));
             }
+        }
+
+        if($resultStatus == true){
+            if($status == Config::get('orderstatus.refunded')['status']) {
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "你有一个退款成功的订单",
+                    "急所需",
+                    array('ios', 'android'),
+                    "{$orderInfo[0]->user}",
+                    array(),
+                    "default",
+                    "refunded_success",
+                    "user"
+                ));
+            }elseif($status == Config::get('orderstatus.on_the_way')['status']){
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "你有一个订单正在配送中",
+                    "急所需",
+                    array('ios', 'android'),
+                    "{$orderInfo[0]->user}",
+                    array(),
+                    "default",
+                    "ontheway",
+                    "user"
+                ));
+            }
+            return response()->json(Message::setResponseInfo('SUCCESS'));
+        }else{
+            return response()->json(Message::setResponseInfo('FAILED'));
         }
     }
 

@@ -54,8 +54,22 @@
                 location.href = "{{ $download }}"
             }
         @elseif ($system == 'ios')
-            $("#notice").html('IOS版在审核中,请稍等两天');
-            $(".weixin-tip").show();
+            var winHeight = $(window).height();
+            function is_weixin() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            var isWeixin = is_weixin();
+            if(isWeixin){
+                $(".weixin-tip").css("height",winHeight);
+                $(".weixin-tip").show();
+            }else {
+                location.href = "{{ $download }}"
+            }
         @endif
     })
 

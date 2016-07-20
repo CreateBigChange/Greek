@@ -24,8 +24,10 @@ use App\Models\StoreConfig;
 use App\Models\StoreGoods;
 use App\Models\ConsigneeAddress;
 use App\Models\User;
+use App\Models\Coupon;
 use App\Models\UserCoupon;
-use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Object;
+
 
 class Order extends Model{
 
@@ -110,6 +112,8 @@ class Order extends Model{
                     o.coupon_value,
                     o.coupon_id,
                     o.coupon_actual_reduce,
+                    o.coupon_name,
+                    o.coupon_user_id,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -120,6 +124,8 @@ class Order extends Model{
         $sql .= " LEFT JOIN store_infos as si ON si.id = o.store_id";
         $sql .= " LEFT JOIN store_configs as sc ON sc.store_id = o.store_id";
         $sql .= " LEFT JOIN users as u ON u.id = o.user";
+
+        $sql .= " WHERE 1 = 1";
 
         if(isset($search['search']) && !empty($search['search'])){
             $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";
@@ -190,14 +196,16 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
+        $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
+        if(!$orderInfo){
+            return false;
+        }
         $isUpdateStoreMoney = 0;
 
         DB::beginTransaction();
         try {
 
             if ($status == Config::get('orderstatus.arrive')['status']) {
-
-                $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
 
                 /**
                  * ****************************************************
@@ -215,6 +223,30 @@ class Order extends Model{
 
 
                 $isUpdateStoreMoney = 1;
+
+
+                $couponModel = new Coupon();
+
+                $storeCoupon = $couponModel->getStoreCouponByLast($storeId);
+
+                if($storeCoupon){
+                    $userCoupon = array();
+
+                    $userCoupon['user_id']      = $orderInfo->user;
+                    $userCoupon['coupon_id']    = $storeCoupon->id;
+                    $userCoupon['created_at']   = date('Y-m-d H:i:s' , time());
+
+                    if($storeCoupon->effective_time){
+                        $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+{$storeCoupon->effective_time} day" ));
+                    }else{
+                        $userCoupon['expire_time'] =  date('Y-m-d H:i:s' , strtotime( "+30 day" ));
+                    }
+
+                    $userCouponModel = new UserCoupon();
+
+                    $userCouponModel->addUserCoupon($userCoupon);
+
+                }
 
             }
 
@@ -246,6 +278,7 @@ class Order extends Model{
             $orderLog->save();
 
             DB::commit();
+
             return true;
         }catch (Exception $e){
             DB::rollBack();
@@ -285,6 +318,10 @@ class Order extends Model{
         $storeInfoModel = new StoreInfo();
 
         $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
+
+        if(!$goodsList){
+            return false;
+        }
 
         $storeInfo  = $storeInfoModel->getStoreInfo($storeId);
 
@@ -347,9 +384,11 @@ class Order extends Model{
         $canUseCoupon = $userCouponModel->getCanUseCouponWithOrder( (Object) $order);
         if(!empty($canUseCoupon)){
             $coupon = $canUseCoupon[0];
+            $order['coupon_user_id']                    = $coupon->id;
             $order['coupon_id']                         = $coupon->coupon_id;
             $order['coupon_type']                       = $coupon->type;
             $order['coupon_value']                      = $coupon->value;
+            $order['coupon_name']                       = $coupon->name;
             $order['coupon_prerequisite']               = $coupon->prerequisite;
 
             if($coupon->store_id == 0 || $coupon->store_id == ''){
@@ -608,7 +647,7 @@ class Order extends Model{
              */
             if($order->coupon_id != 0) {
                 $userCouponModel = new UserCoupon();
-                $userCouponModel->updateCouponIsuse($userId, $order->coupon_id, 1);
+                $userCouponModel->updateCouponIsuse($userId, $order->coupon_user_id, 1);
             }
 
             DB::commit();
@@ -626,7 +665,6 @@ class Order extends Model{
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('out_num' , $oi->num);
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('stock' , $oi->num);
             }
-
 
             return Message::setResponseInfo('SUCCESS' , array('money'=>isset($isAmpleMoney)? $isAmpleMoney : 0));
 
@@ -757,7 +795,7 @@ class Order extends Model{
              */
             if($order->coupon_id != 0) {
                 $userCouponModel = new UserCoupon();
-                $userCouponModel->updateCouponIsuse($order->user, $order->coupon_id, 1);
+                $userCouponModel->updateCouponIsuse($order->user, $order->coupon_user_id, 0);
             }
 
             DB::commit();
@@ -775,7 +813,6 @@ class Order extends Model{
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->decrement('out_num' , $oi->num);
                 DB::table($storeGoodsModel->getTable())->where('id' , $oi->goods_id)->increment('stock' , $oi->num);
             }
-
 
             BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----退款成功');
             return true;
@@ -1025,7 +1062,7 @@ class Order extends Model{
                     `total` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
-                    `hour`                    
+                    `hour`                  
                FROM $this->table";
         $sql .= " WHERE store_id = " . $storeId;
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status']. ',' . Config::get('orderstatus.refunded')['status'] .')';
@@ -1047,18 +1084,38 @@ class Order extends Model{
      * @return bool
      * 更新订单优惠券
      */
-    public function updateOrderCoupon($userId , $orderId , $couponId){
+    public function updateOrderCoupon($userId , $orderId , $couponUserId){
 
         $order  = DB::table($this->table)->where('id' , $orderId)->first();
-        if($couponId == 0){
+
+        if(!$order){
+            return false;
+        }
+
+        if($couponUserId == $order->coupon_user_id){
             $data = array(
+                'coupon_actual_reduce'      => $order->coupon_actual_reduce,
+                'pay_total'                 => $this->reckonOrderPayTotal($order)
+            );
+
+            return $data;
+        }
+        if($couponUserId == 0){
+            $data = array(
+                'coupon_user_id'                    => 0,
                 'coupon_id'                         => 0,
-                'coupon_issuing_party'              => 0
+                'coupon_issuing_party'              => 0,
+                'coupon_actual_reduce'              => 0,
+                'updated_at'                        => date('Y-m-d H:i:s' , time())
             );
 
             if(DB::table($this->table)->where('user' , $userId)->where('id' , $orderId)->update($data)){
                 $order->coupon_id = 0;
-                return $this->reckonOrderPayTotal($order);
+                $data = array(
+                    'coupon_actual_reduce'      => 0,
+                    'pay_total'                 => $this->reckonOrderPayTotal($order)
+                );
+                return $data;
             }else{
                 return false;
             }
@@ -1066,7 +1123,7 @@ class Order extends Model{
 
             $userCouponModel = new UserCoupon();
 
-            $coupon = $userCouponModel->getCouponById($userId, $couponId);
+            $coupon = $userCouponModel->getCouponById($userId, $couponUserId);
 
             if (!$coupon) {
                 return false;
@@ -1079,16 +1136,19 @@ class Order extends Model{
                 $couponId[] = $cuc->coupon_id;
             }
 
+            //判断传进来的是否是可以使用的优惠券
             if (!in_array($coupon->coupon_id, $couponId)) {
                 return false;
             }
 
             $data = array(
-                'coupon_id' => $coupon->coupon_id,
-                'coupon_type' => $coupon->type,
-                'coupon_value' => $coupon->value,
-                'coupon_prerequisite' => $coupon->prerequisite,
-                'updated_at' => date('Y-m-d H:i:s', time())
+                'coupon_user_id'        => $coupon->id,
+                'coupon_id'             => $coupon->coupon_id,
+                'coupon_type'           => $coupon->type,
+                'coupon_value'          => $coupon->value,
+                'coupon_name'           => $coupon->name,
+                'coupon_prerequisite'   => $coupon->prerequisite,
+                'updated_at'            => date('Y-m-d H:i:s', time())
             );
 
             if ($coupon->store_id == 0 || $coupon->store_id == '') {
@@ -1111,7 +1171,11 @@ class Order extends Model{
                 $order->coupon_type = $coupon->type;
                 $order->coupon_value = $coupon->value;
 
-                return $this->reckonOrderPayTotal($order);
+                $data = array(
+                    'coupon_actual_reduce'      => $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total),
+                    'pay_total'                 => $this->reckonOrderPayTotal($order)
+                );
+                return $data;
             } else {
                 return false;
             }

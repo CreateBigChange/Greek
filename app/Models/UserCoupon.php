@@ -27,6 +27,7 @@ class UserCoupon extends Model{
 
         $sql = DB::table($this->table . " as uCoupon")
             ->select(
+                'uCoupon.id',
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
                 'uCoupon.created_at',
@@ -186,6 +187,7 @@ class UserCoupon extends Model{
 
         $coupon = DB::table($this->table . " as uCoupon")
             ->select(
+                'uCoupon.id',
                 'uCoupon.coupon_id',
                 'uCoupon.expire_time',
                 'uCoupon.created_at',
@@ -199,7 +201,7 @@ class UserCoupon extends Model{
             ->join($couponModel->getTable() . " as coupon" , "coupon.id" , "=" , "uCoupon.coupon_id")
             ->where('is_use' , 0)
             ->where('user_id' , $userId)
-            ->where('coupon_id' , $couponId)
+            ->where('uCoupon.id' , $couponId)
             ->where('expire_time' , '>=' , $date)
             ->first();
 
@@ -223,20 +225,44 @@ class UserCoupon extends Model{
     /**
      * 更新优惠
      */
-    public function updateCouponIsuse($userId , $couponId  , $isUse){
+    public function updateCouponIsuse($userId , $couponUserId  , $isUse){
 
         $couponModel = new Coupon();
-        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('coupon_id' , $couponId)->update('is_use' , $isUse);
+        $usercoupon = DB::table($this->table)->where('user_id' , $userId)->where('id' , $couponUserId)->first();
+        $isUpdate =  DB::table($this->table)->where('user_id' , $userId)->where('id' , $couponUserId)->update(array('is_use' => $isUse));
+
+
         if($isUpdate) {
             if ($isUse == 1) {
-                DB::table($couponModel->getTable())->where('id' , $couponId)->increment('in_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('out_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('num');
+                DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->increment('in_num');
             }elseif($isUse == 0){
-                DB::table($couponModel->getTable())->where('id' , $couponId)->decrement('in_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->increment('out_num');
-                DB::table($couponModel->getTable())->where('id' , $couponId)->increment('num');
+                DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->decrement('in_num');
             }
+        }
+    }
+
+
+    /**
+     * 给用户发放优惠卷
+     */
+    public function addUserCoupon($data){
+        if(DB::table($this->table)->insert($data)){
+            $couponModel = new Coupon();
+
+            if(isset($data['coupon_id'])) {
+                $couponId = $data['coupon_id'];
+                $num = 1;
+            }else{
+                $couponId = $data[0]['coupon_id'];
+                $num = count($data);
+            }
+
+            DB::table($couponModel->getTable())->where('id', $couponId)->increment('out_num' , $num);
+            DB::table($couponModel->getTable())->where('id', $couponId)->decrement('num' , $num);
+
+            return true;
+        }else{
+            return false;
         }
     }
 

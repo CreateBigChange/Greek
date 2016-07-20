@@ -7,8 +7,11 @@
  */
 namespace App\Models;
 
-use DB;
+use Config , DB , Mail;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\UserCoupon;
+use App\Models\Coupon;
 
 class User extends Model{
 
@@ -140,7 +143,56 @@ class User extends Model{
     }
 
     public function addUser($data){
-        return DB::table($this->table)->insertGetId($data);
+        $userId = DB::table($this->table)->insertGetId($data);
+
+        //首次注册送优惠券
+        if($userId){
+            $couponModel = new Coupon();
+            $userCouponModel = new UserCoupon();
+
+            $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->where('stop_out' , 0)->first();
+
+            $emailContent = '';
+
+            if($coupon){
+
+                $userCoupon = array();
+
+                for ($i = 0; $i < Config::get('activity.first_register_give_coupon_number'); $i++) {
+
+                    $userCoupon[$i] = array();
+
+                    $userCoupon[$i]['user_id'] = $userId;
+                    $userCoupon[$i]['coupon_id'] = $coupon->id;
+                    $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
+
+                    if ($coupon->effective_time) {
+                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon->effective_time} day"));
+                    } else {
+                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                    }
+                }
+
+                if ($userCouponModel->addUserCoupon($userCoupon)) {
+                    $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+                }
+            }
+
+            if(empty($emailContent)){
+                $emailContent = "用户{$userId}首次注册赠送优惠券成功";
+            }
+
+            $email = Config::get('mail.to');
+            $name = 'operations';
+            $data = ['email'=>$email, 'name'=>$name , 'subject' => "首次注册送优惠券"];
+            Mail::raw($emailContent, function($message) use($data)
+            {
+                $message->to($data['email'], $data['name'])->subject($data['subject']);
+            });
+
+        }
+
+        return $userId;
     }
 
     /**

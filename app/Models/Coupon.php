@@ -72,6 +72,7 @@ class Coupon extends Model
 
         return $sql->skip($offset)
             ->take($length)
+            ->orderBy('created_at' , 'desc')
             ->get();
     }
 
@@ -93,6 +94,10 @@ class Coupon extends Model
     public function stopCoupon($couponId , $data){
         return DB::table($this->table)->where('id' , $couponId)->update($data);
 
+    }
+
+    public function getStoreCouponByLast($storeId){
+        return DB::table($this->table)->where('store_id' , $storeId)->where('stop_out' , 0)->where('num' , '<>' , '0')->orderBy('created_at' , 'asc')->first();
     }
 
 }

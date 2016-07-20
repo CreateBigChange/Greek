@@ -10,7 +10,7 @@ use App\Libs\BLogger;
 
 class CheckVersion
 {
-    /**∑
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request

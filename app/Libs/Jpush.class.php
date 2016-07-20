@@ -5,12 +5,19 @@ use JPush as JpushLib;
 
 class Jpush
 {
-    private $app_key = '6bab168dd725bcff4c83e6f6';
-    private $master_secret = '9973f83c178d57b8ccc67943';
+    private $commercial_app_key = '6bab168dd725bcff4c83e6f6';
+    private $commercial_master_secret = '9973f83c178d57b8ccc67943';
+
+    private $user_app_key = 'e208cdd0f07101f41bf56a0a';
+    private $user_master_secret = 'ded59edde98cfc62f0acb00e';
     private $jpushObj;
 
-    public function __construct(){
-        $this->jpushObj = new JpushLib($this->app_key, $this->master_secret);
+    public function __construct($type){
+        if($type == 'commercial') {
+            $this->jpushObj = new JpushLib($this->commercial_app_key, $this->commercial_master_secret);
+        }elseif($type == 'user'){
+            $this->jpushObj = new JpushLib($this->user_app_key, $this->user_master_secret);
+        }
 
     }
 
@@ -37,7 +44,7 @@ class Jpush
             $push->addTag($tag);
         }
 
-        $push->setNotificationAlert('急所需商家版')
+        $push->setNotificationAlert('急所需')
             //->addAllAudience()
             ->addAndroidNotification($content, $title, 1, array("type"=>$type))
             ->addIosNotification($content, $sound, "+1" , true, 'iOS ORDER NEW', array("type"=>$type))

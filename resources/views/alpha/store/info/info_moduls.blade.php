@@ -354,6 +354,12 @@
 		var storeId = $(this).attr('p_id');
 		var location = $(this).attr('location').split(',');
 
+		if(!location || location.length <= 1){
+			location = new Array();
+			location[0] = 116.39;
+			location[1] = 39.9;
+		}
+
 		var page = $(this).attr('page');
 
 		$.get('/alpha/stores/info/' + storeId , function(data){
@@ -387,7 +393,6 @@
 						var bt = baidu.template;
 						var html = '<option value="0">选择</option>';
 						html += bt('edit_categories' , categories);
-						console.log(html);
 						$('#edit_category').html(html);
 					}
 				});
@@ -395,7 +400,6 @@
 
                 $('.switch').each(function(index , val){
                 	if(index == 0){
-                	console.log(data.data);
                 		if(data.data.is_open == 1){
                 			$(val).bootstrapSwitch('setState', true);
                 		}
@@ -505,7 +509,6 @@
 			marker.setPosition(e.lnglat);
 			location.value = e.lnglat.toString();
 			geocoder.getAddress(e.lnglat,function(status,result){
-			console.log(result);
 				if(status=='complete'){
 					addressInput.value 	= result.regeocode.formattedAddress;
 					province.value 		= result.regeocode.addressComponent.province;
@@ -521,7 +524,6 @@
 		addressInput.onchange = function(e){
 			var address = addressInput.value;
 			geocoder.getLocation(address,function(status,result){
-				console.log(result);
 				if(status=='complete'&&result.geocodes.length){
 					marker.setPosition(result.geocodes[0].location);
 					map.setCenter(marker.getPosition())
@@ -824,7 +826,6 @@ $('.add').bind('click' , function(){
 			marker.setPosition(e.lnglat);
 			location.value = e.lnglat.toString();
 			geocoder.getAddress(e.lnglat,function(status,result){
-			console.log(result);
 				if(status=='complete'){
 					addressInput.value 	= result.regeocode.formattedAddress;
 					province.value 		= result.regeocode.addressComponent.province;
@@ -840,7 +841,6 @@ $('.add').bind('click' , function(){
 		addressInput.onchange = function(e){
 			var address = addressInput.value;
 			geocoder.getLocation(address,function(status,result){
-				console.log(result);
 				if(status=='complete'&&result.geocodes.length){
 					marker.setPosition(result.geocodes[0].location);
 					map.setCenter(marker.getPosition())

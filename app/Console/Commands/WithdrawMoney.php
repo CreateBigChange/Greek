@@ -49,7 +49,7 @@ class WithdrawMoney extends Command
         /**
          * 获取当前时间完成的订单
          */
-        $day  = date("Y-m-d H:i:s",time());
+        $day  = date("Y-m-d H:i:s",time() - (24 * 3600));
         BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 
@@ -102,13 +102,14 @@ class WithdrawMoney extends Command
 
                 $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
                 BLogger::getLogger(BLogger::LOG_SCRIPT)->info($emailContent);
-                $email = "wuhui904107775@qq.com";
-                $name = "吴辉";
+
+                
+                $email = Config::get('mail.to');
+                $name = 'operations';
                 $storeName = $storeInfo->name;
                 $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
                 Mail::raw($emailContent, function($message) use($data)
                 {
-                    $message->from('zxhy201510@163.com', "正兴宏业");
                     $message->to($data['email'], $data['name'])->subject($data['storeName']);
                 });
 
