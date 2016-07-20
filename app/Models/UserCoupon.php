@@ -248,8 +248,17 @@ class UserCoupon extends Model{
     public function addUserCoupon($data){
         if(DB::table($this->table)->insert($data)){
             $couponModel = new Coupon();
-            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->increment('out_num');
-            DB::table($couponModel->getTable())->where('id' , $data['coupon_id'])->decrement('num');
+
+            if(isset($data['coupon_id'])) {
+                $couponId = $data['coupon_id'];
+                $num = count($data);
+            }else{
+                $couponId = $data[0]['coupon_id'];
+                $num = count($data);
+            }
+
+            DB::table($couponModel->getTable())->where('id', $couponId)->increment('out_num' , $num);
+            DB::table($couponModel->getTable())->where('id', $couponId)->decrement('num' , $num);
 
             return true;
         }else{
