@@ -360,6 +360,7 @@
 			location[1] = 39.9;
 		}
 
+		console.log(location.length);
 		console.log(location);
 
 		var page = $(this).attr('page');
