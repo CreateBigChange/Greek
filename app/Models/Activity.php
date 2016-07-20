@@ -14,4 +14,8 @@ class Activity extends Model{
 
     protected $table = 'activity';
 
+    public function getActivitiyById($id){
+        return DB::table($this->table)->where('id' , $id)->first();
+    }
+
 }
