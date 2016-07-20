@@ -219,7 +219,7 @@ class AlipayController extends ApiController
                     "你有一个退款成功的订单",
                     "急所需",
                     array('ios', 'android'),
-                    "{$orderInfo[0]->user}",
+                    "{$orderInfo->user}",
                     array(),
                     "default",
                     "refunded_success",
