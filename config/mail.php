@@ -109,4 +109,6 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
+    'to'        => 'operations_jisxu@163.com',
+
 ];

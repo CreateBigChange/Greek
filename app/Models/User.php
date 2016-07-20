@@ -155,7 +155,7 @@ class User extends Model{
             $emailContent = '';
 
             if($coupon){
-                
+
                 $userCoupon = array();
 
                 for ($i = 0; $i < Config::get('activity.first_register_give_coupon_number'); $i++) {
@@ -182,13 +182,12 @@ class User extends Model{
                 $emailContent = "用户{$userId}首次注册赠送优惠券成功";
             }
 
-            $email = "wuhui904107775@qq.com";
-            $name = "吴辉";
-            $data = ['email'=>$email, 'name'=>$name , 'storeName' => "首次注册送优惠券"];
+            $email = Config::get('mail.to');
+            $name = 'operations';
+            $data = ['email'=>$email, 'name'=>$name , 'subject' => "首次注册送优惠券"];
             Mail::raw($emailContent, function($message) use($data)
             {
-                $message->from('zxhy201510@163.com', "正兴宏业");
-                $message->to($data['email'], $data['name'])->subject($data['storeName']);
+                $message->to($data['email'], $data['name'])->subject($data['subject']);
             });
 
         }
