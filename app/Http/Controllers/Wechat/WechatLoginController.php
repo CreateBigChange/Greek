@@ -77,8 +77,9 @@ class WechatLoginController extends ApiController
         $weixinUserInfo = $this->curlGet($getUserInfoUrl);
         $weixinUserInfo = json_decode($weixinUserInfo);
 
+
         $sqlDta = array(
-            'nick_name'		=> $weixinUserInfo->nickname,
+            'nick_name'		=> $weixinUserInfo->nickname ,
             'avatar'		=> $weixinUserInfo->headimgurl,
             'login_type'	=> 'weixin',
             'wx_unionid'    => isset($weixinUserInfo->unionid) ? $weixinUserInfo->unionid : '',
