@@ -15,88 +15,76 @@ require_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
 
 // Check prerequisites
-if (!file_exists("goodsData.xls")) {
-    exit("not found goodsData.xls.\n");
+if (!file_exists("zuobiao.xls")) {
+    exit("not found zuobiao.xls.\n");
 }
 
 $reader = PHPExcel_IOFactory::createReader('Excel5'); //设置以Excel5格式(Excel97-2003工作簿)
-$PHPExcel = $reader->load("storeData.xls"); // 载入excel文件
+$PHPExcel = $reader->load("zuobiao.xls"); // 载入excel文件
 $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
 $highestRow = $sheet->getHighestRow(); // 取得总行数
 $highestColumm = $sheet->getHighestColumn(); // 取得总列数
 
 
-$store          = array();
 
-/** 循环读取每个单元格的数据 */
-$storeNum = 0;
-for ($row = 1; $row <= $highestRow; $row++){//行数是以第1行开始
-    $store[$storeNum]           = array();
-    for ($column = 'A'; $column <= $highestColumm; $column++) {//列数是以A列开始
-
-        if($column == 'A'){
-            $store[$storeNum]['name']                   = trim($sheet->getCell($column.$row)->getValue());
-            $store[$storeNum]['contacts']               = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'F'){
-            $store[$storeNum]['id_card_img']            = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'H'){
-            $store[$storeNum]['business_license']       = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'J'){
-            $store[$storeNum]['province']               = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'K'){
-            $store[$storeNum]['city']                   = trim($sheet->getCell($column.$row)->getValue()) == NULL ? 0 : trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'L'){
-            $store[$storeNum]['county']                 = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'M'){
-            $store[$storeNum]['address']                = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'I'){
-            $store[$storeNum]['contact_phone']          = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'P'){
-            $store[$storeNum]['location']               = trim($sheet->getCell($column.$row)->getValue());
-        }
-        if($column == 'O'){
-            $store[$storeNum]['logo']                   = trim($sheet->getCell($column.$row)->getValue());
-        }
-    }
-    $storeNum ++ ;
-}
-
-$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'jsx' , '*pzsJqbd^6rvTeuz' , 'jsx');
 //$mysqli = new mysqli('127.0.0.1' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
 
-$storeId = 25;
-foreach ($store as $s) {
+/** 循环读取每个单元格的数据 */
+for ($row = 1; $row <= $highestRow; $row++){//行数是以第1行开始
+    $storeId = 0;
+    for ($column = 'A'; $column <= $highestColumm; $column++) {//列数是以A列开始
 
-    $insertStore = "INSERT INTO store_infos(`id` , `c_id` , `name` , `id_card_img` , `business_license` , `province` , `city` , `county` , `address` , `contacts` , `contact_phone` , `location` , `created_at` , `updated_at`) VALUES ($storeId ,". 1 .",'" . $s['name']."', '". $s['id_card_img'] ."' ,'" . $s['business_license'] . "','".$s['province']."','".$s['city'] ."','".$s['county'] ."','" . $s['address']. "','" . $s['contacts'] . "','" . $s['contact_phone'] . "','" . $s['location'] . "','" . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
+        $value = trim($sheet->getCell($column.$row)->getValue());
 
-    $result    = $mysqli->query($insertStore);
-    if($result){
+        if($column == 'A'){
+            $storeName = $value;
 
-        $insertStoreConfig  = "INSERT INTO store_configs(`store_id` , `store_logo` , `created_at` , `updated_at`) VALUES ($storeId , '" . $s['logo'] . "','"  . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
-        $insertStoreUser    = "INSERT INTO store_users(`store_id` , `account` , `real_name`  , `tel` , `created_at` , `updated_at`) VALUES ($storeId , '" . $s['contact_phone']. "','"  . $s['name'] . $s['contact_phone'] . "','"  . "','"  . date('Y-m-d H:i:s' , time()) . "','" . date('Y-m-d H:i:s' , time()) ."');";
+            $findStoreSql = "SELECT * FROM `store_infos` WHERE name = '" . $storeName . "'";
+            $findResult = $mysqli->query($findStoreSql);
+            if($findResult){
+                $store = $findResult->fetch_object();
+                if($store) {
+                    $storeId = $store->id;
+                }else{
+                    continue;
+                }
+            }else{
+                continue;
+            }
+        }
 
-        $mysqli->query($insertStoreConfig);
-        $mysqli->query($insertStoreUser);
+        if($column  == 'B'){
+            $province = $value;
+        }
+        if($column == 'C'){
+            $city = $value;
+        }
+        if($column == 'D'){
+            $county = $value;
+        }
+        if($column == 'E'){
+            $address = $value;
+        }
+        if($column == 'F'){
+            $location = $value;
+        }
 
-        $storeId ++;
-        echo "成功插入一条,店铺名称:".$s['name']."\n";
-    }else{
-        echo "失败一条,店铺名称:" . $s['name']."\n";
+    }
+
+    if($storeId != 0){
+
+        $updateSql = "UPDATE `store_infos` SET `province` = '" . $province . "' , `city` = '" . $city . "' , `county` = '" . $county . "' , `address` = '" . $address . "' , `location` = '" . $location. "' WHERE id = " . $storeId;
+
+        $mysqli->query($updateSql);
     }
 
 }
+
 
 $mysqli->close();
 
