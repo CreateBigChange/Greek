@@ -354,14 +354,11 @@
 		var storeId = $(this).attr('p_id');
 		var location = $(this).attr('location').split(',');
 
-		if(!location || location.length <= 0){
+		if(!location || location.length <= 1){
 			location = new Array();
 			location[0] = 116.39;
 			location[1] = 39.9;
 		}
-
-		console.log(location.length);
-		console.log(location);
 
 		var page = $(this).attr('page');
 
