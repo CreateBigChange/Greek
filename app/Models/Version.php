@@ -20,7 +20,7 @@ class Version extends Model
         if(!$oldVersion){
             return true;
         }
-        if($oldVersion->version != $version){
+        if($oldVersion->version > $version){
             return (Array)$oldVersion;
         }else{
             return true;
