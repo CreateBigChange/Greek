@@ -153,29 +153,29 @@ class User extends Model{
             $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->where('stop_out' , 0)->first();
 
             $emailContent = '';
-            if(!$coupon){
-                $emailContent = "平台可送的“首次注册送的优惠券”没有了";
-            }
 
-            $userCoupon = array();
+            if($coupon){
+                
+                $userCoupon = array();
 
-            for($i = 0 ; $i < Config::get('activity.first_register_give_coupon_number') ; $i++ ) {
+                for ($i = 0; $i < Config::get('activity.first_register_give_coupon_number'); $i++) {
 
-                $userCoupon[$i] =  array();
+                    $userCoupon[$i] = array();
 
-                $userCoupon[$i]['user_id'] = $userId;
-                $userCoupon[$i]['coupon_id'] = $coupon->id;
-                $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
+                    $userCoupon[$i]['user_id'] = $userId;
+                    $userCoupon[$i]['coupon_id'] = $coupon->id;
+                    $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
 
-                if ($coupon->effective_time) {
-                    $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon->effective_time} day"));
-                } else {
-                    $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                    if ($coupon->effective_time) {
+                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon->effective_time} day"));
+                    } else {
+                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                    }
                 }
-            }
 
-            if($userCouponModel->addUserCoupon($userCoupon)){
-                $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+                if ($userCouponModel->addUserCoupon($userCoupon)) {
+                    $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+                }
             }
 
             if(empty($emailContent)){
