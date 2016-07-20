@@ -354,7 +354,7 @@
 		var storeId = $(this).attr('p_id');
 		var location = $(this).attr('location').split(',');
 
-		if(!location){
+		if(!location || location.length <= 0){
 			location = new Array();
 			location[0] = 116.39;
 			location[1] = 39.9;
