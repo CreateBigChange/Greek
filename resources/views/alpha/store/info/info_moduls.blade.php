@@ -354,6 +354,12 @@
 		var storeId = $(this).attr('p_id');
 		var location = $(this).attr('location').split(',');
 
+		if(!location){
+			location = new Array();
+			location[0] = 116.39;
+			location[1] = 39.9;
+		}
+
 		var page = $(this).attr('page');
 
 		$.get('/alpha/stores/info/' + storeId , function(data){
@@ -505,7 +511,6 @@
 			marker.setPosition(e.lnglat);
 			location.value = e.lnglat.toString();
 			geocoder.getAddress(e.lnglat,function(status,result){
-			console.log(result);
 				if(status=='complete'){
 					addressInput.value 	= result.regeocode.formattedAddress;
 					province.value 		= result.regeocode.addressComponent.province;
@@ -521,7 +526,6 @@
 		addressInput.onchange = function(e){
 			var address = addressInput.value;
 			geocoder.getLocation(address,function(status,result){
-				console.log(result);
 				if(status=='complete'&&result.geocodes.length){
 					marker.setPosition(result.geocodes[0].location);
 					map.setCenter(marker.getPosition())
