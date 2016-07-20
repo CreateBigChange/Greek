@@ -117,6 +117,7 @@ class StoresController extends ApiController
         if(!$request->has('ids')){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
+
         $ids = $request->get('ids');
 
         $search = array('ids'=>$ids );
@@ -138,7 +139,6 @@ class StoresController extends ApiController
         $ids = "si.id , " . $ids;
         $orderBy = " FIELD ($ids)";
         $response['storeList'] = $this->_model->getStoreList( $search , $this->_length , $response['pageData']->offset  , $orderBy);
-
 
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }

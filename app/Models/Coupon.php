@@ -97,7 +97,7 @@ class Coupon extends Model
     }
 
     public function getStoreCouponByLast($storeId){
-        return DB::table($this->table)->where('store_id' , $storeId)->where('num' , '<>' , '0')->orderBy('created_at' , 'asc')->first();
+        return DB::table($this->table)->where('store_id' , $storeId)->where('stop_out' , 0)->where('num' , '<>' , '0')->orderBy('created_at' , 'asc')->first();
     }
 
 }
