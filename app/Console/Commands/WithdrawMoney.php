@@ -49,7 +49,7 @@ class WithdrawMoney extends Command
         /**
          * 获取当前时间完成的订单
          */
-        $day  = date("Y-m-d H:i:s",time());
+        $day  = date("Y-m-d H:i:s",time() - (24 * 3600));
         BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 

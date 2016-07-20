@@ -236,8 +236,7 @@ class UserCoupon extends Model{
             if ($isUse == 1) {
                 DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->increment('in_num');
             }elseif($isUse == 0){
-                DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->increment('out_num');
-                DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->decrement('num');
+                DB::table($couponModel->getTable())->where('id' , $usercoupon->coupon_id)->decrement('in_num');
             }
         }
     }
