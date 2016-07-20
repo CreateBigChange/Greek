@@ -214,6 +214,17 @@ class AlipayController extends ApiController
             }
 
             if ($_POST['success_num'] && $this->_model->refund($orderInfo->store_id, $orderInfo->id, $_POST['batch_no'])) {
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "你有一个退款成功的订单",
+                    "急所需",
+                    array('ios', 'android'),
+                    "{$orderInfo[0]->user}",
+                    array(),
+                    "default",
+                    "refunded_success",
+                    "user"
+                ));
                 die('success');
             } else {
                 die('fail');

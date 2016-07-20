@@ -267,7 +267,7 @@ class OrdersController extends ApiController
                     "{$orderInfo[0]->user}",
                     array(),
                     "default",
-                    "success",
+                    "refunded_success",
                     "user"
                 ));
             }elseif($status == Config::get('orderstatus.on_the_way')['status']){
