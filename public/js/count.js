@@ -19,7 +19,7 @@ function countUp(count)
     }, int_speed);
 }
 
-countUp(495);
+//countUp(495);
 
 function countUp2(count)
 {
@@ -65,7 +65,7 @@ function countUp3(count)
     }, int_speed);
 }
 
-countUp3(328);
+//countUp3(328);
 
 function countUp4(count)
 {

@@ -14,6 +14,13 @@ class AdminPermission extends Model{
 
     protected $table = 'admin_permissions';
 
+    /*
+     * 获取相关菜单
+     */
+    public function  getPermissionInfo($id){
+        return  DB::table($this->table)->where('id' , $id)->get();
+    }
+
     /**
      * 获取登录用户可访问的菜单
      */

@@ -276,17 +276,21 @@ $('.updateChild').bind('click' , function(){
 							option += "<option value="+ top[i].id +">"+ top[i].name +"</option>";
 						}
 					}
+
 					$('#update_f_name').append(option);
 				}
 			});
+
+			console.log(data);
+
 			$('#update_child_id').val(pid);
-			$('#update_child_name').val(data.name);
+			$('#update_child_name').val(data[0].name);
 			//$('#update_child_display_name').val(data.display_name);
 			//$('#update_child_description').val(data.description);
-			$('#update_child_url').val(data.url);
-			$('#update_child_sort').val(data.sort);
+			$('#update_child_url').val(data[0].url);
+			$('#update_child_sort').val(data[0].sort);
 
-			if(data.is_menu == 1){
+			if(data[0].is_menu == 1){
 				$('#update_child_menu').attr('checked' , 'checked');
 				$('#update_child_menu').parent().removeClass('switch-off').addClass('switch-on');
 			}

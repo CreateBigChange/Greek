@@ -8,7 +8,7 @@
 			<div class="col-lg-12">
 				<section class="panel">
 					<header class="panel-heading">
-						banner基本信息
+						轮播图基本信息
 						<div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" id="add" href="#change"><i class="icon-plus"></i></div>
 						<div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
 					</header>
@@ -18,7 +18,7 @@
 								<thead>
 									<tr>
 										<th>id</th>
-										<th>url</th>
+										<!--<th>url</th>-->
 										<th>redirect</th>
 										<th>图片</th>
 										<th>名字</th>
@@ -33,7 +33,7 @@
 									@foreach ($list as $si)
 										<tr >
 											<td>{{ $si->id }}</td>
-											<td>{{ $si->img }}</td>
+											<!--<td>{{ $si->img }}</td>-->
 											<td>{{ $si->redirect }}</td>
 											<td><img style="width:50px;height:50px;" src="{{ $si->img }}"  /></td>
 											<td>{{ $si->name }}</td>

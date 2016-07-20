@@ -28,7 +28,7 @@
 		</div>
 		<div class="value">
 			<h1 class=" count2">
-				0
+				1
 			</h1>
 			<p>Sales</p>
 		</div>
@@ -139,3 +139,7 @@ if (option && typeof option === "object") {
 <!--main content end-->
 
 @include('alpha.footer')
+<script>
+	countUp({{$userNum }});
+	countUp1({{$orderNum[0]->num }});
+</script>

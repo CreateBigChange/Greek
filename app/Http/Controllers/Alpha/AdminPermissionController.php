@@ -123,7 +123,7 @@ class AdminPermissionController extends AdminController
     public function getPermissionInfo($id){
 
         $permissionModel	= new AdminPermission;
-         return $id;
+     
 		$info				= $permissionModel->getPermissionInfo($id);
 
 		return response()->json($info);

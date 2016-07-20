@@ -202,9 +202,13 @@ class AdminUsersController extends AdminController
 		if( $request->has('real_name') ){
 			$data['real_name']	= $request->get('real_name');
 		}
-		
-		if( $request->has('password') && !$request->get('password') ){
-			$data['password']	= $request->get('password');
+
+		if( $request->has('password') && $request->get('password') ){
+            $salt = $this->getSalt(8);
+            $password		= $this->encrypt($request->get('password') , $salt);
+
+            $data['salt']=$salt;
+			$data['password']	=  $password;
 		}
 
 		if( $request->has('email')){

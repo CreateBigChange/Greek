@@ -63,6 +63,7 @@ class CouponController extends ApiController
             'effective_time'            => 'required',
             'total_num'                 => 'required',
         ]);
+
         if($validation->fails()){
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
@@ -70,19 +71,20 @@ class CouponController extends ApiController
         $data = array();
         $data['name']               = $request->get('name');
         $data['value']              = $request->get('value');
-        $data['effective_time']     = $request->get('effective_time');
+        $data['effective_time']   = $request->get('effective_time');
+        $data['created_at']        =date("Y-m-d H:i:s",time());
+        $data['updated_at']        =date("Y-m-d H:i:s",time());
 
         if($request->has('prerequisite')) {
             $data['prerequisite'] = $request->get('prerequisite');
         }
 
         $data['total_num']          = $request->get('total_num');
-        $data['num']                = $request->get('total_num');
+        $data['num']                 = $request->get('total_num');
         $data['store_id']           = $this->storeId;
-        $data['type']               = 1;
-        $data['created_at']         = date('Y-m-d H:i:s' , time());
-        $data['updated_at']         = date('Y-m-d H:i:s' , time());
+        $data['type']                = 1;
 
+     
         $couponId = $this->_model->addCoupon($data);
         
         if($couponId){

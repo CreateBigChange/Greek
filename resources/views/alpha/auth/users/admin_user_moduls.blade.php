@@ -165,12 +165,13 @@ $('.edit').bind('click' , function(){
 					$('#edit_roles').html(html);
 				}
 				
-				$('#edit_id').val(data.info.id);
+			$('#edit_id').val(data.info.id);
+			$('#edit_name').val(data.info.account);
+			$('#edit_email').val(data.info.email);
+			$('#edit_real_name').val(data.info.real_name);
 
-				$('#edit_name').val(data.info.name);
-				$('#edit_email').val(data.info.email);
-				$('#edit_real_name').val(data.info.real_name);
 			})
+
 		}
 	})	
 });

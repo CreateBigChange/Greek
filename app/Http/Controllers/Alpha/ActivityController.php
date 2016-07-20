@@ -81,12 +81,11 @@ class ActivityController extends AdminController
        
     }
 
-    //优惠券的控制器
+    //通用优惠券的控制器
     public function coupon(Request $request)
     {
 
         $page = 1;
-
         if($request->has('page')){
             $page = $request->get('page');
         }
@@ -94,13 +93,12 @@ class ActivityController extends AdminController
         $pageData = $this->getPageData($page  , $this->length, $totalNum);
         $this->response['list']= $this->couponModel->getCouponList();
         $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/activity/banner?');
-        //dd($this->response);
     
         return view('alpha.activity.coupon',$this->response);
     }
     public function couponUpdate(Request $request)
     {
-        
+        dd($request);
         $data = array(
             'name' => $request->get('name'),
             'content' => $request->get('content'),
@@ -111,10 +109,17 @@ class ActivityController extends AdminController
             'total_num' => $request->get('total_num'),
             'in_num' => $request->get('in_num'),
             'out_num' => $request->get('out_num'),
-            'stop_out' => $request->get('stop_out'),
+
             'num' => $request->get('num')
             );
-
+        if($request->has("stop_out"))
+        {
+            $data['stop_out'] =0;
+        }
+        else
+        {
+            $data['stop_out'] =1;
+        }
          $coupon_id=$request->get('coupon_id');
        $this->couponModel->updateCoupon($data,$coupon_id);
        return redirect('/alpha/Activity/coupon');    
@@ -122,7 +127,7 @@ class ActivityController extends AdminController
     }
     public function couponAdd(Request $request)
     {
-
+           // dd($request);
             $data =  array(
             'name' => $request->get('name'),
             'content' => $request->get('content'),
@@ -131,11 +136,16 @@ class ActivityController extends AdminController
             'value' => $request->get('value'),
             'prerequisite' => $request->get('prerequisite'),
             'total_num' => $request->get('total_num'),
-            'in_num' => $request->get('in_num'),
-            'out_num' => $request->get('out_num'),
-            'stop_out' => $request->get('stop_out'),
-            'num' => $request->get('num')
+            'in_num' => 0,
+            'out_num' => 0,
+            'num' => $request->get('total_num'),
+             'created_at'=>date('Y-m-d H:i:s' , time()),
+             'updated_at'=>date('Y-m-d H:i:s' , time())
             );
+        if( $request->get('stop_out')=='on')
+            $data['stop_out']=0;
+        else
+            $data['stop_out']=1;
        $this->couponModel->addCouponOther($data);
        return redirect('/alpha/Activity/coupon');  
     }

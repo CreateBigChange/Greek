@@ -1141,5 +1141,24 @@ class Order extends Model{
 
         return ($total + $deliver - $coupon);
     }
+    /*
+     * 获取当日所有订单的总额
+     * @param $year $mon $day
+     * @return mixed
+     */
+    public function getOrderTotle($year,$month,$day)
+    {
+        $sql = "SELECT 
+                    count(*)   as num              
+               FROM $this->table";
+        $sql .= " where  status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status']. ',' . Config::get('orderstatus.refunded')['status'] .')';
+        $sql .= " AND year = " . $year;
+        $sql .= " AND month IN (" . $month .")";
+        $sql .= " AND day IN (" . $day .")";
+        $sql .= " ORDER BY hour ASC ";
 
+        $count = DB::select($sql);
+
+        return $count;
+    }
 }

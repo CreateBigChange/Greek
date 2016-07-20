@@ -323,4 +323,12 @@ class User extends Model{
             ->first();
 
     }
+    /**
+     *  @return mixed
+     *  获取用户总数
+     */
+    public function getUserNum(){
+        return DB::table($this->table)
+            ->count();
+    }
 }
