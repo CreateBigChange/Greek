@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'lifetime' => 120,
+    'lifetime' => 30 * 24 * 60 * 60,
 
     'expire_on_close' => false,
 
@@ -153,10 +153,10 @@ return [
     'web_login_cookie' => 'jisux_store_admin',
     'store_app_login_cookie' => 'jisux_store_app',
     //一个月
-    'store_app_lifetime' => 30 * 24 * 60 * 60 * 1000,
+    'store_app_lifetime' => 30 * 24 * 60 * 60 ,
 
     'sigma_login_cookie' => 'jisux_app',
     //一个月
-    'sigma_lifetime' => 30 * 24 * 60 * 60 * 1000,
+    'sigma_lifetime' => 30 * 24 * 60 * 60,
 
 ];
