@@ -50,7 +50,7 @@ class Jpush
             ->addAndroidNotification($content, $title, 1, array("type"=>$type))
             ->addIosNotification($content, $sound, "+1" , true, 'iOS ORDER NEW', array("type"=>$type))
             ->setMessage($content, $title, 'type', array("type"=>$type))
-            ->setOptions(100000, 86400, null, Config::get('app.debug'));
+            ->setOptions(100000, 86400, null, !Config::get('app.debug'));
 
         $result = $push->send();
 

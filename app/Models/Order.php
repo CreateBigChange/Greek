@@ -326,7 +326,7 @@ class Order extends Model{
 
         $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
 
-        if(!$goodsList){
+        if(!$goodsList && count($goodsIds) != count($goodsList)){
             return false;
         }
 
