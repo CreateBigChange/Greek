@@ -36,8 +36,6 @@ class AdminController extends Controller
 	
 		$permissionModel = new AdminPermission;
 
-		$request = new Request();
-
 		$permissionList = $permissionModel->getAdminUserMenu($userId);
 
 		foreach($permissionList as $pl){

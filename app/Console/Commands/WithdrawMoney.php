@@ -62,6 +62,7 @@ class WithdrawMoney extends Command
         $storeMoney     = array();
         $storeIds       = array();
         $storeOrderId   = array();
+
         foreach ($order as $o){
             $orderIds[] = $o->id;
 
@@ -78,6 +79,9 @@ class WithdrawMoney extends Command
              */
             if(isset($storeMoney[$o->store_id])) {
                 $storeMoney[$o->store_id] += $o->pay_total;
+                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
+                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
+                }
             }else{
                 $storeMoney[$o->store_id] = $o->pay_total;
             }
@@ -113,8 +117,8 @@ class WithdrawMoney extends Command
                     $message->to($data['email'], $data['name'])->subject($data['storeName']);
                 });
 
+
                 if($balanceMoney < 0){
-                    
                     continue;
                 }
 

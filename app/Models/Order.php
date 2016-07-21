@@ -219,11 +219,18 @@ class Order extends Model{
                     return false;
                 }
                 $balance = $storeInfo->balance + $orderInfo->pay_total;
+
+                /**
+                 * 如果是平台发的优惠券,将券的金额加到商户余额上
+                 */
+                if($orderInfo->coupon_issuing_party == 1 && $orderInfo->coupon_id != 0){
+                    $balance += $orderInfo->coupon_actual_reduce;
+                }
+
                 $storeConfigModel->updateBalance($storeId, $balance);
 
 
                 $isUpdateStoreMoney = 1;
-
 
                 $couponModel = new Coupon();
 
@@ -748,11 +755,6 @@ class Order extends Model{
                 return false;
             }
 
-            /**
-             * ***************************************************************************
-             * 更新店铺积分
-             * ***************************************************************************
-             */
             $storeModel         = new StoreInfo();
             $storeConfigModel   = new StoreConfig();
             $storeInfo = $storeModel->getStoreInfo($storeId);
@@ -767,6 +769,14 @@ class Order extends Model{
                  * ***************************************************************************
                  */
                 $balance = $storeInfo->balance - $order->pay_total;
+
+                /**
+                 * 如果是平台发的优惠券,将券的金额加到商户余额上
+                 */
+                if($order->coupon_issuing_party == 1 && $order->coupon_id != 0){
+                    $balance -= $order->coupon_actual_reduce;
+                }
+
                 $storeConfigModel->updateBalance($storeId, $balance);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$balance);
             }
