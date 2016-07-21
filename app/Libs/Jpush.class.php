@@ -2,6 +2,7 @@
 namespace App\Libs;
 
 use JPush as JpushLib;
+use Config;
 
 class Jpush
 {
@@ -49,7 +50,7 @@ class Jpush
             ->addAndroidNotification($content, $title, 1, array("type"=>$type))
             ->addIosNotification($content, $sound, "+1" , true, 'iOS ORDER NEW', array("type"=>$type))
             ->setMessage($content, $title, 'type', array("type"=>$type))
-            ->setOptions(100000, 3600, null, false);
+            ->setOptions(100000, 86400, null, Config::get('app.debug'));
 
         $result = $push->send();
 
