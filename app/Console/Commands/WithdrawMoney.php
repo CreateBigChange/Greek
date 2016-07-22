@@ -108,10 +108,6 @@ class WithdrawMoney extends Command
 
                 $balanceMoney = bcsub( $storeConfig->balance , $storeMoney[$s] , 2 );
 
-                if($balanceMoney < 0){
-                    continue;
-                }
-
                 /**
                  * 更新店铺可提现金额
                  */
@@ -119,13 +115,19 @@ class WithdrawMoney extends Command
                 $storeMoney[$s] = bcsub( $storeMoney[$s], $storePoint[$s] , 2);
                 $storeMoney[$s] += $storeConfig->money;
 
+                $emailContent .= $storeInfo->name . "余额:$storeConfig->balance ,"."可提现金额:" . $storeMoney[$s] . "扣点:".$storePoint[$s] . " , 本次处理的订单ID:". implode(',' , $storeOrderId[$s]) . "\n";
+
+                if($balanceMoney < 0){
+                    continue;
+                }
+
+
                 DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] ));
                 /**
                  * 更新订单状态
                  */
                 DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $storeOrderId[$s])->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
 
-                $emailContent .= $storeInfo->name . "余额  $balanceMoney "."可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]) . "<br>";
 
             }
 
