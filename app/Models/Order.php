@@ -964,7 +964,7 @@ class Order extends Model{
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`total`) as turnover
+                    sum(`store_income`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
@@ -980,7 +980,7 @@ class Order extends Model{
     public function getOrderCounts($storeId){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`total` + `deliver`) as turnover
+                    sum(`store_income`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
@@ -1029,7 +1029,7 @@ class Order extends Model{
      */
     public function financeCountByMonth($storeId , $year , $month){
         $sql = "SELECT 
-                    sum(`total`) as turnover,
+                    sum(`store_income`) as turnover,
                     sum(`out_points`) as outPoint,
                     sum(`in_points`) as inPoint,
                     `day`
@@ -1051,7 +1051,7 @@ class Order extends Model{
      */
     public function financeCountByWeek($storeId , $year , $month , $day){
         $sql = "SELECT 
-                    sum(`total`) as turnover,
+                    sum(`store_income`) as turnover,
                     sum(`out_points`) as outPoint,
                     sum(`in_points`) as inPoint,
                     `day`
@@ -1074,7 +1074,7 @@ class Order extends Model{
      */
     public function financeCountByDay($storeId , $year , $month , $day){
         $sql = "SELECT 
-                    `total` as turnover,
+                    `store_income` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
                     `hour`                  
