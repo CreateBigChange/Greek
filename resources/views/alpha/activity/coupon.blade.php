@@ -27,7 +27,7 @@
                                     <th>有效时间</th>
                                     <th>价值</th>
                                     <th>条件</th>
-                                    <th>商店id</th>
+                                    <th>商店名</th>
                                     <th>总数目</th>
                                     <th>收回的数量</th>
                                     <th>已发出的数量</th>
@@ -46,7 +46,13 @@
                                     <td>{{ $item->effective_time }}</td>
                                     <td>{{ $item->value }}</td>
                                     <td>{{ $item->prerequisite }}</td>
-                                    <td>{{ $item->store_id }}</td>
+                                    <td>
+                                    @if($item->store_id == 0 )
+                                        通用平台
+                                    @else
+                                        {{ $item->store_name}}
+                                    @endif
+                                    </td>
                                     <td>{{ $item->total_num }}</td>
                                     <td>{{ $item->in_num }}</td>
                                     <td>{{ $item->out_num }}</td>

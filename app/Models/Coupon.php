@@ -72,7 +72,9 @@ class Coupon extends Model
 
         return $sql->skip($offset)
             ->take($length)
-            ->orderBy('created_at' , 'desc')
+            ->leftJoin('store_infos' , 'coupon.store_id' , '=' , 'store_infos.id')
+            ->select('coupon.id', 'coupon.name as name', 'coupon.content', 'coupon.type', 'coupon.effective_time','coupon.value', 'coupon.prerequisite', 'coupon.store_id', 'coupon.total_num', 'coupon.in_num', 'coupon.out_num', 'coupon.stop_out', 'coupon.num', 'coupon.created_at', 'coupon.updated_at', 'store_infos.name as store_name')
+            ->orderBy('coupon.created_at' , 'desc')
             ->get();
     }
 
