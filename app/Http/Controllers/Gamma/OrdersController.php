@@ -545,28 +545,4 @@ class OrdersController extends ApiController
         return response()->json(Message::setResponseInfo('SUCCESS' , $response));
     }
 
-//    /**
-//     * 获取通知的订单数量
-//     */
-//    public function getOrderNum(){
-//        $storeId = $this->storeId;
-//
-//        $data = array();
-//        $data['new'] = Redis::get("store:$storeId:new") == null ? 0 : Redis::get("store:$storeId:new");
-//        $data['accident'] = Redis::get("store:$storeId:accident") == null ? 0 : Redis::get("store:$storeId:accident");
-//
-//        return response()->json(Message::setResponseInfo('SUCCESS' , $data));
-//    }
-//
-//    /**
-//     * 清空通知的订单数量
-//     */
-//    public function clearOrderNum(){
-//        $storeId = $this->storeId;
-//
-//        Redis::set("store:$storeId:new" , 0);
-//        Redis::set("store:$storeId:accident" , 0);
-//
-//        return response()->json(Message::setResponseInfo('SUCCESS' ));
-//    }
 }

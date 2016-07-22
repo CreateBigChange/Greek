@@ -63,6 +63,11 @@ class WithdrawMoney extends Command
         $storeIds       = array();
         $storeOrderId   = array();
 
+        /**
+         * 扣点数
+         */
+        $storePoint     = array();
+
         foreach ($order as $o){
             $orderIds[] = $o->id;
 
@@ -77,14 +82,16 @@ class WithdrawMoney extends Command
             /**
              * 店铺收入
              */
-            if(isset($storeMoney[$o->store_id])) {
-                $storeMoney[$o->store_id] += $o->pay_total;
-                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
-                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
-                }
-            }else{
-                $storeMoney[$o->store_id] = $o->pay_total;
-            }
+            $storeMoney[$o->store_id]   += $o->store_income;
+            $storePoint[$o->store_id]   += $o->money_reduce_points;
+//            if(isset($storeMoney[$o->store_id])) {
+//                $storeMoney[$o->store_id] += $o->pay_total;
+//                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
+//                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
+//                }
+//            }else{
+//                $storeMoney[$o->store_id] = $o->pay_total;
+//            }
         }
 
         $storeIds = array_unique($storeIds);
@@ -107,6 +114,7 @@ class WithdrawMoney extends Command
                 $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
                 BLogger::getLogger(BLogger::LOG_SCRIPT)->info($emailContent);
 
+
                 
                 $email = Config::get('mail.to');
                 $name = 'operations';
@@ -125,7 +133,10 @@ class WithdrawMoney extends Command
                 /**
                  * 更新店铺可提现金额
                  */
+                //可提现需要减去每笔订单扣点扣的钱数
+                $storeMoney[$s] = bcsub( $storeMoney[$s], $storePoint[$s] , 2);
                 $storeMoney[$s] += $storeConfig->money;
+
                 DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] , 'balance' => $balanceMoney));
                 /**
                  * 更新订单状态
