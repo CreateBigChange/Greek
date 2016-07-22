@@ -258,30 +258,35 @@ class OrdersController extends ApiController
         }
 
         if($resultStatus == true){
-            if($status == Config::get('orderstatus.refunded')['status']) {
-                //消息推送队列
-                $this->dispatch(new Jpush(
-                    "你有一个退款成功的订单",
-                    "急所需",
-                    array('ios', 'android'),
-                    "{$orderInfo[0]->user}",
-                    array(),
-                    "default",
-                    "refunded_success",
-                    "user"
-                ));
-            }elseif($status == Config::get('orderstatus.on_the_way')['status']){
-                //消息推送队列
-                $this->dispatch(new Jpush(
-                    "你有一个订单正在配送中",
-                    "急所需",
-                    array('ios', 'android'),
-                    "{$orderInfo[0]->user}",
-                    array(),
-                    "default",
-                    "ontheway",
-                    "user"
-                ));
+            /**
+             * 微信公众号不能通知
+             */
+            if($orderInfo[0]->pay_type_id != 4) {
+                if ($status == Config::get('orderstatus.refunded')['status']) {
+                    //消息推送队列
+                    $this->dispatch(new Jpush(
+                        "你有一个退款成功的订单",
+                        "急所需",
+                        array('ios', 'android'),
+                        "{$orderInfo[0]->user}",
+                        array(),
+                        "default",
+                        "refunded_success",
+                        "user"
+                    ));
+                } elseif ($status == Config::get('orderstatus.on_the_way')['status']) {
+                    //消息推送队列
+                    $this->dispatch(new Jpush(
+                        "你有一个订单正在配送中",
+                        "急所需",
+                        array('ios', 'android'),
+                        "{$orderInfo[0]->user}",
+                        array(),
+                        "default",
+                        "ontheway",
+                        "user"
+                    ));
+                }
             }
             return response()->json(Message::setResponseInfo('SUCCESS'));
         }else{
