@@ -1241,9 +1241,12 @@ class Order extends Model{
             $userCouponModel = new UserCoupon();
             $coupon = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
 
+
             if($order->coupon_issuing_party == 1) {
-                $getMoney += $coupon;
+                //平台发的优惠券
+                $getMoney = $getMoney;
             }elseif($order->coupon_issuing_party == 2){
+                //商户自己发的优惠券
                 $getMoney -= $coupon;
             }
         }
