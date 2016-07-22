@@ -57,24 +57,19 @@ function transfer($conSrc)
 				$updated_at=$row['updated_at'];
 				if($in_price=="")
 				{
-					echo "记录name: $name 规格:$spec 由于in_price 不存在无法进行插入 \n";
-					$dropNum++;	
-					$totle++;
-					continue;
+			
+					$in_price=0;
+			
 				}
 				if($spec==null)
 				{
-					echo "记录name: $name 规格:$spec 由于spec 不存在无法进行插入\n";
-					$dropNum++;	
-					$totle++;
-					continue;
+					$spec=null;
+
 				}
 				if($desc==null)
 				{
-					echo "记录name: $name 规格:$spec 由于desc 不存在无法进行插入 \n";
-					$dropNum++;
-					$totle++;	
-					continue;
+					$desc=null;
+
 				}
 		$totle++;
 		$insertNum++;		
@@ -106,11 +101,11 @@ function transfer($conSrc)
 							$b_id,
 							'$name',
 							'$img',
-							$in_price,                
+							'$in_price',                
 					        $out_price,
 							$give_points,
-							$spec,
-							$desc,
+							'$spec',
+							`$desc`,
 							$stock,
 					  		$is_open,
 							$is_checked,
@@ -154,8 +149,13 @@ while($row = mysql_fetch_array($result)){
 	$id=$row['id'];
 	$name=$row['name'];
 	$spec=$row['spec'];
+
+	if($spec=null)
+	{
+		$spe="";
+	}
 		//在store_goods中进行更新
-	if(mysql_query("update store_goods set goods_id = ".$id."where name = '".$name."' and spec ='".$spec."'"))	
+	if(mysql_query("update store_goods set goods_id = $id where name = '".$name."' and spec ='".$spec."'"))	
 		{
 			echo "id：$id  name:$name spec:$spec 进行更新\n";
 			$successNum++;
@@ -172,13 +172,7 @@ while($row = mysql_fetch_array($result)){
 		$totle++;
 		continue;
 	}
-	if($spec=null)
-	{
-		$errorNum++;
-		echo"记录 name:$name spec:$spec 由于 name 不存在无法进行更新";
-		$totle++;
-		continue;
-	}
+
 $totle++;
 }
 echo "共更新记录 $successNum 条\n";
