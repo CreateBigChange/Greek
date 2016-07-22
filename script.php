@@ -5,13 +5,15 @@ mysqli_query($conSrc,"set names 'utf8' ");
 mysqli_query($conSrc,"set character_set_client=utf8");
 mysqli_query($conSrc,"set character_set_results=utf8");
 
+
+
 if(!$conSrc)
 {
 	die("连接失败!");
 }
 
 
-transfer($conSrc);
+//transfer($conSrc);
 
 updateId($conSrc);
 
@@ -151,28 +153,34 @@ while($row = mysqli_fetch_array($result)){
 	$name=$row['name'];
 	$spec=$row['spec'];
 
+
 	if($spec=null)
 	{
-		$spe="";
+		$spe=null;
+	}
+
+	if($name==""){
+		$errorNum++;
+		echo"记录 name:$name spec:$spec 由于 name 不存在无法进行更新";
+		$totle++;
+		continue;
 	}
 		//在store_goods中进行更新
-	if(mysqli_query($conSrc,"update store_goods set goods_id = $id where name = '".$name."' and spec ='".$spec."'"))
+	$sql = "update store_goods set goods_id = $id where name = '".$name."' and spec ='".$spec."'";
+	//echo "$sql\n";
+	if(mysqli_query($conSrc,$sql))
 		{
 			echo "id：$id  name:$name spec:$spec 进行更新\n";
+			echo mysqli_error($conSrc);
 			$successNum++;
+
 		}
 	else
 		{
 			echo "id：$id  name:$name spec:$spec goods的记录不存于store_goods中在无法更新\n";
 			$errorNum++;
+			echo mysqli_error($conSrc);
 		}
-
-	if($name=""){
-		$errorNum++;
-		echo"记录 name:$name spec:$spec 由于 spec 不存在无法进行更新";
-		$totle++;
-		continue;
-	}
 
 $totle++;
 }
