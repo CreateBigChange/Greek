@@ -200,6 +200,8 @@ class Order extends Model{
      */
     public function changeStatus($storeId , $userId , $orderId , $status){
 
+        $orderUpdateData = array();
+
         $orderInfo = DB::table($this->table)->where('id', $orderId)->first();
         if(!$orderInfo){
             return false;
@@ -222,14 +224,20 @@ class Order extends Model{
                 if(!$storeInfo){
                     return false;
                 }
-                $balance = $storeInfo->balance + $orderInfo->pay_total;
+                $balance = $storeInfo->balance + $orderInfo->store_income;
 
                 /**
                  * 如果是平台发的优惠券,将券的金额加到商户余额上
                  */
-                if($orderInfo->coupon_issuing_party == 1 && $orderInfo->coupon_id != 0){
-                    $balance += $orderInfo->coupon_actual_reduce;
-                }
+//                if($orderInfo->coupon_issuing_party == 1 && $orderInfo->coupon_id != 0){
+//                    $balance += $orderInfo->coupon_actual_reduce;
+//                }
+
+                //获取营业额
+                $turnover = $this->reckonOrderStoreTurnover($orderInfo);
+
+                //该订单扣点扣的钱数
+                $orderUpdateData['money_reduce_points'] = $turnover * Config::get('withdrawcash.point');
 
                 $storeConfigModel->updateBalance($storeId, $balance);
 
@@ -266,15 +274,9 @@ class Order extends Model{
              * 更新订单信息
              * ****************************************************
              */
-            DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update(
-                array(
-                    'status'                    => $status,
-//                    'is_update_user_point'      => $isUpdateUserPoint,
-                    'is_update_store_money'     => $isUpdateStoreMoney,
-//                    'is_update_store_point'     => $isUpdateStorePoint
-                )
-            );
-
+            $orderUpdateData['status'] = $status;
+            $orderUpdateData['is_update_store_money'] = $isUpdateStoreMoney;
+            DB::table($this->table)->where('store_id', $storeId)->where('id', $orderId)->update($orderUpdateData);
 
 
             $orderLog = new OrderLog;
@@ -964,7 +966,7 @@ class Order extends Model{
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`store_income`) as turnover
+                    sum(`total` , `deliver`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
@@ -980,7 +982,7 @@ class Order extends Model{
     public function getOrderCounts($storeId){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`store_income`) as turnover
+                    sum(`total` , `deliver`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
@@ -1029,7 +1031,7 @@ class Order extends Model{
      */
     public function financeCountByMonth($storeId , $year , $month){
         $sql = "SELECT 
-                    sum(`store_income`) as turnover,
+                    sum(`total` , `deliver`) as turnover,
                     sum(`out_points`) as outPoint,
                     sum(`in_points`) as inPoint,
                     `day`
@@ -1051,7 +1053,7 @@ class Order extends Model{
      */
     public function financeCountByWeek($storeId , $year , $month , $day){
         $sql = "SELECT 
-                    sum(`store_income`) as turnover,
+                    sum(`total` , `deliver`) as turnover,
                     sum(`out_points`) as outPoint,
                     sum(`in_points`) as inPoint,
                     `day`
@@ -1074,7 +1076,7 @@ class Order extends Model{
      */
     public function financeCountByDay($storeId , $year , $month , $day){
         $sql = "SELECT 
-                    `store_income` as turnover,
+                    `total` , `deliver` as turnover,
                     `out_points` as outPoint,
                     `in_points` as inPoint,
                     `hour`                  
@@ -1241,7 +1243,6 @@ class Order extends Model{
             $userCouponModel = new UserCoupon();
             $coupon = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
 
-
             if($order->coupon_issuing_party == 1) {
                 //平台发的优惠券
                 $getMoney = $getMoney;
@@ -1253,7 +1254,27 @@ class Order extends Model{
 
         return $getMoney;
     }
-    /*
+
+    /**
+     * @param $order
+     * @return string
+     *
+     * 计算一个订单的营业额
+     */
+    public function reckonOrderStoreTurnover($order){
+
+        $turnover = 0;
+
+        //订单商品价格
+        $turnover += $order->total;
+
+        //订单配送费
+        $turnover += $order->deliver;
+
+        return $turnover;
+    }
+
+    /**
      * 获取当日所有订单的总额
      * @param $year $mon $day
      * @return mixed
