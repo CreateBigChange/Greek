@@ -219,11 +219,18 @@ class Order extends Model{
                     return false;
                 }
                 $balance = $storeInfo->balance + $orderInfo->pay_total;
+
+                /**
+                 * 如果是平台发的优惠券,将券的金额加到商户余额上
+                 */
+                if($orderInfo->coupon_issuing_party == 1 && $orderInfo->coupon_id != 0){
+                    $balance += $orderInfo->coupon_actual_reduce;
+                }
+
                 $storeConfigModel->updateBalance($storeId, $balance);
 
 
                 $isUpdateStoreMoney = 1;
-
 
                 $couponModel = new Coupon();
 
@@ -319,7 +326,7 @@ class Order extends Model{
 
         $goodsList  = $storeGoodsModel->getStoreGoodsList(array('store_id'=>$storeId , 'ids' => $goodsIds));
 
-        if(!$goodsList){
+        if(!$goodsList && count($goodsIds) != count($goodsList)){
             return false;
         }
 
@@ -748,11 +755,6 @@ class Order extends Model{
                 return false;
             }
 
-            /**
-             * ***************************************************************************
-             * 更新店铺积分
-             * ***************************************************************************
-             */
             $storeModel         = new StoreInfo();
             $storeConfigModel   = new StoreConfig();
             $storeInfo = $storeModel->getStoreInfo($storeId);
@@ -767,6 +769,14 @@ class Order extends Model{
                  * ***************************************************************************
                  */
                 $balance = $storeInfo->balance - $order->pay_total;
+
+                /**
+                 * 如果是平台发的优惠券,将券的金额加到商户余额上
+                 */
+                if($order->coupon_issuing_party == 1 && $order->coupon_id != 0){
+                    $balance -= $order->coupon_actual_reduce;
+                }
+
                 $storeConfigModel->updateBalance($storeId, $balance);
                 BLogger::getLogger(BLogger::LOG_WECHAT_PAY)->notice($orderId . '----更新店铺余额 余额为'.$balance);
             }
@@ -949,7 +959,7 @@ class Order extends Model{
     public function getOrderTodayCounts($storeId , $date=0){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`pay_total`) as turnover
+                    sum(`total`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND `created_at` LIKE '" .$date . "%'";
@@ -965,7 +975,7 @@ class Order extends Model{
     public function getOrderCounts($storeId){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`pay_total`) as turnover
+                    sum(`total` + `deliver`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';

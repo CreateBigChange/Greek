@@ -324,9 +324,7 @@ class StoresController extends ApiController
         }
 
         $search['is_open'] = $request->input('is_open');
-        if($search['is_open'] == ''){
-            $search['is_open'] = 1;
-        }
+        
         if($request->has('name')){
             $search['name'] = htmlspecialchars($request->get('name'));
         }

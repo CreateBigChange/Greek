@@ -15,18 +15,18 @@ require_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
 
 // Check prerequisites
-if (!file_exists("storeGoods.xls")) {
-    exit("not found storeGoods.xls.\n");
+if (!file_exists("newStoreGoods.xls")) {
+    exit("not found newStoreGoods.xls.\n");
 }
 
 $reader = PHPExcel_IOFactory::createReader('Excel5'); //设置以Excel5格式(Excel97-2003工作簿)
-$PHPExcel = $reader->load("storeGoods.xls"); // 载入excel文件
+$PHPExcel = $reader->load("newStoreGoods.xls"); // 载入excel文件
 $sheet = $PHPExcel->getSheet(0); // 读取第一個工作表
 $highestRow = $sheet->getHighestRow(); // 取得总行数
 $highestColumm = $sheet->getHighestColumn(); // 取得总列数
 //
-$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
-//$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
+//$mysqli = new mysqli('rm-wz9s022vq140vwejy.mysql.rds.aliyuncs.com' , 'zxshop' , 'zxhy-2016' , 'zxshop');
+$mysqli = new mysqli('192.168.0.249' , 'root' , '123456' , 'zxshop');
 if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
@@ -58,6 +58,7 @@ for ($row = 2; $row <= $highestRow; $row++){//行数是以第1行开始
         file_put_contents('./store_goods.log', $sname."\n" ,FILE_APPEND);
         continue;
     }
+
 
     for ($column = 'B'; $column <= $highestColumm; $column++) {
 

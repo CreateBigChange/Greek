@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\UserCoupon;
 use App\Models\Coupon;
+use App\Models\Activity;
 
 class User extends Model{
 
@@ -150,31 +151,42 @@ class User extends Model{
             $couponModel = new Coupon();
             $userCouponModel = new UserCoupon();
 
-            $coupon = DB::table($couponModel->getTable())->where('id' , Config::get('activity.first_register_give_coupon_id'))->where('stop_out' , 0)->first();
 
             $emailContent = '';
 
-            if($coupon){
+            $activityModel = new Activity();
 
-                $userCoupon = array();
+            $activityConfig = Config::get('activity');
+            if(isset($activityConfig['first_register_activity_id'])){
+                $activity = $activityModel->getActivitiyById($activityConfig['first_register_activity_id']);
+                if($activity){
+                    $couponIds = $activity->value;
+                    $couponIds = explode(',', $couponIds);
+                    $coupon = DB::table($couponModel->getTable())->whereIn('id' , $couponIds)->where('stop_out' , 0)->get();
 
-                for ($i = 0; $i < Config::get('activity.first_register_give_coupon_number'); $i++) {
+                    if($coupon){
 
-                    $userCoupon[$i] = array();
+                        $userCoupon = array();
 
-                    $userCoupon[$i]['user_id'] = $userId;
-                    $userCoupon[$i]['coupon_id'] = $coupon->id;
-                    $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
+                        for ($i = 0; $i < count($coupon); $i++) {
 
-                    if ($coupon->effective_time) {
-                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon->effective_time} day"));
-                    } else {
-                        $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                            $userCoupon[$i] = array();
+
+                            $userCoupon[$i]['user_id'] = $userId;
+                            $userCoupon[$i]['coupon_id'] = $coupon[$i]->id;
+                            $userCoupon[$i]['created_at'] = date('Y-m-d H:i:s', time());
+
+                            if ($coupon[$i]->effective_time) {
+                                $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+{$coupon[$i]->effective_time} day"));
+                            } else {
+                                $userCoupon[$i]['expire_time'] = date('Y-m-d H:i:s', strtotime("+30 day"));
+                            }
+                        }
+
+                        if ($userCouponModel->addUserCoupon($userCoupon)) {
+                            $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+                        }
                     }
-                }
-
-                if ($userCouponModel->addUserCoupon($userCoupon)) {
-                    $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
                 }
             }
 

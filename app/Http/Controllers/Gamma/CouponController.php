@@ -73,14 +73,10 @@ class CouponController extends ApiController
         $data = array();
         $data['name']               = $request->get('name');
         $data['value']              = $request->get('value');
-<<<<<<< HEAD
-        $data['effective_time']   = $request->get('effective_time');
-        $data['created_at']        =date("Y-m-d H:i:s",time());
-        $data['updated_at']        =date("Y-m-d H:i:s",time());
-=======
         $data['effective_time']     = $request->get('effective_time');
+        $data['created_at']         =date("Y-m-d H:i:s",time());
+        $data['updated_at']         =date("Y-m-d H:i:s",time());
         $data['content']            = $request->get('content');
->>>>>>> dfc2a5260dcf45f455c28a542958bb621cb0ed62
 
         if($request->has('prerequisite')) {
             $data['prerequisite'] = $request->get('prerequisite');
