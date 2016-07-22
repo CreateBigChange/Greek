@@ -183,7 +183,7 @@ class User extends Model{
                             }
                         }
 
-                        if ($userCouponModel->addUserCoupon($userCoupon)) {
+                        if (!$userCouponModel->addUserCoupon($userCoupon)) {
                             $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
                         }
                     }
