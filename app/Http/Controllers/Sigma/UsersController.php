@@ -894,7 +894,7 @@ class UsersController extends ApiController
         $session_checkMobileCode = session::get('jsx_sms_code_check_token_'.$checkMobileCode);
 
         if($session_checkMobileCode != $checkMobileCode){
-            return response()->json(Message::setResponseInfo('NO_KEY' , '' , '1001' , '没有校验旧手机'));
+            return response()->json(Message::setResponseInfo('NO_CHECK_OLD_PHONE' ));
         }
 
         $checkCode  = session::get("jsx_sms_$mobile");
