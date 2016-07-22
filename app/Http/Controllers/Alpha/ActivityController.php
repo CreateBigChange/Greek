@@ -85,15 +85,18 @@ class ActivityController extends AdminController
     public function coupon(Request $request)
     {
 
+
+       
         $page = 1;
         if($request->has('page')){
             $page = $request->get('page');
         }
+        $search['strore_id']=0;
         $totalNum =  $this->couponModel->couponTotalNum();
         $pageData = $this->getPageData($page  , $this->length, $totalNum);
-        $this->response['list']= $this->couponModel->getCouponList();
-        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/activity/banner?');
-    
+        $this->response['list']= $this->couponModel->getCouponList($search,$this->length,$pageData->offset);
+        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/Activity/coupon?');
+        
         return view('alpha.activity.coupon',$this->response);
     }
     public function couponUpdate(Request $request)

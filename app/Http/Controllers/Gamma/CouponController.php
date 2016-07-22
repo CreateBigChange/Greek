@@ -113,7 +113,7 @@ class CouponController extends ApiController
      * @apiUse CODE_200
      *
      */
-    public function getCouponList(){
+    public function getCouponList(Request $request){
 
         $search = array();
 
