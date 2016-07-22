@@ -185,22 +185,22 @@ class User extends Model{
 
                         if (!$userCouponModel->addUserCoupon($userCoupon)) {
                             $emailContent = "添加用户优惠券失败,用户ID为:" . $userId;
+                        }else{
+                            $emailContent = "用户{$userId}首次注册赠送优惠券成功";
                         }
                     }
                 }
             }
 
-            if(empty($emailContent)){
-                $emailContent = "用户{$userId}首次注册赠送优惠券成功";
-            }
+            if(!empty($emailContent)) {
 
-            $email = Config::get('mail.to');
-            $name = 'operations';
-            $data = ['email'=>$email, 'name'=>$name , 'subject' => "首次注册送优惠券"];
-            Mail::raw($emailContent, function($message) use($data)
-            {
-                $message->to($data['email'], $data['name'])->subject($data['subject']);
-            });
+                $email = Config::get('mail.to');
+                $name = 'operations';
+                $data = ['email' => $email, 'name' => $name, 'subject' => "首次注册送优惠券"];
+                Mail::raw($emailContent, function ($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+            }
 
         }
 

@@ -77,14 +77,15 @@ class WithdrawMoney extends Command
             /**
              * 店铺收入
              */
-            if(isset($storeMoney[$o->store_id])) {
-                $storeMoney[$o->store_id] += $o->pay_total;
-                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
-                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
-                }
-            }else{
-                $storeMoney[$o->store_id] = $o->pay_total;
-            }
+            $storeMoney[$o->store_id] += $o->store_income;
+//            if(isset($storeMoney[$o->store_id])) {
+//                $storeMoney[$o->store_id] += $o->pay_total;
+//                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
+//                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
+//                }
+//            }else{
+//                $storeMoney[$o->store_id] = $o->pay_total;
+//            }
         }
 
         $storeIds = array_unique($storeIds);
