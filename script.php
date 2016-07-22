@@ -1,21 +1,19 @@
 <?php
-$conSrc = mysql_connect("localhost","root","123456");
+$conSrc = mysqli_connect("localhost","root","123456","zxshop");
 //设置编码字符集
-mysql_query("set names 'utf8' ");
-mysql_query("set character_set_client=utf8");
-mysql_query("set character_set_results=utf8");
+mysqli_query($conSrc,"set names 'utf8' ");
+mysqli_query($conSrc,"set character_set_client=utf8");
+mysqli_query($conSrc,"set character_set_results=utf8");
 
 if(!$conSrc)
 {
 	die("连接失败!");
 }
 
-mysql_select_db("zxshop",$conSrc);
-//测试
 
 transfer($conSrc);
 
-updateId();
+updateId($conSrc);
 
 
 /*
@@ -29,14 +27,14 @@ function transfer($conSrc)
 	$insertNum=0;//插入数目
 	$dropNum=0;//放弃数目
 
-	$result = mysql_query("select * from store_goods",$conSrc);
-	while($row=mysql_fetch_array($result))
+	$result = mysqli_query($conSrc,"select * from store_goods");
+	while($row=mysqli_fetch_array($result))
 	{	
 		//查询goods所有记录再然后遍历
 
-		$myresult=mysql_query("select * from goods where name='".$row['name']."' and spec = '".$row['spec']."'");
+		$myresult=mysqli_query($conSrc,"select * from goods where name='".$row['name']."' and spec = '".$row['spec']."'");
 			
-			if(!mysql_num_rows($myresult))
+			if(!mysqli_num_rows($myresult))
 			{
 				
 		//记录不存在，记录
@@ -73,48 +71,51 @@ function transfer($conSrc)
 				}
 		$totle++;
 		$insertNum++;		
-		echo "name: $name 规格:$spec 在goods不存在进行插入\n";			
-		//在goods中插入
-				$resultGoods =mysql_query("
-					insert into goods 
-						(
-							c_id,
-							b_id,
-							name,
-							img,
-							in_price,
-							out_price,
-							give_points,
-							spec,
+		echo "name: $name 规格:$spec 在goods不存在进行插入\n";
+		$sql ="insert into goods  (
+							`c_id`,
+							`b_id`,
+							`name`,
+							`img`,
+							`in_price`,
+							`out_price`,
+							`give_points`,
+							`spec`,
 							`desc`,
-							stock,
-							is_open,
-							is_checked,
-							is_del,
-							created_at,
-							updated_at
-
+							`stock`,
+							`is_open`,
+							`is_checked`,
+							`is_del`,
+							`created_at`,
+							`updated_at`
 						)
 					values
 						(
-							$c_id,
-							$b_id,
-							'$name',
-							'$img',
-							'$in_price',                
-					        $out_price,
-							$give_points,
-							'$spec',
-							`$desc`,
-							$stock,
-					  		$is_open,
-							$is_checked,
-							$is_del,
-					  		'$created_at',
-							'$updated_at'
-			   			)
-				");
+					'$c_id',
+                    '$b_id',
+                    '$name',
+                    '$img',
+                    '$in_price',
+                    '$out_price',
+                    '$give_points',
+                    '$spec',
+                    '$desc',
+                    '$stock',
+                    '$is_open',
+                    '$is_checked',
+                    '$is_del',
+                    '$created_at',
+                    '$updated_at'
+			   			);";	
+		//在goods中插入
 				
+				if(mysqli_query($conSrc,$sql))
+				{
+					echo "name: $name 规格:$spec 在goods不存在进行 插入成功\n";
+				}
+				else{
+					echo  mysqli_error($conSrc);
+				}
 			}
 			else
 			{
@@ -135,7 +136,7 @@ function transfer($conSrc)
 *
 */
 
-function updateId(){
+function updateId($conSrc){
 $id;
 $name;
 $spec;
@@ -143,8 +144,8 @@ $totle=0;//记录总数
 $successNum=0;
 $errorNum=0;
 //遍历good 取出 id,name,spec
-$result = mysql_query("select * from goods ");
-while($row = mysql_fetch_array($result)){
+$result = mysqli_query($conSrc,"select * from goods ");
+while($row = mysqli_fetch_array($result)){
 	
 	$id=$row['id'];
 	$name=$row['name'];
@@ -155,7 +156,7 @@ while($row = mysql_fetch_array($result)){
 		$spe="";
 	}
 		//在store_goods中进行更新
-	if(mysql_query("update store_goods set goods_id = $id where name = '".$name."' and spec ='".$spec."'"))	
+	if(mysqli_query($conSrc,"update store_goods set goods_id = $id where name = '".$name."' and spec ='".$spec."'"))
 		{
 			echo "id：$id  name:$name spec:$spec 进行更新\n";
 			$successNum++;
@@ -180,4 +181,4 @@ echo "失败记录 $errorNum 条\n";
 echo "总记录 $totle 条\n";
 }
 //关闭数据库
-mysql_close($conSrc);
+mysqli_close($conSrc);
