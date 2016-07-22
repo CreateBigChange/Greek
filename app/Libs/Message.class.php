@@ -45,6 +45,8 @@ class Message {
 
 				'NO_NEW'						=> array('code'=>'4022' , 'msg'=>'不是最新版'),
 
+				'NO_CHECK_OLD_PHONE'			=> array('code'=>'4023' , 'msg'=>'没有校验旧手机'),
+
 
 
 
