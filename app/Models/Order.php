@@ -26,6 +26,7 @@ use App\Models\ConsigneeAddress;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\UserCoupon;
+
 use phpDocumentor\Reflection\Types\Object;
 
 
@@ -114,6 +115,7 @@ class Order extends Model{
                     o.coupon_actual_reduce,
                     o.coupon_name,
                     o.coupon_user_id,
+                    o.store_income,
                     
                     si.name as sname,
                     si.contact_phone as smobile,
@@ -637,7 +639,8 @@ class Order extends Model{
                 'updated_at'        => date('Y-m-d H:i:s' , time()),
                 'pay_time'          => $payTime,
                 'transaction_id'    => $wechatPayNum,
-                'trade_no'          => $alipayOrderNum
+                'trade_no'          => $alipayOrderNum,
+                'store_income'      => $this->reckonOrderStoreGetMoneyTotal($order)
             );
 
             /**
@@ -1214,6 +1217,36 @@ class Order extends Model{
         }
 
         return ($total + $deliver - $coupon);
+    }
+
+    /**
+     * @param $order
+     * @return string
+     *
+     * 计算一个订单商户得到的钱数
+     */
+    public function reckonOrderStoreGetMoneyTotal($order){
+
+        $getMoney = 0;
+
+        //订单商品价格
+        $getMoney += $order->total;
+
+        //订单配送费
+        $getMoney += $order->deliver;
+
+        if(isset($order->coupon_id) && $order->coupon_id != 0) {
+            $userCouponModel = new UserCoupon();
+            $coupon = $userCouponModel->reckonDiscountMoney($order->coupon_type, $order->coupon_value, $order->total);
+
+            if($order->coupon_issuing_party == 1) {
+                $getMoney += $coupon;
+            }elseif($order->coupon_issuing_party == 2){
+                $getMoney -= $coupon;
+            }
+        }
+
+        return $getMoney;
     }
     /*
      * 获取当日所有订单的总额
