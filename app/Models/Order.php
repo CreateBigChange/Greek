@@ -975,7 +975,7 @@ class Order extends Model{
     public function getOrderCounts($storeId){
         $sql = "SELECT 
                     count(`id`) as order_num , 
-                    sum(`total`) as turnover
+                    sum(`total` + `deliver`) as turnover
                 FROM $this->table ";
         $sql .= " WHERE `store_id` = $storeId";
         $sql .= " AND status NOT IN (" . Config::get('orderstatus.no_pay')['status'] .',' . Config::get('orderstatus.cancel')['status'] . ',' . Config::get('orderstatus.refunded')['status'] .')';
