@@ -259,7 +259,7 @@ class Order extends Model{
                 $turnover = $this->reckonOrderStoreTurnover($orderInfo);
 
                 //该订单扣点扣的钱数
-                $orderUpdateData['money_reduce_points'] = $turnover * Config::get('withdrawcash.point');
+                $orderUpdateData['money_reduce_points'] = round($turnover * Config::get('withdrawcash.point') , 2);
 
                 $storeConfigModel->updateBalance($storeId, $balance);
 

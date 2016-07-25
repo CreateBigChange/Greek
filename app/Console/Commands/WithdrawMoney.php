@@ -49,7 +49,7 @@ class WithdrawMoney extends Command
         /**
          * 获取当前时间完成的订单
          */
-        $day  = date("Y-m-d H:i:s",time() - (24 * 3600));
+        $day  = date("Y-m-d H:i:s",time());
         BLogger::getLogger(BLogger::LOG_SCRIPT)->info($day);
         //$day  = date("Y-m-d H:i:s", time());
 
@@ -82,26 +82,23 @@ class WithdrawMoney extends Command
             /**
              * 店铺收入
              */
-            $storeMoney[$o->store_id]   += $o->store_income;
-            $storePoint[$o->store_id]   += $o->money_reduce_points;
-//            if(isset($storeMoney[$o->store_id])) {
-//                $storeMoney[$o->store_id] += $o->pay_total;
-//                if($o->coupon_issuing_party == 1 && $o->coupon_id != 0){
-//                    $storeMoney[$o->store_id] += $o->coupon_actual_reduce;
-//                }
-//            }else{
-//                $storeMoney[$o->store_id] = $o->pay_total;
-//            }
+            if(isset($storeMoney[$o->store_id])) {
+                $storeMoney[$o->store_id]   += $o->store_income;
+                $storePoint[$o->store_id]   += $o->money_reduce_points;
+            }else{
+                $storeMoney[$o->store_id]   = $o->store_income;
+                $storePoint[$o->store_id]   = $o->money_reduce_points;
+            }
         }
 
         $storeIds = array_unique($storeIds);
+        $emailContent = '';
 
-        foreach ($storeIds as $s){
-            $storeInfoModel = new StoreInfo();
-            $storeInfo = DB::table($storeInfoModel->getTable())->where('id' , $s)->first();
-
-            DB::beginTransaction();
-            try {
+        DB::beginTransaction();
+        try {
+            foreach ($storeIds as $s){
+                $storeInfoModel = new StoreInfo();
+                $storeInfo = DB::table($storeInfoModel->getTable())->where('id' , $s)->first();
 
                 $storeConfig = DB::table($storeConfigModel->getTable())->where('store_id' , $s)->first();
 
@@ -111,25 +108,6 @@ class WithdrawMoney extends Command
 
                 $balanceMoney = bcsub( $storeConfig->balance , $storeMoney[$s] , 2 );
 
-                $emailContent = "店铺余额  $balanceMoney "."店铺可提现金额" . $storeMoney[$s] . ", 本次处理的订单ID". implode(',' , $storeOrderId[$s]);
-                BLogger::getLogger(BLogger::LOG_SCRIPT)->info($emailContent);
-
-
-                
-                $email = Config::get('mail.to');
-                $name = 'operations';
-                $storeName = $storeInfo->name;
-                $data = ['email'=>$email, 'name'=>$name , 'storeName' => $storeName];
-                Mail::raw($emailContent, function($message) use($data)
-                {
-                    $message->to($data['email'], $data['name'])->subject($data['storeName']);
-                });
-
-
-                if($balanceMoney < 0){
-                    continue;
-                }
-
                 /**
                  * 更新店铺可提现金额
                  */
@@ -137,17 +115,35 @@ class WithdrawMoney extends Command
                 $storeMoney[$s] = bcsub( $storeMoney[$s], $storePoint[$s] , 2);
                 $storeMoney[$s] += $storeConfig->money;
 
-                DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] , 'balance' => $balanceMoney));
+                $emailContent .= $storeInfo->name . "余额:$storeConfig->balance ,"."可提现金额:" . $storeMoney[$s] . "扣点:".$storePoint[$s] . " , 本次处理的订单ID:". implode(',' , $storeOrderId[$s]) . "\n";
+
+                if($balanceMoney < 0){
+                    continue;
+                }
+
+
+                DB::table($storeConfigModel->getTable())->where('store_id' , $s)->update(array('money' => $storeMoney[$s] ));
                 /**
                  * 更新订单状态
                  */
                 DB::table($orderModel->getTable())->where('store_id', $s)->whereIn('id' , $storeOrderId[$s])->update(array('status' => Config::get('orderstatus.withdrawMoney')['status']));
 
-                DB::commit();
 
-            }catch (Exception $e){
-                DB::rollBack();
             }
+
+            DB::commit();
+
+            if($emailContent == ''){
+                $emailContent = "本次结算没有处理的订单";
+            }
+            $email = Config::get('mail.to');
+            $name = 'operations';
+            $data = ['email'=>$email, 'name'=>$name , 'subject' => "计算可提现金额"];
+            Mail::raw($emailContent, function($message) use($data){
+                $message->to($data['email'], $data['name'])->subject($data['subject']);
+            });
+        }catch (Exception $e){
+            DB::rollBack();
         }
 
     }
