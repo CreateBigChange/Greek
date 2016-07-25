@@ -63,11 +63,11 @@ class Coupon extends Model
         $sql = DB::table($this->table);
 
         if(isset($search['id'])){
-            $sql->where('id' , $search['id']);
+            $sql->where('coupon.id' , $search['id']);
         }
 
         if(isset($search['store_id'])){
-            $sql->where('store_id' , $search['store_id']);
+            $sql->where('coupon.store_id' , $search['store_id']);
         }
 
         return $sql->skip($offset)
