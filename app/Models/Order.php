@@ -56,6 +56,8 @@ class Order extends Model{
      * @param search    array
      */
     public function getOrderTotalNum($search){
+
+
         $sql = DB::table($this->table);
         if(isset($search['user'])){
             $sql->where('user' , $search['user']);
@@ -66,6 +68,9 @@ class Order extends Model{
         if(isset($search['status'])){
             $sql->whereIn('status' , $search['status']);
         }
+
+
+
         return $sql->count();
     }
 
@@ -112,6 +117,7 @@ class Order extends Model{
                     o.coupon_user_id,
                     o.coupon_issuing_party,
                     o.store_income,
+                    o.money_reduce_points,
                     
                     u.points,
                     u.money,
@@ -121,7 +127,10 @@ class Order extends Model{
                     
                     si.name as sname,
                     si.contact_phone as smobile,
-                    sc.store_logo as slogo
+                    sc.store_logo as slogo,
+                    
+                    count(*) as totle,
+                    sum(pay_total) as totalMony
                     
                 FROM $this->table AS o";
 
@@ -131,14 +140,27 @@ class Order extends Model{
 
         $sql .= " WHERE 1 = 1";
 
-        if(isset($search['search']) && !empty($search['search'])){
-            $sql .= " AND ( o.consignee LIKE '%" . $search['search'] . "%'" . " OR  o.consignee_tel LIKE '%" . $search['search'] . "%'" . " OR  o.order_num LIKE '%" . $search['search'] . "%')";
+        if(isset($search['consignee'])){
+            $sql .= " AND  o.consignee LIKE '%" . $search['consignee'] . "%'";
         }
+        if(isset($search['consignee_tel'])){
+            $sql .= " AND  o.consignee_tel LIKE '%" . $search['consignee_tel'] . "%'";
+        }
+        if(isset($search['store_name'])){
+            $sql .= " AND  si.name LIKE '%" . $search['store_name'] . "%'";
+        }
+        if(isset($search['order_num'])){
+            $sql .= " AND  o.order_num LIKE '%" . $search['order_num'] . "%'";
+        }
+
 
         if(isset($search['user'])){
             $sql .= " AND o.user = ".$search['user'];
         }
-        if(isset($search['store'])){
+        if(isset($search['store_name'])){
+            $sql .= " AND si .name = '".$search['store_name']."'";
+        }
+        if (isset($search['store'])){
             $sql .= " AND o.store_id = ".$search['store'];
         }
 

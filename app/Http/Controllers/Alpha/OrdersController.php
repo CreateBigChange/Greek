@@ -41,21 +41,11 @@ class OrdersController extends AdminController
             $page = $_GET['page'];
         }
 
-        $type = 0;  
-        if(isset($_GET['status'])){
-            $type = $_GET['status'];
-            $param .= 'status=' . $_GET['status'] . '&';
-        }
+        $type = 0;
 
         $status = Config::get('orderstatus');
 
 
-
-
-
-        //dump($status);
-
-        //dump($type);
 
 
 
@@ -82,8 +72,21 @@ class OrdersController extends AdminController
         }
 
 
-        if($request->has('search')){
-            $search['search'] = trim($request->get('search'));
+        if($request->has('consignee')){
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if($request->has('order_num')){
+            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if($request->has('consignee_num')){
+            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if($request->has('store_name')){
+            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+            $search['store_name'] = trim($request->get('store_name'));
         }
 
         $orderNum   = $this->_model->getOrderTotalNum($search);

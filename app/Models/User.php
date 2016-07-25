@@ -356,8 +356,11 @@ class User extends Model{
      *
      * 获取用户列表
      */
-    public function getUserList(){
-        return DB::table($this->table)
+    public function getUserList($search,$length=10,$offset=0){
+
+    $sql =  DB::table($this->table);
+        return $sql->skip($offset)
+            ->take($length)
             ->select(
                 'id',
                 'account',

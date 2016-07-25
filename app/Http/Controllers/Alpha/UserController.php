@@ -27,10 +27,25 @@ class UserController extends AdminController
         $this->length = 10;
     }
 
-    public function getUserList(){
-        $this->response['userList'] = $this->_model->getUserList();
+    public function getUserList(Request $request){
 
+        $search = array();
+        $page = 1;
+        if($request->has('page'))
+            $page = $request->get('page');
+
+
+        $totleNum = $this->_model->getUserNum();
+
+        $pageData = $this->getPageData($page  , $this->length, $totleNum);
+
+        $this->response['userList'] = $this->_model->getUserList($search,$this->length,$pageData->offset);
+
+        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/user/list?');
+
+        //dump($this->response);
         return view('alpha.user.list',$this->response);
+
     }
 
 }

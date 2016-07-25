@@ -52,7 +52,9 @@
                 @endforeach
             </section>
         </div>
-
+                    <div class="text-center">
+                        {!! $pageHtml !!}
+                    </div>
 
     </section>
 

@@ -22,9 +22,14 @@
                       <th>收货地址</th>
                       <th>店铺</th>
                       <th>状态</th>
+                      <th>订单号</th>
                       <th>电话</th>
                       <th>支付类型</th>
                       <th>配送费</th>
+                      <th>时间</th>
+                      <th>优惠券类型</th>
+                      <th>优惠券价格</th>
+                      <th>扣点数</th>
                       <th>订单总价</th>
                     </tr>
                  </thead>
@@ -68,9 +73,23 @@
                             }
                           ?>
                          </td>
+                         <td>{{$order->order_num}}</td>
                          <td>{{$order->smobile}}</td>
                          <td>{{$order->pay_type_name }}</td>
                          <td>{{$order->deliver}}</td>
+                         <td>{{$order->created_at}}</td>
+                         <td><?php
+                             switch($order->coupon_type){
+                                 case 1:echo "满减券";
+                                     break;
+                                 case 0: echo "平台券";
+                                     break;
+                                 default:break;
+                         }
+                             ?>
+                         </td>
+                         <td>{{$order->coupon_actual_reduce}}</td>
+                         <td>{{$order->money_reduce_points}}</td>
                          <td>{{$order->total}}</td>
                      </tr>
                   @endforeach
