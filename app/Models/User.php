@@ -76,7 +76,7 @@ class User extends Model{
      */
     public function getUserPassword($id ){
         return DB::table($this->table)
-            ->select('password' , 'salt')
+            ->select('password' , 'salt' , 'account')
             ->where('id' , $id)->first();
     }
 
