@@ -47,12 +47,7 @@
 		<section id="container" >
 		<!--header start-->
 		<header class="header white-bg">
-		<div class="sidebar-toggle-box">
-			<div data-original-title="Toggle Navigation" data-placement="right" class="icon-reorder tooltips"></div>
-		</div>
-		<!--logo start-->
-		<a href="index.html" class="logo">Flat<span>lab</span></a>
-		<!--logo end-->
+
 		<div class="nav notify-row" id="top_menu">
 			<!--  notification start -->
 			<ul class="nav top-menu">
@@ -72,7 +67,7 @@
 				<li class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 					<img alt="" src="/img/avatar1_small.jpg">
-					<span class="username">Jhon Doue</span>
+					<span class="username"></span>
 					<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu extended logout">

@@ -232,7 +232,9 @@ class StoreWithdrawCashLog extends Model
         if(isset($search['store_id'])){
             $sql->where('store_id' , $search['store_id']);
         }
-
+        if(isset($search['stop_out'])){
+            $sql->where('stop_out' , $search['stop_out']);
+        }
         return $sql->count();
     }
 
@@ -252,9 +254,13 @@ class StoreWithdrawCashLog extends Model
                     sw.status,
                     sw.reason,
                     sw.bank_card_num,
+                    sw.bank_card_holder,
+                    sw.bank_card_type,
+                    sw.bank_name,
+                    sw.bank_reserved_telephone,
                     si.name,
                     si.address,
-                    si.province,
+                    si.province,  
                     si.city,
                     si.county,
                     si.contacts,
@@ -342,34 +348,17 @@ class StoreWithdrawCashLog extends Model
         return $data;
     }
 
-    public function withdrawRject($id,$reason="")
-    {
+    /**
+     * @param $id 记录id
+     * @param $data 需要修改的数组表单
+     * @return mixed
+     *  修改记录状态
+     */
 
-            echo "$reason";
-            echo "$id";
-    		$affected = DB::update('update store_withdraw_cash_log set status = 3,reason="'.$reason.'" where id =?',["$id"]);
-
-    		if($affected)
-    		{
-    			return $this->OK;
-    		}
-    		else
-    		{
-    			return $this->ERROR;
-    		}
-    }
-
-    public function withdrawAgree($id)
-    {
-    		$affected = DB::update('update store_withdraw_cash_log set status = 0 where id = ?', $id);
-    		if($affected)
-    		{
-    			return $OK;
-    		}
-    		else
-    		{
-    			return $ERROR;
-    		}
+    public function updateWithdraw($id,$data){
+        return DB::table('store_withdraw_cash_log')
+            ->where('id', $id)
+            ->update($data);
     }
 
 }

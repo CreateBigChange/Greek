@@ -32,10 +32,7 @@ class Coupon extends Model
     }
 
 
-    public function couponDelete($id)
-    {
-        DB::table('coupon')->where('id', '=', $id)->delete();
-    }
+
 
 
     public function updateCoupon($data,$id)
@@ -46,6 +43,10 @@ class Coupon extends Model
             ->update($data);
     }
 
+    /**
+     * @return mixed
+     * 获取优惠券总数目
+     */
     public function couponTotalNum()
     {
         $sql = "select  count(*) as num from coupon";
@@ -53,7 +54,12 @@ class Coupon extends Model
         return $num[0]->num;
     }
 
-
+    /**
+     * @param $data
+     * @return mixed
+     * 增加优惠券
+     *
+     */
     public function addCoupon($data){
 
         return DB::table($this->table)->insertGetId($data);
@@ -63,11 +69,11 @@ class Coupon extends Model
         $sql = DB::table($this->table);
 
         if(isset($search['id'])){
-            $sql->where('coupon.id' , $search['id']);
+            $sql->where('id' , $search['id']);
         }
 
         if(isset($search['store_id'])){
-            $sql->where('coupon.store_id' , $search['store_id']);
+            $sql->where('store_id' , $search['store_id']);
         }
 
         return $sql->skip($offset)
@@ -92,13 +98,19 @@ class Coupon extends Model
         return $sql->count();
     }
 
-
+    /**
+     * @param int   $couponId
+     * @param arry $data
+     * @return mixed
+     * 修改优惠券的状态
+     */
     public function stopCoupon($couponId , $data){
-        return DB::table($this->table)->where('id' , $couponId)->update($data);
 
+        return DB::table($this->table)->where('id' , $couponId)->update($data);
     }
 
     public function getStoreCouponByLast($storeId){
+
         return DB::table($this->table)->where('store_id' , $storeId)->where('stop_out' , 0)->where('num' , '<>' , '0')->orderBy('created_at' , 'asc')->first();
     }
 

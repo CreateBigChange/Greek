@@ -17,7 +17,7 @@
 			<h1 class="count">
 				0
 			</h1>
-			<p>New Users</p>
+			<p>用户数</p>
 		</div>
 		</section>
 	</div>
@@ -30,7 +30,7 @@
 			<h1 class=" count2">
 				1
 			</h1>
-			<p>Sales</p>
+			<p>销售量</p>
 		</div>
 		</section>
 	</div>
@@ -43,7 +43,7 @@
 			<h1 class=" count3">
 				0
 			</h1>
-			<p>New Order</p>
+			<p>新订单</p>
 		</div>
 		</section>
 	</div>
@@ -56,7 +56,7 @@
 			<h1 class=" count4">
 				0
 			</h1>
-			<p>Total Profit</p>
+			<p>总利润</p>
 		</div>
 		</section>
 	</div>
@@ -141,5 +141,8 @@ if (option && typeof option === "object") {
 @include('alpha.footer')
 <script>
 	countUp({{$userNum }});
-	countUp1({{$orderNum[0]->num }});
+	countUp3({{$orderNum[0]->num }});
+	countUp2({{$orderTotle }});
+	countUp4({{$profit[0]->totalMony }});
+
 </script>

@@ -66,15 +66,15 @@
                                     <td>{{ $item->num }}</td>
                                     <td>
                                         @if($item->stop_out == 0)
-                                           <a href="{{ url('/alpha/Activity/couponUpdate',$item->id)}}"> <button class="btn btn-success change"  data-toggle="modal" href="#update" coupon_id={{ $item->id
+                                           <a href="{{ url('/alpha/Activity/couponClose',$item->id)}}"> <button class="btn btn-success "
                                     }}
-                                                    coupon_name="{{ $item->name }}"  coupon_content="{{ $item->content }} "   coupon_type="{{ $item->type }}"   coupon_effective_time="{{ $item->effective_time }}"   coupon_value="{{ $item->value }}"     coupon_condition="{{ $item->prerequisite }}"   coupon_store_id="{{ $item->store_id }}"  coupon_total_num="{{ $item->total_num }}"  coupon_in_num="{{ $item->in_num }}"  coupon_out_num="{{ $item->out_num }}" coupon_stop_out="{{ $item->stop_out }}"  coupon_num="{{ $item->num }}"
+
                                             >关闭</button></a>
                                         @else
-                                            <button class="btn btn-success change"  data-toggle="modal" href="#update" coupon_id={{ $item->id
+                                            <a href="{{ url('/alpha/Activity/couponOpen',$item->id)}}"><button class="btn btn-success "
                                     }}
-                                                    coupon_name="{{ $item->name }}"  coupon_content="{{ $item->content }} "   coupon_type="{{ $item->type }}"   coupon_effective_time="{{ $item->effective_time }}"   coupon_value="{{ $item->value }}"     coupon_condition="{{ $item->prerequisite }}"   coupon_store_id="{{ $item->store_id }}"  coupon_total_num="{{ $item->total_num }}"  coupon_in_num="{{ $item->in_num }}"  coupon_out_num="{{ $item->out_num }}" coupon_stop_out="{{ $item->stop_out }}"  coupon_num="{{ $item->num }}"
-                                            >开启</button>
+
+                                            >开启</button></a>
                                         @endif
 
 
@@ -97,44 +97,6 @@
 
 </section>
 <!--main content end-->
-
-<script type="text/javascript">
-    
-
-    $(".change").click(function(){
-
-
-        $("#coupon_id").attr("value",$(this).attr("coupon_id"));
-        $("#coupon_stop_out").attr("value",$(this).attr("coupon_stop_out"));
-        $("#coupon_name").attr("value",$(this).attr("coupon_name"));
-        $("#coupon_content").attr("value",$(this).attr("coupon_content"));
-        $("#coupon_condition").attr("value",$(this).attr("coupon_condition"));
-        $("#coupon_store_id").attr("value",$(this).attr("coupon_store_id"));
-        $("#coupon_total_num").attr("value",$(this).attr("coupon_total_num"));
-        $("#coupon_in_num").attr("value",$(this).attr("coupon_in_num"));
-        $("#coupon_out_num").attr("value",$(this).attr("coupon_out_num"));
-
-
-        if($(this).attr("coupon_stop_out")==1)
-        {
-            $("#coupon_stop_out").parent().removeClass("switch-on");
-            $("#coupon_stop_out").parent().addClass("switch-off");
-
-        }
-        else
-        {
-
-            $("#coupon_stop_out").parent().removeClass("switch-off");
-            $("#coupon_stop_out").parent().addClass("switch-on");
-        }
-
-        $("#coupon_num").attr("value",$(this).attr("coupon_num"));
-        $("#coupon_type").attr("value",$(this).attr("coupon_type"));
-        $("#coupon_value").attr("value",$(this).attr("coupon_value"));
-        $("#coupon_effective_time").attr("value",$(this).attr("coupon_effective_time"));
-
-    })
-</script>
 @include('alpha.activity.coupon_moudel')
 @include('alpha.moduls.warning')
 @include('alpha.footer')
