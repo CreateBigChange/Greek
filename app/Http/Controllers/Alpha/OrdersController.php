@@ -202,15 +202,8 @@ class OrdersController extends AdminController
 
         $status = Config::get('orderstatus');
 
-
-
-
+        
         $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
-
-
-
-
-
 
 
         if($request->has('search')){

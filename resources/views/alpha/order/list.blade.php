@@ -17,93 +17,84 @@
               <table class="table">
                  <thead>
                     <tr>
-                      <th>收货人</th>
+                        <th>店铺</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th>订单号</th>
+                        <th>支付类型</th>
 
-                      <th>收货地址</th>
-                      <th>店铺</th>
-                      <th>状态</th>
-                      <th>订单号</th>
-
-                      <th>支付类型</th>
-                      <th>配送费</th>
-                      <th>时间</th>
-                      <th>优惠券类型</th>
-                      <th>优惠券价格</th>
-                      <th>扣点数</th>
-                      <th>订单总价</th>
-                       <th>操作</th>
+                        <th>优惠券类型</th>
+                        <th>优惠券价格</th>
+                        <th>配送费</th>
+                        <th>订单总价</th>
+                        <th>扣点数</th>
+                        <th>操作</th>
                     </tr>
                  </thead>
                  <tbody>
                   @foreach ($orders  as $order)
                       <tr class="table" >
-                         <td>{{$order->consignee}}</td>
-
-                         <td>{{$order->consignee_address}}</td>
-                         <td>{{$order->sname}}</td>
-                         <td>
-                          <?php
-                            switch ($order->status) {
-                              case '1':
-                                echo "已完成";
-                                break;
-                              case '2':
-                                echo "已付款";
-                                break;
-                              case '3':
-                                echo "已接单";
-                                break;
-                              case '4':
-                               echo "配送中";
-                                break;
-                              case '5':
-                                echo "已送达";
-                                break;
-                              case '11':
-                                echo "未付款 ";
-                                break;
-                              case '12':
-                                echo "已取消";
-                                break;
-                              case '13':
-                                echo "退款中";
-                                break;  
-                              case '14':
-                                echo "已退款";
-                                break;                                                                                                                                                                                   
-                            }
-                          ?>
-                         </td>
-                         <td>{{$order->order_num}}</td>
-
-                         <td>{{$order->pay_type_name }}</td>
-                         <td>{{$order->deliver}}</td>
-                         <td>{{$order->created_at}}</td>
-                         <td><?php
-                             switch($order->coupon_type){
-                                 case 1:echo "满减券";
-                                     break;
-                                 case 0: echo "平台券";
-                                     break;
-                                 default:break;
-                         }
-                             ?>
-                         </td>
-                         <td>{{$order->coupon_actual_reduce}}</td>
-                         <td>{{$order->money_reduce_points}}</td>
-                         <td>{{$order->total}}</td>
+                          <td>{{$order->sname}}</td>
+                          <td>{{$order->created_at}}</td>
+                          <td>
+                              <?php
+                              switch ($order->status) {
+                                  case '1':
+                                      echo "已完成";
+                                      break;
+                                  case '2':
+                                      echo "已付款";
+                                      break;
+                                  case '3':
+                                      echo "已接单";
+                                      break;
+                                  case '4':
+                                      echo "配送中";
+                                      break;
+                                  case '5':
+                                      echo "已送达";
+                                      break;
+                                  case '11':
+                                      echo "未付款 ";
+                                      break;
+                                  case '12':
+                                      echo "已取消";
+                                      break;
+                                  case '13':
+                                      echo "退款中";
+                                      break;
+                                  case '14':
+                                      echo "已退款";
+                                      break;
+                              }
+                              ?>
+                          </td>
+                          <td>{{$order->order_num}}</td>
+                          <td>{{$order->pay_type_name }}</td>
+                          <td><?php
+                              switch($order->coupon_type){
+                                  case 1:echo "满减券";
+                                      break;
+                                  case 0: echo "平台券";
+                                      break;
+                                  default:break;
+                              }
+                              ?>
+                          </td>
+                          <td>{{$order->coupon_actual_reduce}}</td>
+                          <td>{{$order->deliver}}</td>
+                          <td>{{$order->total}}</td>
+                          <td>{{$order->money_reduce_points}}</td>
                           <td><button class="btn btn-success" data-toggle="modal" href="#detail"
-                           id="detail_button"
-                              other_consignee =  "{{$order->consignee}}"   other_id =  '{{$order->id}}'  other_consignee_tel =  '{{$order->consignee_tel}}'
-                              other_refund_reason ='{{$order->refund_reason}}'   other_mobile ='{{$order->mobile}}'  other_ture_name = '{{$order->true_name}}'
-                              other_store_income = '{{$order->store_income}}'   other_trade_no = '{{$order->trade_no}}'  other_updated_at='{{$order->updated_at}}'
-                              other_city = '{{$order->city}}'  other_street = '{{$order->street}}'  other_country = '{{$order->county}}'
-                              other_deliver= '{{$order->deliver}}'other_remark = '{{$order->remark}}'   other_transaction_id = '{{$order->transaction_id}}'
-                              other_trade_no = '{{$order->trade_no}}'
+                                      id="detail_button"
+                                      other_consignee =  "{{$order->consignee}}"   other_id =  '{{$order->id}}'  other_consignee_tel =  '{{$order->consignee_tel}}'
+                                      other_refund_reason ='{{$order->refund_reason}}'   other_mobile ='{{$order->mobile}}'  other_ture_name = '{{$order->true_name}}'
+                                      other_store_income = '{{$order->store_income}}'   other_trade_no = '{{$order->trade_no}}'  other_updated_at='{{$order->updated_at}}'
+                                      other_city = '{{$order->city}}'  other_street = '{{$order->street}}'  other_country = '{{$order->county}}'
+                                      other_deliver= '{{$order->deliver}}'other_remark = '{{$order->remark}}'   other_transaction_id = '{{$order->transaction_id}}'
+                                      other_trade_no = '{{$order->trade_no}}'
 
-                              ><i class="icon-search"
-
-                           >详情</button></td>
+                              ><i class="icon-search">详情</i></button></td>
                      </tr>
                   @endforeach
                  </tbody>
