@@ -287,7 +287,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/delivery?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
         return view('alpha.order.list' , $this->response);
