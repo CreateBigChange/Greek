@@ -69,8 +69,6 @@ class Order extends Model{
             $sql->whereIn('status' , $search['status']);
         }
 
-
-
         return $sql->count();
     }
 
@@ -126,6 +124,7 @@ class Order extends Model{
                     u.mobile,
                     
                     si.name as sname,
+                    si.agent_id,
                     si.contact_phone as smobile,
                     sc.store_logo as slogo,
                     
@@ -159,6 +158,9 @@ class Order extends Model{
         }
         if(isset($search['store_name'])){
             $sql .= " AND si .name = '".$search['store_name']."'";
+        }
+        if(isset($search['agent_id'])){
+            $sql .= " AND si.agent_id = " . $search['agent_id'];
         }
         if (isset($search['store'])){
             $sql .= " AND o.store_id = ".$search['store'];

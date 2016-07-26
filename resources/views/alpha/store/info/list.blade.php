@@ -28,6 +28,7 @@
 										<th>地图标记</th>
 										<th>审核</th>
 										<th>状态</th>
+										<th>营业状态</th>
 										<th width="100px;">操作</th>
 									</tr>
 								</thead>
@@ -45,6 +46,7 @@
 											<td>@if ($si->is_sign == 1) 已标记 @else 未标记 @endif</td>
 											<td>@if ($si->is_checked == 1) 已审核 @else 未审核 @endif</td>
 											<td>@if ($si->is_open == 1) 开启 @else 关闭 @endif</td>
+											<td>@if ($si->isDoBusiness == 1) 营业中 @else 休息中 @endif</td>
 											<td>
 												{{--<div p_id="{{ $si->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
 												<div p_id="{{ $si->id }}" page="{{ $page }}"  location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>

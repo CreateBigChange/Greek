@@ -14,7 +14,6 @@ use App\Http\Controllers\AdminController;
 use Session , Cookie , Config;
 
 use App\Models\AdminUser;
-use App\Models\AmapCityCode;
 
 class AdminUsersController extends AdminController
 {
@@ -173,48 +172,6 @@ class AdminUsersController extends AdminController
 			'created_at'	=> date('Y-m-d H:i:s' , time()),
 			'updated_at'	=> date('Y-m-d H:i:s' , time())
 		);
-
-
-		$sqlData['is_agent'] = 0;
-		if($request->has('is_agent')){
-			$sqlData['is_agent'] = 1;
-		}
-
-		$sqlData['agent_level'] = 0;
-		$sqlData['agent_area'] = '';
-		if($sqlData['is_agent'] == 1){
-
-			$amapCodeModel = new AmapCityCode();
-
-			if($request->has('province')) {
-				$province = $request->get('province');
-				$area = $amapCodeModel->getAreas($province);
-				if($area){
-					$sqlData['agent_area'] .= $area->name . "-";
-				}
-				$sqlData['agent_level'] = 1;
-			}
-			if($request->has('city')) {
-				$city = $request->get('city');
-				$area = $amapCodeModel->getAreas($city);
-				if($area){
-					$sqlData['agent_area'] .= $area->name . "-";
-				}
-				$sqlData['agent_level'] = 2;
-			}
-			if($request->has('county')) {
-				$county = $request->get('county');
-				$area = $amapCodeModel->getAreas($county);
-				if($area){
-					$sqlData['agent_area'] .= $area->name;
-				}
-				$sqlData['agent_level'] = 3;
-			}
-
-			if($sqlData['agent_level'] == 0){
-				return view('errors.503');
-			}
-		}
 
 		$userId = $this->_model->addAdminUser($sqlData);
 

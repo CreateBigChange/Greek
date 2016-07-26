@@ -64,6 +64,7 @@ class StoreInfo extends Model{
                       si.created_at,
                       si.updated_at,
                       si.is_sign,
+                      si.agent_id,
                       sb.bank_card_num,
                       sb.bank_card_holder,
                       sb.bank_reserved_telephone
@@ -108,6 +109,10 @@ class StoreInfo extends Model{
         }
         if(isset($search['is_checked'])){
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
+        }
+
+        if(isset($search['agent_id'])){
+            $sql .= " AND si.agent_id = " . $search['agent_id'] ;
         }
 
         if($orderBY != ''){
@@ -282,6 +287,10 @@ class StoreInfo extends Model{
             $sql .= " AND si.is_checked = " . $search['is_checked'] ;
         }
 
+        if(isset($search['agent_id'])){
+            $sql .= " AND si.agent_id = " . $search['agent_id'] ;
+        }
+        
         $num = DB::select($sql);
 
         return $num[0]->num;

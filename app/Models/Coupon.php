@@ -42,7 +42,7 @@ class Coupon extends Model
     {
 
         return DB::table('coupon')
-            ->where('id', $id)
+            ->where('id', $id) 
             ->update($data);
     }
 

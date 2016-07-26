@@ -46,18 +46,13 @@ class OrdersController extends AdminController
         $status = Config::get('orderstatus');
 
 
+
+
+
+
         switch ($type) {
             case '0':
-                $search['status'] = array(
-                    $status['cancel']['status'] ,
-                    $status['refunding']['status'] ,
-                    $status['refunded']['status'] ,
-                    $status['arrive']['status'],
-                    $status['on_the_way']['status'],
-                    $status['paid']['status'],
-                    $status['completd']['status'],
-                    $status['withdrawMoney']['status']
-                );
+                $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status'] , $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
                 break;
              case '1':
                 $search['status'] = array($status['paid']['status']);
@@ -92,13 +87,6 @@ class OrdersController extends AdminController
         if($request->has('store_name')){
             $param .= '&consignee_tel=' . $_GET['consignee_tel'];
             $search['store_name'] = trim($request->get('store_name'));
-        }
-
-        /**
-         * 如果登录的用户是代理商
-         */
-        if($this->userInfo->is_agent){
-            $search['agent_id'] = $this->userInfo->id;
         }
 
         $orderNum   = $this->_model->getOrderTotalNum($search);

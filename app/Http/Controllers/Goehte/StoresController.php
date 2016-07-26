@@ -5,7 +5,7 @@
  * Date: 16/3/30
  * Time: 下午5:10
  */
-namespace App\Http\Controllers\Alpha;
+namespace App\Http\Controllers\Goehte;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -108,13 +108,6 @@ class StoresController extends AdminController
 			$param .= 'is_checked=' . $search['is_checked'] . '&';
 		}
 
-		/**
-		 * 如果登录的用户是代理商
-		 */
-		if($this->userInfo->is_agent){
-			$search['agent_id'] = $this->userInfo->id;
-		}
-		
 		$totalNum = $storeModel->getStoreTotalNum($search);
 
 		$pageData = $this->getPageData($page  , $this->length, $totalNum);
