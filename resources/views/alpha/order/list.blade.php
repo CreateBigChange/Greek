@@ -73,7 +73,7 @@
                           </td>
                           <td>{{$order->pay_type_name }}</td>
                           <td><?php
-                              if($order->store_id != 0){
+                              if($order->coupon_issuing_party == 2){
                                   echo "店铺专用券";
                               }else{
                                   echo "通用券";
