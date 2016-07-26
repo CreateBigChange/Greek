@@ -99,38 +99,15 @@ class ActivityController extends AdminController
         
         return view('alpha.activity.coupon',$this->response);
     }
-    public function couponUpdate(Request $request)
-    {
-        dd($request);
-        $data = array(
-            'name' => $request->get('name'),
-            'content' => $request->get('content'),
-            'type' => $request->get('type'),
-            'effective_time' => $request->get('effective_time'),
-            'value' => $request->get('value'),
-            'prerequisite' => $request->get('prerequisite'),
-            'total_num' => $request->get('total_num'),
-            'in_num' => $request->get('in_num'),
-            'out_num' => $request->get('out_num'),
 
-            'num' => $request->get('num')
-            );
-        if($request->has("stop_out"))
-        {
-            $data['stop_out'] =0;
-        }
-        else
-        {
-            $data['stop_out'] =1;
-        }
-         $coupon_id=$request->get('coupon_id');
-       $this->couponModel->updateCoupon($data,$coupon_id);
-       return redirect('/alpha/Activity/coupon');    
-        
-    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * 增加优惠券
+     */
     public function couponAdd(Request $request)
     {
-           // dd($request);
             $data =  array(
             'name' => $request->get('name'),
             'content' => $request->get('content'),
@@ -152,10 +129,33 @@ class ActivityController extends AdminController
        $this->couponModel->addCouponOther($data);
        return redirect('/alpha/Activity/coupon');  
     }
-    public function couponDelete( $id)
-    {
-        $this->couponModel->couponDelete($id);
-        return redirect('/alpha/Activity/coupon');  
+
+    /**
+     * @param  int  $id  优惠券的id
+     * 打开优惠券
+     * stop_out =1 表示关闭
+     * stop_out =0 表示开启
+     */
+    public function  couponOpen($id){
+        dd($id);
+        $data = array("stop_out"=>0);
+        $this->couponModel->stopCoupon($id,$data);
+        return redirect('/alpha/Activity/coupon');
+    }
+
+    /**
+     * @param int $id 优惠券的id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * 关闭优惠券
+     * stop_out =1 表示关闭
+     * stop_out =0 表示开启
+     */
+    public function  couponClose($id){
+
+        $data = array("stop_out"=>1);
+        $this->couponModel->stopCoupon($id,$data);
+
+        return redirect('/alpha/Activity/coupon');
     }
 }
 

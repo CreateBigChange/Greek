@@ -42,7 +42,7 @@ function countUp2(count)
     }, int_speed);
 }
 
-countUp2(947);
+//countUp2(947);
 
 function countUp3(count)
 {
@@ -88,4 +88,4 @@ function countUp4(count)
     }, int_speed);
 }
 
-countUp4(10328);
+//countUp4(10328);

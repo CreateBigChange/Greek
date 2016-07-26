@@ -40,9 +40,18 @@
                                         <td>{{ $l->balance }}</td>
                                         <td>{{ $l->bank_card_num }}</td>
                                         <td>
-                                            <a href={{url("/alpha/finance/withdrawAgree",$l->id)}}><div title="审核" class="btn btn-primary btn-xs" id="checked" withdrawId={{ $l->id }}>审核通过</div></a>
-                                            <div title="审核"  class="btn btn-primary btn-xs" data-toggle="modal" href="#check" id="nonchecked" data-withdrawId="{{ $l->id }}">审核不通过</div>
+                                
+            
+                                        <button id="payment"  class="btn btn-success" data-toggle="modal" href="#pay"
 
+                                        bank_card_num = {{ $l->bank_card_num }}
+                                        bank_card_holder = {{ $l->bank_card_holder }}
+                                        bank_card_type = {{ $l->bank_card_type }}
+                                        bank_name = {{ $l->bank_name }}
+                                        bank_reserved_telephone = {{ $l->bank_reserved_telephone }}
+                                        with_draw_id={{ $l->id}}
+
+                                        >付款</button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -63,10 +72,26 @@
 </section>
 <!--main content end-->
 <script type="text/javascript">
+
+
+     $("#payment").click(function(){
+
+
+            $("#bank_card_num").attr("value",$(this).attr("bank_card_num"));
+            $("#bank_card_holder").attr("value",$(this).attr("bank_card_holder"));
+            $("#bank_card_type").attr("value",$(this).attr("bank_card_type"));
+            $("#bank_name").attr("value",$(this).attr("bank_name"));
+            $("#bank_reserved_telephone").attr("value",$(this).attr("bank_reserved_telephone"));
+            $("#with_draw_id").attr("value",$(this).attr("with_draw_id"));
+
+
+     })   
+
     $("#nonchecked").click(function(){
         $("#withdrawId").attr("value",$(this).attr("data-withdrawId"));
        
     })
 </script>
+@include('alpha.finance.checked_moduls')
 @include('alpha.finance.cash_moduls')
 @include('alpha.footer')

@@ -120,7 +120,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		//财务
 		Route::get('/finance/cash' , 'FinanceController@getWithdrawCashLog');
 		Route::get('/finance/withdrawReject' , 'FinanceController@withdrawReject');
-		Route::get('/finance/withdrawAgree' , 'FinanceController@withdrawAgree');
+		Route::get('/finance/withdrawAgree/{id}' , 'FinanceController@withdrawAgree');
+        Route::get('/finance/checked', 'FinanceController@getCheckedWithdrawCashLog');
+        Route::get('/finance/finish_withdraw', 'FinanceController@finish_withdraw');
+        
 
 
 		//版本
@@ -129,9 +132,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/Activity/bannerVersion' , 'ActivityController@bannerVersion');
 		Route::get('/Activity/save' , 'ActivityController@save');
 		Route::get('/Activity/coupon','ActivityController@coupon');
-		Route::post('/Activity/couponUpdate','ActivityController@couponUpdate');
+		Route::post('/Activity/couponOpen/{id}','ActivityController@couponOpen');
 		Route::post('/Activity/couponAdd','ActivityController@couponAdd');
-		Route::get('/Activity/couponDelete/{id}','ActivityController@couponDelete');
+		Route::get('/Activity/couponClose/{id}','ActivityController@couponClose');
 
 	});
 
@@ -191,6 +194,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/cash', 'StoreUsersController@withdrawCash');
 		Route::post('/store/cash/config', 'StoreUsersController@withdrawCashConfig');
 		Route::post('/store/cash/log', 'StoreUsersController@getWithdrawCashLog');
+
+
 
 		//统计
 		Route::post('/store/count/today', 'StoresController@getStoreTodayCount');

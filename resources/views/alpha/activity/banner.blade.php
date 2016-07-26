@@ -42,7 +42,7 @@
 											<td>{{ $si->is_open }}</td>
 											<td>{{ $si->sort}}</td>
 											<td>
-												<div class="update" p_order={{$si->sort}}  p_is_open={{ $si->is_open }}  p_updateed_at = "{{ $si->updated_at }}" p_created_at="{{ $si->created_at }}" p_name="{{ $si->name }}" p_redirect="{{ $si->redirect }}" p_img="{{ $si->img }}" p_id="{{ $si->id }}" title="修改"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#change"><i class="icon-plus">修改</i></div>
+												<div class="update" p_order={{$si->sort}}  p_is_open={{ $si->is_open }}  p_updateed_at = "{{ $si->updated_at }}" p_created_at="{{ $si->created_at }}" p_name="{{ $si->name }}" p_redirect="{{ $si->redirect }}" p_img="{{ $si->img }}" p_id="{{ $si->id }}" title="修改"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#change"><button class="btn btn-success"><i class="icon-plus">修改</i></button></div>
 											</td>
 										</tr>
 									@endforeach

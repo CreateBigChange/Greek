@@ -34,7 +34,10 @@ class IndexController extends AdminController
 
         $this->response['orderNum']=$this->Order->getOrderTotle($year,$month,$day);
         $this->response['userNum']=$this->user->getUserNum();
-        //dump($this->response);
+        $search['status']=array(1,2,3,4,5);
+        $this->response['orderTotle'] =$this->Order->getOrderTotalNum($search);
+        $this->response['profit'] = $this->Order->getOrderTotalMony($search);
+
         return view('alpha.index.index' , $this->response);
     }
 

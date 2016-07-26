@@ -41,6 +41,7 @@ class Order extends Model{
     *                    3 代表查询所有已配送订单
     *                    4 代表所有未配送订单
     *                    5 代表所有配送中的订单
+    *
     */
 
     public function getOrderTotalMony($search)
@@ -118,6 +119,7 @@ class Order extends Model{
                     o.coupon_issuing_party,
                     o.store_income,
                     o.money_reduce_points,
+                  
                     
                     u.points,
                     u.money,
@@ -259,7 +261,7 @@ class Order extends Model{
                 $turnover = $this->reckonOrderStoreTurnover($orderInfo);
 
                 //该订单扣点扣的钱数
-                $orderUpdateData['money_reduce_points'] = round($turnover * Config::get('withdrawcash.point') , 2);
+                $orderUpdateData['money_reduce_points'] = $turnover * Config::get('withdrawcash.point');
 
                 $storeConfigModel->updateBalance($storeId, $balance);
 
