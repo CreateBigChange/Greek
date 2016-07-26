@@ -17,10 +17,11 @@
               <table class="table">
                  <thead>
                     <tr>
+                        <th>订单号</th>
                         <th>店铺</th>
                         <th>创建时间</th>
                         <th>状态</th>
-                        <th>订单号</th>
+
                         <th>支付类型</th>
 
                         <th>优惠券类型</th>
@@ -34,6 +35,7 @@
                  <tbody>
                   @foreach ($orders  as $order)
                       <tr class="table" >
+                          <td>{{$order->order_num}}</td>
                           <td>{{$order->sname}}</td>
                           <td>{{$order->created_at}}</td>
                           <td>
@@ -69,15 +71,12 @@
                               }
                               ?>
                           </td>
-                          <td>{{$order->order_num}}</td>
                           <td>{{$order->pay_type_name }}</td>
                           <td><?php
-                              switch($order->coupon_type){
-                                  case 1:echo "满减券";
-                                      break;
-                                  case 0: echo "平台券";
-                                      break;
-                                  default:break;
+                              if($order->store_id){
+                                  echo "商户专用券";
+                              }else{
+                                  echo "平台券";
                               }
                               ?>
                           </td>
