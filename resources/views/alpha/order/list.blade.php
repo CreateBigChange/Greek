@@ -73,10 +73,10 @@
                           </td>
                           <td>{{$order->pay_type_name }}</td>
                           <td><?php
-                              if($order->store_id){
-                                  echo "商户专用券";
+                              if($order->store_id != 0){
+                                  echo "店铺专用券";
                               }else{
-                                  echo "平台券";
+                                  echo "通用券";
                               }
                               ?>
                           </td>
