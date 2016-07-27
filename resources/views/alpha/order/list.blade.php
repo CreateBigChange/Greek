@@ -18,33 +18,31 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>收货人</th>
-
-                                <th>收货地址</th>
-                                <th>店铺</th>
-                                <th>状态</th>
                                 <th>订单号</th>
-
-                                <th>支付类型</th>
-                                <th>配送费</th>
+                                <th>店铺</th>
                                 <th>时间</th>
+                                <th>状态</th>
+                                <th>支付类型</th>
                                 <th>优惠券类型</th>
-                                <th>优惠券价格</th>
+                                <th>实际优惠</th>
+                                <th>配送费</th>
+                                <th>商品总价</th>
                                 <th>扣点数</th>
-                                <th>订单总价</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($orders  as $order)
                                 <tr class="table" >
-                                    <td>{{$order->consignee}}</td>
-
-                                    <td>{{$order->consignee_address}}</td>
+                                    <td>{{$order->order_num}}</td>
                                     <td>{{$order->sname}}</td>
+                                    <td>{{$order->created_at}}</td>
                                     <td>
                                         <?php
                                         switch ($order->status) {
+                                            case '0':
+                                                echo "已结算";
+                                                break;
                                             case '1':
                                                 echo "已完成";
                                                 break;
@@ -75,24 +73,22 @@
                                         }
                                         ?>
                                     </td>
-                                    <td>{{$order->order_num}}</td>
+
 
                                     <td>{{$order->pay_type_name }}</td>
-                                    <td>{{$order->deliver}}</td>
-                                    <td>{{$order->created_at}}</td>
                                     <td><?php
-                                        switch($order->coupon_type){
-                                            case 1:echo "满减券";
-                                                break;
-                                            case 0: echo "平台券";
-                                                break;
-                                            default:break;
+                                        if($order->coupon_issuing_party == 1){
+                                            echo "平台发放";
+                                        } else{
+                                            echo "商户发放";
                                         }
                                         ?>
                                     </td>
                                     <td>{{$order->coupon_actual_reduce}}</td>
-                                    <td>{{$order->money_reduce_points}}</td>
+                                    <td>{{$order->deliver}}</td>
                                     <td>{{$order->total}}</td>
+                                    <td>{{$order->money_reduce_points}}</td>
+
                                     <td><button class="btn btn-success detail_button" data-toggle="modal" href="#detail_{{ $order->id }}"><i class="icon-search">详情</i></button></td>
                                 </tr>
                             @endforeach
