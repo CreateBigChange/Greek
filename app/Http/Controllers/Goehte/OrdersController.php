@@ -29,6 +29,10 @@ class OrdersController extends AdminController
         $this->length = 10;
     }
 
+
+    public function getOrderBalance(Request $request){
+        return 'xx';
+    }
     public function getOrderList(Request $request){
 
         $search = array();
@@ -245,7 +249,6 @@ class OrdersController extends AdminController
 */
     public function getOrderDispatching(Request $request)
     {
-
         $search = array();
 
         if(!isset($_GET['page'])){
@@ -255,11 +258,7 @@ class OrdersController extends AdminController
         }
 
         $status = Config::get('orderstatus');
-
-
         $search['status'] = array($status['on_the_way']['status']);
-
-
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
@@ -270,7 +269,6 @@ class OrdersController extends AdminController
         $this->response['totalMoney'] = $orderMoney;
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
-
         $pageData = $this->getPageData($page , $this->length, $orderNum);
 
         $this->response['page']         = $pageData->page;
@@ -280,5 +278,8 @@ class OrdersController extends AdminController
         $this->response['status']       = $status;
         return view('alpha.order.list' , $this->response);
     }
+
+
+
 
 }
