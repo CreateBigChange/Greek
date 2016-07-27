@@ -42,6 +42,9 @@
                               <?php
                               switch ($order->status) {
                                   case '1':
+                                      echo "已结算";
+                                      break;
+                                  case '1':
                                       echo "已完成";
                                       break;
                                   case '2':
