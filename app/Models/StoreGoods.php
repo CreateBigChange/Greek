@@ -59,6 +59,11 @@ class StoreGoods extends Model{
         }else{
             $sql .= " WHERE sg.is_open = 1";
         }
+        if(isset($search['is_checked'])){
+            $sql .= " WHERE sg.is_checked = ".$search['is_checked'];
+        }else{
+            $sql .= " WHERE sg.is_checked = 1";
+        }
 
         if(isset($search['stock'])){
             $sql .= " AND sg.stock > 0";
@@ -115,6 +120,12 @@ class StoreGoods extends Model{
             $sql .= " WHERE sg.is_open = ".$search['is_open'];
         }else{
             $sql .= " WHERE sg.is_open = 1";
+        }
+
+        if(isset($search['is_checked'])){
+            $sql .= " WHERE sg.is_checked = ".$search['is_checked'];
+        }else{
+            $sql .= " WHERE sg.is_checked = 1";
         }
 
         if(isset($search['store_id'])) {
