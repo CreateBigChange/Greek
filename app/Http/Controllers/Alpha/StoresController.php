@@ -571,6 +571,43 @@ class StoresController extends AdminController
 
 	}
 
+	public function getStoreGoodsListByNoCheck(Request $request){
+		$search = array();
+
+		$param = '';
+		if(!isset($_GET['page'])){
+			$page = 1;
+		}else{
+			$page = $_GET['page'];
+		}
+
+		$search['is_open'] = $request->input('is_open');
+		if($search['is_open'] == ''){
+			$search['is_open'] = 1;
+		}
+		$param .= 'is_open=' . $search['is_open'] . '&';
+
+		if($request->has('name')){
+			$search['name'] = htmlspecialchars($request->get('name'));
+
+			$param .= 'name=' . $search['name'] . '&';
+
+		}
+
+		$search['is_checked'] = 0;
+
+		$storeGoodsModel = new StoreGoods;
+		$goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
+
+		$this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
+		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/by/nocheck/?' . $param);
+		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
+
+		return view('alpha.store.goods.nocheck_list' , $this->response);
+
+	}
+
+
 	public function getStoreGoodsInfo($goodsId){
 
 		$storeGoodsModel = new StoreGoods;
@@ -622,6 +659,9 @@ class StoresController extends AdminController
 		if( $request->has('is_open') ) {
 			$data['is_open'] = htmlspecialchars(trim($request->get('is_open')));
 		}
+		if( $request->has('is_checked') ) {
+			$data['is_checked'] = htmlspecialchars(trim($request->get('is_checked')));
+		}
 		if( $request->has('is_del') ) {
 			$data['is_del'] = htmlspecialchars(trim($request->get('is_del')));
 		}
@@ -636,6 +676,23 @@ class StoresController extends AdminController
 			return redirect('/alpha/store/goods/' . $storeId);
 		}else{
 			return redirect('/alpha/store/goods/' . $storeId);
+		}
+
+	}
+
+	public function storeGoodsChecked($goodsId , Request $request){
+
+		$data = array();
+
+		$data['is_checked'] = $request->get('is_checked');
+
+		$data['updated_at']     = date('Y-m-d H:i:s' , time());
+
+		$storeGoodsModel = new StoreGoods;
+		if($storeGoodsModel->updateStoreGoods($goodsId , $data )){
+			return response()->json(Message::setResponseInfo('SUCCESS' ));
+		}else{
+			return response()->json(Message::setResponseInfo('FAILED'));
 		}
 
 	}
