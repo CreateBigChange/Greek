@@ -41,7 +41,7 @@
                           <td>
                               <?php
                               switch ($order->status) {
-                                  case '1':
+                                  case '0':
                                       echo "已结算";
                                       break;
                                   case '1':
