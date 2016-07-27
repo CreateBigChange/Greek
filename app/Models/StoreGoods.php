@@ -116,16 +116,18 @@ class StoreGoods extends Model{
         $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
         $sql .= " LEFT JOIN store_nav as sn ON sn.id = sg.nav_id";
 
+        $sql .= " WHERE 1=1";
+
         if(isset($search['is_open'])){
-            $sql .= " WHERE sg.is_open = ".$search['is_open'];
+            $sql .= " AND sg.is_open = ".$search['is_open'];
         }else{
-            $sql .= " WHERE sg.is_open = 1";
+            $sql .= " AND sg.is_open = 1";
         }
 
         if(isset($search['is_checked'])){
-            $sql .= " WHERE sg.is_checked = ".$search['is_checked'];
+            $sql .= " AND sg.is_checked = ".$search['is_checked'];
         }else{
-            $sql .= " WHERE sg.is_checked = 1";
+            $sql .= " AND sg.is_checked = 1";
         }
 
         if(isset($search['store_id'])) {
