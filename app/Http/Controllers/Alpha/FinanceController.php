@@ -137,14 +137,20 @@ class FinanceController extends AdminController
         return view('alpha.finance.checked_withDraw' , $this->response);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * 提现状态的改变
+     */
     public function finish_withdraw(Request $request){
 
         $cashModel = new StoreWithdrawCashLog;
 
         $id = $request->get("with_draw_id");
         $data=array("pay_time"=>date("Y-m-d H:m:s"));
-        $cashModel->updateWithdraw($id, $data);
-         return redirect('/alpha/finance/checked');
 
+        $cashModel->updateWithdraw($id, $data);
+
+         return redirect('/alpha/finance/checked');
     }
 }

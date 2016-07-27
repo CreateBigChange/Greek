@@ -46,18 +46,13 @@ class OrdersController extends AdminController
         $status = Config::get('orderstatus');
 
 
+
+
+
+
         switch ($type) {
             case '0':
-                $search['status'] = array(
-                    $status['cancel']['status'] ,
-                    $status['refunding']['status'] ,
-                    $status['refunded']['status'] ,
-                    $status['arrive']['status'],
-                    $status['on_the_way']['status'],
-                    $status['paid']['status'],
-                    $status['completd']['status'],
-                    $status['withdrawMoney']['status']
-                );
+                $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status'] , $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
                 break;
              case '1':
                 $search['status'] = array($status['paid']['status']);
@@ -94,13 +89,6 @@ class OrdersController extends AdminController
             $search['store_name'] = trim($request->get('store_name'));
         }
 
-        /**
-         * 如果登录的用户是代理商
-         */
-        if($this->userInfo->is_agent){
-            $search['agent_id'] = $this->userInfo->id;
-        }
-
         $orderNum   = $this->_model->getOrderTotalNum($search);
         $orderMoney = $this->_model->getOrderTotalMony($search);
       
@@ -113,7 +101,7 @@ class OrdersController extends AdminController
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
         
-       // dump($this->response);
+
         return view('alpha.order.list' , $this->response);
 
     }
@@ -150,7 +138,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/notdelivery?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
 
@@ -183,7 +171,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/delivery?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
 
@@ -199,12 +187,9 @@ class OrdersController extends AdminController
         }else{
             $page = $_GET['page'];
         }
-
         $status = Config::get('orderstatus');
 
-        
         $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
-
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
@@ -220,7 +205,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/accident?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
 
@@ -280,7 +265,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/dispatching?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
         return view('alpha.order.list' , $this->response);

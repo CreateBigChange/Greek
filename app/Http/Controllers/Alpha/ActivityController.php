@@ -50,8 +50,6 @@ class ActivityController extends AdminController
 
     public function save(Request $request)
     {
-
-
         $data['str']=$request->query('str');
         $data['id']=$request->query('id');
         $data['redirect']=$request->query('redirect');
@@ -77,8 +75,7 @@ class ActivityController extends AdminController
 
         $this->response['list']=$this->banner->getBannerList();
 
-        return redirect('/alpha/Activity/bannerVersion');    
-       
+        return redirect('/alpha/Activity/bannerVersion');
     }
 
     //通用优惠券的控制器
@@ -137,7 +134,7 @@ class ActivityController extends AdminController
      * stop_out =0 表示开启
      */
     public function  couponOpen($id){
-        dd($id);
+
         $data = array("stop_out"=>0);
         $this->couponModel->stopCoupon($id,$data);
         return redirect('/alpha/Activity/coupon');

@@ -123,7 +123,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/finance/withdrawAgree/{id}' , 'FinanceController@withdrawAgree');
         Route::get('/finance/checked', 'FinanceController@getCheckedWithdrawCashLog');
         Route::get('/finance/finish_withdraw', 'FinanceController@finish_withdraw');
-        
+
 
 
 		//版本
@@ -132,7 +132,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/Activity/bannerVersion' , 'ActivityController@bannerVersion');
 		Route::get('/Activity/save' , 'ActivityController@save');
 		Route::get('/Activity/coupon','ActivityController@coupon');
-		Route::post('/Activity/couponOpen/{id}','ActivityController@couponOpen');
+		Route::get('/Activity/couponOpen/{id}','ActivityController@couponOpen');
 		Route::post('/Activity/couponAdd','ActivityController@couponAdd');
 		Route::get('/Activity/couponClose/{id}','ActivityController@couponClose');
 
