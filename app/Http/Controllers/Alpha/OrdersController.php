@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Alpha;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Excel;
-use Validator , Input;
+use Validator , Input,File;
 use Session , Cookie , Config;
 
 
@@ -100,16 +100,10 @@ class OrdersController extends AdminController
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['search']       = $search['status'];
         $this->response['status']       = $status;
-        
-
         return view('alpha.order.list' , $this->response);
 
     }
-
     public function getOrderNotDelivery(Request $request){
-
-     
-
         $search = array();
 
         if(!isset($_GET['page'])){
@@ -331,18 +325,12 @@ class OrdersController extends AdminController
         }
         $title=[
             "id",
-            "订单数",
+            "订单号",
             "总价",
-            "优惠券ID",
             "配送费",
-            "总积分",
-            "获得的积分",
             "订单状态;",
-            "订单状态改变的log",
             "商店ID",
             "用户ID",
-            "支付类型ID",
-            "支付类型名",
             "收货人",
             "收货地址ID",
             "收货电话",
@@ -353,41 +341,56 @@ class OrdersController extends AdminController
             "收货地址",
             "备注",
             "退款原因",
-            "退款订单号",
             "创建时间",
             "更新时间",
             "是否评价",
-            "交易号",
-            "支付时间",
             "支付总价",
-            "年",
-            "月",
-            "日",
-            "时",
-            "分",
-            "秒",
-            "微信订单ID",
+            "交易号",
+            "支付类型ID",
+            "支付类型名",
             "支付订单ID",
-            "is_update_user_point",
-            "is_update_store_point",
-            "is_update_store_money",
+            "微信订单ID",
             "优惠券类型",
             "优惠券价值",
-            "优惠券条件",
-            "优惠券平台",
+            "优惠券ID",
             "优惠券实际优惠的价格",
             "优惠券名",
             "优惠券用户ID",
-            "这个订单店铺的输入",
-            "该订单扣点扣的钱数"
+            "优惠券平台",
+            "这个订单店铺的收入",
+            "该订单扣点扣的钱数",
+            "用户点数",
+            "用户余额",
+            "用户昵称",
+            "用户真实姓名",
+            "用户手机号码",
+            "商店名称",
+            "代理ID",
+            "商铺手机号",
+            "商铺log",
+            "该种类型订单总数",
+            "该种类型订单总额",
+            "商品",
+            "商品总数",
+            "支付总额"
         ];
         $excelModel->export($name, $cellData,$title );
     }
-    public function  Orderimport(){
+    public function  Orderimport(Request $request){
 
-        $file = Input::file('myfile');
-        $file = Request::file('myfile');
+        $file = $request->file('file');
+
+        if(!$file->isValid()){
+            exit('文件上传出错！');
+        }
+        dd($file);
         $realPath = $file -> getRealPath();
-        return "xx";
+
+        $path = $file -> move(app_path().'\storage\uploads',"test.xml");
+
+        
+       // $excelModel =new MyExcel;
+       // $excelModel->import($path);
+        //return "$realPath----------------  $path";
     }
 }

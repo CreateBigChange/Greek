@@ -36,7 +36,7 @@ class MyExcel extends Model
         })->export('xls');
     }
     public function  import($filePath){
-        $filePath = 'storage/exports/'.iconv('UTF-8', 'GBK', '订单').'.xls';
+       // $filePath = 'storage/exports/'.iconv('UTF-8', 'GBK', '订单').'.xls';
 
         $excel = App::make('excel');
         $excel->load($filePath, function($reader) {

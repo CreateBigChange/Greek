@@ -3,7 +3,7 @@
 <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80%;">
         <div class="modal-content">
-            <form class="form-horizontal tasi-form" method="POST" enctype="muitipart/form-data" action='/alpha/order/import'>
+            <form class="form-horizontal tasi-form" method="POST" enctype="multipart/form-data" action='/alpha/order/import'>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">导入excel</h4>
@@ -14,9 +14,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">导入文件</label>
                                 <div class="col-sm-10">
-
-                                    <input type="file" class="form-control" name='myfile' />
-
+                                    <input type="file" class="form-control" name='file' />
                                 </div>
                             </div>
                         </div>
