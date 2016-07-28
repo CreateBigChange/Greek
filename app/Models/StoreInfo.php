@@ -208,6 +208,10 @@ class StoreInfo extends Model{
                 $si->isDoBusiness = 0;
             }
 
+            if($si->is_close == 1){
+                $si->isDoBusiness = 0;
+            }
+
             if($si->isDoBusiness == 0){
                 $restStore[] = $si;
                 unset($info[$i]);
@@ -290,7 +294,7 @@ class StoreInfo extends Model{
         if(isset($search['agent_id'])){
             $sql .= " AND si.agent_id = " . $search['agent_id'] ;
         }
-        
+
         $num = DB::select($sql);
 
         return $num[0]->num;

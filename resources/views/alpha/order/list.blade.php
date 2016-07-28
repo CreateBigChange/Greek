@@ -10,6 +10,8 @@
                     <header class="panel-heading">
                         订单列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#import"><i class="icon-search">导入</i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog"  ><a href="/alpha/order/balance/getOrderExport?status=<?php $string=implode('.',$search);echo ($string);   ?>"><i class="icon-search">导出</i></a></div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总数: {{ $pageData->totalNum }}</div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总价: {{ $totalMoney[0]->totalMony }}</div>
                     </header>
@@ -171,5 +173,6 @@
 
 @include('alpha.moduls.warning')
 @include('alpha.order.order_moduls')
+@include('alpha.order.import_moduls')
 @include('alpha.order.order_detail_module')
 @include('alpha.footer')

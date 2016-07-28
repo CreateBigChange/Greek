@@ -44,20 +44,27 @@ class StoreGoods extends Model{
                     sg.b_id AS brand_id,
                     gb.name AS brand_name,
                     sn.id AS nav_id,
-                    sn.name AS nav_name
+                    sn.name AS nav_name,
+                    si.name AS sname
                 FROM $this->table AS sg ";
 
         $sql .= " LEFT JOIN goods_categories as gc ON gc.id = sg.c_id";
         $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
         $sql .= " LEFT JOIN store_nav as sn ON sn.id = sg.nav_id";
+        $sql .= " LEFT JOIN store_infos as si ON si.id = sg.store_id";
 
 
-      //  $sql .= " WHERE sg.is_open = 1";
+        $sql .= " WHERE 1 = 1";
 
         if(isset($search['is_open'])){
-            $sql .= " WHERE sg.is_open = ".$search['is_open'];
+            $sql .= " AND sg.is_open = ".$search['is_open'];
         }else{
-            $sql .= " WHERE sg.is_open = 1";
+            $sql .= " AND sg.is_open = 1";
+        }
+        if(isset($search['is_checked'])){
+            $sql .= " AND sg.is_checked = ".$search['is_checked'];
+        }else{
+            $sql .= " AND sg.is_checked = 1";
         }
 
         if(isset($search['stock'])){
@@ -111,10 +118,18 @@ class StoreGoods extends Model{
         $sql .= " LEFT JOIN goods_brand as gb ON gb.id = sg.b_id";
         $sql .= " LEFT JOIN store_nav as sn ON sn.id = sg.nav_id";
 
+        $sql .= " WHERE 1=1";
+
         if(isset($search['is_open'])){
-            $sql .= " WHERE sg.is_open = ".$search['is_open'];
+            $sql .= " AND sg.is_open = ".$search['is_open'];
         }else{
-            $sql .= " WHERE sg.is_open = 1";
+            $sql .= " AND sg.is_open = 1";
+        }
+
+        if(isset($search['is_checked'])){
+            $sql .= " AND sg.is_checked = ".$search['is_checked'];
+        }else{
+            $sql .= " AND sg.is_checked = 1";
         }
 
         if(isset($search['store_id'])) {

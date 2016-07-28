@@ -194,9 +194,6 @@ class Order extends Model{
 
             $o->payTotal            = $this->reckonOrderPayTotal($o);
 
-            //不算其他优惠需要支付的数目
-            $o->total               = $o->total + $o->deliver;
-
             foreach ($goods as $g){
                 if($g->order_id == $o->id){
                     $o->goods[] = $g;
