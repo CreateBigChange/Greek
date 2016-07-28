@@ -55,9 +55,13 @@ class StoreWithdrawCashLog extends Model
         }
 
         $storeConfigModel             = new StoreConfig;
-        $isAmple = $storeConfigModel->isAmpleStoreMoney($data['store_id'], $data['withdraw_cash_num']);
-        if($isAmple === false){
+        $storeMoney = DB::table($this->table)->select('money')->where('store_id' , $data['store_id'])->first();
+        $isAmple = $storeMoney->money - $data['withdraw_cash_num'];
+
+        if($isAmple < 0){
             return Message::setResponseInfo('MONEY_NOT_AMPLE');
+        }else{
+            $data['can_withdraw_cash_num'] = $storeMoney->money;
         }
 
         DB::beginTransaction();

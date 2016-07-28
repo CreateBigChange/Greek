@@ -504,7 +504,7 @@ class Order extends Model{
      *
      * 确认订单
      */
-    public function confirmOrder($userId , $orderId , $payType ){
+    public function confirmOrder($userId , $orderId , $payType , $remark = '' ){
         /**
          * 查看是否有选择的支付方式
          */
@@ -519,7 +519,8 @@ class Order extends Model{
             //'in_points'     => $inPoints,
             'pay_type_id'   => $payType->id,
             'pay_type_name' => $payType->name,
-            'updated_at'    => date('Y-m-d H:i:s' , time())
+            'updated_at'    => date('Y-m-d H:i:s' , time()),
+            'remark'        => $remark
         );
 
         $order = DB::table($this->table)->where('id' , $orderId)->first();

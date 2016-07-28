@@ -313,7 +313,6 @@ class StoreUsersController extends ApiController
         $data['user_id']                    = $this->userId;
         $data['status']                     = 1;
         $data['created_at']                 = date('Y-m-d H:i:s' , time());
-        $data['point']                      = Config::get('withdrawcash.point');
 
         $cashModel = new StoreWithdrawCashLog;
         $result = $cashModel->withdrawCash($data);
