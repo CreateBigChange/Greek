@@ -262,6 +262,7 @@ class StoreWithdrawCashLog extends Model
                     sw.bank_card_type,
                     sw.bank_name,
                     sw.bank_reserved_telephone,
+                    sw.can_withdraw_cash_num as money,
                     si.name,
                     si.address,
                     si.province,  
@@ -271,7 +272,6 @@ class StoreWithdrawCashLog extends Model
                     si.contact_phone,
                     sc.store_id,
                     sc.store_logo,
-                    sc.money,
                     sc.balance
                
                FROM $this->table as sw" ;
