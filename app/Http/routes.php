@@ -113,8 +113,10 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/order/notdelivery' , 'OrdersController@getOrderNotDelivery');
 		Route::get('/order/accident' , 'OrdersController@getOrderAccident');
 		Route::get('/order/dispatching' , 'OrdersController@getOrderDispatching');
+        Route::get('/order/balance', 'OrdersController@getOrderBalence');
+        Route::get('/order/balance/getOrderExport', 'OrdersController@getOrderExport');
+        Route::post('/order/import', 'OrdersController@Orderimport');
 		Route::post('/order/change/status/{id}', 'OrdersController@changeStatus');
-
 
 		//用户
 		Route::get('/user/list' , 'UserController@getUserList');

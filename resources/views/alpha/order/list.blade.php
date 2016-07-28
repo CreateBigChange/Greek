@@ -10,9 +10,12 @@
                     <header class="panel-heading">
                         订单列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#import"><i class="icon-search">导入</i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog"  ><a href="/alpha/order/balance/getOrderExport?status=<?php $string=implode('.',$search);echo ($string);   ?>"><i class="icon-search">导出</i></a></div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总数: {{ $pageData->totalNum }}</div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总价: {{ $totalMoney[0]->totalMony }}</div>
                     </header>
+
                     <div id="table">
                         <table class="table">
                             <thead>
@@ -94,40 +97,17 @@
                             </tbody>
                         </table>
                     </div>
+
                     <div class="text-center">
                         {!! $pageHtml !!}
                     </div>
                 </section>
             </div>
         </div>
-
     </section>
-
-
 </section>
 <!--main content end-->
-
 <script>
-
-    $(".detail_button").click(function () {
-
-        $("#other_city").attr("value",$(this).attr("other_city"));
-        $("#other_consignee").attr("value",$(this).attr("other_consignee"));
-        $("#other_consignee_tel").attr("value",$(this).attr("other_consignee_tel"));
-        $("#other_deliver").attr("value",$(this).attr("other_deliver"));
-        $("#other_updated_at").attr("value",$(this).attr("other_updated_at"));
-        $("#other_country").attr("value",$(this).attr("other_country"));
-        $("#other_id").attr("value",$(this).attr("other_id"));
-        $("#other_mobile").attr("value",$(this).attr("other_mobile"));
-        $("#other_refund_reason").attr("value",$(this).attr("other_refund_reason"));
-        $("#other_remark").attr("value",$(this).attr("other_remark"));
-        $("#other_store_income").attr("value",$(this).attr("other_store_income"));
-        $("#other_street").attr("value",$(this).attr("other_street"));
-        $("#other_trade_no").attr("value",$(this).attr("other_trade_no"));
-        $("#other_transaction_id").attr("value",$(this).attr("other_transaction_id"));
-        $("#other_true_name").attr("value",$(this).attr("other_true_name"));
-
-    });
 
     var table = $(".table");
     var i=0;
@@ -142,7 +122,6 @@
             $(this).addClass("active");
         i++;
     });
-
     $('.showOrderGoods').bind('click' , function() {
         var _this = this;
         var orderId = $(_this).attr('orderId');
@@ -194,5 +173,6 @@
 
 @include('alpha.moduls.warning')
 @include('alpha.order.order_moduls')
+@include('alpha.order.import_moduls')
 @include('alpha.order.order_detail_module')
 @include('alpha.footer')
