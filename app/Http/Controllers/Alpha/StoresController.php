@@ -21,7 +21,7 @@ use App\Models\StoreSettlings;
 use App\Models\StoreUser;
 use App\Libs\Message;
 use App\Libs\Curl;
-
+use App\Models\GoodsBrand;
 use App\Models\StoreGoods;
 
 use App\Models\AmapCityCode;
@@ -566,8 +566,13 @@ class StoresController extends AdminController
 		$this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
 		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/'.$storeId.'?' . $param);
 		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
+        $this->response['brand']            =11;
 
-		return view('alpha.store.goods.list' , $this->response);
+
+        //dd($this->response);
+
+
+        return view('alpha.store.goods.list' , $this->response);
 
 	}
 
@@ -597,16 +602,38 @@ class StoresController extends AdminController
 		$search['is_checked'] = 0;
 
 		$storeGoodsModel = new StoreGoods;
-		$goodsNum   = $storeGoodsModel->getStoreGoodsTotalNum($search);
+		$goodsNum        = $storeGoodsModel->getStoreGoodsTotalNum($search);
+        $goodsBrand      =new GoodsBrand;
+        $StoreInfo       =new StoreInfo;
 
 		$this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
 		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/by/nocheck/?' . $param);
 		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
+        $this->response['store']            =$StoreInfo ->getAllStore();
+        for($i=0;$i<count($this->response['goods']);$i++){
+            $this->response['goods'][$i]->brand =$goodsBrand->getGoodsBrandByCid($this->response['goods'][$i]->category_id);
+        }
 
 		return view('alpha.store.goods.nocheck_list' , $this->response);
 
 	}
+    public function  updateStoreGoodsInfo(Request $request){
+        $storeGoodsModel = new StoreGoods;
+        $store_id       =$request->get("store_id");
+        $id             =$request->get("id");
+        $data           =array();
 
+
+        foreach($request->request as $key=>$value)
+        {
+            if($value!="")
+            $data[$key]=$value;
+        }
+
+
+        $storeGoodsModel ->updateGoods($store_id,$id,$data);
+        return redirect("/alpha/store/goods/by/nocheck");
+    }
 
 	public function getStoreGoodsInfo($goodsId){
 
@@ -623,6 +650,7 @@ class StoresController extends AdminController
 	}
 
 	public function updateStoreGoods(Request $request){
+
 
 		$data = array();
 

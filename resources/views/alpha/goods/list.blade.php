@@ -11,6 +11,8 @@
                         商品列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></div>
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href=""><i class="icon-plus">导入</i></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="/alpha/goods/import"><i class="icon-plus">导出</i></div>
                     </header>
 
                     <div class="panel-body">

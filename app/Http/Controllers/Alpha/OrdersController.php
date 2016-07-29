@@ -383,12 +383,12 @@ class OrdersController extends AdminController
         if(!$file->isValid()){
             exit('文件上传出错！');
         }
-        dd($file);
+
         $realPath = $file -> getRealPath();
 
         $path = $file -> move(app_path().'\storage\uploads',"test.xml");
 
-        
+
        // $excelModel =new MyExcel;
        // $excelModel->import($path);
         //return "$realPath----------------  $path";

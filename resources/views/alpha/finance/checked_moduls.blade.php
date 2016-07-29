@@ -12,9 +12,23 @@
                 <div class="modal-body">
                     <section class="panel" style="margin-bottom:0px">
                         <div class="panel-body">
+
+
+
                             <div class="form-group">
                                 <input type="hidden"   class="form-control" value="" name="with_draw_id"  id="with_draw_id" />
                             </div>
+
+                            <div class="form-group">
+                                <input type="hidden"   class="form-control" value="" name="store_id"  id="store_id" />
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden"   class="form-control" value="" name="withdraw_cash_num"  id="withdraw_cash_num" />
+                            </div>
+
+
+
                             <div class="form-group">
                                 <label for='bank_card_num'>卡号</label>
 

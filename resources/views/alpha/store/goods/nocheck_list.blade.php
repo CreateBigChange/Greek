@@ -46,6 +46,7 @@
                                         <td>@if ($g->is_checked == 1) 已审核 @else 未审核 @endif</td>
                                         <td>
                                             <div g_id="{{ $g->id }}" class="btn btn-primary btn-xs check">审核通过</div>
+                                            <div g_id="{{ $g->id }}" class="btn btn-primary btn-xs " data-toggle="modal" href="#Update_{{ $g->id }}" >修改</div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -76,5 +77,5 @@
         });
     });
 </script>
-
+@include('alpha.store.goods.goodsUpdate_moduls')
 @include('alpha.footer')

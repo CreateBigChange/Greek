@@ -13,6 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 class StoreConfig extends Model{
 
     protected $table  = 'store_configs';
+    /**
+     * 获取店铺信息配置信息
+     */
+    public function getStoreConfigs($storeId){
+        return DB::table($this->table)->where("store_id",$storeId)->first();
+    }
+
 
     /**
      * 更新商铺积分

@@ -50,8 +50,10 @@
                                         bank_name = {{ $l->bank_name }}
                                         bank_reserved_telephone = {{ $l->bank_reserved_telephone }}
                                         with_draw_id={{ $l->id}}
+                                        store_id = {{ $l->store_id}}
+                                        withdraw_cash_num ={{ $l->withdraw_cash_num}}
 
-                                        >付款</button>
+                                            >付款</button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -83,7 +85,8 @@
             $("#bank_name").attr("value",$(this).attr("bank_name"));
             $("#bank_reserved_telephone").attr("value",$(this).attr("bank_reserved_telephone"));
             $("#with_draw_id").attr("value",$(this).attr("with_draw_id"));
-
+            $("#store_id").attr("value",$(this).attr("store_id"))
+            $("#withdraw_cash_num").attr("value",$(this).attr("withdraw_cash_num"))
 
      })   
 

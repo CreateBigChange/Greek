@@ -149,16 +149,18 @@
 
 
 {{--修改--}}
-        <!-- Modal -->
-<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+@foreach($goods as $good)
+ <!-- Modal -->
+<div class="modal fade" id="update_{{$good->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80%;">
         <div class="modal-content">
             <form class="form-horizontal tasi-form" method="post" action='/alpha/store/goods/update'>
-                <input type="hidden" name="id" value="" id="edit_id" />
-                <input type="hidden" name="store_id" value="" id="edit_store_id" />
+                <input type="hidden" name="id" value="" id="edit_id"  value = {{$good->id}}/>
+                <input type="hidden" name="store_id" value="" id="edit_store_id"  value ={{$good->store_id}}/>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">修改商品</h4>
+
                 </div>
                 <div class="modal-body">
                     <section class="panel" style="margin-bottom:0px">
@@ -166,65 +168,73 @@
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">商品名称</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name='name' id="edit_name"/>
+                                    <input type="text" class="form-control" name='name' id="edit_name" value ={{$good->name}}/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">品牌</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-bot15" name='b_id' id='edit_brand'>
+                                    <select class="form-control m-bot15 edit_brand" name='b_id' id='edit_brand' >
                                         <option value="0">选择</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">图片</label>
+
                                 <div class="col-sm-10">
                                     <div class="file" style="margin-left:15px;">
                                         选择图片
-                                        <input type="text" class="form-control" name='img' id="edit_img"/>
+                                        <input type="text" class="form-control hiddenform" name='img' id="edit_img"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">预览</label>
                                 <div class="col-sm-10">
-                                    <img style="width: 200px;height: auto;" id='edit_img_pre' src='' />
+                                    <img style="width: 200px;height: auto;" id='edit_img_pre' src='{{$good->img}}' />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">销售价</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name='out_price' id="edit_out_price"/>
+                                    <input type="text" class="form-control" name='out_price' id="edit_out_price" value = {{$good->out_price}}/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">规格</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name='spec' id="edit_spec"/>
+                                    <input type="text" class="form-control" name='spec' id="edit_spec"/ value = {{$good->spec}}>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">描述</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name='desc' id="edit_desc"/>
+                                    <input type="text" class="form-control" name='desc' id="edit_desc" {{$good->desc}}/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">开启</label>
                                 <div class="col-sm-1 text-center">
-                                    <input type="checkbox"  data-toggle="switch" name="is_open" />
+                                @if($good->is_open ==1)
+                                          <input type="checkbox"  checked data-toggle="switch" name="is_open" />
+                                @else
+                                             <input type="checkbox"  data-toggle="switch" name="is_open" />
+                                @endif
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 col-sm-2 control-label">审核</label>
                                 <div class="col-sm-1 text-center">
-                                    <input type="checkbox"  data-toggle="switch" name="is_checked" />
+                                  @if($good->is_checked ==1)
+                                            <input type="checkbox"  data-toggle="switch" checked name="is_checked" />
+                                @else
+                                              <input type="checkbox"  data-toggle="switch" name="is_checked" />
+                                @endif
                                 </div>
                             </div>
                         </div>
                     </section>
-
                 </div>
                 <div class="modal-footer"  style="margin-top:0px">
                     <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
@@ -235,6 +245,11 @@
     </div>
 </div>
 <!-- modal -->
+@endforeach
+
+
+
+
 
 <script id='edit_categories' type='text/html'>
     <% for(var i = 0; i<category.length ; i++){%>
@@ -249,8 +264,39 @@
 </script>
 
 <script>
+    //brand选择
 	$('.update').bind('click' , function(){
+                $.get('/alpha/goods/brand/' + $(this).attr("category_id") , function(brand){
+
+                console.log(brand.data.brand[0].name);
+                console.log(brand);
+                    if(brand.code == '0000'){
+                         var html ="";
+                        for(var i = 0;i<brand.data.brand.length;i++){
+                          if($(this).attr("brand_id")==brand.data.brand[i].id)
+                            html+= '<option selected value="'+brand.data.brand[i].id+'">'+brand.data.brand[i].name+'</option>';
+                           else
+                             html+= '<option value="'+brand.data.brand[i].id+'">'+brand.data.brand[i].name+'</option>';
+
+                        }
+                        $('.edit_brand').html(html);
+                    }
+                });
 		var goodsId = $(this).attr('p_id');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		$.get('/alpha/store/goods/info/' + goodsId , function(data){
@@ -278,19 +324,8 @@
                 	}
                 });
 
-                console.log(data);
 
-                $.get('/alpha/goods/brand/' + data.data.category_id , function(brand){
-                console.log(brand);
-                    if(brand.code == '0000'){
-                            brand.data.select = data.data.brand_id;
-                            if(data.code == '0000'){
-                                var bt = baidu.template;
-                               var html = '<option value="0">选择</option>' + bt('edit_brandTep' , brand.data);
-                                $('#edit_brand').html(html);
-                            }
-                    }
-                });
+
 
 <!--                $.get('/alpha/goods/category/level/1' , function(cOneData){-->
 <!--					if(cOneData.code == '0000'){-->

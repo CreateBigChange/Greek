@@ -37,11 +37,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/permissions/ajax' , 'AdminPermissionController@ajaxPermissionsList');
 		Route::post('/permission/add' , 'AdminPermissionController@addPermission');
 
-
-
 		Route::get('/permission/del/{id}' , 'AdminPermissionController@delPermission');
-
-
 
 		Route::get('/permission/info/{id}' , 'AdminPermissionController@getPermissionInfo');
 		Route::post('/permission/update' , 'AdminPermissionController@updatePermission');
@@ -76,6 +72,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/store/goods/check/{goodsId}' , 'StoresController@storeGoodsChecked');
 		Route::get('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
 		Route::post('/store/goods/update' , 'StoresController@updateStoreGoods');
+        Route::get('/store/goods/by/update' , 'StoresController@updateStoreGoodsInfo');
+
+
 
 		//店员
 		Route::get('/store/user' , 'StoresController@getStoreUserList');
@@ -86,6 +85,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
 		Route::get('/goods/del/{id}' , 'GoodsController@delGoods');
+        Route::get('/goods/excelImport' , 'GoodsController@excelImport');
+        Route::get('/goods/export' , 'GoodsController@export');
 
 		//品类
 		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');

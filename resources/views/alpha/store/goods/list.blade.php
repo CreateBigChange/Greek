@@ -45,7 +45,7 @@
                                         <td>@if ($g->is_checked == 1) 已审核 @else 未审核 @endif</td>
                                         <td>
                                             {{--<div p_id="{{ $g->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
-                                            <div p_id="{{ $g->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+                                            <div p_id="{{ $g->id }}"   brand_id ="{{ $g->brand_id }}"   category_id ="{{ $g->category_id }}"  data-toggle="modal" href="#update_{{ $g->id }}" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
                                             <div title="删除商品" url="/alpha/goods/del/{{ $g->id }}" href="#warning" data-toggle="modal" class="btn btn-danger btn-xs warning" ><i class="icon-trash"></i></div>
                                         </td>
                                     </tr>

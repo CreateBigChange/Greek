@@ -100,9 +100,9 @@
 
 
 	$("#select").click(function(){
-
 		$("#hiddenform").click();
 	})
+
 	$("#hiddenform").change(function(){
 		var file= document.getElementById('hiddenform').files[0];
 		if(file)
@@ -137,9 +137,7 @@
 
 
 			var urlStr="id="+id+"&redirect="+redirect+"&name="+name+"&create_time="+create_time+"&update_time="+update_time+"&is_open="+is_open+"&order="+order+"&img="+img;
-	
-			if (file) {
-
+			if (file){
 					$.ajax({
 					dataType:'json',
 					type:'post',
@@ -150,16 +148,11 @@
 	    			contentType: false,
 					success:function(data)
 					{
-						
 						var str="str="+data['data']["host"]+"/"+data['data']["key"]+"&"+urlStr;
-					
 						document.location.href='./save?method='+baseurl+'&'+str;
-						
 					},
 					error:function(data)
 					{
-						
-
 					}
 				})
 			}
@@ -167,20 +160,15 @@
 			{
 				document.location.href='./save?method='+baseurl+'&'+urlStr;	
 			}
-
-
 		}
-
 		$("#subForm").click(function(){
-		
-			 baseurl = 'save';
+			baseurl = 'save';
 			bannerChange(1);
 		})
 
 		$("#addBanner").click(function(){
-		
 			 baseurl='add';
-				bannerChange(0);
+			bannerChange(0);
 		})
 </script>
 

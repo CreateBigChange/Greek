@@ -356,7 +356,7 @@ class StoreWithdrawCashLog extends Model
      */
 
     public function updateWithdraw($id,$data){
-        return DB::table('store_withdraw_cash_log')
+        return DB::table($this->table)
             ->where('id', $id)
             ->update($data);
     }
