@@ -270,6 +270,7 @@ class OrdersController extends ApiController
      *      {
      *          pay_type : 1,
      *          pay_password : 123456,
+     *          remark : 123456,
      *      }
      * @apiUse CODE_200
      *
@@ -290,10 +291,15 @@ class OrdersController extends ApiController
 //        }else{
 //            $outPoints  = $request->get('out_points');
 //        }
+
+        $remark = '';
+        if($request->has('remark')){
+            $remark = $request->get('remark');
+        }
         $payType    = $request->get('pay_type');
 
         //更新订单状态
-        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType );
+        $payNum = $this->_model->confirmOrder( $userId , $orderId , $payType , $remark);
 
         if($payNum['code'] != 0000){
             return $payNum;
