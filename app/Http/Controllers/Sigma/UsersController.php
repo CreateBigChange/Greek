@@ -81,9 +81,11 @@ class UsersController extends ApiController
         if($userInfo){
             //获取登录用户的权限
 
+            Session::regenerate();
+            //$sessionKey = $userInfo->id;
             $sessionKey = $this->getSalt(16);
 
-            Session::put($sessionKey , $userInfo);
+            Session::set($sessionKey , $userInfo);
 
             $cookie = Cookie::make(Config::get('session.sigma_login_cookie') , $sessionKey , Config::get('session.sigma_lifetime'));
 
@@ -238,7 +240,7 @@ class UsersController extends ApiController
 
         $sessionKey = cookie::get(config::get('session.sigma_login_cookie'));
 
-        session::forget($sessionKey);
+        Session::forget($sessionKey);
 
         return response()->json(Message::setResponseInfo('SUCCESS'));
 

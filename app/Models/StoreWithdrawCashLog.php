@@ -55,7 +55,7 @@ class StoreWithdrawCashLog extends Model
         }
 
         $storeConfigModel             = new StoreConfig;
-        $storeMoney = DB::table($this->table)->select('money')->where('store_id' , $data['store_id'])->first();
+        $storeMoney = DB::table($storeConfigModel->getTable())->select('money')->where('store_id' , $data['store_id'])->first();
         $isAmple = $storeMoney->money - $data['withdraw_cash_num'];
 
         if($isAmple < 0){
