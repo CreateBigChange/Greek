@@ -237,7 +237,7 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 	Route::post('/store/areas', 'StoresController@areas');
 	Route::post('/store/settling', 'StoresController@settling');
 
-	Route::post('/franchisee', 'StoresController@franchisee');
+	Route::get('/franchisee', 'StoresController@franchisee');
 
 	Route::post('/upload/qiniu' , 'UploadController@uploadQiniu');
 
