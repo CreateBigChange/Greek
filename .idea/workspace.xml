@@ -2,10 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7771b50f-8e6e-4acb-b73c-b28cdde0237f" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Models/FileUpload.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/alpha/goods/import_moduls.blade.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/MyExcel.php" afterPath="$PROJECT_DIR$/app/Models/MyExcel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/storage/uploads/test.xml" afterPath="$PROJECT_DIR$/app/storage/uploads/test.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/order/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/order/list.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/PHPExcel/Classes/PHPExcel/Shared/String.php" afterPath="$PROJECT_DIR$/scripts/PHPExcel/Classes/PHPExcel/Shared/String.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php" afterPath="$PROJECT_DIR$/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php" />
     </list>
     <ignored path="Greek.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,70 +33,17 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
-    <favorites_list name="Greek" />
+    <favorites_list name="Greek">
+      <favorite_root url="file://$PROJECT_DIR$/app/Models/FileUpload.php" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+    </favorites_list>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="OrdersController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="390" column="8" selection-start-line="390" selection-start-column="8" selection-end-line="390" selection-end-column="8" />
-              <folding>
-                <element signature="e#126#154#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_superglobals.php" pinned="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/_superglobals.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2824">
-              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="filesystems.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/filesystems.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Order.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/Order.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2539">
-              <caret line="1305" column="5" selection-start-line="1305" selection-start-column="5" selection-end-line="1305" selection-end-column="5" />
-              <folding>
-                <marker date="1469586933077" expanded="true" signature="971:1073" ph="select sum(p... orders" />
-                <marker date="1469586933077" expanded="true" signature="1891:3727" ph="SELECT o.id,... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="29919:30046" ph="SELECT count... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="30634:30760" ph="SELECT count... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="31340:31466" ph="SELECT count... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="31975:32109" ph="SELECT count... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="32563:32697" ph="SELECT count... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="33743:33877" ph="SELECT sum(`... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="34355:34567" ph="SELECT sum(`... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="35158:35370" ph="SELECT sum(`... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="36007:36223" ph="SELECT `tota... ${$this-&gt;table}" />
-                <marker date="1469586933077" expanded="true" signature="42280:42360" ph="SELECT count... ${$this-&gt;table}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MyExcel.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/MyExcel.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
+            <state relative-caret-position="333">
+              <caret line="56" column="26" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="26" />
               <folding>
                 <element signature="e#29#36#0#PHP" expanded="true" />
               </folding>
@@ -93,33 +51,65 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
+      <file leaf-file-name="import_moduls.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="198" column="35" selection-start-line="198" selection-start-column="35" selection-end-line="198" selection-end-column="35" />
+            <state relative-caret-position="248">
+              <caret line="19" column="107" selection-start-line="19" selection-start-column="107" selection-end-line="19" selection-end-column="107" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AmapCityCode.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/AmapCityCode.php">
+      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+            <state relative-caret-position="623">
+              <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OrdersController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="402" column="0" selection-start-line="402" selection-start-column="0" selection-end-line="411" selection-end-column="0" />
               <folding>
-                <element signature="e#127#134#0#PHP" expanded="true" />
+                <element signature="e#126#154#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="import_moduls.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php">
+      <file leaf-file-name="FileUpload.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/FileUpload.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+            <state relative-caret-position="304">
+              <caret line="16" column="26" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GoodsController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="343">
+              <caret line="514" column="0" selection-start-line="514" selection-start-column="0" selection-end-line="514" selection-end-column="0" />
+              <folding>
+                <element signature="e#125#153#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="13" column="224" selection-start-line="13" selection-start-column="224" selection-end-line="13" selection-end-column="224" />
               <folding />
             </state>
           </provider>
@@ -128,9 +118,31 @@
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5">
-              <caret line="109" column="12" selection-start-line="109" selection-start-column="12" selection-end-line="109" selection-end-column="12" />
+            <state relative-caret-position="257">
+              <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="12" column="175" selection-start-line="12" selection-start-column="175" selection-end-line="12" selection-end-column="175" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StoresController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="730" selection-end-column="0" />
+              <folding>
+                <element signature="e#125#153#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -153,12 +165,37 @@
         <option value="$PROJECT_DIR$/app/Models/Coupon.php" />
         <option value="$PROJECT_DIR$/app/Models/Excel.php" />
         <option value="$PROJECT_DIR$/app/Models/AmapCityCode.php" />
-        <option value="$PROJECT_DIR$/resources/views/alpha/order/list.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/goods/goods_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Gamma/StoresController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/moduls.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/StoreConfig.php" />
+        <option value="$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdata_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/nocheck_list.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/activity/banner_mouder.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/StoreInfo.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/../../sf/index.html" />
+        <option value="$PROJECT_DIR$/config/excel.php" />
+        <option value="$PROJECT_DIR$/scripts/PHPExcel/Classes/PHPExcel/Shared/String.php" />
+        <option value="$PROJECT_DIR$/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/goods/import_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/order/list.blade.php" />
+        <option value="$PROJECT_DIR$/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php" />
+        <option value="$PROJECT_DIR$/app/Models/FileUpload.php" />
         <option value="$PROJECT_DIR$/app/Models/MyExcel.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/routes.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php" />
       </list>
     </option>
   </component>
@@ -178,10 +215,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
-    <option name="y" value="14" />
-    <option name="width" value="1378" />
-    <option name="height" value="744" />
+    <option name="x" value="1" />
+    <option name="y" value="1" />
+    <option name="width" value="1364" />
+    <option name="height" value="726" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -190,7 +227,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="2" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
@@ -208,6 +245,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -237,7 +275,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="storage" />
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -251,7 +293,151 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="goods" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="order" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="goods" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -269,18 +455,108 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Models" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controllers" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Greek" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controllers" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Alpha" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="route&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;OrdersController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;order&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;routes&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;order/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade1.php&#10;list.&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade.php&#10;list.blad&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/list.blade.php&#10;composer&#9;null&#9;null&#10;e&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/.env" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="route&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;EX&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php&#10;Excel&#9;null&#9;null&#10;StoresController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/StoresController.php&#10;Config&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Models/StoreConfig.php&#10;GoodsController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/GoodsController.php&#10;String.php&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php&#10;excel&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/config/excel.php&#10;order&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;goods&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php&#10;routes&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;banner&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/activity/banner_mouder.blade.php&#10;nocheck&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/nocheck_list.blade.php&#10;finish_withdraw&#9;null&#9;null&#10;checked&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;checked_&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;bannerVersion&#9;null&#9;null&#10;goods.blade&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/goods_moduls.blade.php&#10;goods/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/list.blade.php&#10;OrdersController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;order/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade1.php&#10;list.&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade.php&#10;list.blad&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/list.blade.php&#10;composer&#9;null&#9;null&#10;e&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/.env" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\store\goods" />
+      <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\goods" />
       <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\order" />
     </key>
   </component>
@@ -346,32 +622,36 @@
       <option name="presentableId" value="Default" />
       <updated>1469587015352</updated>
       <workItem from="1469587018440" duration="25206000" />
-      <workItem from="1469667809461" duration="8639000" />
+      <workItem from="1469667809461" duration="22151000" />
+      <workItem from="1469715588315" duration="599000" />
+      <workItem from="1469757909604" duration="29081000" />
+      <workItem from="1470019924165" duration="19453000" />
+      <workItem from="1470104302224" duration="9840000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33845000" />
+    <option name="totallyTimeSpent" value="106330000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="14" width="1378" height="744" extended-state="0" />
+    <frame x="1" y="1" width="1364" height="726" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20378788" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20673813" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -402,39 +682,67 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Gamma/StoresController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="746">
+          <caret line="464" column="73" selection-start-line="464" selection-start-column="73" selection-end-line="464" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/ActivityController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="35" column="20" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#126#154#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3724">
-          <caret line="196" column="12" selection-start-line="196" selection-start-column="12" selection-end-line="196" selection-end-column="12" />
-          <folding />
+        <state relative-caret-position="330">
+          <caret line="38" column="62" selection-start-line="38" selection-start-column="62" selection-end-line="38" selection-end-column="62" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/MyExcel.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
-          <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
-          <folding>
-            <element signature="e#29#36#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="209">
+          <caret line="53" column="83" selection-start-line="53" selection-start-column="66" selection-end-line="53" selection-end-column="83" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3762">
-          <caret line="198" column="35" selection-start-line="198" selection-start-column="35" selection-end-line="198" selection-end-column="35" />
-          <folding />
+        <state relative-caret-position="357">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdata_moduls.blade.php" />
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="357" column="46" selection-start-line="357" selection-start-column="46" selection-end-line="357" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/category/category_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-114">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-133">
+          <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -442,25 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/AmapCityCode.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="e#127#134#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -468,158 +757,83 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="124" selection-start-line="5" selection-start-column="124" selection-end-line="5" selection-end-column="124" />
-          <folding />
+        <state relative-caret-position="38">
+          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/moduls/warning.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2223">
-          <caret line="117" column="69" selection-start-line="117" selection-start-column="69" selection-end-line="117" selection-end-column="69" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env.example" />
-    <entry file="file://$PROJECT_DIR$/.env.example1" />
-    <entry file="file://$PROJECT_DIR$/public/index.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/index/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Routing/Route.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/nocheck_list.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="87" column="7" selection-start-line="87" selection-start-column="7" selection-end-line="87" selection-end-column="7" />
+        <state relative-caret-position="19">
+          <caret line="34" column="55" selection-start-line="34" selection-start-column="55" selection-end-line="34" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/routing/Tests/Loader/ObjectRouteLoaderTest.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/activity/banner_mouder.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="108" column="6" selection-start-line="108" selection-start-column="6" selection-end-line="108" selection-end-column="6" />
-          <folding />
+        <state relative-caret-position="19">
+          <caret line="126" column="59" selection-start-line="126" selection-start-column="59" selection-end-line="126" selection-end-column="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/vendor/qiniu/php-sdk/examples/upload.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="45">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreInfo.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1627">
-          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+        <state relative-caret-position="634">
+          <caret line="340" column="4" selection-start-line="340" selection-start-column="4" selection-end-line="340" selection-end-column="4" />
+          <folding>
+            <marker date="1469784043177" expanded="true" signature="672:2210" ph="select si.id... ${$this-&gt;table}" />
+            <marker date="1469784043177" expanded="true" signature="7226:7313" ph="select count... ${$this-&gt;table}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/orderstatus.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        <state relative-caret-position="1368">
+          <caret line="72" column="91" selection-start-line="72" selection-start-column="83" selection-end-line="72" selection-end-column="91" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Goehte/OrdersController.php">
+    <entry file="file://$PROJECT_DIR$/../../sf/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Support/Composer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Files/NewExcelFile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-164">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/AdminPermission.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        <state relative-caret-position="305">
+          <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#h1#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/excel.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1558">
-          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/StoreGoods.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-          <folding>
-            <marker date="1469618171994" expanded="true" signature="509:1247" ph="SELECT sg.id... ${$this-&gt;table}" />
-            <marker date="1469618171994" expanded="true" signature="2976:3059" ph="SELECT count... ${$this-&gt;table}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/StoreConfig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/StoreCategory.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/StoreBankCard.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Goods.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-361">
-          <caret line="27" column="48" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+        <state relative-caret-position="390">
+          <caret line="421" column="0" selection-start-line="421" selection-start-column="0" selection-end-line="421" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -630,92 +844,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Excel.php" />
-    <entry file="file://$PROJECT_DIR$/app/Models/Coupon.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-19">
-          <caret line="38" column="5" selection-start-line="38" selection-start-column="5" selection-end-line="38" selection-end-column="5" />
-          <folding>
-            <element signature="e#6#107#0#PHP" expanded="false" />
-            <element signature="e#131#138#0#PHP" expanded="false" />
-            <marker date="1469586933077" expanded="true" signature="304:324" ph="select * fro... coupon" />
-            <marker date="1469586933077" expanded="true" signature="747:782" ph="select count... coupon" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-57">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/OrderEvaluate.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/OrderInfo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3724">
-          <caret line="196" column="12" selection-start-line="196" selection-start-column="12" selection-end-line="196" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/AmapCityCode.php">
+    <entry file="file://$PROJECT_DIR$/scripts/PHPExcel/Classes/PHPExcel/Shared/String.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="e#127#134#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="325">
+          <caret line="494" column="0" selection-start-line="494" selection-start-column="0" selection-end-line="494" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade1.php">
+    <entry file="file://$PROJECT_DIR$/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="284">
+          <caret line="500" column="0" selection-start-line="500" selection-start-column="0" selection-end-line="501" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2432">
+          <caret line="19" column="26" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/category_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="198" column="35" selection-start-line="198" selection-start-column="35" selection-end-line="198" selection-end-column="35" />
+        <state relative-caret-position="95">
+          <caret line="5" column="116" selection-start-line="5" selection-start-column="111" selection-end-line="5" selection-end-column="116" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/goods_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5">
-          <caret line="109" column="12" selection-start-line="109" selection-start-column="12" selection-end-line="109" selection-end-column="12" />
+        <state relative-caret-position="912">
+          <caret line="48" column="105" selection-start-line="48" selection-start-column="44" selection-end-line="48" selection-end-column="105" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_moduls.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/import_moduls.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="95">
+          <caret line="5" column="64" selection-start-line="5" selection-start-column="64" selection-end-line="5" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_detail_module.blade.php">
+    <entry file="file://$PROJECT_DIR$/config/paytype.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -723,68 +913,179 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/filesystems.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreConfig.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+        <state relative-caret-position="186">
+          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/orderstatus.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Order.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2539">
-          <caret line="1305" column="5" selection-start-line="1305" selection-start-column="5" selection-end-line="1305" selection-end-column="5" />
+        <state relative-caret-position="209">
+          <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
           <folding>
-            <marker date="1469586933077" expanded="true" signature="971:1073" ph="select sum(p... orders" />
-            <marker date="1469586933077" expanded="true" signature="1891:3727" ph="SELECT o.id,... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="29919:30046" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="30634:30760" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="31340:31466" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="31975:32109" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="32563:32697" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="33743:33877" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="34355:34567" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="35158:35370" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="36007:36223" ph="SELECT `tota... ${$this-&gt;table}" />
-            <marker date="1469586933077" expanded="true" signature="42280:42360" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="971:1073" ph="select sum(p... orders" />
+            <marker date="1469789818701" expanded="true" signature="1891:3727" ph="SELECT o.id,... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="29974:30101" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="30689:30815" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="31395:31521" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="32030:32164" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="32618:32752" ph="SELECT count... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="33798:33932" ph="SELECT sum(`... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="34410:34622" ph="SELECT sum(`... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="35213:35425" ph="SELECT sum(`... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="36062:36278" ph="SELECT `tota... ${$this-&gt;table}" />
+            <marker date="1469789818701" expanded="true" signature="42335:42415" ph="SELECT count... ${$this-&gt;table}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/MyExcel.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Goods.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
+        <state relative-caret-position="-399">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#29#36#0#PHP" expanded="true" />
+            <marker date="1469586749412" expanded="true" signature="553:1271" ph="SELECT g.id,... ${$this-&gt;table}" />
+            <marker date="1469586749412" expanded="true" signature="2902:2988" ph="SELECT count... ${$this-&gt;table}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/import_moduls.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/GoodsBrand.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+        <state relative-caret-position="357">
+          <caret line="46" column="43" selection-start-line="46" selection-start-column="43" selection-end-line="46" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/_superglobals.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/FeedBack.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2824">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2060">
+          <caret line="102" column="88" selection-start-line="102" selection-start-column="88" selection-end-line="102" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Activity.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreGoods.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-246">
+          <caret line="172" column="46" selection-start-line="172" selection-start-column="43" selection-end-line="172" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/FileUpload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="26" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="390" column="8" selection-start-line="390" selection-start-column="8" selection-end-line="390" selection-end-column="8" />
+        <state relative-caret-position="234">
+          <caret line="402" column="0" selection-start-line="402" selection-start-column="0" selection-end-line="411" selection-end-column="0" />
           <folding>
             <element signature="e#126#154#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/MyExcel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="56" column="26" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="26" />
+          <folding>
+            <element signature="e#29#36#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="514" column="0" selection-start-line="514" selection-start-column="0" selection-end-line="514" selection-end-column="0" />
+          <folding>
+            <element signature="e#125#153#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="623">
+          <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="19" column="107" selection-start-line="19" selection-start-column="107" selection-end-line="19" selection-end-column="107" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="730" selection-end-column="0" />
+          <folding>
+            <element signature="e#125#153#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="12" column="175" selection-start-line="12" selection-start-column="175" selection-end-line="12" selection-end-column="175" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="13" column="224" selection-start-line="13" selection-start-column="224" selection-end-line="13" selection-end-column="224" />
+          <folding />
         </state>
       </provider>
     </entry>

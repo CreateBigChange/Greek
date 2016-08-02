@@ -14,6 +14,8 @@ use App\Http\Controllers\AdminController;
 use App\Models\User;
 use App\Models\StoreWithdrawCashLog;
 use App\Libs\Message;
+use App\Models\StoreInfo;
+use App\Models\StoreConfig;
 
 class FinanceController extends AdminController
 {
@@ -145,11 +147,24 @@ class FinanceController extends AdminController
     public function finish_withdraw(Request $request){
 
         $cashModel = new StoreWithdrawCashLog;
+        $StoreInfoModel = new StoreInfo;
+        $StoreConfigs = new StoreConfig ;
 
-        $id = $request->get("with_draw_id");
-        $data=array("pay_time"=>date("Y-m-d H:m:s"));
+        $with_draw_id = $request->get("with_draw_id");
+        $with_draw_data=array("pay_time"=>date("Y-m-d H:m:s"));
 
-        $cashModel->updateWithdraw($id, $data);
+
+        $store_id = $request->get("store_id");
+
+        $configs = $StoreConfigs->getStoreConfigs($store_id );
+
+        $balance= $configs->balance-$request->get("withdraw_cash_num");
+
+        $cashModel->updateWithdraw($with_draw_id, $with_draw_data);
+
+
+        $StoreConfigs->updateBalance($store_id , $balance);
+
 
          return redirect('/alpha/finance/checked');
     }

@@ -11,6 +11,7 @@
                         商品列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></div>
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                        <a href="{{url('/alpha/goods/excelImport')}}"><div style='margin-left:20px;' data-toggle="modal"  href="#import" class="btn btn-primary btn-xs add"  href=""><i class="icon-plus">导入</i></div></a>
                     </header>
 
                     <div class="panel-body">
@@ -45,7 +46,7 @@
                                         <td>@if ($g->is_checked == 1) 已审核 @else 未审核 @endif</td>
                                         <td>
                                             {{--<div p_id="{{ $g->id }}" title="添加子店铺"  class="btn btn-primary btn-xs addChild" data-toggle="modal" href="#addChild"><i class="icon-plus"></i></div>--}}
-                                            <div p_id="{{ $g->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+                                            <div p_id="{{ $g->id }}"   brand_id ="{{ $g->brand_id }}"   category_id ="{{ $g->category_id }}"  data-toggle="modal" href="#update_{{ $g->id }}" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
                                             <div title="删除商品" url="/alpha/goods/del/{{ $g->id }}" href="#warning" data-toggle="modal" class="btn btn-danger btn-xs warning" ><i class="icon-trash"></i></div>
                                         </td>
                                     </tr>
@@ -69,5 +70,5 @@
 
 @include('alpha.store.goods.moduls')
 @include('alpha.moduls.warning')
-
+@include('alpha.store.goods.import_moduls')
 @include('alpha.footer')

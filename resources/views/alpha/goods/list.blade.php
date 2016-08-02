@@ -11,8 +11,9 @@
                         商品列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs add" data-toggle="modal" href="#add"><i class="icon-plus"></i></div>
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                     <!--   <a href="{{url('/alpha/goods/excelImport')}}"><div style='margin-left:20px;' data-toggle="modal"  href="#import" class="btn btn-primary btn-xs add"  href=""><i class="icon-plus">导入</i></div></a>-->
+                        <a href="{{url('/alpha/goods/excleExport')}}"> <div style=' margin-left:20px;' class="btn btn-primary btn-xs add" ><i class="icon-plus">导出</i></div></a>
                     </header>
-
                     <div class="panel-body">
                         <section id="unseen">
                             <table class="table table-bordered table-striped table-condensed">
@@ -70,5 +71,5 @@
 
 @include('alpha.goods.goods_moduls')
 @include('alpha.moduls.warning')
-
+@include(('alpha.goods.import_moduls'))
 @include('alpha.footer')

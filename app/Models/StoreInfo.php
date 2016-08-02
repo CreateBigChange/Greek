@@ -332,5 +332,11 @@ class StoreInfo extends Model{
         return DB::table($this->table)->where('id' , $storeId)->update($data);
     }
 
-
+    /**
+     *
+     *
+     */
+public function  getAllStore(){
+    return DB::table($this->table)->get();
+    }
 }

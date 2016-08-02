@@ -10,11 +10,13 @@ namespace App\Http\Controllers\Alpha;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
-
+use Maatwebsite\Excel\Excel;
+use App\Models\FileUpload;
 use App\Models\Goods;
 use App\Models\GoodsCategory;
 use App\Models\GoodsBrand;
 use App\Libs\Message;
+use App\Models\MyExcel;
 
 class GoodsController extends AdminController
 {
@@ -76,6 +78,8 @@ class GoodsController extends AdminController
         $this->response['page']         = $pageData->page;
         $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' . $param);
         $this->response['goods']        = $goodsModel->getGoodsList( $this->length , $pageData->offset , $search);
+
+
         return view('alpha.goods.list' , $this->response);
     }
 
@@ -396,5 +400,118 @@ class GoodsController extends AdminController
             return response()->json(Message::setResponseInfo('FAILED'));
         }
     }
+/**
+ * 商品导出
+ */
+public function excleExport(Request  $request){
+    $Excel = new  MyExcel();
+    $goodsModel = new Goods;
 
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+    $search = array();
+
+    $param = '';
+
+    if(isset($_GET['name']) && !empty($_GET['name'])){
+        $search['name'] = trim($_GET['name']);
+        $param .= 'name=' . $search['name'] . '&';
+    }
+    if(isset($_GET['c_one_id']) && !empty($_GET['c_one_id'])){
+        $search['c_one_id'] = trim($_GET['c_one_id']);
+        $param .= 'c_one_id=' . $search['c_one_id'] . '&';
+    }
+    if(isset($_GET['c_two_id']) && !empty($_GET['c_two_id'])){
+        $search['c_two_id'] = trim($_GET['c_two_id']);
+        $param .= 'c_two_id=' . $search['c_two_id'] . '&';
+    }
+    if(isset($_GET['c_id']) && !empty($_GET['c_id'])){
+        $search['c_id'] = trim($_GET['c_id']);
+        $param .= 'c_id=' . $search['c_id'] . '&';
+    }
+    if(isset($_GET['b_id']) && !empty($_GET['b_id'])){
+        $search['b_id'] = trim($_GET['b_id']);
+        $param .= 'b_id=' . $search['b_id'] . '&';
+    }
+    if(isset($_GET['is_open']) && $_GET['is_open'] != -1 ){
+        $search['is_open'] = trim($_GET['is_open']);
+        $param .= 'is_open=' . $search['is_open'] . '&';
+    }
+    if(isset($_GET['is_checked']) && $_GET['is_checked'] != -1 ){
+        $search['is_checked'] = trim($_GET['is_checked']);
+        $param .= 'is_checked=' . $search['is_checked'] . '&';
+    }
+
+    $totalNum = $goodsModel->getGoodsTotalNum($search);
+
+    $pageData = $this->getPageData($page  , $this->length, $totalNum);
+
+    $this->response['page']         = $pageData->page;
+    $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' . $param);
+    $this->response['goods']        = $goodsModel->getGoodsList( $totalNum ,0 , $search);
+
+
+
+
+    $data =$this->response['goods'];
+    $cellData = array();
+    $name = "商品";
+    $title=[
+        "商品ID",
+        "商品名称",
+        "商品图片",
+        "进价单价",
+        "销售单价",
+        "赠送积分",
+        "规格",
+        "描述",
+        "库存",
+        "是否开启",
+        "是否检查",
+        "创建时间",
+        "分类ID",
+        "分类名称",
+        "cc_id",
+        "ccname",
+        "ccc_id",
+        "cccname",
+        "品牌ID",
+        "品牌名称"
+    ];
+    for($i = 0;$i<count($data);$i++)
+    {
+        $cellData[$i]=get_object_vars($data[$i]);
+
+    }
+
+
+    $Excel->export($name,$cellData,$title);
+
+    return redirect("/alpha/goods");
+}
+
+    /**
+     * 文件的导入
+     *
+     * @param Request $request  要导入的文件
+     * @param String $table     要导入的表格
+     *
+     *
+     */
+public  function excelImport(Request $request){
+
+
+    $file = $request->file('file');
+
+    $FileUpload = new FileUpload;
+    $excelModel =new MyExcel;
+
+    $FilePath = $FileUpload->upload($file);
+
+
+
+    $tableNmae = "goods";
+     $data = $excelModel->import($FilePath,$tableNmae);
+
+}
 }

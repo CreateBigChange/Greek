@@ -37,11 +37,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/permissions/ajax' , 'AdminPermissionController@ajaxPermissionsList');
 		Route::post('/permission/add' , 'AdminPermissionController@addPermission');
 
-
-
 		Route::get('/permission/del/{id}' , 'AdminPermissionController@delPermission');
-
-
 
 		Route::get('/permission/info/{id}' , 'AdminPermissionController@getPermissionInfo');
 		Route::post('/permission/update' , 'AdminPermissionController@updatePermission');
@@ -76,6 +72,11 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/store/goods/check/{goodsId}' , 'StoresController@storeGoodsChecked');
 		Route::get('/store/goods/info/{goodsId}' , 'StoresController@getStoreGoodsInfo');
 		Route::post('/store/goods/update' , 'StoresController@updateStoreGoods');
+        Route::get('/store/goods/by/update' , 'StoresController@updateStoreGoodsInfo');
+        Route::post('/store/goods/import' , 'StoresController@storeGoodsImport');
+
+
+
 
 		//店员
 		Route::get('/store/user' , 'StoresController@getStoreUserList');
@@ -86,6 +87,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/goods/update' , 'GoodsController@editGoods');
 		Route::get('/goods/info/{id}' , 'GoodsController@ajaxGoodsInfo');
 		Route::get('/goods/del/{id}' , 'GoodsController@delGoods');
+        Route::post('/goods/import' , 'GoodsController@excelImport');
+        Route::get('/goods/excleExport' , 'GoodsController@excleExport');
 
 		//品类
 		Route::get('/goods/category/pid/{pid}' , 'GoodsController@ajaxGoodsCategoryByPid');
@@ -114,9 +117,12 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/order/accident' , 'OrdersController@getOrderAccident');
 		Route::get('/order/dispatching' , 'OrdersController@getOrderDispatching');
         Route::get('/order/balance', 'OrdersController@getOrderBalence');
+        Route::get('/order/completd', 'OrdersController@getOrderCompletd');
         Route::get('/order/balance/getOrderExport', 'OrdersController@getOrderExport');
         Route::post('/order/import', 'OrdersController@Orderimport');
 		Route::post('/order/change/status/{id}', 'OrdersController@changeStatus');
+
+
 
 		//用户
 		Route::get('/user/list' , 'UserController@getUserList');
@@ -187,6 +193,8 @@ Route::group(['middleware' => ['api'] , 'prefix' => 'gamma' , 'namespace' => 'Ga
 		Route::post('/store/goods/update/{id}', 'StoresController@updateGoods');
 		Route::post('/store/goods/opens', 'StoresController@opens');
 		Route::post('/store/goods/dels', 'StoresController@dels');
+
+
 
 		//订单
 		Route::post('/store/orders', 'OrdersController@getOrderList');

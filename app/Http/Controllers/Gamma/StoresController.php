@@ -420,6 +420,8 @@ class StoresController extends ApiController
      */
     public function updateGoods($id , Request $request){
 
+
+
         $data = array();
         if( $request->has('nav_id') ) {
             $data['nav_id'] = trim($request->get('nav_id'));
