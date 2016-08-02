@@ -133,7 +133,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/finance/withdrawAgree/{id}' , 'FinanceController@withdrawAgree');
         Route::get('/finance/checked', 'FinanceController@getCheckedWithdrawCashLog');
         Route::get('/finance/finish_withdraw', 'FinanceController@finish_withdraw');
-
+        Route::get('/finance/cashFinishList', 'FinanceController@getCashFinishList');
 
 
 		//版本
