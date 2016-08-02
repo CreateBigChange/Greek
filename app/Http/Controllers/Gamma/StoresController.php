@@ -19,6 +19,7 @@ use App\Models\StoreInfo;
 use App\Models\Order;
 use App\Models\AmapCityCode;
 use App\Models\StoreSettlings;
+use App\Models\Franchisee;
 use App\Models\StoreConfig;
 use App\Models\StoreGoods;
 use App\Models\GoodsCategory;
@@ -999,5 +1000,59 @@ class StoresController extends ApiController
         $orderCount->balance    = $storeInfo->balance;
 
         return view('count' , (Array)$orderCount);
+    }
+
+
+
+    /**
+     * @api {POST} /gamma/store/franchisee 申请加盟
+     * @apiName franchisee
+     * @apiGroup GAMMA
+     * @apiVersion 1.0.0
+     * @apiDescription 申请入驻
+     * @apiPermission anyone
+     * @apiSampleRequest http://greek.test.com/gamma/store/franchisee
+     *
+     * @apiParam {sting} name 姓名
+     * @apiParam {string} mobile 联系电话
+     * @apiParam {string} address 详细地址
+     *
+     * @apiParamExample {json} Request Example
+     *      POST /gamma/login
+     *      {
+     *          "name" : '吴辉',
+     *          "mobile" : '18401586654',
+     *          "address" : "融科望京中心11栋1102"
+     *      }
+     * @apiUse CODE_200
+     *
+     */
+    public function franchisee(Request $request) {
+
+        $validation = Validator::make($request->all(), [
+            'name'          => 'required|max:40',
+            'mobile'        => 'required|max:11',
+            'address'       => 'required'
+        ]);
+
+        $callback = $_GET['callback'];
+
+        //|match:/^1[34578]\d{9}$/
+        if($validation->fails()){
+            return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
+        }
+        $data = array();
+
+        $data['name']           = $request->get('name');
+        $data['address']        = $request->get('address');
+        $data['mobile']         = $request->get('mobile');
+        $data['is_contact']     = 0;
+
+        $franchiseeModel = new Franchisee;
+        if($franchiseeModel->franchisee($data)){
+            return response($callback . "('" . json_encode(Message::setResponseInfo('SUCCESS')) . "')");
+        }else{
+            return response($callback . "('" . json_encode(Message::setResponseInfo('FAILED')) . "')");
+        }
     }
 }
