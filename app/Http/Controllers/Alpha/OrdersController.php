@@ -282,7 +282,7 @@ class OrdersController extends AdminController
         }
 
         $status = Config::get('orderstatus');
-        $search['status'] = array($status['paid']['status']);
+        $search['status'] = array($status['withdrawMoney']['status']);
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
