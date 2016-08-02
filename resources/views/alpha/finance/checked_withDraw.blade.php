@@ -41,7 +41,7 @@
                                         <td>{{ $l->bank_card_num }}</td>
                                         <td>
                                             <button   class="btn btn-success payment" data-toggle="modal" href="#pay"
-                                        bank_card_num            = "{{ $l->bank_card_num }}",
+                                        bank_card_num            = "{{ $l->all_bank_card_num }}",
                                         bank_card_holder         = "{{ $l->bank_card_holder }}",
                                         bank_card_type           = "{{ $l->bank_card_type }}",
                                         bank_name                = "{{ $l->bank_name }}",

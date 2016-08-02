@@ -16,15 +16,18 @@
 
 
                             <div class="form-group">
-                                <input type="hidden"   class="form-control" value="" name="with_draw_id"  id="with_draw_id" />
+                                <label for='bank_card_num'>提现di</label>
+                                <input type="hidden"   class="form-control" value="" name="with_draw_id"  id="with_draw_id"  />
                             </div>
 
                             <div class="form-group">
-                                <input type="hidden"   class="form-control" value="" name="store_id"  id="store_id" />
+                                <label for='bank_card_num'>店铺id</label>
+                                <input type="hidden"   class="form-control" value="" name="store_id"  id="store_id"  />
                             </div>
 
                             <div class="form-group">
-                                <input type="hidden"   class="form-control" value="" name="withdraw_cash_num"  id="withdraw_cash_num" />
+                                <label for='bank_card_num'>提现金额</label>
+                                <input type="hidden"   class="form-control" value="" name="withdraw_cash_num"  id="withdraw_cash_num"  />
                             </div>
 
 

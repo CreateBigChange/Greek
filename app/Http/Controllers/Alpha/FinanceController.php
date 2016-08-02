@@ -136,6 +136,7 @@ class FinanceController extends AdminController
 
         $this->response['log'] = $cashModel->getWithdrawCashLog(array('status' => 2) , $this->length , $pageData->offset);
 
+
         return view('alpha.finance.checked_withDraw' , $this->response);
     }
 

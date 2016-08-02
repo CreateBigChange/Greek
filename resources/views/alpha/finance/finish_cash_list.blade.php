@@ -25,7 +25,6 @@
                                     <td>账户余额</td>
                                     <td>提现账户</td>
 
-
                                 </tr>
 
                                 </thead>
@@ -38,7 +37,7 @@
                                         <td>{{ $l->withdraw_cash_num }}</td>
                                         <td>{{ $l->money }}</td>
                                         <td>{{ $l->balance }}</td>
-                                        <td>{{ $l->bank_card_num }}</td>
+                                        <td>{{ $l->all_bank_card_num }}</td>
 
                                     </tr>
                                 @endforeach

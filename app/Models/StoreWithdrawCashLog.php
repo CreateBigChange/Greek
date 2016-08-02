@@ -300,7 +300,7 @@ class StoreWithdrawCashLog extends Model
 
         $result = DB::select($sql);
         foreach ($result as $r){
-
+            $r->all_bank_card_num=$r->bank_card_num;
             $r->bank_card_num = preg_replace('/(^.*)\d{4}(\d{4})$/','\\2',$r->bank_card_num);
             //$r->bank_card_num = substr_replace($r->bank_card_num, '', -1 , 4);
         }
