@@ -20,7 +20,7 @@ use App\Http\Controllers\AdminController;
 use App\Models\MyExcel;
 use App\Models\Order;
 use App\Libs\Message;
-
+use App\Models\FileUpload;
 class OrdersController extends AdminController
 {
     private $_model;
@@ -114,17 +114,13 @@ class OrdersController extends AdminController
 
         $status = Config::get('orderstatus');
 
-       
-
         $search['status'] = array($status['paid']['status']);
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
-
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
-
 
         $orderNum   = $this->_model->getOrderTotalNum($search);
 
@@ -132,7 +128,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/notdelivery?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['search']       = $search['status'];
         $this->response['status']       = $status;
@@ -156,7 +152,6 @@ class OrdersController extends AdminController
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
-
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
@@ -166,15 +161,13 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/delivery?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['search']       = $search['status'];
         $this->response['status']       = $status;
 
         return view('alpha.order.list' , $this->response);
-
     }
-
     public function getOrderAccident(Request $request){
         $search = array();
 
@@ -201,15 +194,13 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/accident?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['search']       = $search['status'];
         $this->response['status']       = $status;
 
         return view('alpha.order.list' , $this->response);
     }
-
-
     public function changeStatus($id , Request $request){
 
         $validation = Validator::make($request->all(), [
@@ -226,7 +217,6 @@ class OrdersController extends AdminController
             return response()->json(Message::setResponseInfo('FAILED'));
         }
     }
-
 /*
 *   得到配送中的订单
 */
@@ -258,7 +248,7 @@ class OrdersController extends AdminController
 
         $this->response['page']         = $pageData->page;
         $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/goods?' );
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/dispatching?' );
         $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
         $this->response['status']       = $status;
         $this->response['search']       = $search['status'];
@@ -299,6 +289,38 @@ class OrdersController extends AdminController
 
         return view('alpha.order.list' , $this->response);
     }
+
+    public function  getOrderCompletd(Request $request){
+
+        $search =array();
+
+        if(!isset($_GET['page'])){
+            $page = 1;
+        }else{
+            $page = $_GET['page'];
+        }
+
+        $status = Config::get('orderstatus');
+        $search['status'] = array($status['completd']['status']);
+
+        $orderMoney = $this->_model->getOrderTotalMony($search);
+        $this->response['totalMoney'] = $orderMoney;
+
+        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $pageData = $this->getPageData($page , $this->length, $orderNum);
+
+        $this->response['page']         = $pageData->page;
+        $this->response['pageData']     = $pageData;
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/completd?' );
+        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
+        $this->response['status']       = $status;
+        $this->response['search']       = $search['status'];
+
+        return view('alpha.order.list' , $this->response);
+    }
+
+
+
     /**
      * @param Request $request
      *
@@ -380,17 +402,13 @@ class OrdersController extends AdminController
 
         $file = $request->file('file');
 
-        if(!$file->isValid()){
-            exit('文件上传出错！');
-        }
-
-        $realPath = $file -> getRealPath();
-
-        $path = $file -> move(app_path().'\storage\uploads',"test.xml");
+        $FieUpload = new FieUpload;
+        $excelModel =new MyExcel;
 
 
-       // $excelModel =new MyExcel;
-       // $excelModel->import($path);
-        //return "$realPath----------------  $path";
+        $Fielpath =$FieUpload ->upload( $file );
+        $table="";
+        $excelModel->import($Fielpath,$table);
+
     }
 }

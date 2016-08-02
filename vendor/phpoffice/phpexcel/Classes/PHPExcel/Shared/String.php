@@ -492,9 +492,15 @@ class PHPExcel_Shared_String
 	 */
 	public static function ConvertEncoding($value, $to, $from)
 	{
-		if (self::getIsIconvEnabled()) {
-			return iconv($from, $to, $value);
-		}
+
+
+	    if (self::getIsIconvEnabled()) {
+
+	        return mb_convert_encoding($value, $to, $from);
+
+            // return html_entity_decode($value, ENT_QUOTES , "utf-16BE");
+            //   return iconv($from, $to, $value);
+	    }
 
 		if (self::getIsMbstringEnabled()) {
 			return mb_convert_encoding($value, $to, $from);

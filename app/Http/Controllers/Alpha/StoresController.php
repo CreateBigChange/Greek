@@ -23,7 +23,8 @@ use App\Libs\Message;
 use App\Libs\Curl;
 use App\Models\GoodsBrand;
 use App\Models\StoreGoods;
-
+use App\Models\FileUpload;
+use App\Models\MyExcel;
 use App\Models\AmapCityCode;
 
 class StoresController extends AdminController
@@ -569,7 +570,7 @@ class StoresController extends AdminController
         $this->response['brand']            =11;
 
 
-        //dd($this->response);
+
 
 
         return view('alpha.store.goods.list' , $this->response);
@@ -724,5 +725,18 @@ class StoresController extends AdminController
 		}
 
 	}
+	public function  storeGoodsImport(Request $request){
+        $file = $request->file('file');
+        $store_id = $request->get("store_id");
+
+        $FieUpload = new FileUpload;
+        $excelModel =new MyExcel;
+
+
+        $Fielpath =$FieUpload ->upload( $file );
+        $table="";
+        $excelModel->import($Fielpath,$table);
+        return redirect("/alpha/store/goods/".$store_id);
+    }
 
 }

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
 use Maatwebsite\Excel\Excel;
-
+use App\Models\FileUpload;
 use App\Models\Goods;
 use App\Models\GoodsCategory;
 use App\Models\GoodsBrand;
@@ -403,7 +403,7 @@ class GoodsController extends AdminController
 /**
  * 商品导出
  */
-public function excelImport(Request  $request){
+public function excleExport(Request  $request){
     $Excel = new  MyExcel();
     $goodsModel = new Goods;
 
@@ -488,5 +488,30 @@ public function excelImport(Request  $request){
     $Excel->export($name,$cellData,$title);
 
     return redirect("/alpha/goods");
+}
+
+    /**
+     * 文件的导入
+     *
+     * @param Request $request  要导入的文件
+     * @param String $table     要导入的表格
+     *
+     *
+     */
+public  function excelImport(Request $request){
+
+
+    $file = $request->file('file');
+
+    $FileUpload = new FileUpload;
+    $excelModel =new MyExcel;
+
+    $FilePath = $FileUpload->upload($file);
+
+
+
+    $tableNmae = "goods";
+     $data = $excelModel->import($FilePath,$tableNmae);
+
 }
 }
