@@ -634,6 +634,7 @@ class UsersController extends ApiController
             $data['updated_at'] = date('Y-m-d H:i:s', time());
 
             if ($this->_model->updateUser($this->userId, $data)) {
+                session::forget("jsx_sms_$password->account");
                 return response()->json(Message::setResponseInfo('SUCCESS'));
             } else {
                 return response()->json(Message::setResponseInfo('FAILED'));
