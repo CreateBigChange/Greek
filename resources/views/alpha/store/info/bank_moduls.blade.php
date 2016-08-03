@@ -16,21 +16,21 @@
                                     <label class="col-sm-2 col-sm-2 control-label">商店ID</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name='store_id'
-                                               value="{{$storeInfo->id}}" id="store_id"/>
+                                               value="{{$storeInfo->id}}" id="store_id" readonly/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">银行卡ID</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name='bank_card_id'
-                                               value="{{$storeInfo->bank_card_id}}" id="bank_card_id"/>
+                                               value="{{$storeInfo->bank_card_id}}" id="bank_card_id" readonly/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 col-sm-2 control-label">银行卡号码</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name='bank_card_num' id="bank_card_num"
-                                               value="{{$storeInfo->bank_card_num}}"/>
+                                               value="{{$storeInfo->bank_card_num}}" />
                                     </div>
                                 </div>
                                 <div class="form-group">
