@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7771b50f-8e6e-4acb-b73c-b28cdde0237f" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php" afterPath="$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/StoreBankCard.php" afterPath="$PROJECT_DIR$/app/Models/StoreBankCard.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/StoreInfo.php" afterPath="$PROJECT_DIR$/app/Models/StoreInfo.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php" />
     </list>
     <ignored path="Greek.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,72 +32,97 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="OrdersController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="344" column="53" selection-start-line="344" selection-start-column="53" selection-end-line="344" selection-end-column="53" />
-              <folding>
-                <element signature="e#126#154#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="135" column="43" selection-start-line="135" selection-start-column="29" selection-end-line="135" selection-end-column="43" />
+            <state relative-caret-position="124">
+              <caret line="58" column="37" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FinanceController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php">
+      <file leaf-file-name="StoresController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+            <state relative-caret-position="301">
+              <caret line="761" column="34" selection-start-line="761" selection-start-column="34" selection-end-line="761" selection-end-column="34" />
               <folding>
+                <element signature="e#6#85#0#PHP" expanded="true" />
                 <element signature="e#125#153#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StoreWithdrawCashLog.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php">
+      <file leaf-file-name="info_moduls.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/info_moduls.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="302" column="52" selection-start-line="302" selection-start-column="52" selection-end-line="302" selection-end-column="52" />
+            <state relative-caret-position="-912">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StoreInfo.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/StoreInfo.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="224" column="9" selection-start-line="224" selection-start-column="9" selection-end-line="224" selection-end-column="9" />
               <folding>
-                <marker date="1470132161164" expanded="true" signature="3149:3704" ph="SELECT store... store_withdraw_cash_log" />
-                <marker date="1470132161164" expanded="true" signature="4540:4841" ph="SELECT store... store_withdraw_cash_log" />
-                <marker date="1470132161164" expanded="true" signature="5404:5640" ph="SELECT total... orders" />
-                <marker date="1470132161164" expanded="true" signature="6578:6697" ph="SELECT sum(s... ${$this-&gt;table}" />
-                <marker date="1470132161164" expanded="true" signature="7599:8442" ph="SELECT sw.id... ${$this-&gt;table}" />
-                <marker date="1470132161164" expanded="true" signature="9665:9763" ph="SELECT count... ${$this-&gt;table}" />
+                <marker date="1470192037793" expanded="true" signature="672:2326" ph="select si.id... ${$this-&gt;table}" />
+                <marker date="1470192037793" expanded="true" signature="7342:7429" ph="select count... ${$this-&gt;table}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cash_moduls.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash_moduls.blade.php">
+      <file leaf-file-name="bank_moduls.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
+            <state relative-caret-position="114">
+              <caret line="6" column="67" selection-start-line="6" selection-start-column="67" selection-end-line="6" selection-end-column="67" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StoreBankCard.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/StoreBankCard.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="27" column="9" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="76" column="38" selection-start-line="76" selection-start-column="38" selection-end-line="76" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="import_moduls.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="248">
+              <caret line="19" column="107" selection-start-line="19" selection-start-column="107" selection-end-line="19" selection-end-column="107" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="goodsUpdate_moduls.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="62" column="38" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -104,38 +131,8 @@
       <file leaf-file-name="checked_moduls.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="29" column="51" selection-start-line="29" selection-start-column="51" selection-end-line="29" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cash.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="finish_cash_list.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="checked_withDraw.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="35">
-              <caret line="43" column="92" selection-start-line="43" selection-start-column="92" selection-end-line="43" selection-end-column="92" />
+            <state relative-caret-position="190">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -167,7 +164,6 @@
         <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdata_moduls.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/nocheck_list.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/activity/banner_mouder.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/StoreInfo.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php" />
         <option value="$PROJECT_DIR$/../../sf/index.html" />
         <option value="$PROJECT_DIR$/config/excel.php" />
@@ -182,15 +178,19 @@
         <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/GoodsController.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/goods/list.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php" />
-        <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/StoreInfo.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/routes.php" />
+        <option value="$PROJECT_DIR$/app/Models/StoreBankCard.php" />
+        <option value="$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
       </list>
     </option>
   </component>
@@ -240,8 +240,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -352,7 +350,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="goods" />
+              <option name="myItemId" value="info" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -562,12 +560,14 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="FinanceController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/FinanceController.php&#10;route&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;EX&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php&#10;Excel&#9;null&#9;null&#10;StoresController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/StoresController.php&#10;Config&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Models/StoreConfig.php&#10;GoodsController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/GoodsController.php&#10;String.php&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php&#10;excel&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/config/excel.php&#10;order&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;goods&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php&#10;routes&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;banner&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/activity/banner_mouder.blade.php&#10;nocheck&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/nocheck_list.blade.php&#10;finish_withdraw&#9;null&#9;null&#10;checked&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;checked_&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;bannerVersion&#9;null&#9;null&#10;goods.blade&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/goods_moduls.blade.php&#10;goods/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/list.blade.php&#10;OrdersController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;order/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade1.php&#10;list.&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade.php&#10;list.blad&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/list.blade.php&#10;composer&#9;null&#9;null&#10;e&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/.env" />
+    <property name="SearchEverywhereHistoryKey" value="route&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;StoresController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/StoresController.php&#10;FinanceController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/FinanceController.php&#10;EX&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/maatwebsite/excel/src/Maatwebsite/Excel/Excel.php&#10;Excel&#9;null&#9;null&#10;Config&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Models/StoreConfig.php&#10;GoodsController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/GoodsController.php&#10;String.php&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/vendor/phpoffice/phpexcel/Classes/PHPExcel/Shared/String.php&#10;excel&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/config/excel.php&#10;order&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;goods&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php&#10;routes&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/routes.php&#10;banner&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/activity/banner_mouder.blade.php&#10;nocheck&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/nocheck_list.blade.php&#10;finish_withdraw&#9;null&#9;null&#10;checked&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;checked_&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/finance/checked_moduls.blade.php&#10;bannerVersion&#9;null&#9;null&#10;goods.blade&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/goods_moduls.blade.php&#10;goods/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/store/goods/list.blade.php&#10;OrdersController&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/app/Http/Controllers/Alpha/OrdersController.php&#10;order/list&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade1.php&#10;list.&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/order/list.blade.php&#10;list.blad&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/resources/views/alpha/goods/list.blade.php&#10;composer&#9;null&#9;null&#10;e&#9;FILE&#9;file://E:/DevelopmentTools/workplace/www/git/Greek/.env" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
@@ -576,6 +576,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\store\info" />
       <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\store\goods" />
       <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\goods" />
       <recent name="E:\DevelopmentTools\workplace\www\git\Greek\resources\views\alpha\order" />
@@ -648,35 +649,36 @@
       <workItem from="1469757909604" duration="29081000" />
       <workItem from="1470019924165" duration="19453000" />
       <workItem from="1470104302224" duration="16288000" />
+      <workItem from="1470186305880" duration="6917000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112778000" />
+    <option name="totallyTimeSpent" value="119695000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="1" width="1364" height="726" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20673813" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2848392" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -703,49 +705,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/IndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="38" column="62" selection-start-line="38" selection-start-column="62" selection-end-line="38" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdata_moduls.blade.php" />
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/category/category_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-114">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-133">
-          <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade1.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_detail_module.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/order_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/alpha/moduls/warning.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -757,13 +716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/nocheck_list.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="34" column="55" selection-start-line="34" selection-start-column="55" selection-end-line="34" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -781,31 +733,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/StoreInfo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="634">
-          <caret line="340" column="4" selection-start-line="340" selection-start-column="4" selection-end-line="340" selection-end-column="4" />
-          <folding>
-            <marker date="1469784043177" expanded="true" signature="672:2210" ph="select si.id... ${$this-&gt;table}" />
-            <marker date="1469784043177" expanded="true" signature="7226:7313" ph="select count... ${$this-&gt;table}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1368">
-          <caret line="72" column="91" selection-start-line="72" selection-start-column="83" selection-end-line="72" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../sf/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
           <caret line="28" column="31" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#h1#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -827,7 +758,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -849,7 +779,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="475">
           <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -857,7 +786,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
           <caret line="5" column="116" selection-start-line="5" selection-start-column="111" selection-end-line="5" selection-end-column="116" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -865,7 +793,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="912">
           <caret line="48" column="105" selection-start-line="48" selection-start-column="44" selection-end-line="48" selection-end-column="105" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -873,7 +800,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
           <caret line="5" column="64" selection-start-line="5" selection-start-column="64" selection-end-line="5" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -881,7 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -897,7 +822,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -905,20 +829,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
-          <folding>
-            <marker date="1469789818701" expanded="true" signature="971:1073" ph="select sum(p... orders" />
-            <marker date="1469789818701" expanded="true" signature="1891:3727" ph="SELECT o.id,... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="29974:30101" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="30689:30815" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="31395:31521" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="32030:32164" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="32618:32752" ph="SELECT count... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="33798:33932" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="34410:34622" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="35213:35425" ph="SELECT sum(`... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="36062:36278" ph="SELECT `tota... ${$this-&gt;table}" />
-            <marker date="1469789818701" expanded="true" signature="42335:42415" ph="SELECT count... ${$this-&gt;table}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -926,10 +836,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-399">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1469586749412" expanded="true" signature="553:1271" ph="SELECT g.id,... ${$this-&gt;table}" />
-            <marker date="1469586749412" expanded="true" signature="2902:2988" ph="SELECT count... ${$this-&gt;table}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -945,7 +851,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -953,7 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2060">
           <caret line="102" column="88" selection-start-line="102" selection-start-column="88" selection-end-line="102" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -961,7 +865,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -977,7 +880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="16" column="26" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1001,37 +903,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="19" column="107" selection-start-line="19" selection-start-column="107" selection-end-line="19" selection-end-column="107" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="730" column="0" selection-start-line="730" selection-start-column="0" selection-end-line="730" selection-end-column="0" />
-          <folding>
-            <element signature="e#125#153#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/alpha/order/list.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
           <caret line="12" column="175" selection-start-line="12" selection-start-column="175" selection-end-line="12" selection-end-column="175" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1045,65 +920,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/OrdersController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="6213">
           <caret line="344" column="53" selection-start-line="344" selection-start-column="53" selection-end-line="344" selection-end-column="53" />
           <folding>
-            <element signature="e#126#154#0#PHP" expanded="true" />
+            <element signature="e#126#154#0#PHP" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="135" column="43" selection-start-line="135" selection-start-column="29" selection-end-line="135" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_withDraw.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="35">
+        <state relative-caret-position="817">
           <caret line="43" column="92" selection-start-line="43" selection-start-column="92" selection-end-line="43" selection-end-column="92" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="29" column="51" selection-start-line="29" selection-start-column="51" selection-end-line="29" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/StoreWithdrawCashLog.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
+        <state relative-caret-position="5567">
           <caret line="302" column="52" selection-start-line="302" selection-start-column="52" selection-end-line="302" selection-end-column="52" />
           <folding>
             <marker date="1470132161164" expanded="true" signature="3149:3704" ph="SELECT store... store_withdraw_cash_log" />
@@ -1118,9 +953,159 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/FinanceController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="150" column="0" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+        <state relative-caret-position="19">
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
           <folding>
+            <element signature="e#125#153#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/finish_cash_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-184">
+          <caret line="37" column="64" selection-start-line="37" selection-start-column="64" selection-end-line="37" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/cash_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="69" selection-start-line="11" selection-start-column="69" selection-end-line="11" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/category/category_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-855">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/category/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5130">
+          <caret line="66" column="30" selection-start-line="66" selection-start-column="30" selection-end-line="66" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/nocheck_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="58" column="41" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/import_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="19" column="107" selection-start-line="19" selection-start-column="107" selection-end-line="19" selection-end-column="107" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/goods/goodsUpdate_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="62" column="38" selection-start-line="62" selection-start-column="38" selection-end-line="62" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/finance/checked_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreInfo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="224" column="9" selection-start-line="224" selection-start-column="9" selection-end-line="224" selection-end-column="9" />
+          <folding>
+            <marker date="1470192037793" expanded="true" signature="672:2326" ph="select si.id... ${$this-&gt;table}" />
+            <marker date="1470192037793" expanded="true" signature="7342:7429" ph="select count... ${$this-&gt;table}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/info_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-912">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="76" column="38" selection-start-line="76" selection-start-column="38" selection-end-line="76" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="58" column="37" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/StoreBankCard.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="27" column="9" selection-start-line="27" selection-start-column="9" selection-end-line="27" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="67" selection-start-line="6" selection-start-column="67" selection-end-line="6" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="761" column="34" selection-start-line="761" selection-start-column="34" selection-end-line="761" selection-end-column="34" />
+          <folding>
+            <element signature="e#6#85#0#PHP" expanded="true" />
             <element signature="e#125#153#0#PHP" expanded="true" />
           </folding>
         </state>

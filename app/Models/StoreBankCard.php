@@ -25,7 +25,7 @@ class StoreBankCard extends Model
 
 
     /**
-     * 返回店铺绑定的银行卡
+     * 更新店铺绑定的银行卡
      */
     public function updateBankCard($storeId, $data)
     {
@@ -33,5 +33,6 @@ class StoreBankCard extends Model
         return DB::table($this->table)->where('store_id', $storeId)->update($data);
 
     }
+
 
 }

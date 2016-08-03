@@ -125,6 +125,7 @@ class StoresController extends AdminController
 		$storeInfos = $storeModel->getStoreList($search  , $this->length , $pageData->offset );
 		$this->response['storeInfos'] = $storeInfos;
 
+
         return view('alpha.store.info.list' , $this->response);
 	}
 	/**
@@ -738,5 +739,26 @@ class StoresController extends AdminController
         $excelModel->import($Fielpath,$table);
         return redirect("/alpha/store/goods/".$store_id);
     }
+    public function  updateStoreBankInfo(Request $request){
 
+        $StoreBankCard = new StoreBankCard;
+        $page = 1;
+
+        if($request->has("page")){
+            $page= $request->get("page");
+        }
+
+        $store_id = $request->get("store_id");
+        $data     =array(
+             "bank_card_id" => $request->get("bank_card_id"),
+              "bank_card_num" => $request->get("bank_card_num"),
+              "bank_card_holder" => $request->get("bank_card_holder"),
+              "bank_card_type" => $request->get("bank_card_type"),
+              "bank_name" => $request->get("bank_name"),
+              "bank_reserved_telephone" => $request->get("bank_reserved_telephone")
+        );
+
+        $StoreBankCard ->updateBankCard( $store_id , $data);
+        return redirect()->back();
+}
 }
