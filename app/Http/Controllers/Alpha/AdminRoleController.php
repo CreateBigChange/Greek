@@ -168,4 +168,11 @@ class AdminRoleController extends AdminController
 
         return view('alpha.auth.permissions.list' , $this->response);
     }
+    public function  updateRolePassword(Request $request){
+
+        $this->response['title']		= '密码修改';
+        $this->response['menuactive']	= 'qxgl';
+
+        return view('alpha.auth.roles.update_password', $this->response);
+    }
 }

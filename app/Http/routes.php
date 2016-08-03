@@ -23,6 +23,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/admin/user/info/{id}' , 'AdminUsersController@getAdminUserInfo');
 		Route::post('/admin/user/update' , 'AdminUsersController@updateAdminUser');
 
+
 		//角色操作
 		Route::get('/roles' , 'AdminRoleController@getRoleList');
 		Route::get('/roles/user/ajax/{userId}' , 'AdminRoleController@ajaxUserRole');
@@ -31,6 +32,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/role/del/{id}' , 'AdminRoleController@delRole');
 		Route::get('/role/info/{id}' , 'AdminRoleController@getRoleInfo');
 		Route::post('/role/update' , 'AdminRoleController@updateRole');
+        Route::get('/role/password' , 'AdminRoleController@updateRolePassword');
 
 		//节点操作
 		Route::get('/permissions' , 'AdminPermissionController@getPermissionsList');
