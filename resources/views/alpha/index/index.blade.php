@@ -63,7 +63,7 @@
 </div>
 <!--state overview end-->
 
-< <div id="show" style="height: 600px;width:1000px;"></div>
+ <div id="show" style="height: 600px;width:1000px;"></div>
 
 <script type="text/javascript">
 var dom = document.getElementById("show");
