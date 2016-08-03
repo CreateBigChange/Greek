@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7771b50f-8e6e-4acb-b73c-b28cdde0237f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alpha/StoresController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/StoreBankCard.php" afterPath="$PROJECT_DIR$/app/Models/StoreBankCard.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/store/info/bank_moduls.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/alpha/store/info/list.blade.php" />
     </list>
     <ignored path="Greek.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,8 +42,8 @@
       <file leaf-file-name="StoreBankCard.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/StoreBankCard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+            <state relative-caret-position="304">
+              <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -648,12 +645,12 @@
       <workItem from="1469757909604" duration="29081000" />
       <workItem from="1470019924165" duration="19453000" />
       <workItem from="1470104302224" duration="16288000" />
-      <workItem from="1470186305880" duration="14316000" />
+      <workItem from="1470186305880" duration="15277000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127094000" />
+    <option name="totallyTimeSpent" value="128055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="1" width="1364" height="726" extended-state="0" />
@@ -1136,8 +1133,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/StoreBankCard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="47" column="8" selection-start-line="47" selection-start-column="8" selection-end-line="47" selection-end-column="8" />
+        <state relative-caret-position="304">
+          <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
           <folding />
         </state>
       </provider>
