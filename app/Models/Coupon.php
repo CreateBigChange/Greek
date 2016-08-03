@@ -43,7 +43,28 @@ class Coupon extends Model
             ->update($data);
     }
 
+    /**
+     * @return mixed
+     * 获取优惠券总数目
+     */
+    public function couponTotalNum($search = array())
+    {
+        $sql = DB::table($this->table);
 
+        if(isset($search['id'])){
+            $sql->where('coupon.id' , $search['id']);
+        }
+
+        if(isset($search['store_id'])){
+            $sql->where('coupon.store_id' , $search['store_id']);
+        }
+
+        if(isset($search['agent_id'])){
+            $sql->where('store_infos.agent_id' , $search['agent_id']);
+        }
+        return $sql->count();
+
+    }
 
     /**
      * @param $data
@@ -78,12 +99,6 @@ class Coupon extends Model
             ->orderBy('coupon.created_at' , 'desc')
             ->get();
     }
-
-    /**
-     * @return mixed
-     * 获取优惠券总数目
-     */
-
 
     public function getCouponTotalNum($search = array()){
         $sql = DB::table($this->table);
