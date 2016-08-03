@@ -62,8 +62,7 @@ class Coupon extends Model
         if(isset($search['agent_id'])){
             $sql->where('store_infos.agent_id' , $search['agent_id']);
         }
-        return $sql->count();
-
+        return $sql->join('store_infos' , 'coupon.store_id' , '=' , 'store_infos.id')->count();
     }
 
     /**
@@ -110,7 +109,6 @@ class Coupon extends Model
         if(isset($search['store_id'])){
             $sql->where('store_id' , $search['store_id']);
         }
-
 
         if(isset($search['agent_id'])){
             $sql->where('store_infos.agent_id' , $search['agent_id']);

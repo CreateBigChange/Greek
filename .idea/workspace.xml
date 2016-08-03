@@ -88,8 +88,8 @@
       <file leaf-file-name="CouponController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Gamma/CouponController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="127" column="55" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="55" />
+            <state relative-caret-position="276">
+              <caret line="127" column="50" selection-start-line="127" selection-start-column="50" selection-end-line="127" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -98,11 +98,11 @@
       <file leaf-file-name="Coupon.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/Coupon.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="51" column="39" selection-start-line="51" selection-start-column="39" selection-end-line="51" selection-end-column="39" />
+            <state relative-caret-position="149">
+              <caret line="64" column="95" selection-start-line="64" selection-start-column="95" selection-end-line="64" selection-end-column="95" />
               <folding>
                 <element signature="e#131#138#0#PHP" expanded="true" />
-                <marker date="1470218935107" expanded="true" signature="304:324" ph="select * fro... coupon" />
+                <marker date="1470219622648" expanded="true" signature="304:324" ph="select * fro... coupon" />
               </folding>
             </state>
           </provider>
@@ -587,12 +587,12 @@
       <workItem from="1469757909604" duration="29081000" />
       <workItem from="1470019924165" duration="19453000" />
       <workItem from="1470104302224" duration="16288000" />
-      <workItem from="1470186305880" duration="19247000" />
+      <workItem from="1470186305880" duration="19926000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132025000" />
+    <option name="totallyTimeSpent" value="132704000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="1" width="1364" height="726" extended-state="0" />
@@ -1032,14 +1032,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Gamma/CouponController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="127" column="55" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Activity.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1064,13 +1056,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Gamma/CouponController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="127" column="50" selection-start-line="127" selection-start-column="50" selection-end-line="127" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Coupon.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="51" column="39" selection-start-line="51" selection-start-column="39" selection-end-line="51" selection-end-column="39" />
+        <state relative-caret-position="149">
+          <caret line="64" column="95" selection-start-line="64" selection-start-column="95" selection-end-line="64" selection-end-column="95" />
           <folding>
             <element signature="e#131#138#0#PHP" expanded="true" />
-            <marker date="1470218935107" expanded="true" signature="304:324" ph="select * fro... coupon" />
+            <marker date="1470219622648" expanded="true" signature="304:324" ph="select * fro... coupon" />
           </folding>
         </state>
       </provider>
