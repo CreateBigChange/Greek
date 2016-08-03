@@ -45,16 +45,16 @@ class StoreBankCard extends Model
     {
 
         $result =  $user = DB::table($this->table)->where('bank_card_id', $bank_card_id)->first();
-        
+
         if($result!=null){
             DB::table($this->table)
                 ->where('bank_card_id', $bank_card_id)
                 ->update($data);
-            dd("up");
+
         }else{
             DB::table($this->table)->insert($data);
 
-            dd("add");
+
         }
     }
 
