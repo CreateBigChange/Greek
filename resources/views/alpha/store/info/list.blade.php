@@ -52,7 +52,7 @@
 												<div p_id="{{ $si->id }}" page="{{ $page }}"  location="{{ $si->location }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
 												<a title="店员" href="/alpha/store/user?store_id={{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-user"></i></a>
 												<a title="店铺商品" href="/alpha/store/goods/{{ $si->id }}" class="btn btn-primary btn-xs"><i class="icon-hdd"></i></a>
-												<div p_id="{{ $si->id }}" page="{{ $page }}"  location="{{ $si->location }}" data-toggle="modal" href="#bank_info_{{$si->id}}" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+												<div p_id="{{ $si->id }}" page="{{ $page }}"  location="{{ $si->location }}" data-toggle="modal" href="#bank_info_{{$si->id}}" class="btn btn-primary btn-xs update"><i class="glyphicon glyphicon-cog"></i></div>
 
 											</td>
 										</tr>
