@@ -43,10 +43,10 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">是代理商</label>
 								<div class="col-sm-10">
-									<input id="anget" name="is_agent" value="1" type="checkbox" id="edit_is_agent">
+									<input id="edit_anget" name="is_agent" value="1" type="checkbox" id="edit_is_agent">
 								</div>
 							</div>
-							<div class="form-group" id="area-input" style="display: none">
+							<div class="form-group" id="edit_area-input" style="display: none">
 								<label class="col-sm-2 col-sm-2 control-label">代理地区</label>
 								<div class="col-lg-3">
 									<select class="form-control m-bot15" name='province' id='edit_search_province'>
@@ -250,6 +250,7 @@
 
 	$('#anget').bind('click' , function () {
 
+		console.log(111);
 		$('#area-input').toggle();
 
 	})

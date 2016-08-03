@@ -88,6 +88,13 @@ class OrdersController extends AdminController
             $search['store_name'] = trim($request->get('store_name'));
         }
 
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderNum   = $this->_model->getOrderTotalNum($search);
         $orderMoney = $this->_model->getOrderTotalMony($search);
       
@@ -119,6 +126,14 @@ class OrdersController extends AdminController
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
@@ -152,6 +167,14 @@ class OrdersController extends AdminController
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
         }
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
@@ -182,6 +205,13 @@ class OrdersController extends AdminController
 
         if($request->has('search')){
             $search['search'] = trim($request->get('search'));
+        }
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
         }
 
 
@@ -239,6 +269,13 @@ class OrdersController extends AdminController
             $search['search'] = trim($request->get('search'));
         }
 
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
@@ -274,6 +311,13 @@ class OrdersController extends AdminController
         $status = Config::get('orderstatus');
         $search['status'] = array($status['withdrawMoney']['status']);
 
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
@@ -302,6 +346,13 @@ class OrdersController extends AdminController
 
         $status = Config::get('orderstatus');
         $search['status'] = array($status['completd']['status']);
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
@@ -335,9 +386,19 @@ class OrdersController extends AdminController
 
         $status                         = Config::get('orderstatus');
         $search['status']               = $array;
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $orderNum                       = $this->_model->getOrderTotalNum($search);
         $offset                         =0;
         $data                           = $this->_model->getOrderList($search , $orderNum  , $offset);
+
+
 
         $cellData = array();
         for($i = 0;$i<count($data);$i++)

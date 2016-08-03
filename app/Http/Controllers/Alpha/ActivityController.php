@@ -89,6 +89,14 @@ class ActivityController extends AdminController
             $page = $request->get('page');
         }
         $search['strore_id']=0;
+
+        /**
+         * 如果登录的用户是代理商
+         */
+        if($this->userInfo->is_agent){
+            $search['agent_id'] = $this->userInfo->id;
+        }
+
         $totalNum =  $this->couponModel->couponTotalNum();
         $pageData = $this->getPageData($page  , $this->length, $totalNum);
         $this->response['list']= $this->couponModel->getCouponList($search,$this->length,$pageData->offset);

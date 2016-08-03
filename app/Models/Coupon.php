@@ -75,6 +75,10 @@ class Coupon extends Model
         if(isset($search['store_id'])){
             $sql->where('coupon.store_id' , $search['store_id']);
         }
+        
+        if(isset($search['agent_id'])){
+            $sql->where('store_infos.agent_id' , $search['agent_id']);
+        }
 
         return $sql->skip($offset)
             ->take($length)
