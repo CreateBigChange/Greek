@@ -17,17 +17,17 @@
 
                             <div class="form-group">
                                 <label for='bank_card_num'>提现di</label>
-                                <input type="hidden"   class="form-control" value="" name="with_draw_id"  id="with_draw_id"  />
+                                <input type="text"   class="form-control" value="" name="with_draw_id"  id="with_draw_id"  readonly />
                             </div>
 
                             <div class="form-group">
                                 <label for='bank_card_num'>店铺id</label>
-                                <input type="hidden"   class="form-control" value="" name="store_id"  id="store_id"  />
+                                <input type="text"   class="form-control" value="" name="store_id"  id="store_id"   readonly/>
                             </div>
 
                             <div class="form-group">
                                 <label for='bank_card_num'>提现金额</label>
-                                <input type="hidden"   class="form-control" value="" name="withdraw_cash_num"  id="withdraw_cash_num"  />
+                                <input type="text"   class="form-control" value="" name="withdraw_cash_num"  id="withdraw_cash_num"  readonly/>
                             </div>
 
 
@@ -35,23 +35,23 @@
                             <div class="form-group">
                                 <label for='bank_card_num'>卡号</label>
 
-                                <input type="text"   class="form-control" value=""  name ="bank_card_num"  id="bank_card_num"  disabled/>
+                                <input type="text"   class="form-control" value=""  name ="bank_card_num"  id="bank_card_num"  readonly/>
                             </div>
                             <div class="form-group">
                                 <label for='bank_card_holder'>持卡人</label>
-                                <input type="text"   class="form-control"  value=""  name="bank_card_holder"  id="bank_card_holder"  disabled />
+                                <input type="text"   class="form-control"  value=""  name="bank_card_holder"  id="bank_card_holder" readonly  />
                             </div>
                             <div class="form-group">
                                 <label for='bank_card_type'>银行卡类型</label>
-                                <input type="text"   class="form-control"  value=""  name ="bank_card_type"  id="bank_card_type" disabled  />
+                                <input type="text"   class="form-control"  value=""  name ="bank_card_type"  id="bank_card_type"  readonly />
                             </div>
                             <div class="form-group">
                                 <label for='bank_name'>银行名</label>
-                                <input type="text"   class="form-control"  value=""  name ="bank_name"  id="bank_name"  disabled />
+                                <input type="text"   class="form-control"  value=""  name ="bank_name"  id="bank_name"  readonly />
                             </div>
                             <div class="form-group">
                                 <label for='bank_reserved_telephone'>银行服务电话</label>
-                                <input type="text"   class="form-control"  value=""  name ="bank_reserved_telephone" id="bank_reserved_telephone" disabled/>
+                                <input type="text"   class="form-control"  value=""  name ="bank_reserved_telephone" id="bank_reserved_telephone" readonly/>
                             </div>
                         </div>
                     </section>

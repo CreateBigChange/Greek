@@ -67,7 +67,10 @@ class StoreInfo extends Model{
                       si.agent_id,
                       sb.bank_card_num,
                       sb.bank_card_holder,
-                      sb.bank_reserved_telephone
+                      sb.bank_reserved_telephone,
+                      sb.bank_card_type,
+                      sb.bank_card_id,
+                      sb.bank_name
                   FROM $this->table as si";
 
         $sql .= " LEFT JOIN ".$storeConfigModel->getTable()." as sc ON si.id = sc.store_id";

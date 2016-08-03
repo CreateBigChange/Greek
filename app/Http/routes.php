@@ -56,6 +56,8 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/stores/info/{id}' , 'StoresController@ajaxStoreInfo');
 		Route::post('/stores/add' , 'StoresController@addStore');
 		Route::post('/stores/update' , 'StoresController@updateStore');
+        Route::post('/stores/bankinfo' , 'StoresController@updateStoreBankInfo');
+
 
 		Route::get('/stores/categories' , 'StoresController@ajaxStoreCategoriesList');
 		Route::get('/stores/categories/list' , 'StoresController@getStoreCategoriesList');
