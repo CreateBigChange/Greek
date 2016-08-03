@@ -256,12 +256,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 col-sm-2 control-label">银行卡号</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" name='bank_card' id="edit_bank_card"/>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">店铺LOGO</label>
 								<div class="col-sm-10">
 									<div class="file" style="margin-left:15px;">
@@ -385,7 +379,7 @@
 				$('#edit_logo_pre').attr('src',data.data.store_logo);
 				$('#edit_construction_money').val(data.data.construction_money);
 				$('#edit_security_deposit').val(data.data.security_deposit);
-				$('#edit_bank_card').val(data.data.bank_card_num);
+
 
 				$.get('/alpha/stores/categories' , function(categories){
 					if(categories){
