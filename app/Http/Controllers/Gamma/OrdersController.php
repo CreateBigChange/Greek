@@ -16,6 +16,7 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Push;
 use App\Libs\Message;
 use App\Libs\BLogger;
 
@@ -263,29 +264,34 @@ class OrdersController extends ApiController
              */
             if($orderInfo[0]->pay_type_id != 4) {
                 if ($status == Config::get('orderstatus.refunded')['status']) {
-                    //消息推送队列
-                    $this->dispatch(new Jpush(
-                        "你有一个退款成功的订单",
-                        "急所需",
-                        array('ios', 'android'),
-                        "{$orderInfo[0]->user}",
-                        array(),
-                        "default",
-                        "refunded_success",
-                        "user"
-                    ));
+
+                    $pushModel = new Push();
+
+                    $pushModel->application     = '急所需用户端';
+                    $pushModel->content         = '你有一个退款成功的订单';
+                    $pushModel->title           = '急所需';
+                    $pushModel->platform        = 'all';
+                    $pushModel->tag             = '';
+                    $pushModel->alias           = $orderInfo[0]->user;
+                    $pushModel->sound           = 'default';
+                    $pushModel->type            = 'refunded_success';
+
+                    $pushModel->save();
+
                 } elseif ($status == Config::get('orderstatus.on_the_way')['status']) {
-                    //消息推送队列
-                    $this->dispatch(new Jpush(
-                        "你有一个订单正在配送中",
-                        "急所需",
-                        array('ios', 'android'),
-                        "{$orderInfo[0]->user}",
-                        array(),
-                        "default",
-                        "ontheway",
-                        "user"
-                    ));
+                    $pushModel = new Push();
+
+                    $pushModel->application     = '急所需用户端';
+                    $pushModel->content         = '你有一个订单正在配送中';
+                    $pushModel->title           = '急所需';
+                    $pushModel->platform        = 'all';
+                    $pushModel->tag             = '';
+                    $pushModel->alias           = $orderInfo[0]->user;
+                    $pushModel->sound           = 'default';
+                    $pushModel->type            = 'ontheway';
+
+                    $pushModel->save();
+                    
                 }
             }
             return response()->json(Message::setResponseInfo('SUCCESS'));

@@ -38,7 +38,7 @@ class Jpush
 
         $push->setPlatform($platform);
 
-        if('' != ($alias)){
+        if('' != $alias){
             $push->addAlias($alias);
         }
         if(!empty($tag)){
