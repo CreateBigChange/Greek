@@ -128,6 +128,8 @@ class FinanceController extends AdminController
             
             $withDrawLog = $cashModel->getWithdrawCashLog( array('id' => $id));
 
+            var_dump($withDrawLog);die;
+
             if($withDrawLog) {
                 //消息推送队列
                 $this->dispatch(new Jpush(
