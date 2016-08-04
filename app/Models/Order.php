@@ -47,7 +47,7 @@ class Order extends Model{
     public function getOrderTotalMony($search)
     {
        
-        $sql="select sum(pay_total)  as totalMony FROM orders where status IN (".implode(',' , $search['status']).")";
+          $sql="select sum(pay_total)  as totalMony FROM orders where status IN (".implode(',' , $search['status']).")";
         return DB::SELECT($sql);
     }
 
@@ -57,9 +57,19 @@ class Order extends Model{
      * @param search    array
      */
     public function getOrderTotalNum($search){
-
-
         $sql = DB::table($this->table);
+        if(isset($search['consignee'])){
+            $sql->where('consignee' , $search['consignee']);
+        }
+        if(isset($search['consignee_tel'])){
+            $sql->where('consignee_tel' , $search['consignee_tel']);
+        }
+        if(isset($search['order_num'])){
+            $sql->where('order_num' , $search['order_num']);
+        }
+        if(isset($search['store_name'])){
+            $sql->where('store_infos.name' , $search['store_name']);
+        }
         if(isset($search['user'])){
             $sql->where('user' , $search['user']);
         }
@@ -70,7 +80,8 @@ class Order extends Model{
             $sql->whereIn('status' , $search['status']);
         }
 
-        return $sql->count();
+        return $sql->leftJoin('store_infos', 'orders.store_id', '=', 'store_infos.id')
+            ->count();
     }
 
     /**
@@ -203,7 +214,6 @@ class Order extends Model{
         }
 
         return $orders;
-
     }
 
     /**

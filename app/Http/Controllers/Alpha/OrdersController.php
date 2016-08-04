@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Alpha;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Maatwebsite\Excel\Excel;
-use Validator , Input,File;
-use Session , Cookie , Config;
+use Validator, Input, File;
+use Session, Cookie, Config;
 
 
 use App\Http\Controllers\AdminController;
@@ -21,196 +21,244 @@ use App\Models\MyExcel;
 use App\Models\Order;
 use App\Libs\Message;
 use App\Models\FileUpload;
+
 class OrdersController extends AdminController
 {
     private $_model;
     private $length;
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->_model = new Order;
-        $this->response['title']		= '订单管理';
+        $this->response['title'] = '订单管理';
         $this->length = 10;
     }
 
-    public function getOrderList(Request $request){
+    public function getOrderList(Request $request)
+    {
 
         $search = array();
 
         $param = '';
 
-        if(!isset($_GET['page'])){
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
 
-        $type = 0;
-
         $status = Config::get('orderstatus');
 
-        switch ($type) {
-            case '0':
-                $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status'] , $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
-                break;
-             case '1':
-                $search['status'] = array($status['paid']['status']);
-                break;
-            case '2':
-               $search['status'] = array($status['on_the_way']['status']);
-                break;
-            case '3':
-                 $search['status'] = array($status['completd']['status']);
-                break;
-            case '4':
-                 $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
-                break;                                                                          
-            default:
-                # code...
-                break;
-        }
+        $search['status'] = array($status['cancel']['status'], $status['refunding']['status'], $status['refunded']['status'], $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
 
-
-        if($request->has('consignee')){
-            $param .= '&consignee=' . $_GET['consignee'];
+        if ($request->has('consignee')) {
+            $param .= '&store_name=' . $_GET['store_name'];
             $search['consignee'] = trim($request->get('consignee'));
         }
-        if($request->has('order_num')){
-            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+        if ($request->has('order_num')) {
+            $param .= '&store_name=' . $_GET['store_name'];
             $search['order_num'] = trim($request->get('order_num'));
         }
-        if($request->has('consignee_num')){
-            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+        if ($request->has('consignee_num')) {
+            $param .= '&store_name=' . $_GET['store_name'];
             $search['consignee_num'] = trim($request->get('consignee_num'));
         }
-        if($request->has('store_name')){
-            $param .= '&consignee_tel=' . $_GET['consignee_tel'];
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
             $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
         }
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $orderNum = $this->_model->getOrderTotalNum($search);
         $orderMoney = $this->_model->getOrderTotalMony($search);
-      
-        $pageData = $this->getPageData($page  , $this->length, $orderNum);
-       
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
+
         $this->response['totalMoney'] = $orderMoney;
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/list?' . $param);
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['search']       = $search['status'];
-        $this->response['status']       = $status;
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/list?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['search'] = $search;
+        $this->response['status'] = $status;
+        $this->response["url"] = "list";
 
+        return view('alpha.order.list', $this->response);
     }
-    public function getOrderNotDelivery(Request $request){
-        $search = array();
 
-        if(!isset($_GET['page'])){
+    public function getOrderNotDelivery(Request $request)
+    {
+        $search = array();
+        $param = '';
+
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
 
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
 
         $search['status'] = array($status['paid']['status']);
 
-        if($request->has('search')){
+        if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
         }
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $orderNum = $this->_model->getOrderTotalNum($search);
 
-        $pageData = $this->getPageData($page  , $this->length, $orderNum);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/notdelivery?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['search']       = $search['status'];
-        $this->response['status']       = $status;
-
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/notdelivery?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['search'] = $search;
+        $this->response['status'] = $status;
+        $this->response["url"] = "notdelivery";
+        return view('alpha.order.list', $this->response);
     }
 
-    public function getOrderDelivery(Request $request){
+    public function getOrderDelivery(Request $request)
+    {
         $search = array();
-
-        if(!isset($_GET['page'])){
+        $param = '';
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
 
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
 
-        $search['status'] = array($status['on_the_way']['status'] , $status['arrive']['status'] , $status['completd']['status']);
+        $search['status'] = array($status['on_the_way']['status'], $status['arrive']['status'], $status['completd']['status']);
 
-        if($request->has('search')){
+        if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
         }
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $orderNum = $this->_model->getOrderTotalNum($search);
 
-        $pageData = $this->getPageData($page  , $this->length, $orderNum);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/delivery?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['search']       = $search['status'];
-        $this->response['status']       = $status;
-
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/delivery?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['search'] = $search;
+        $this->response['status'] = $status;
+        $this->response['url'] = "delivery";
+        return view('alpha.order.list', $this->response);
     }
-    public function getOrderAccident(Request $request){
-        $search = array();
 
-        if(!isset($_GET['page'])){
+    public function getOrderAccident(Request $request)
+    {
+        $search = array();
+        $param = '';
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
+
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
 
-        $search['status'] = array($status['cancel']['status'] , $status['refunding']['status'] , $status['refunded']['status']);
+        $search['status'] = array($status['cancel']['status'], $status['refunding']['status'], $status['refunded']['status']);
 
-        if($request->has('search')){
+        if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
         }
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
@@ -218,78 +266,102 @@ class OrdersController extends AdminController
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $orderNum = $this->_model->getOrderTotalNum($search);
 
-        $pageData = $this->getPageData($page  , $this->length, $orderNum);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/accident?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['search']       = $search['status'];
-        $this->response['status']       = $status;
-
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/accident?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['search'] = $search;
+        $this->response['status'] = $status;
+        $this->response["url"] = "accident";
+        return view('alpha.order.list', $this->response);
     }
-    public function changeStatus($id , Request $request){
+
+    public function changeStatus($id, Request $request)
+    {
 
         $validation = Validator::make($request->all(), [
-            'status'          => 'required',
+            'status' => 'required',
         ]);
-        if($validation->fails()){
+        if ($validation->fails()) {
             return response()->json(Message::setResponseInfo('PARAMETER_ERROR'));
         }
         $status = $request->get('status');
 
-        if($this->_model->changeStatus($this->userInfo->id , $id , $status)){
+        if ($this->_model->changeStatus($this->userInfo->id, $id, $status)) {
             return response()->json(Message::setResponseInfo('SUCCESS'));
-        }else{
+        } else {
             return response()->json(Message::setResponseInfo('FAILED'));
         }
     }
-/*
-*   得到配送中的订单
-*/
+
+    /*
+    *   得到配送中的订单
+    */
     public function getOrderDispatching(Request $request)
     {
 
         $search = array();
-
-        if(!isset($_GET['page'])){
+        $param = '';
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
 
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
 
         $search['status'] = array($status['on_the_way']['status']);
 
-        if($request->has('search')){
+        if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
         }
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
+
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
+        $orderNum = $this->_model->getOrderTotalNum($search);
 
-        $pageData = $this->getPageData($page , $this->length, $orderNum);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/dispatching?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['status']       = $status;
-        $this->response['search']       = $search['status'];
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/dispatching?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['status'] = $status;
+        $this->response['search'] = $search;
+        $this->response["url"] = "dispatching";
+        return view('alpha.order.list', $this->response);
     }
 
     /**
@@ -298,76 +370,114 @@ class OrdersController extends AdminController
      * 得到结算后的订单
      */
 
-    public function  getOrderBalence(Request $request){
+    public function getOrderBalence(Request $request)
+    {
 
         $search = array();
-
-        if(!isset($_GET['page'])){
+        $param = '';
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
-
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
         $search['status'] = array($status['withdrawMoney']['status']);
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
-        $pageData = $this->getPageData($page , $this->length, $orderNum);
+        $orderNum = $this->_model->getOrderTotalNum($search);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/balance?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['status']       = $status;
-        $this->response['search']       = $search['status'];
-
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/balance?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['status'] = $status;
+        $this->response['search'] = $search;
+        $this->response["url"] = "balance";
+        return view('alpha.order.list', $this->response);
     }
 
-    public function  getOrderCompletd(Request $request){
+    public function getOrderCompletd(Request $request)
+    {
 
-        $search =array();
-
-        if(!isset($_GET['page'])){
+        $search = array();
+        $param = '';
+        if (!isset($_GET['page'])) {
             $page = 1;
-        }else{
+        } else {
             $page = $_GET['page'];
         }
-
+        if ($request->has('consignee')) {
+            $param .= '&consignee=' . $_GET['consignee'];
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+            $param .= '&order_num=' . $_GET['order_num'];
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+            $param .= '&consignee_num=' . $_GET['consignee_num'];
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+            $param .= '&store_name=' . $_GET['store_name'];
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $param .= '&type=' . $_GET['type'];
+        }
         $status = Config::get('orderstatus');
         $search['status'] = array($status['completd']['status']);
 
         /**
          * 如果登录的用户是代理商
          */
-        if($this->userInfo->is_agent){
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
         $orderMoney = $this->_model->getOrderTotalMony($search);
         $this->response['totalMoney'] = $orderMoney;
 
-        $orderNum   = $this->_model->getOrderTotalNum($search);
-        $pageData = $this->getPageData($page , $this->length, $orderNum);
+        $orderNum = $this->_model->getOrderTotalNum($search);
+        $pageData = $this->getPageData($page, $this->length, $orderNum);
 
-        $this->response['page']         = $pageData->page;
-        $this->response['pageData']     = $pageData;
-        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/order/completd?' );
-        $this->response['orders']       = $this->_model->getOrderList($search , $this->length , $pageData->offset);
-        $this->response['status']       = $status;
-        $this->response['search']       = $search['status'];
-
-        return view('alpha.order.list' , $this->response);
+        $this->response['page'] = $pageData->page;
+        $this->response['pageData'] = $pageData;
+        $this->response['pageHtml'] = $this->getPageHtml($pageData->page, $pageData->totalPage, '/alpha/order/completd?' . $param);
+        $this->response['orders'] = $this->_model->getOrderList($search, $this->length, $pageData->offset);
+        $this->response['status'] = $status;
+        $this->response['search'] = $search;
+        $this->response["url"] = "completd";
+        return view('alpha.order.list', $this->response);
     }
 
 
@@ -377,36 +487,74 @@ class OrdersController extends AdminController
      *
      */
     //Excel文件导出功能
-    public function getOrderExport(Request $request){
+    public function getOrderExport(Request $request)
+    {
 
-        $discription = $_GET["status"];
-        $array=explode('.',$discription);
-        $excelModel =new MyExcel;
-        $name ="订单";
+        $status = Config::get('orderstatus');
 
-        $status                         = Config::get('orderstatus');
-        $search['status']               = $array;
+        if ($request->has('consignee')) {
 
-        /**
-         * 如果登录的用户是代理商
-         */
-        if($this->userInfo->is_agent){
+            $search['consignee'] = trim($request->get('consignee'));
+        }
+        if ($request->has('order_num')) {
+
+            $search['order_num'] = trim($request->get('order_num'));
+        }
+        if ($request->has('consignee_num')) {
+
+            $search['consignee_num'] = trim($request->get('consignee_num'));
+        }
+        if ($request->has('store_name')) {
+
+            $search['store_name'] = trim($request->get('store_name'));
+        }
+        if ($request->has('type')) {
+            $type = $request->get("type");
+            switch ($type) {
+                case "list":
+                    $search['status'] = array($status['cancel']['status'], $status['refunding']['status'], $status['refunded']['status'], $status['arrive']['status'], $status['on_the_way']['status'], $status['paid']['status'], $status['completd']['status'], $status['withdrawMoney']['status']);
+                    break;
+                case "completd":
+                    $search['status'] = array($status['completd']['status']);
+                    break;
+                case "accident":
+                    $search['status'] = array($status['cancel']['status'], $status['refunding']['status'], $status['refunded']['status']);
+                    break;
+                case "delivery":
+                    $search['status'] = array($status['on_the_way']['status'], $status['arrive']['status'], $status['completd']['status']);
+                    break;
+                case "notdelivery":
+                    $search['status'] = array($status['paid']['status']);
+                    break;
+                case "dispatching":
+                    $search['status'] = array($status['on_the_way']['status']);
+                    break;
+                case "balance":
+                    $search['status'] = array($status['withdrawMoney']['status']);
+                    break;
+            }
+        }
+
+
+        if ($this->userInfo->is_agent) {
             $search['agent_id'] = $this->userInfo->id;
         }
 
-        $orderNum                       = $this->_model->getOrderTotalNum($search);
-        $offset                         =0;
-        $data                           = $this->_model->getOrderList($search , $orderNum  , $offset);
+        $excelModel = new MyExcel;
+        $name = "订单";
+        $orderNum = $this->_model->getOrderTotalNum($search);
+        $offset = 0;
+        $data = $this->_model->getOrderList($search, $orderNum, $offset);
+
 
 
 
         $cellData = array();
-        for($i = 0;$i<count($data);$i++)
-        {
-            $cellData[$i]=get_object_vars($data[$i]);
-            $cellData[$i]['goods']="";
+        for ($i = 0; $i < count($data); $i++) {
+            $cellData[$i] = get_object_vars($data[$i]);
+            $cellData[$i]['goods'] = "";
         }
-        $title=[
+        $title = [
             "id",
             "订单号",
             "总价",
@@ -457,19 +605,26 @@ class OrdersController extends AdminController
             "商品总数",
             "支付总额"
         ];
-        $excelModel->export($name, $cellData,$title );
+        $excelModel->export($name, $cellData, $title);
     }
-    public function  Orderimport(Request $request){
+
+    /**
+     * 订单的导出
+     * @param Request $request
+     */
+
+    public function Orderimport(Request $request)
+    {
 
         $file = $request->file('file');
 
         $FieUpload = new FieUpload;
-        $excelModel =new MyExcel;
+        $excelModel = new MyExcel;
 
 
-        $Fielpath =$FieUpload ->upload( $file );
-        $table="";
-        $excelModel->import($Fielpath,$table);
+        $Fielpath = $FieUpload->upload($file);
+        $table = "";
+        $excelModel->import($Fielpath, $table);
 
     }
 }

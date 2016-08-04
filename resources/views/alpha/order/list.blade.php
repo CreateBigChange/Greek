@@ -11,7 +11,7 @@
                         订单列表
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
                       <!--  <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#import"><i class="icon-search">导入</i></div>-->
-                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog"  ><a href="/alpha/order/balance/getOrderExport?status=<?php $string=implode('.',$search);echo ($string);   ?>"><i class="icon-search">导出</i></a></div>
+                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog"  ><a href="/alpha/order/balance/getOrderExport?&type={{$url}}&consignee=<?php if(isset($search['consignee'])) echo $search['consignee'];?>&consignee_tel=<?php if(isset($search['consignee_tel'])) echo $search['consignee_tel'];?>&order_num=<?php if(isset($search['order_num'])) echo $search['order_num'];?>&store_name=<?php if(isset($search['store_name'])) echo $search['store_name'];?>"><i class="icon-search">导出</i></a></div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总数: {{ $pageData->totalNum }}</div>
                         <div style='margin-left:20px;float: right;margin-right: 50px;' class="btn btn-primary btn-xs searchDiaLog"  href="#search">订单总价: {{ $totalMoney[0]->totalMony }}</div>
                     </header>
