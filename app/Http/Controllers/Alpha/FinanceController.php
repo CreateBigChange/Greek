@@ -17,6 +17,8 @@ use App\Libs\Message;
 use App\Models\StoreInfo;
 use App\Models\StoreConfig;
 
+use App\Jobs\Jpush;
+
 class FinanceController extends AdminController
 {
 
