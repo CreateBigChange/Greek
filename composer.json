@@ -21,7 +21,7 @@
         "ignited/laravel-omnipay": "2.*",
         "lokielse/omnipay-alipay": "dev-master",
 
-        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "guzzlehttp/guzzle": "~5.3|~6.0"
 
     },
     "require-dev": {
