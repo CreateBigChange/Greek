@@ -19,7 +19,7 @@ class Banner extends Model
      * 获取轮波图列表
      * is_open      是否上线
      */
-    public function getBannerList() 
+    public function getBannerList()
     {
         return DB::table($this->table)->orderBy('sort', 'desc')->get();
     }

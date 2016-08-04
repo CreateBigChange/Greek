@@ -30,6 +30,7 @@ class FinanceController extends AdminController
         $this->_model = new User();
         $this->response['title']		= '财务管理';
         $this->length = 10;
+
     }
 
     /**
@@ -73,6 +74,7 @@ class FinanceController extends AdminController
 
         //$this->response['storeData'] = $cashModel ->getWithdrawCashLogByStoreId($page , $this->length , $totalNum);
        // dump($this->response);
+
         return view('alpha.finance.cash' , $this->response);
     
     }
@@ -154,25 +156,31 @@ class FinanceController extends AdminController
      */
     public function getCheckedWithdrawCashLog(Request $request){
         $page = 1;
-
+        //获取相关的列表信息
+        $search=array('status'=>2);
+        $param["searchTime"] = "";
         if($request->has('page')){
             $page = $request->get('page');
         }
 
+        if($request->has('searchTime')){
+            $param['searchTime'] =$request->get('searchTime');
+            $search['searchTime']=$request->get('searchTime');
+        }
+
         $cashModel = new StoreWithdrawCashLog;
 
-        //获取相关的列表信息
-        $search=array('status'=>2);
+
         $totalNum = $cashModel->withdrawCashLogTotalNum($search);
 
 
 
         $pageData = $this->getPageData($page , $this->length , $totalNum);
 
-        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/finance/cash/checked?');
+        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/finance/checked?searchTime='.$param['searchTime']);
 
 
-        $this->response['log'] = $cashModel->getWithdrawCashLog(array('status' => 2) , $this->length , $pageData->offset);
+        $this->response['log'] = $cashModel->getWithdrawCashLog($search , $this->length , $pageData->offset);
 
 
         return view('alpha.finance.checked_withDraw' , $this->response);

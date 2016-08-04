@@ -9,6 +9,7 @@
                 <section class="panel">
                     <header class="panel-heading">
                         提现管理
+
                         <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
                     </header>
                     <div class="panel-body">

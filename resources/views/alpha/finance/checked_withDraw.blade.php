@@ -8,8 +8,22 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        提现管理
-                        <div style='margin-left:20px;' class="btn btn-primary btn-xs searchDiaLog" data-toggle="modal" href="#search"><i class="icon-search"></i></div>
+                        <div class="row">
+                            <div class="col-lg-2"> 提现管理</div>
+                            <div class="col-lg-4">
+                                <form role="form" action="/alpha/finance/checked?page=1" method="get">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="1900-01-01 00:00:00 时间之前" name="searchTime">
+                                        <span class="input-group-btn">
+                                  <button class="btn btn-default" type="submit">
+                                     搜索
+                                  </button>
+                               </span>
+                                    </div><!-- /input-group -->
+                                </form>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
                     </header>
                     <div class="panel-body">
                          <section id="unseen">
