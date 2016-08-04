@@ -128,15 +128,15 @@ class FinanceController extends AdminController
             
             $withDrawLog = $cashModel->getWithdrawCashLog( array('id' => $id));
 
-            var_dump($withDrawLog);die;
-
             if($withDrawLog) {
+
+                $storeId = $withDrawLog[0]->store_id;
                 //消息推送队列
                 $this->dispatch(new Jpush(
                     "您的提现申请已通过,正在为您做打款准备...",
                     "提现通知",
                     array('ios', 'android'),
-                    $withDrawLog[0]->store_id,
+                    "$storeId",
                     array(),
                     'default',
                     'withdraw'
