@@ -92,6 +92,23 @@ class FinanceController extends AdminController
 
         $affected= $cashModel->updateWithdraw($id,$data);
 
+        if($affected){
+            $withDrawLog = $cashModel->getWithdrawCashLog( array('id' => $id));
+
+            if($withDrawLog) {
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "您的提现申请因". $data['reason']."被拒绝!如有问题,请联系急所需平台.",
+                    "提现通知",
+                    array('ios', 'android'),
+                    $withDrawLog[0]->store_id,
+                    array(),
+                    'default',
+                    'withdraw'
+                ));
+            }
+        }
+
         return redirect('/alpha/finance/cash');
     }
 
@@ -103,9 +120,25 @@ class FinanceController extends AdminController
     {
 
         $cashModel = new StoreWithdrawCashLog;
-        $id=$id;
         $data = array("status"=>2);
-        $cashModel->updateWithdraw($id,$data );
+
+        if($cashModel->updateWithdraw($id,$data )) {
+            
+            $withDrawLog = $cashModel->getWithdrawCashLog( array('id' => $id));
+
+            if($withDrawLog) {
+                //消息推送队列
+                $this->dispatch(new Jpush(
+                    "您的提现申请已通过,正在为您做打款准备...",
+                    "提现通知",
+                    array('ios', 'android'),
+                    $withDrawLog[0]->store_id,
+                    array(),
+                    'default',
+                    'withdraw'
+                ));
+            }
+        }
         return redirect('/alpha/finance/cash');
     }
 
