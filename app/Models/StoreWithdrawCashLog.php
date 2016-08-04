@@ -248,7 +248,7 @@ class StoreWithdrawCashLog extends Model
      * @return mixed
      * 获取提现记录
      */
-    public function getWithdrawCashLog( $search=array() , $length , $offset){
+    public function getWithdrawCashLog( $search=array() , $length = 0 , $offset = 0){
 
         $sql = "SELECT 
                     sw.id,
@@ -290,13 +290,19 @@ class StoreWithdrawCashLog extends Model
             $sql .= " AND sw.store_id = " . $search['store_id'];
         }
 
+        if(isset($search['id'])) {
+            $sql .= " AND sw.id = " . $search['id'];
+        }
+
         if(isset($search['date'])){
             $sql .= " AND sw.created_at LIKE '" . $search['date'] ."%'";
         };
 
         $sql .= " ORDER BY created_at ASC";
 
-        $sql .= " LIMIT $offset , $length ";
+        if($length != 0) {
+            $sql .= " LIMIT $offset , $length ";
+        }
 
         $result = DB::select($sql);
         foreach ($result as $r){
