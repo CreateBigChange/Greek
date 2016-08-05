@@ -227,6 +227,11 @@ class StoreWithdrawCashLog extends Model
     {
         $sql = DB::table($this->table);
 
+        if (isset($search['status'])) {
+
+            $sql->where("status",$search['status']);
+        }
+
         if (isset($search['store_id'])) {
             $sql->where('store_id', $search['store_id']);
         }
@@ -237,7 +242,6 @@ class StoreWithdrawCashLog extends Model
 
             $sql->where("updated_at","<",$search['searchTime']);
         }
-
         return $sql->count();
     }
 

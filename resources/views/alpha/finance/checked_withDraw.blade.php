@@ -13,7 +13,7 @@
                             <div class="col-lg-4">
                                 <form role="form" action="/alpha/finance/checked?page=1" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="1900-01-01 00:00:00 时间之前" name="searchTime">
+                                        <input type="text" class="form-control" placeholder="时间格式:1900-01-01 00:00:00 " name="searchTime">
                                         <span class="input-group-btn">
                                   <button class="btn btn-default" type="submit">
                                      搜索
@@ -55,14 +55,14 @@
                                         <td>{{ $l->bank_card_num }}</td>
                                         <td>
                                             <button   class="btn btn-success payment" data-toggle="modal" href="#pay"
-                                        bank_card_num            = "{{ $l->all_bank_card_num }}",
-                                        bank_card_holder         = "{{ $l->bank_card_holder }}",
-                                        bank_card_type           = "{{ $l->bank_card_type }}",
-                                        bank_name                = "{{ $l->bank_name }}",
-                                        bank_reserved_telephone  = "{{ $l->bank_reserved_telephone }}",
-                                        with_draw_id             ="{{ $l->id}}",
-                                        store_id                 = "{{ $l->store_id}}",
-                                        withdraw_cash_num        ="{{ $l->withdraw_cash_num}}"
+                                                bank_card_num            = "{{ $l->all_bank_card_num }}",
+                                                bank_card_holder         = "{{ $l->bank_card_holder }}",
+                                                bank_card_type           = "{{ $l->bank_card_type }}",
+                                                bank_name                = "{{ $l->bank_name }}",
+                                                bank_reserved_telephone  = "{{ $l->bank_reserved_telephone }}",
+                                                with_draw_id             ="{{ $l->id}}",
+                                                store_id                 = "{{ $l->store_id}}",
+                                                withdraw_cash_num        ="{{ $l->withdraw_cash_num}}"
                                             >付款</button>
                                         </td>
                                     </tr>
@@ -87,8 +87,6 @@
 
 
      $(".payment").click(function(){
-
-
             $("#bank_card_num").attr("value",$(this).attr("bank_card_num"));
             $("#bank_card_holder").attr("value",$(this).attr("bank_card_holder"));
             $("#bank_card_type").attr("value",$(this).attr("bank_card_type"));
