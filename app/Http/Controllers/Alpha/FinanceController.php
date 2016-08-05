@@ -102,18 +102,13 @@ class FinanceController extends AdminController
             if($withDrawLog) {
                 $storeId = $withDrawLog[0]->store_id;
 
-                $pushModel = new Push();
-
-                $pushModel->application     = '急所需商户端';
-                $pushModel->content         = "您的提现申请因". $data['reason']."被拒绝!如有问题,请联系急所需平台";
-                $pushModel->title           = '急所需提现通知';
-                $pushModel->platform        = 'all';
-                $pushModel->tag             = '';
-                $pushModel->alias           = $storeId;
-                $pushModel->sound           = 'default';
-                $pushModel->type            = 'withdraw';
-
-                $pushModel->save();
+                $this->dispatch(new Jpush(
+                    array('ios' , 'android'),
+                    "{$storeId}",
+                    array(),
+                    "default",
+                    "withdraw"
+                ));
 
             }
         }
@@ -139,18 +134,13 @@ class FinanceController extends AdminController
 
                 $storeId = $withDrawLog[0]->store_id;
 
-                $pushModel = new Push();
-
-                $pushModel->application     = '急所需商户端';
-                $pushModel->content         = '您的提现申请已通过,正在为您做打款准备...';
-                $pushModel->title           = '急所需提现通知';
-                $pushModel->platform        = 'all';
-                $pushModel->tag             = '';
-                $pushModel->alias           = $storeId;
-                $pushModel->sound           = 'default';
-                $pushModel->type            = 'withdraw';
-
-                $pushModel->save();
+                $this->dispatch(new Jpush(
+                    array('ios' , 'android'),
+                    "{$storeId}",
+                    array(),
+                    "default",
+                    "withdraw"
+                ));
             }
         }
         return redirect('/alpha/finance/cash');

@@ -18,8 +18,6 @@ class Jpush extends Job implements ShouldQueue
     private $platform;
     private $alias;
     private $tag;
-    private $content;
-    private $title;
     private $sound;
     private $type;
     private $sendFrom;
@@ -29,13 +27,11 @@ class Jpush extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct( $content , $title , $platform='all' , $alias='' , $tag=array() , $sound='default' , $type = 'new' , $sendFrom = 'commercial')
+    public function __construct( $platform='all' , $alias='' , $tag=array() , $sound='default' , $type = 'new' , $sendFrom = 'commercial')
     {
         $this->platform         = $platform;
         $this->alias            = $alias;
         $this->tag              = $tag;
-        $this->content          = $content;
-        $this->title            = $title;
         $this->sound            = $sound;
         $this->type             = $type;
         $this->sendFrom         = $sendFrom;
@@ -53,7 +49,25 @@ class Jpush extends Job implements ShouldQueue
         }
         $jpush = new JpushLib($this->sendFrom);
 
-        return $jpush->push($this->content , $this->title , $this->platform , $this->alias , $this->tag , $this->sound , $this->type);
+        if($this->type == 'new'){
+            $content = "急所需有新订单啦,请及时处理";
+            $title = "急所需";
+        }elseif($this->type == 'accident'){
+            $content = "急所需有退款订单,请及时处理";
+            $title = "急所需";
+        }elseif($this->type == 'ontheway') {
+            $content = "你有一个订单正在配送中";
+            $title = "急所需";
+        }elseif($this->type == 'refunded_success') {
+            $content = "你有一个退款成功的订单";
+            $title = "急所需";
+        }elseif($this->type == 'withdraw') {
+            $content = "您的提现申请状态已改变,请去提现列表查看";
+            $title = "急所需";
+        }
+
+
+        return $jpush->push($content , $title , $this->platform , $this->alias , $this->tag , $this->sound , $this->type);
     }
 
     public function failed(){
