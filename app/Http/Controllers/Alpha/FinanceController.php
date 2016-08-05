@@ -56,12 +56,13 @@ class FinanceController extends AdminController
         if($request->has('page')){
             $page = $request->get('page');
         }
-
+        $search = array();
+        $search["status"] = 1;
         $cashModel = new StoreWithdrawCashLog;
 
         //获取相关的列表信息
 
-        $totalNum = $cashModel->withdrawCashLogTotalNum();
+        $totalNum = $cashModel->withdrawCashLogTotalNum($search);
 
 
 
@@ -70,7 +71,7 @@ class FinanceController extends AdminController
         $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/finance/cash?');
 
 
-        $this->response['log'] = $cashModel->getWithdrawCashLog(array('status' => 1) , $this->length , $pageData->offset);
+        $this->response['log'] = $cashModel->getWithdrawCashLog($search , $this->length , $pageData->offset);
 
         //$this->response['storeData'] = $cashModel ->getWithdrawCashLogByStoreId($page , $this->length , $totalNum);
        // dump($this->response);
