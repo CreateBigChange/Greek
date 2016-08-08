@@ -103,17 +103,6 @@ class OrdersController extends ApiController
             );
         }
 
-       // $storeId = $this->storeId;
-
-//        if($request->has('isClearNotice')) {
-//            if ($request->get('isClearNotice') == 'new') {
-//                Redis::set("store:$storeId:new", 0);
-//            } elseif ($request->get('isClearNotice') == 'accident') {
-//                Redis::set("store:$storeId:accident", 0);
-//            }
-//
-//        }
-
         if ($request->has('search')) {
             $search['search'] = trim($request->get('search'));
         }
@@ -265,33 +254,26 @@ class OrdersController extends ApiController
             if($orderInfo[0]->pay_type_id != 4) {
                 if ($status == Config::get('orderstatus.refunded')['status']) {
 
-                    $pushModel = new Push();
-
-                    $pushModel->application     = '急所需用户端';
-                    $pushModel->content         = '你有一个退款成功的订单';
-                    $pushModel->title           = '急所需';
-                    $pushModel->platform        = 'all';
-                    $pushModel->tag             = '';
-                    $pushModel->alias           = $orderInfo[0]->user;
-                    $pushModel->sound           = 'default';
-                    $pushModel->type            = 'refunded_success';
-
-                    $pushModel->save();
+                    $this->dispatch(new Jpush(
+                        array('ios' , 'android'),
+                        "{$orderInfo[0]->user}",
+                        array(),
+                        "default",
+                        "refunded_success",
+                        "user"
+                    ));
 
                 } elseif ($status == Config::get('orderstatus.on_the_way')['status']) {
-                    $pushModel = new Push();
 
-                    $pushModel->application     = '急所需用户端';
-                    $pushModel->content         = '你有一个订单正在配送中';
-                    $pushModel->title           = '急所需';
-                    $pushModel->platform        = 'all';
-                    $pushModel->tag             = '';
-                    $pushModel->alias           = $orderInfo[0]->user;
-                    $pushModel->sound           = 'default';
-                    $pushModel->type            = 'ontheway';
+                    $this->dispatch(new Jpush(
+                        array('ios' , 'android'),
+                        "{$orderInfo[0]->user}",
+                        array(),
+                        "default",
+                        "ontheway",
+                        "user"
+                    ));
 
-                    $pushModel->save();
-                    
                 }
             }
             return response()->json(Message::setResponseInfo('SUCCESS'));

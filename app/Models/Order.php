@@ -186,6 +186,10 @@ class Order extends Model{
             $sql .= " AND o.id = " . $search['id'];
         }
 
+        if(isset($search['search'])){
+            $sql .= " AND  (o.consignee LIKE '%" . $search['search'] . "%'" . " OR o.order_num LIKE '%" . $search['search'] . "%'" . " OR o.consignee_tel LIKE '%" . $search['search'] . "%')";
+        }
+
         $sql .= " GROUP BY o.id";
         $sql .= " ORDER BY o.updated_at DESC , o.created_at DESC";
         $sql .= " LIMIT $offset , $length";
