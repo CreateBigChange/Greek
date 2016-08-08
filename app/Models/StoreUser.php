@@ -24,6 +24,29 @@ class StoreUser extends Model{
     }
 
     /**
+     * 获取店铺用户总数
+     */
+    public function  getUserNum($storeId=0){
+        $storeInfoModel = new StoreInfo();
+        $sql = DB::table($this->table)
+            ->select(
+                'store_users.id',
+                'store_users.account',
+                'store_users.real_name',
+                'store_users.tel',
+                'store_users.created_at',
+                'si.name as sname',
+                'si.id as sid'
+            )
+            ->leftJoin( $storeInfoModel->getTable()." as si", 'si.id' , '=' , 'store_users.store_id');
+        if($storeId != 0){
+            $sql->where('store_id' , $storeId);
+        }
+
+        return $sql->count();
+    }
+
+    /**
      * 获取店铺用户
      */
     public function getStoreUserList($storeId = 0){

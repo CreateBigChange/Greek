@@ -150,6 +150,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::post('/Activity/couponAdd','ActivityController@couponAdd');
 		Route::get('/Activity/couponClose/{id}','ActivityController@couponClose');
 
+        //加盟商
+        Route::get('/franchisee/list','FranchiseeController@getFranchiseeList');
+
 	});
 
 	//登陆

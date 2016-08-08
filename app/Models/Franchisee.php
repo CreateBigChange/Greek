@@ -24,4 +24,18 @@ class Franchisee extends Model
         return DB::table($this->table)->insert($data);
     }
 
+    /**
+     * @param int $length
+     * @param int $offset
+     * @param array $search
+     * @return mixed
+     */
+    public function  getFranchiseeList($length=10,$offset =0,$search=array()){
+        return DB::table($this->table)->skip($offset)->take($length)->get();
+    }
+
+    public function  getFranchiseeListTotle($search=array()){
+        return DB::table($this->table)->count();
+    }
+
 }

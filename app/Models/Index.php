@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 *  获取Index页面的基础信息
 *
 */
-class Index.php extends Model
+class Index extends Model
 {
     public function getBasicInfo()
     {

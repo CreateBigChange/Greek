@@ -547,63 +547,84 @@ class OrdersController extends AdminController
         $data = $this->_model->getOrderList($search, $orderNum, $offset);
 
 
-
-
         $cellData = array();
+
+
+        /**
+        +"id": 47
+        +"order_num": "14682865878829"
+        +"total": 57.22
+        +"deliver": 1.0
+        +"status": 14
+        +"store_id": 24
+        +"user": 5
+        +"consignee": "卡卡"
+        +"consignee_id": 3
+        +"consignee_tel": "13728389359"
+        +"province": "湖南省"
+        +"city": "长沙市"
+        +"county": "岳麓区"
+        +"street": "绿地中央广场(银杉路)"
+        +"consignee_address": "5栋904"
+        +"remark": null
+        +"refund_reason": "质量问题"
+        +"created_at": "2016-07-12 09:23:07"
+        +"updated_at": "2016-07-12 10:04:54"
+        +"is_evaluate": 0
+        +"pay_total": 58.22
+        +"out_trade_no": "14682865924776089723"
+        +"pay_type_id": 1
+        +"pay_type_name": "微信支付"
+        +"trade_no": ""
+        +"transaction_id": "4009932001201607128805976191"
+        +"nick_name": "原地狂奔的骚年"
+        +"true_name": null
+        +"mobile": "13728389359"
+        +"sname": "正兴宏业测试二店"
+        +"agent_id": 24
+        +"smobile": "18401586654"
+        +"slogo": "http://7xt4zt.com2.z0.glb.clouddn.com/1467973273.jpg"
+         *
+         */
         for ($i = 0; $i < count($data); $i++) {
-            $cellData[$i] = get_object_vars($data[$i]);
-            $cellData[$i]['goods'] = "";
+            $cellData[$i]['id']=$data[$i]->id;
+            $cellData[$i]['order_num']=$data[$i]->order_num;
+            $cellData[$i]['total']=$data[$i]->total;
+            $cellData[$i]['deliver']=$data[$i]->deliver;
+            $cellData[$i]['status']=$data[$i]->status;
+            $cellData[$i]['store_id']=$data[$i]->store_id;
+            $cellData[$i]['user']=$data[$i]->user;
+            $cellData[$i]['consignee']=$data[$i]->consignee;
+            $cellData[$i]['consignee_id']=$data[$i]->consignee_id;
+            $cellData[$i]['consignee_tel']=$data[$i]->consignee_tel;
+            $cellData[$i]['province']=$data[$i]->province;
+            $cellData[$i]['city']=$data[$i]->city;
+            $cellData[$i]['county']=$data[$i]->county;
+            $cellData[$i]['street']=$data[$i]->street;
+            $cellData[$i]['consignee_address']=$data[$i]->consignee_address;
+            $cellData[$i]['refund_reason']=$data[$i]->refund_reason;
+            $cellData[$i]['created_at']=$data[$i]->created_at;
+            $cellData[$i]['updated_at']=$data[$i]->updated_at;
+            $cellData[$i]['is_evaluate']=$data[$i]->is_evaluate;
+            $cellData[$i]['pay_total']=$data[$i]->pay_total;
+            $cellData[$i]['out_trade_no']=$data[$i]->out_trade_no;
+            $cellData[$i]['pay_type_id']=$data[$i]->pay_type_id;
+            $cellData[$i]['pay_type_name']=$data[$i]->pay_type_name;
+            $cellData[$i]['trade_no']=$data[$i]->trade_no;
+            $cellData[$i]['transaction_id']=$data[$i]->transaction_id;
+            $cellData[$i]['nick_name']=$data[$i]->nick_name;
+            $cellData[$i]['mobile']=$data[$i]->mobile;
+            $cellData[$i]['sname']=$data[$i]->sname;
+            $cellData[$i]['agent_id']=$data[$i]->agent_id;
+            $cellData[$i]['smobile']=$data[$i]->smobile;
+            $cellData[$i]['slogo']=$data[$i]->slogo;
         }
+
         $title = [
-            "id",
-            "订单号",
-            "总价",
-            "配送费",
-            "订单状态;",
-            "商店ID",
-            "用户ID",
-            "收货人",
-            "收货地址ID",
-            "收货电话",
-            "省",
-            "城市",
-            "县区",
-            "街道",
-            "收货地址",
-            "备注",
-            "退款原因",
-            "创建时间",
-            "更新时间",
-            "是否评价",
-            "支付总价",
-            "交易号",
-            "支付类型ID",
-            "支付类型名",
-            "支付订单ID",
-            "微信订单ID",
-            "优惠券类型",
-            "优惠券价值",
-            "优惠券ID",
-            "优惠券实际优惠的价格",
-            "优惠券名",
-            "优惠券用户ID",
-            "优惠券平台",
-            "这个订单店铺的收入",
-            "该订单扣点扣的钱数",
-            "用户点数",
-            "用户余额",
-            "用户昵称",
-            "用户真实姓名",
-            "用户手机号码",
-            "商店名称",
-            "代理ID",
-            "商铺手机号",
-            "商铺log",
-            "该种类型订单总数",
-            "该种类型订单总额",
-            "商品",
-            "商品总数",
-            "支付总额"
+            "id", "订单号", "总价", "配送费", "订单状态;", "商店ID", "用户ID", "收货人", "收货地址ID", "收货电话",
+            "省", "城市", "县区", "街道", "收货地址",  "退款原因", "创建时间", "更新时间", "是否评价", "支付总价",
+            "交易号", "支付类型ID", "支付类型名", "支付订单ID", "微信订单ID", "用户昵称", "用户手机号码", "商店名称",
+            "代理ID", "商铺手机号", "商铺log"
         ];
         $excelModel->export($name, $cellData, $title);
     }

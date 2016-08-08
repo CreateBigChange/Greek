@@ -444,12 +444,22 @@ class StoresController extends AdminController
 	public function getStoreUserList(Request $request){
 		$storeUserModel = new StoreUser();
 
+        $page = 1;
+        if($request->has($page))
+            $page = $request->get($page);
 		$storeId = 0;
 		if(isset($_GET['store_id'])){
 			$storeId = $_GET['store_id'];
 		}
 
+		$goodsNum = $storeUserModel->getUserNum($storeId);
+
 		$this->response['userList'] = $storeUserModel->getStoreUserList($storeId);
+
+        $this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
+
+        $this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/by/nocheck/?' . $param);
+
 
 		return view('alpha.store.user.list' , $this->response);
 	}

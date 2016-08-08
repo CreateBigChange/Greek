@@ -52,6 +52,8 @@ class AdminUsersController extends AdminController
         $password           = $request->get('password');
 
         $salt               = $adminUserModel->getAdminUserSalt($account);
+
+
         $encrypt_password   = $this->encrypt($password , $salt->salt);
 
         $this->userInfo           = $adminUserModel->checkLogin($account , $encrypt_password);

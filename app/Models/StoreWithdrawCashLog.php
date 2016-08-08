@@ -347,7 +347,6 @@ class StoreWithdrawCashLog extends Model
         return isset($result[0]) ? $result[0]->num : 0;
     }
 
-
     /**
      * @param $storeId
      * @param string $date
@@ -367,19 +366,16 @@ class StoreWithdrawCashLog extends Model
 
         return $data;
     }
-
     /**
      * @param $id 记录id
      * @param $data 需要修改的数组表单
      * @return mixed
      *  修改记录状态
      */
-
     public function updateWithdraw($id, $data)
     {
         return DB::table($this->table)
             ->where('id', $id)
             ->update($data);
     }
-
 }
