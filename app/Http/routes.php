@@ -152,6 +152,7 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 
         //加盟商
         Route::get('/franchisee/list','FranchiseeController@getFranchiseeList');
+        Route::get('/franchisee/update','FranchiseeController@updateFranchiseeStatus');
 
 	});
 

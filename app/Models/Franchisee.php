@@ -37,5 +37,9 @@ class Franchisee extends Model
     public function  getFranchiseeListTotle($search=array()){
         return DB::table($this->table)->count();
     }
-
+    public function  updateStatus($id,$data){
+        DB::table($this->table)
+            ->where('id', $id)
+            ->update($data);
+    }
 }

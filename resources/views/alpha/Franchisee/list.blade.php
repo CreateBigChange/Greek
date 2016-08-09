@@ -21,7 +21,8 @@
                                     <th>名称</th>
                                     <th>手机号</th>
                                     <th>地址</th>
-                                    <th>是否连通</th>
+                                    <th>是否联系</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody class="dragsort">
@@ -33,11 +34,16 @@
                                         <td>{{ $list->address }}</td>
                                         <td>
                                             @if($list->is_contact==1)
-                                                连通
+                                                已联系
                                              @else
-                                                没连通
+                                                没联系
                                             @endif
                                         </td>
+                                        <td><button class="btn btn-success btn-update" data-toggle="modal" href="#update"
+                                            name="{{ $list->name }}"             mobile ="{{ $list->mobile }}"
+                                            address ="{{ $list->address }}"    is_contact = "{{ $list->is_contact }}"
+                                            FranchiseeId="{{ $list->id }}"
+                                            >修改</button></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -50,12 +56,29 @@
                 </section>
             </div>
         </div>
-
     </section>
-
-
 </section>
-<!--main content end-->
+<script>
+    $(".btn-update").click(function () {
 
+
+        $("#edit_id").attr("value",$(this).attr("FranchiseeId"));
+        $("#edit_name").attr("value",$(this).attr("name"));
+        $("#edit_mobile").attr("value",$(this).attr("mobile"));
+        $("#tipinput").attr("value",$(this).attr("address"));
+        if($("#this").attr("is_contact")==1){
+            $("#my-btnswitch").bootstrapSwitch('setState', true);
+            $("#btn-checked").attr("value",1);
+        }
+        else{
+            $("#my-btnswitch").bootstrapSwitch('setState', false);
+            $("#btn-checked").attr("value",0);
+        }
+
+    })
+
+</script>
+<!--main content end-->
+@include('alpha.Franchisee.list_moduls')
 @include('alpha.moduls.warning')
 @include('alpha.footer')

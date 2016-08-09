@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: DEL
+ * User: yang xian sheng
  * Date: 2016/8/8
  * Time: 9:54
  */
@@ -18,7 +18,7 @@ class FranchiseeController extends AdminController
         parent::__construct();
         $this->_model = new Franchisee();
 
-        $this->response['title']		= '活动';
+        $this->response['title']		= '加盟商';
         $this->length=10;
     }
     public function  getFranchiseeList(Request $request){
@@ -36,7 +36,21 @@ class FranchiseeController extends AdminController
         $this->response['page']         = $pageData->page;
         $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/franchisee/list?' . $param);
         $this->response['lists']        = $this->_model->getFranchiseeList( $this->length , $pageData->offset , $search);
-        return view('alpha.Franchisee.list' , $this->response);
-    }
+        return view('alpha.franchisee.list' , $this->response);
 
+    }
+    public function  updateFranchiseeStatus(Request $request){
+        $id = $request->get("id");
+
+        $data = array(
+            "name"=>$request->get("name"),
+            "mobile"=>$request->get("mobile"),
+            "address"=>$request->get("address"),
+            "is_contact"=>$request->get("is_contact")
+        );
+
+        $this->_model->updateStatus($id,$data);
+        return redirect('alpha/franchisee/list');
+
+    }
 }
