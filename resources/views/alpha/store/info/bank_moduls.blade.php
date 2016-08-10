@@ -1,3 +1,4 @@
+
 {{--搜索--}}
 <!-- Modal -->
 @foreach($storeInfos as $storeInfo)

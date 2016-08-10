@@ -516,6 +516,7 @@
 		})
 
 		addressInput.onchange = function(e){
+
 			var address = addressInput.value;
 			geocoder.getLocation(address,function(status,result){
 				if(status=='complete'&&result.geocodes.length){

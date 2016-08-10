@@ -86,7 +86,7 @@
                                 <div class="col-sm-10">
                                     <label class="checkbox-inline">
                                         @if($g->is_open ==1)
-                                            <input type="checkbox" id="inlineCheckbox1" value=""  name="is_open"> 开启
+                                            <input type="checkbox" id="inlineCheckbox1" value=""  checked name="is_open"> 开启
                                         @else
                                             <input type="checkbox" id="inlineCheckbox1" value=""  name="is_open"> 开启
                                         @endif
