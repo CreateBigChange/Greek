@@ -1112,7 +1112,7 @@ class UsersController extends ApiController
             return;
         }
 
-        $type = 2;
+        $type = 1;
 
         $versionModel = new Version();
         $version = (Array)$versionModel->getNew($system , $type);
@@ -1121,7 +1121,7 @@ class UsersController extends ApiController
             $version['download'] = '';
         }
 
-        $version['title']   = "急所需商户版APP下载";
+        $version['title']   = "急所需用户端APP下载";
         $version['system']  = $system;
 
         return view("app.download" , $version);
@@ -1142,7 +1142,7 @@ class UsersController extends ApiController
             $system = 'ios';
         }
 
-        $type = 2;
+        $type = 1;
 
         $versionModel = new Version();
         $version = $versionModel->versionIsNew($version , $system , $type);
