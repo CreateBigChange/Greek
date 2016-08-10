@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Alpha;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\AdminController;
-
+use App\Models\AdminUser;
 use Session , Cookie , Config;
 
 use App\Models\AdminRole;
@@ -174,5 +174,56 @@ class AdminRoleController extends AdminController
         $this->response['menuactive']	= 'qxgl';
 
         return view('alpha.auth.roles.update_password', $this->response);
+    }
+    public function  verifyRolePassword(Request $request){
+
+
+        $adminUserModel     = new AdminUser;
+
+        $password           =$request->get("password");
+        $salt               = $this->userInfo->salt;
+
+        $encrypt_password   = $this->encrypt($password , $salt);
+
+        $userPassword       =$this->userInfo->password;
+
+        if($userPassword==$encrypt_password)
+        {
+            $code ="0";
+            $msg="密码正确";
+        }
+        else{
+            $code ="1";
+            $msg="密码错误";
+        }
+        $info =array(
+            "code"=>$code,
+            "msg"=>$msg
+        );
+
+        return response()->json($info);
+    }
+    public function  passwordChange(Request $request){
+
+        $password        =$request->get("newPassword");
+        $confirePassword =$request->get("confirePassword");
+
+
+        if(($password ==$confirePassword)&&strlen($password)>=6){
+
+            $salt               = $this->getSalt(8);
+            $realpassword		    = $this->encrypt($password  , $salt);
+
+            $data['salt']       =$salt;
+            $data['password']	=$realpassword;
+            $id                 = $this->userInfo->id;
+            $AdminUser          = new AdminUser;
+
+
+
+            $AdminUser->editAdminUserInfo( $id , $data );
+        }
+
+        return redirect("/alpha/role/password");
     }
 }

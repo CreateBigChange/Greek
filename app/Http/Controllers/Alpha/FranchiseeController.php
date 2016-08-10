@@ -21,23 +21,43 @@ class FranchiseeController extends AdminController
         $this->response['title']		= '加盟商';
         $this->length=10;
     }
-    public function  getFranchiseeList(Request $request){
+    public function  getFranchiseeContactList(Request $request){
         $page = 1;
 
         if($request->has("page"))
             $page = $request->get("page");
 
-        $search=array();
+        $search=array("is_contact"=>"0");
+
 
         $param="";
 
-        $totalNum                       = $this->_model->getFranchiseeListTotle();
+        $totalNum                       = $this->_model->getFranchiseeListTotle($search);
         $pageData                       = $this->getPageData($page  , $this->length, $totalNum);
         $this->response['page']         = $pageData->page;
         $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/franchisee/list?' . $param);
         $this->response['lists']        = $this->_model->getFranchiseeList( $this->length , $pageData->offset , $search);
         return view('alpha.franchisee.list' , $this->response);
 
+    }
+
+    public function getFranchiseeListUncontactList(Request $request)
+    {
+        $page = 1;
+
+        if($request->has("page"))
+            $page =$request->get("page");
+
+        $search=array();
+        $search=array("is_contact"=>"1");
+
+        $param="";
+        $totalNum                       = $this->_model->getFranchiseeListTotle($search);
+        $pageData                       = $this->getPageData($page  , $this->length, $totalNum);
+        $this->response['page']         = $pageData->page;
+        $this->response['pageHtml']     = $this->getPageHtml($pageData->page , $pageData->totalPage  , '/alpha/franchisee/list?' . $param);
+        $this->response['lists']        = $this->_model->getFranchiseeList( $this->length , $pageData->offset , $search);
+        return view('alpha.franchisee.list' , $this->response);
     }
     public function  updateFranchiseeStatus(Request $request){
         $id = $request->get("id");

@@ -31,15 +31,16 @@ class Franchisee extends Model
      * @return mixed
      */
     public function  getFranchiseeList($length=10,$offset =0,$search=array()){
-        return DB::table($this->table)->skip($offset)->take($length)->get();
+        return DB::table($this->table)->where("is_contact",$search['is_contact'])->skip($offset)->take($length)->get();
     }
 
     public function  getFranchiseeListTotle($search=array()){
-        return DB::table($this->table)->count();
+        return DB::table($this->table)->where("is_contact",$search["is_contact"])->count();
     }
     public function  updateStatus($id,$data){
         DB::table($this->table)
             ->where('id', $id)
             ->update($data);
     }
+
 }

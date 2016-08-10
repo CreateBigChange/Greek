@@ -33,6 +33,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/role/info/{id}' , 'AdminRoleController@getRoleInfo');
 		Route::post('/role/update' , 'AdminRoleController@updateRole');
         Route::get('/role/password' , 'AdminRoleController@updateRolePassword');
+        Route::post('/role/verifyPassword' , 'AdminRoleController@verifyRolePassword');
+        Route::post('/role/passwordChange' , 'AdminRoleController@passwordChange');
+
 
 		//节点操作
 		Route::get('/permissions' , 'AdminPermissionController@getPermissionsList');
@@ -151,8 +154,11 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
 		Route::get('/Activity/couponClose/{id}','ActivityController@couponClose');
 
         //加盟商
-        Route::get('/franchisee/list','FranchiseeController@getFranchiseeList');
+        Route::get('/franchisee/contactList','FranchiseeController@getFranchiseeContactList');
+        Route::get('/franchisee/uncontactList','FranchiseeController@getFranchiseeListUncontactList');
         Route::get('/franchisee/update','FranchiseeController@updateFranchiseeStatus');
+
+
 
 	});
 
