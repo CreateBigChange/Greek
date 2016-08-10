@@ -48,9 +48,13 @@ class Jpush
         $push->setNotificationAlert('急所需')
             //->addAllAudience()
             ->addAndroidNotification($content, $title, 1, array("type"=>$type))
-            ->addIosNotification($content, $sound, "+1" , true, 'iOS ORDER NEW', array("type"=>$type))
-            ->setMessage($content, $title, 'type', array("type"=>$type))
-            ->setOptions(100000, 86400, null, !Config::get('app.debug'));
+            ->addIosNotification($content, $sound, "+1" , true, 'notice', array("type"=>$type))
+            ->setMessage($content, $title, 'type', array("type"=>$type));
+        if(Config::get('app.debug')) {
+            $push->setOptions(null, 86400, null, false);
+        }else{
+            $push->setOptions(null, 86400, null, true);
+        }
 
         $result = $push->send();
 
