@@ -15,7 +15,7 @@
                         <section class="panel" style="margin-bottom:0px">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">名称</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">id</label>
                                     <div class="col-sm-10">
 
                                         <input type="text" readonly class="form-control" name='id' id="edit_id"/>
@@ -52,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 col-sm-2 control-label">开启</label>
+                                    <label class="col-sm-2 col-sm-2 control-label">是否联系</label>
                                     <div class="col-sm-10">
                                         <div class="switch switch-large" id="my-btnswitch" name="test">
                                             <input type="hidden" name="is_contact" value="1" id="btn-checked">

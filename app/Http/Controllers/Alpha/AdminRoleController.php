@@ -178,10 +178,15 @@ class AdminRoleController extends AdminController
     public function  verifyRolePassword(Request $request){
 
 
-        $adminUserModel     = new AdminUser;
+
 
         $password           =$request->get("password");
+
+
+
+
         $salt               = $this->userInfo->salt;
+
 
         $encrypt_password   = $this->encrypt($password , $salt);
 
@@ -203,6 +208,11 @@ class AdminRoleController extends AdminController
 
         return response()->json($info);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function  passwordChange(Request $request){
 
         $password        =$request->get("newPassword");
@@ -221,7 +231,13 @@ class AdminRoleController extends AdminController
 
 
 
-            $AdminUser->editAdminUserInfo( $id , $data );
+            $result =$AdminUser->editAdminUserInfo( $id , $data );
+            if($result==1){
+                $this->userInfo->salt     =  $salt ;
+                $this->userInfo->password = $realpassword;
+            }
+
+
         }
 
         return redirect("/alpha/role/password");

@@ -35,6 +35,7 @@ class AdminUser extends Model{
 
     }
 
+
     /**
      * @param $tel
      * @return mixed
@@ -45,6 +46,7 @@ class AdminUser extends Model{
             ->where('account' , $account)
             ->first();
     }
+
 
     /**
      * @param $account
