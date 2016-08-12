@@ -443,7 +443,7 @@ class StoresController extends AdminController
 	 */
 	public function getStoreUserList(Request $request){
 		$storeUserModel = new StoreUser();
-
+        $param="";
         $page = 1;
         if($request->has($page))
             $page = $request->get($page);
@@ -579,11 +579,7 @@ class StoresController extends AdminController
 		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/'.$storeId.'?' . $param);
 		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
         $this->response['brand']            =11;
-
-
-
-
-
+ 
         return view('alpha.store.goods.list' , $this->response);
 
 	}
@@ -658,7 +654,6 @@ class StoresController extends AdminController
 			return response()->json(Message::setResponseInfo('SUCCESS' , $info[0]));
 		}
 
-
 	}
 
 	public function updateStoreGoods(Request $request){
@@ -667,6 +662,7 @@ class StoresController extends AdminController
 		$data = array();
 
 		$id 		= $request->get('id');
+
 		$storeId 	= $request->get('store_id');
 
 		if( $request->has('nav_id') ) {

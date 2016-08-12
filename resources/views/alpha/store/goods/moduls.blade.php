@@ -155,8 +155,8 @@
     <div class="modal-dialog" style="width: 80%;">
         <div class="modal-content">
             <form class="form-horizontal tasi-form" method="post" action='/alpha/store/goods/update'>
-                <input type="hidden" name="id" value="" id="edit_id"  value = {{$good->id}}/>
-                <input type="hidden" name="store_id" value="" id="edit_store_id"  value ={{$good->store_id}}/>
+                <input type="hidden" name="id"  id="edit_id"  value ={{$good->id}}/>
+                <input type="hidden" name="store_id" id="edit_store_id"  value ={{$good->store_id}}/>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">修改商品</h4>

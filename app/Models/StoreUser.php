@@ -49,7 +49,7 @@ class StoreUser extends Model{
     /**
      * 获取店铺用户
      */
-    public function getStoreUserList($storeId = 0){
+    public function getStoreUserList($storeId = 0,$length=10,$page=0){
         $storeInfoModel = new StoreInfo();
         $sql = DB::table($this->table)
             ->select(
@@ -66,7 +66,7 @@ class StoreUser extends Model{
             $sql->where('store_id' , $storeId);
         }
 
-        return $sql->get();
+        return $sql->skip($page*$length)->take($length)->get();
     }
 
     /**
@@ -153,7 +153,6 @@ class StoreUser extends Model{
             ->select('id' , 'store_id' , 'account' , 'real_name' , 'tel' )
             ->where('account' , $account)
             ->first();
-
 
         return $isLogin;
     }
