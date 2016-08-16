@@ -47,7 +47,7 @@ class Coupon extends Model
      * @return mixed
      * 获取优惠券总数目
      */
-    public function couponTotalNum($search = array())
+    public function     couponTotalNum($search = array())
     {
         $sql = DB::table($this->table);
 
@@ -62,6 +62,23 @@ class Coupon extends Model
         if(isset($search['agent_id'])){
             $sql->where('store_infos.agent_id' , $search['agent_id']);
         }
+
+        if(isset($search['name'])){
+            $sql->where('coupon.name' ,"like","%".$search['name']."%");
+        }
+        if(isset($search['content'])){
+            $sql->where('coupon.content' ,"like","%".$search['content']."%");
+        }
+        if(isset($search['prerequisite'])){
+            $sql->where('coupon.prerequisite' ,"like","%".$search['prerequisite']."%");
+        }
+        if(isset($search['type'])){
+            $sql->where('coupon.type' ,"like","%".$search['type']."%");
+        }
+        if(isset($search['store_name'])){
+            $sql->where('store_infos.name' ,"like","%".$search['store_name']."%");
+        }
+
         return $sql->join('store_infos' , 'coupon.store_id' , '=' , 'store_infos.id')->count();
     }
 
@@ -91,12 +108,40 @@ class Coupon extends Model
             $sql->where('store_infos.agent_id' , $search['agent_id']);
         }
 
-        return $sql->skip($offset)
+        if(isset($search['agent_id'])){
+            $sql->where('store_infos.agent_id' , $search['agent_id']);
+        }
+
+        if(isset($search['name'])){
+            $sql->where('coupon.name' ,"like","%".$search['name']."%");
+        }
+
+        if(isset($search['content'])){
+            $sql->where('coupon.content' ,"like","%".$search['content']."%");
+        }
+
+        if(isset($search['prerequisite'])){
+            $sql->where('coupon.prerequisite' ,"like","%".$search['prerequisite']."%");
+        }
+
+        if(isset($search['type'])){
+            $sql->where('coupon.type' ,"like","%".$search['type']."%");
+        }
+
+        if(isset($search['store_name'])){
+            $sql->where('store_infos.name' ,"like","%".$search['store_name']."%");
+        }
+
+
+        return  $sql->skip($offset)
             ->take($length)
             ->leftJoin('store_infos' , 'coupon.store_id' , '=' , 'store_infos.id')
             ->select('coupon.id', 'coupon.name as name', 'coupon.content', 'coupon.type', 'coupon.effective_time','coupon.value', 'coupon.prerequisite', 'coupon.store_id', 'coupon.total_num', 'coupon.in_num', 'coupon.out_num', 'coupon.stop_out', 'coupon.num', 'coupon.created_at', 'coupon.updated_at', 'store_infos.name as store_name')
             ->orderBy('coupon.created_at' , 'desc')
             ->get();
+
+          dd(DB::getQueryLog());
+
     }
 
     public function getCouponTotalNum($search = array()){

@@ -82,13 +82,32 @@ class ActivityController extends AdminController
     public function coupon(Request $request)
     {
 
-
-       
         $page = 1;
         if($request->has('page')){
             $page = $request->get('page');
         }
         $search['strore_id']=0;
+        $param = "";
+        if($request->has("name")){
+            $search["name"]=$request->get("name");
+            $param.="&name=".$request->get("name");
+        }
+        if($request->has("content")){
+            $search["content"]=$request->get("content");
+            $param.="&content=".$request->get("content");
+        }
+        if($request->has("prerequisite")){
+            $search["prerequisite"]=$request->get("prerequisite");
+            $param.="&prerequisite=".$request->get("prerequisite");
+        }
+        if($request->has("type")){
+            $search["type"]=$request->get("type");
+            $param.="&type=".$request->get("type");
+        }
+        if($request->has("store_name")){
+            $search["store_name"]=$request->get("store_name");
+            $param.="&store_name=".$request->get("store_name");
+        }
 
         /**
          * 如果登录的用户是代理商
@@ -97,10 +116,13 @@ class ActivityController extends AdminController
             $search['agent_id'] = $this->userInfo->id;
         }
 
-        $totalNum =  $this->couponModel->couponTotalNum();
+
+
+
+        $totalNum =  $this->couponModel->couponTotalNum($search);
         $pageData = $this->getPageData($page  , $this->length, $totalNum);
         $this->response['list']= $this->couponModel->getCouponList($search,$this->length,$pageData->offset);
-        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/Activity/coupon?');
+        $this->response['pageHtml'] = $this->getPageHtml($page , $pageData->totalPage , '/alpha/Activity/coupon?'.$param);
         
         return view('alpha.activity.coupon',$this->response);
     }

@@ -83,10 +83,9 @@ Route::group(['middleware' => ['web'] , 'prefix' => 'alpha' , 'namespace' => 'Al
         Route::post('/store/goods/import' , 'StoresController@storeGoodsImport');
 
 
-
-
 		//店员
 		Route::get('/store/user' , 'StoresController@getStoreUserList');
+        Route::post('/store/updateStoreInfo' , 'StoresController@updateStoreInfo');
 
 		//商品
 		Route::get('/goods' , 'GoodsController@getGoodsList');

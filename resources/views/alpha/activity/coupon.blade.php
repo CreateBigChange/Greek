@@ -42,7 +42,13 @@
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->content }}</td>
-                                    <td>{{ $item->type }}</td>
+                                    <td>
+                                     @if($item->type==1)
+                                         满减券
+                                     @else
+                                         通用券
+                                     @endif
+                                    </td>
                                     <td>{{ $item->effective_time }}</td>
                                     <td>{{ $item->value }}</td>
                                     <td>{{ $item->prerequisite }}</td>
@@ -97,6 +103,7 @@
 
 </section>
 <!--main content end-->
+@include('alpha.activity.coupon_search_moudel')
 @include('alpha.activity.coupon_moudel')
 @include('alpha.moduls.warning')
 @include('alpha.footer')

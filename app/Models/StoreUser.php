@@ -138,6 +138,7 @@ class StoreUser extends Model{
      * 更新用户信息
      */
     public function reset($id  , $data){
+
         return DB::table($this->table)->where('id' , $id)->update($data);
     }
 

@@ -288,7 +288,6 @@ class StoresController extends AdminController
 		$data['created_at']			= date('Y-m-d H:i:s' , time());
 		$data['updated_at']			= date('Y-m-d H:i:s' , time());
 
-
 		$storeModel = new StoreInfo;
 
 		$storeId = $storeModel->addStore($data);
@@ -442,26 +441,32 @@ class StoresController extends AdminController
 	 * 获取店铺用户
 	 */
 	public function getStoreUserList(Request $request){
+
 		$storeUserModel = new StoreUser();
+
         $param="";
+
         $page = 1;
-        if($request->has($page))
-            $page = $request->get($page);
-		$storeId = 0;
-		if(isset($_GET['store_id'])){
+
+        if($request->has("page"))
+            $page = $request->get("page");
+
+        $storeId = 0;
+
+        if(isset($_GET['store_id'])){
 			$storeId = $_GET['store_id'];
 		}
 
 		$goodsNum = $storeUserModel->getUserNum($storeId);
 
-		$this->response['userList'] = $storeUserModel->getStoreUserList($storeId);
+		$this->response['userList'] = $storeUserModel->getStoreUserList($storeId,$this->length,$page);
 
         $this->response['pageData']   		= $this->getPageData($page , $this->length , $goodsNum);
 
-        $this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/by/nocheck/?' . $param);
-
+        $this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/user?' . $param);
 
 		return view('alpha.store.user.list' , $this->response);
+
 	}
 
 	/**
@@ -579,7 +584,7 @@ class StoresController extends AdminController
 		$this->response['pageHtml']         = $this->getPageHtml($this->response['pageData']->page , $this->response['pageData']->totalPage  , '/alpha/store/goods/'.$storeId.'?' . $param);
 		$this->response['goods']  			= $storeGoodsModel->getStoreGoodsList($search , $this->length , $this->response['pageData']->offset);
         $this->response['brand']            =11;
- 
+
         return view('alpha.store.goods.list' , $this->response);
 
 	}
@@ -762,4 +767,29 @@ class StoresController extends AdminController
         $StoreBankCard ->updateBank( $bank_card_id,$data);
         return redirect()->back();
 }
+    public function updateStoreInfo(Request $request){
+
+
+            $data = array();
+            $id="";
+            if($request->has("id"))
+                $id=$request->get("id");
+            else
+                return null;
+        if($request->has("account"))
+            $data["account"]=$request->get("account");
+        if($request->has("real_name"))
+            $data["real_name"]=$request->get("real_name");
+        if($request->has("tel"))
+            $data["tel"]=$request->get("tel");
+        if($request->has("sid"))
+            $data["store_id"]=$request->get("sid");
+        if($request->has("created_at"))
+            $data["created_at"]=$request->get("created_at");
+
+
+        $moduls = new StoreUser();
+        $moduls->reset($id,$data);
+        return redirect()->back();
+    }
 }

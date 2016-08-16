@@ -36,7 +36,7 @@
                                         <td>{{ $u->sname }}</td>
                                         <td>{{ $u->created_at }}</td>
                                         <td>
-                                            <div p_id="{{ $u->id }}" data-toggle="modal" href="#update" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
+                                            <div p_id="{{ $u->id }}" data-toggle="modal" href="#store_info_{{ $u->id }}" class="btn btn-primary btn-xs update"><i class="icon-pencil"></i></div>
                                             <a title="删除这条" href="/alpha/store/user/del/{{ $u->id }}" class="btn btn-danger btn-xs"><i class="icon-trash"></i></a>
                                         </td>
                                     </tr>
@@ -45,9 +45,9 @@
                             </table>
                         </section>
                     </div>
-                    {{--<div class="text-center">--}}
-                        {{--{!! $pageHtml !!}--}}
-                    {{--</div>--}}
+                    <div class="text-center">
+                        {!! $pageHtml !!}
+                    </div>
                 </section>
             </div>
         </div>
@@ -59,5 +59,5 @@
 <!--main content end-->
 
 {{--@include('alpha.store.info.info_moduls')--}}
-
+@include ('alpha.store.user.moduls');
 @include('alpha.footer')
